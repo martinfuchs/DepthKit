@@ -89,6 +89,7 @@ Congratulations, you're finished with the calibration process. It's time to shoo
 After filming we need to shuffle some files around to prepare for visualization. Eventually there will be a better tool for generating these bins but for now we need to do it manually.
 
 The folder structure for the media bin looks like this:
+
 	MediaBin/
  		TakeOne/
  			calibration/
