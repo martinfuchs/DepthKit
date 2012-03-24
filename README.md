@@ -88,18 +88,18 @@ Congratulations, you're finished with the calibration process. It's time to shoo
 
 After filming we need to shuffle some files around to prepare for visualization. Eventually there will be a better tool for generating these bins but for now we need to do it manually.
 
-> The folder structure for the media bin looks like this:
-> MediaBin/
-> 	TakeOne/
-> 		calibration/
-> 			6x .yml files generated from the calibration step
-> 		TAKE_XXXX/
-> 			frame_000_millis_00000.png
-> 			....
-> 		MySLRClip.mov
-> 		MySLRCLip_Small.mov
-> 	TakeTwo/
-> 		...
+The folder structure for the media bin looks like this:
+	MediaBin/
+ 		TakeOne/
+ 			calibration/
+ 				6x .yml files generated from the calibration step
+ 			TAKE_XXXX/
+ 				frame_000_millis_00000.png
+ 				....
+ 			MySLRClip.mov
+ 			MySLRCLip_Small.mov
+ 		TakeTwo/
+ 			...
 
 - copy each recorded clip into it's own folder in the MediaBin. In the RGBDCapture working folder under takes/ find the take corresponding to that clip. Here timestamps also will help immensely. Copy or move the depth data into the folder you just made in the MediaBin.
 - We need to have both on online and offline version of our video so visualization is performant. Download mpeg stream clip (or use something like Quicktime Pro or Compressor to batch conversion program). Convert the clip to to a 640x360 (assuming you shot in 16:9 aspect ratio) MJPEG @50% speed and remember to include sound. This is the clip that RGBDVisualize will load for preview, which it will then be swapped out automatically for rendering.
