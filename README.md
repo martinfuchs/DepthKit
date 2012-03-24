@@ -3,9 +3,8 @@
 A software system for filmmaking with Kinect paired with a Digital SLR Video camera.
 
 RGBD PreRelease v. 001 for Mac OS X and Windows
-The RGBDToolkit is a GUI based software workflow for calibrating, filming, and visualizing Kinect depth data paired with high definition video taken from an SLR attached to the camera. 
 
-Manual graciously written by the wonderful and talented video installation artist i.m klif (http://vimeo.com/32631165) during our Resonate workshop in Belgrade, Serbia on March 16th 2012.
+This manual was graciously written by the wonderful and talented video installation artist i.m klif (http://vimeo.com/32631165) during our Resonate workshop in Belgrade, Serbia on March 16th 2012 and edited by James George on March 24th 2012.
 
 # CALIBRATION
 
