@@ -25,17 +25,17 @@ Here is a step by step process to create the calibration
 
 ## Preparation
 
-. Attach the Kinect to the SLR using the quick release bracket and mount and place the pair on a video tripod with a fluid head.
-. Cover Kinect IR laser emitter
-. Plug your Kinect into your computer.
-. Launch RGBDCapture program.
-. Click on the big top left button to set the working directory. All your calibration files will go into a subfolder called calibration/ and the footage into a folder called takes/ .
-. Make sure you've highlighted the CALIBRATION tab on the top left. You should see the raw IR image (as opposed to the depth map) in the preview window.
-. Switch on the DSLR and set it to live view video mode.
-. position the checkerboard in the center of the view of the SLR camera. Using the small screws on the bottom of the mount, adjust the tilt of the Kinect until the checkerboard also appears in the center of the Kinect view. Ideally the SLR's frame will cover more than the Kinect's view, thus providing color data for the entirety of the depth image.
-. Under proper lightning, you should see the array of evenly spaced red dots on the checkerboard. If any of them are off the grid or wiggling due to video noise it indicates the light is either too strong or too weak or the checkerboard is too far. 
-. FOCUS your DSLR on the checkerboard, again being careful not to touch the zoom.
-. Begin capturing pairs
+- Attach the Kinect to the SLR using the quick release bracket and mount and place the pair on a video tripod with a fluid head.
+- Cover Kinect IR laser emitter
+- Plug your Kinect into your computer.
+- Launch RGBDCapture program.
+- Click on the big top left button to set the working directory. All your calibration files will go into a subfolder called calibration/ and the footage into a folder called takes/ .
+- Make sure you've highlighted the CALIBRATION tab on the top left. You should see the raw IR image (as opposed to the depth map) in the preview window.
+- Switch on the DSLR and set it to live view video mode.
+- position the checkerboard in the center of the view of the SLR camera. Using the small screws on the bottom of the mount, adjust the tilt of the Kinect until the checkerboard also appears in the center of the Kinect view. Ideally the SLR's frame will cover more than the Kinect's view, thus providing color data for the entirety of the depth image.
+- Under proper lightning, you should see the array of evenly spaced red dots on the checkerboard. If any of them are off the grid or wiggling due to video noise it indicates the light is either too strong or too weak or the checkerboard is too far. 
+- FOCUS your DSLR on the checkerboard, again being careful not to touch the zoom.
+- Begin capturing pairs
 
 ## Pair Capturing
 
@@ -88,18 +88,18 @@ Congratulations, you're finished with the calibration process. It's time to shoo
 
 After filming we need to shuffle some files around to prepare for visualization. Eventually there will be a better tool for generating these bins but for now we need to do it manually.
 
-The folder structure for the media bin looks like this:
-MediaBin/
-	TakeOne/
-		calibration/
-			6x .yml files generated from the calibration step
-		TAKE_XXXX/
-			frame_000_millis_00000.png
-			....
-		MySLRClip.mov
-		MySLRCLip_Small.mov
-	TakeTwo/
-		...
+> The folder structure for the media bin looks like this:
+> MediaBin/
+> 	TakeOne/
+> 		calibration/
+> 			6x .yml files generated from the calibration step
+> 		TAKE_XXXX/
+> 			frame_000_millis_00000.png
+> 			....
+> 		MySLRClip.mov
+> 		MySLRCLip_Small.mov
+> 	TakeTwo/
+> 		...
 
 - copy each recorded clip into it's own folder in the MediaBin. In the RGBDCapture working folder under takes/ find the take corresponding to that clip. Here timestamps also will help immensely. Copy or move the depth data into the folder you just made in the MediaBin.
 - We need to have both on online and offline version of our video so visualization is performant. Download mpeg stream clip (or use something like Quicktime Pro or Compressor to batch conversion program). Convert the clip to to a 640x360 (assuming you shot in 16:9 aspect ratio) MJPEG @50% speed and remember to include sound. This is the clip that RGBDVisualize will load for preview, which it will then be swapped out automatically for rendering.
@@ -119,6 +119,6 @@ Once you've organized all your MediaBin you can begin creating compositions.
 	- scrub through the timeline by clicking on the bar with the yellow tickers. You should see the footage playing back in 3d with matched temporal and depth alignment
 
 
-ASDWEC moves you in 3D space. Mouse rotates the camera. "Reset view" button helps when you mess it up or get lost.
+Clicking and dragging the mouse rotates the camera. ASDW moves you like a first person video game. E and C boom up and down in space. R+Q rotate. "Reset view" button helps when you mess it up or get lost.
 
 # EXPORTING
