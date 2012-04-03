@@ -8,6 +8,7 @@ build/
 *.mode*
 *.xcworkspace
 xcuserdata/
+xcshareddata/
 
 .DS_Store
 
