@@ -125,6 +125,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	float currentXScale;
 	float currentYScale;
 	float currentRotationCompensation;
+	float currentZFuzz;
 	
 	bool currentLockCamera;
 	

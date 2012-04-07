@@ -24,6 +24,7 @@ void testApp::setup(){
 	cameraTrack.setCamera(cam);
 	cam.loadCameraPosition();
 	
+
 	currentSimplify = 2;
 	lineSize = 1;
 	pointSize = 1;
@@ -32,6 +33,8 @@ void testApp::setup(){
 	videoInPercent = 0.0;
 	videoOutPercent = 1.0;
 	enableVideoInOut = false;
+	
+	currentZFuzz = 0;
 	
 	hiResPlayer = NULL;
 	lowResPlayer = NULL;
@@ -54,6 +57,7 @@ void testApp::setup(){
 	currentHoleKernelSize = 1;
 	currentHoleFillIterations = 1;
 	
+
 	sampleCamera = false;
 	
 	savingImage.setUseTexture(false);
@@ -109,9 +113,10 @@ void testApp::setup(){
 	
 	gui.addPage("Depth Refinement");
 	gui.addToggle("Fill Holes", fillHoles);
-	gui.addSlider("Hole Kernel Size", currentHoleKernelSize, 1, 9);
-	gui.addSlider("Hole Iterations", currentHoleFillIterations, 1, 10);
-
+	gui.addSlider("Hole Kernel Size", currentHoleKernelSize, 1, 20);
+	//gui.addSlider("Hole Iterations", currentHoleFillIterations, 1, 10);
+	gui.addSlider("Z Fuzz", currentZFuzz, 0, .25);
+	
 	gui.addToggle("TemporalAlignmentMode", temporalAlignmentMode);
 	gui.addToggle("Capture Frame Pair", captureFramePair);
 
@@ -465,6 +470,7 @@ void testApp::update(){
 	   currentEdgeCull != renderer.edgeCull ||
 	   farClip != renderer.farClip ||
 	   currentMirror != renderer.mirror ||
+	   currentZFuzz != renderer.ZFuzz ||
 	   fillHoles != holeFiller.enable ||
 	   currentHoleKernelSize != holeFiller.getKernelSize() ||
 	   currentHoleFillIterations != holeFiller.getIterations())
@@ -479,6 +485,7 @@ void testApp::update(){
 		renderer.setSimplification(currentSimplify);
 		renderer.farClip = farClip;
 		renderer.mirror = currentMirror;
+		renderer.ZFuzz = currentZFuzz;
 		
 		holeFiller.enable = fillHoles;
 		holeFiller.setKernelSize(currentHoleKernelSize);
@@ -518,10 +525,10 @@ void testApp::updateRenderer(ofVideoPlayer& fromPlayer){
 		renderer.setDepthImage(depthSequence.currentDepthRaw);
 	}
 
-	if(fillHoles){
-		holeFilledPixels.setFromPixels(depthSequence.currentDepthRaw, 640, 480, 1);
+	if(holeFiller.enable){
+		holeFilledPixels.setFromExternalPixels(depthSequence.currentDepthRaw, 640, 480, 1);
 		holeFiller.close(holeFilledPixels);
-		renderer.setDepthImage(holeFilledPixels.getPixels());
+		renderer.setDepthImage(holeFilledPixels.getPixels());	
 	}
 
 	processDepthFrame();
