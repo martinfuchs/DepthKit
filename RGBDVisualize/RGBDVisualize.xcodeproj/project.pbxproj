@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A6063A25148AC6DF00D154C3 /* rgbd.frag in Sources */ = {isa = PBXBuildFile; fileRef = A6063A22148AC6DF00D154C3 /* rgbd.frag */; };
-		A6063A26148AC6DF00D154C3 /* rgbd.vert in Sources */ = {isa = PBXBuildFile; fileRef = A6063A24148AC6DF00D154C3 /* rgbd.vert */; };
 		A6063F85148B1BCF00D154C3 /* ofxTextInputField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6063F83148B1BCF00D154C3 /* ofxTextInputField.cpp */; };
 		A60F74261477206A007E1206 /* Calibration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A60F73F81477206A007E1206 /* Calibration.cpp */; };
 		A60F74271477206A007E1206 /* ContourFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A60F73F91477206A007E1206 /* ContourFinder.cpp */; };
@@ -28,6 +26,7 @@
 		A69D77EA14E0E5A900963BF2 /* RGBD.icns in Resources */ = {isa = PBXBuildFile; fileRef = A69D77DB14E0E5A900963BF2 /* RGBD.icns */; };
 		A69D77EB14E0E5A900963BF2 /* colorcontrol.frag in Sources */ = {isa = PBXBuildFile; fileRef = A69D77DD14E0E5A900963BF2 /* colorcontrol.frag */; };
 		A69D77EC14E0E5A900963BF2 /* colorcontrol.vert in Sources */ = {isa = PBXBuildFile; fileRef = A69D77DE14E0E5A900963BF2 /* colorcontrol.vert */; };
+		A6ECC6BD15300A820009D0D9 /* ofxDepthHoleFiller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6ECC6BB15300A820009D0D9 /* ofxDepthHoleFiller.cpp */; };
 		A6EE31A214E21B030068A5E7 /* ofxTLCameraTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6EE319D14E21B030068A5E7 /* ofxTLCameraTrack.cpp */; };
 		A6EE31A314E21B030068A5E7 /* ofxCameraTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6EE31A014E21B030068A5E7 /* ofxCameraTrack.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
@@ -130,9 +129,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		A6063A22148AC6DF00D154C3 /* rgbd.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = rgbd.frag; sourceTree = "<group>"; };
-		A6063A23148AC6DF00D154C3 /* rgbd.geom */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rgbd.geom; sourceTree = "<group>"; };
-		A6063A24148AC6DF00D154C3 /* rgbd.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = rgbd.vert; sourceTree = "<group>"; };
 		A6063F83148B1BCF00D154C3 /* ofxTextInputField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTextInputField.cpp; sourceTree = "<group>"; };
 		A6063F84148B1BCF00D154C3 /* ofxTextInputField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTextInputField.h; sourceTree = "<group>"; };
 		A60F73EF1477206A007E1206 /* Calibration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Calibration.h; sourceTree = "<group>"; };
@@ -169,6 +165,8 @@
 		A69D77DB14E0E5A900963BF2 /* RGBD.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = RGBD.icns; sourceTree = "<group>"; };
 		A69D77DD14E0E5A900963BF2 /* colorcontrol.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = colorcontrol.frag; sourceTree = "<group>"; };
 		A69D77DE14E0E5A900963BF2 /* colorcontrol.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = colorcontrol.vert; sourceTree = "<group>"; };
+		A6ECC6BB15300A820009D0D9 /* ofxDepthHoleFiller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDepthHoleFiller.cpp; sourceTree = "<group>"; };
+		A6ECC6BC15300A820009D0D9 /* ofxDepthHoleFiller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxDepthHoleFiller.h; sourceTree = "<group>"; };
 		A6EE319D14E21B030068A5E7 /* ofxTLCameraTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLCameraTrack.cpp; sourceTree = "<group>"; };
 		A6EE319E14E21B030068A5E7 /* ofxTLCameraTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLCameraTrack.h; sourceTree = "<group>"; };
 		A6EE31A014E21B030068A5E7 /* ofxCameraTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCameraTrack.cpp; sourceTree = "<group>"; };
@@ -398,16 +396,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A6063A21148AC6DF00D154C3 /* assets */ = {
-			isa = PBXGroup;
-			children = (
-				A6063A23148AC6DF00D154C3 /* rgbd.geom */,
-				A6063A22148AC6DF00D154C3 /* rgbd.frag */,
-				A6063A24148AC6DF00D154C3 /* rgbd.vert */,
-			);
-			path = assets;
-			sourceTree = "<group>";
-		};
 		A6063F47148B1BCF00D154C3 /* ofxTextInputField */ = {
 			isa = PBXGroup;
 			children = (
@@ -429,7 +417,6 @@
 		A60F6B821475FFA5007E1206 /* ofxRGBDepth */ = {
 			isa = PBXGroup;
 			children = (
-				A6063A21148AC6DF00D154C3 /* assets */,
 				E7DF56AC147CA3A800A3A9C7 /* couples */,
 				A60F6BD81475FFA5007E1206 /* src */,
 			);
@@ -440,6 +427,8 @@
 		A60F6BD81475FFA5007E1206 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				A6ECC6BC15300A820009D0D9 /* ofxDepthHoleFiller.h */,
+				A6ECC6BB15300A820009D0D9 /* ofxDepthHoleFiller.cpp */,
 				E73BE0B214A3B784004FE0E5 /* ofxDepthImageCompressor.h */,
 				E73BE0B114A3B784004FE0E5 /* ofxDepthImageCompressor.cpp */,
 				A6477C79149D679300908B2B /* ofxRGBDRenderer.h */,
@@ -1289,8 +1278,6 @@
 				E7DF5728147CA58A00A3A9C7 /* ofxEasingSine.cpp in Sources */,
 				E7DF5729147CA58A00A3A9C7 /* ofxTween.cpp in Sources */,
 				A659ED12148A7CA9002E8A1C /* ofxTLColors.cpp in Sources */,
-				A6063A25148AC6DF00D154C3 /* rgbd.frag in Sources */,
-				A6063A26148AC6DF00D154C3 /* rgbd.vert in Sources */,
 				A6063F85148B1BCF00D154C3 /* ofxTextInputField.cpp in Sources */,
 				A6477C7A149D679300908B2B /* ofxRGBDRenderer.cpp in Sources */,
 				E73BE0B314A3B784004FE0E5 /* ofxDepthImageCompressor.cpp in Sources */,
@@ -1314,6 +1301,7 @@
 				A69D77EC14E0E5A900963BF2 /* colorcontrol.vert in Sources */,
 				A6EE31A214E21B030068A5E7 /* ofxTLCameraTrack.cpp in Sources */,
 				A6EE31A314E21B030068A5E7 /* ofxCameraTrack.cpp in Sources */,
+				A6ECC6BD15300A820009D0D9 /* ofxDepthHoleFiller.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

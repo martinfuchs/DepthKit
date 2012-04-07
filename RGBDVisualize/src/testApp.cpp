@@ -50,6 +50,10 @@ void testApp::setup(){
 	temporalAlignmentMode = false;
 	captureFramePair = false;
 
+	fillHoles = false;
+	currentHoleKernelSize = 1;
+	currentHoleFillIterations = 1;
+	
 	sampleCamera = false;
 	
 	savingImage.setUseTexture(false);
@@ -102,9 +106,16 @@ void testApp::setup(){
 	gui.addToggle("Mirror", currentMirror);
 	gui.addSlider("X Multiply Shift", currentXMultiplyShift, -75, 75);
 	gui.addSlider("Y Multiply Shift", currentYMultiplyShift, -75, 75);
+	
+	gui.addPage("Depth Refinement");
+	gui.addToggle("Fill Holes", fillHoles);
+	gui.addSlider("Hole Kernel Size", currentHoleKernelSize, 1, 9);
+	gui.addSlider("Hole Iterations", currentHoleFillIterations, 1, 10);
+
 	gui.addToggle("TemporalAlignmentMode", temporalAlignmentMode);
 	gui.addToggle("Capture Frame Pair", captureFramePair);
-		
+
+	
 	gui.addPage("Batching");
 	gui.addToggle("View Comps", viewComps);
 	gui.addToggle("Render Batch", startRenderMode);
@@ -453,8 +464,11 @@ void testApp::update(){
 	   currentSimplify != renderer.getSimplification() ||
 	   currentEdgeCull != renderer.edgeCull ||
 	   farClip != renderer.farClip ||
-	   currentMirror != renderer.mirror) {
-		
+	   currentMirror != renderer.mirror ||
+	   fillHoles != holeFiller.enable ||
+	   currentHoleKernelSize != holeFiller.getKernelSize() ||
+	   currentHoleFillIterations != holeFiller.getIterations())
+	{		
 		renderer.xshift = currentXAdditiveShift;
 		renderer.yshift = currentYAdditiveShift;
 		renderer.xmult = currentXMultiplyShift;
@@ -466,7 +480,14 @@ void testApp::update(){
 		renderer.farClip = farClip;
 		renderer.mirror = currentMirror;
 		
-		renderer.update();
+		holeFiller.enable = fillHoles;
+		holeFiller.setKernelSize(currentHoleKernelSize);
+		currentHoleKernelSize = holeFiller.getKernelSize();
+		holeFiller.setIterations(currentHoleFillIterations);
+		currentHoleFillIterations = holeFiller.getIterations();
+		
+		//renderer.update();
+		updateRenderer(*lowResPlayer);
 	}
 	
 	//update shaders
@@ -495,6 +516,12 @@ void testApp::updateRenderer(ofVideoPlayer& fromPlayer){
 	else{
 		lowResPlayer->setFrame(videoTimelineElement.getSelectedFrame());
 		renderer.setDepthImage(depthSequence.currentDepthRaw);
+	}
+
+	if(fillHoles){
+		holeFilledPixels.setFromPixels(depthSequence.currentDepthRaw, 640, 480, 1);
+		holeFiller.close(holeFilledPixels);
+		renderer.setDepthImage(holeFilledPixels.getPixels());
 	}
 
 	processDepthFrame();
