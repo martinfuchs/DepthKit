@@ -114,7 +114,6 @@ void testApp::setup(){
 	gui.addPage("Depth Refinement");
 	gui.addToggle("Fill Holes", fillHoles);
 	gui.addSlider("Hole Kernel Size", currentHoleKernelSize, 1, 20);
-	//gui.addSlider("Hole Iterations", currentHoleFillIterations, 1, 10);
 	gui.addSlider("Z Fuzz", currentZFuzz, 0, .25);
 	
 	gui.addToggle("TemporalAlignmentMode", temporalAlignmentMode);
