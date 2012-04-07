@@ -11,6 +11,8 @@ git clone git@github.com:Flightphase/ofxTextInputField
 git clone git@github.com:Flightphase/ofxSimpleGuiToo
 git clone git@github.com:obviousjim/ofxRGBDepth
 git clone git@github.com:kylemcdonald/ofxCv
+git clone git@github.com:obviousjim/ofxCameraTrack
+
 cd ofxCv/
 git checkout opencv-2.3
 cd ..
