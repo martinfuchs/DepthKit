@@ -175,4 +175,10 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofLight light;
 
 	string pathDelim;
+    
+    ofShader DOFCloud;
+    bool useDOF;
+    float dofFocalDistance;
+    float dofAperature;
+    
 };

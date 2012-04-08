@@ -24,7 +24,7 @@ void testApp::setup(){
 	cameraTrack.setCamera(cam);
 	cam.loadCameraPosition();
 	
-
+    useDOF = true;
 	currentSimplify = 2;
 	lineSize = 1;
 	pointSize = 1;
@@ -64,8 +64,13 @@ void testApp::setup(){
 	savingImage.allocate(1920,1080, OF_IMAGE_COLOR);
 	
 	fboRectangle = ofRectangle(250, 100, 1280*.75, 720*.75);
-	fbo.allocate(1920, 1080, GL_RGB, 4);
+	fbo.allocate(1920, 1080, GL_RGBA, 4);
 		
+    
+    DOFCloud.load("shaders/DOFCloud");
+//  dofFocusDistance = 500;
+//	dofAperture = .2;
+ 
 	newCompButton = new ofxMSAInteractiveObjectWithDelegate();
 	newCompButton->setLabel("New Comp");
 	newCompButton->setDelegate(this);
@@ -110,16 +115,14 @@ void testApp::setup(){
 	gui.addToggle("Mirror", currentMirror);
 	gui.addSlider("X Multiply Shift", currentXMultiplyShift, -75, 75);
 	gui.addSlider("Y Multiply Shift", currentYMultiplyShift, -75, 75);
-	
+    
 	gui.addPage("Depth Refinement");
 	gui.addToggle("Fill Holes", fillHoles);
 	gui.addSlider("Hole Kernel Size", currentHoleKernelSize, 1, 20);
 	gui.addSlider("Z Fuzz", currentZFuzz, 0, .25);
-	
 	gui.addToggle("TemporalAlignmentMode", temporalAlignmentMode);
 	gui.addToggle("Capture Frame Pair", captureFramePair);
 
-	
 	gui.addPage("Batching");
 	gui.addToggle("View Comps", viewComps);
 	gui.addToggle("Render Batch", startRenderMode);
@@ -138,24 +141,37 @@ void testApp::setup(){
 	
 	currentLockCamera = false;
 	cameraTrack.lockCameraToTrack = false;
+    
+
 }
 
 #pragma mark customization
 //--------------------------------------------------------------
 void testApp::processDepthFrame(){
 	
+    float noise = timeline.getKeyframeValue("Noise");
+    float sineAmp = timeline.getKeyframeValue("Sine Amplitude");
+    float sineSpeed = timeline.getKeyframeValue("Sine Speed");
+    float sinePeriod = timeline.getKeyframeValue("Sine Period");
+    
 	for(int y = 0; y <	480; y++){
 		for(int x = 0; x < 640; x++){
 			int index = y*640+x;
-			
+            
 			//***************************************************
-			//CUSTOMIZATION: YOU CAN PROCESS YOU	R RAW DEPTH FRAME HERE
+			//CUSTOMIZATION: YOU CAN PROCESS YOUR RAW DEPTH FRAME HERE
 			//* 
 			//* depthPixelDecodeBuffer contains the raw depth image
 			//*
 			//***************************************************			
-			
-			
+            if(noise > 0){
+                holeFilledPixels.getPixels()[index] += ofRandom(noise);   
+            }
+            
+            if(sineAmp > 0){
+                holeFilledPixels.getPixels()[index] += sin( y * sinePeriod + timeline.getCurrentFrame() * sineSpeed ) * sineAmp;
+            }
+            			
 			//for example delete every other line
 //			if(y % 4 == 0){
 //				depthPixelDecodeBuffer[index] = 0;
@@ -188,10 +204,20 @@ void testApp::drawGeometry(){
 	//***************************************************
 	
 	if(drawPointcloud){
-		ofPushStyle();
+        if(useDOF){
+            DOFCloud.begin();
+            DOFCloud.setUniform1f( "focusDistance", timeline.getKeyframeValue("Focal Distance") );
+            DOFCloud.setUniform1f( "aperture", timeline.getKeyframeValue("Aperture") );
+        }
+		
+        ofPushStyle();
 		glPointSize(pointSize);
 		renderer.drawPointCloud();
 		ofPopStyle();
+        
+        if(useDOF){
+            DOFCloud.end();
+        }
 	}
 	
 	if(drawWireframe){
@@ -524,13 +550,15 @@ void testApp::updateRenderer(ofVideoPlayer& fromPlayer){
 		renderer.setDepthImage(depthSequence.currentDepthRaw);
 	}
 
-	if(holeFiller.enable){
+//	if(holeFiller.enable){
 		holeFilledPixels.setFromExternalPixels(depthSequence.currentDepthRaw, 640, 480, 1);
 		holeFiller.close(holeFilledPixels);
-		renderer.setDepthImage(holeFilledPixels.getPixels());	
-	}
-
-	processDepthFrame();
+        //memcpy(depthSequence.currentDepthRaw, holeFilledPixels.getPixels(), 640*480*sizeof(unsigned short));
+//	}
+	
+    processDepthFrame();
+    
+    renderer.setDepthImage(holeFilledPixels.getPixels());	
 	renderer.update();
 	processGeometry();
 	
@@ -585,8 +613,12 @@ void testApp::draw(){
 				ofDrawBitmapString(currentCompositionDirectory, ofPoint(fboRectangle.x, fboRectangle.y-15));
 			}
 
-			fbo.getTextureReference().draw(fboRectangle);
-			
+            ofPushStyle();
+			ofSetColor(0);
+            ofRect(fboRectangle);
+			ofPopStyle();
+            fbo.getTextureReference().draw(fboRectangle);
+            
 			if(currentlyRendering){
 				fbo.getTextureReference().readToPixels(savingImage.getPixelsRef());
 				char filename[512];
@@ -847,11 +879,23 @@ void testApp::populateTimelineElements(){
 	timeline.addElement("Video", &videoTimelineElement);
 	timeline.addKeyframes("White", currentCompositionDirectory + "white.xml", ofRange(0,1.0) );
 	
+    timeline.addPage("Depth of Field", true);
+    timeline.addKeyframes("Focal Distance", currentCompositionDirectory + "focalDistance.xml", ofRange(0, 1500) );
+    timeline.addKeyframes("Aperture", currentCompositionDirectory + "aperture.xml", ofRange(0, .2) );
+
+    timeline.addPage("Depth Filters", true);
+    timeline.addKeyframes("Noise", currentCompositionDirectory + "DepthNoise.xml", ofRange(0, 5000) );
+    timeline.addKeyframes("Sine Amplitude", currentCompositionDirectory + "SineAmp.xml", ofRange(0, 5000) );
+    timeline.addKeyframes("Sine Speed", currentCompositionDirectory + "SineSpeed.xml", ofRange(-200, 200) );
+    timeline.addKeyframes("Sine Period", currentCompositionDirectory + "SinePeriod.xml", ofRange(.1, 10) );
+    
+    timeline.addPage("Geometry Modifiers", true);
+
 	timeline.addPage("Alignment", true);
 	timeline.addElement("Video", &videoTimelineElement);
 	timeline.addElement("Depth Sequence", &depthSequence);
 	timeline.addElement("Alignment", &alignmentScrubber);
-	
+    
 	timeline.setCurrentPage("Rendering");
 	
 	playerElementAdded = true;
@@ -868,6 +912,8 @@ void testApp::loadTimelineFromCurrentComp(){
 	white->setXMLFileName( currentCompositionDirectory + "white.xml");
 	white->load();	
 	
+    //TODO make this universal
+    
 	string cameraSaveFile = currentCompositionDirectory + "camera.xml";
 	cameraTrack.setXMLFileName(cameraSaveFile);
 	cameraTrack.setup();	

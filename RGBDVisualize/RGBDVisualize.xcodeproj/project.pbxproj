@@ -36,6 +36,8 @@
 		A60F754114772397007E1206 /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A60F753C14772397007E1206 /* ofxXmlSettings.cpp */; };
 		A6477C7A149D679300908B2B /* ofxRGBDRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6477C78149D679300908B2B /* ofxRGBDRenderer.cpp */; };
 		A659ED12148A7CA9002E8A1C /* ofxTLColors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A659ED10148A7CA9002E8A1C /* ofxTLColors.cpp */; };
+		A68DA66C15311E750075A728 /* DOFCloud.frag in Sources */ = {isa = PBXBuildFile; fileRef = A68DA66A15311E750075A728 /* DOFCloud.frag */; };
+		A68DA66D15311E750075A728 /* DOFCloud.vert in Sources */ = {isa = PBXBuildFile; fileRef = A68DA66B15311E750075A728 /* DOFCloud.vert */; };
 		A69D77EB14E0E5A900963BF2 /* colorcontrol.frag in Sources */ = {isa = PBXBuildFile; fileRef = A69D77DD14E0E5A900963BF2 /* colorcontrol.frag */; };
 		A69D77EC14E0E5A900963BF2 /* colorcontrol.vert in Sources */ = {isa = PBXBuildFile; fileRef = A69D77DE14E0E5A900963BF2 /* colorcontrol.vert */; };
 		A6ECC6BD15300A820009D0D9 /* ofxDepthHoleFiller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6ECC6BB15300A820009D0D9 /* ofxDepthHoleFiller.cpp */; };
@@ -265,6 +267,8 @@
 		A6477C79149D679300908B2B /* ofxRGBDRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDRenderer.h; sourceTree = "<group>"; };
 		A659ED10148A7CA9002E8A1C /* ofxTLColors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLColors.cpp; sourceTree = "<group>"; };
 		A659ED11148A7CA9002E8A1C /* ofxTLColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLColors.h; sourceTree = "<group>"; };
+		A68DA66A15311E750075A728 /* DOFCloud.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DOFCloud.frag; sourceTree = "<group>"; };
+		A68DA66B15311E750075A728 /* DOFCloud.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DOFCloud.vert; sourceTree = "<group>"; };
 		A69D77DD14E0E5A900963BF2 /* colorcontrol.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = colorcontrol.frag; sourceTree = "<group>"; };
 		A69D77DE14E0E5A900963BF2 /* colorcontrol.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = colorcontrol.vert; sourceTree = "<group>"; };
 		A6ECC6BB15300A820009D0D9 /* ofxDepthHoleFiller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDepthHoleFiller.cpp; sourceTree = "<group>"; };
@@ -835,6 +839,8 @@
 		A69D77DC14E0E5A900963BF2 /* shaders */ = {
 			isa = PBXGroup;
 			children = (
+				A68DA66A15311E750075A728 /* DOFCloud.frag */,
+				A68DA66B15311E750075A728 /* DOFCloud.vert */,
 				A69D77DD14E0E5A900963BF2 /* colorcontrol.frag */,
 				A69D77DE14E0E5A900963BF2 /* colorcontrol.vert */,
 			);
@@ -1362,6 +1368,8 @@
 				A6EE31A214E21B030068A5E7 /* ofxTLCameraTrack.cpp in Sources */,
 				A6EE31A314E21B030068A5E7 /* ofxCameraTrack.cpp in Sources */,
 				A6ECC6BD15300A820009D0D9 /* ofxDepthHoleFiller.cpp in Sources */,
+				A68DA66C15311E750075A728 /* DOFCloud.frag in Sources */,
+				A68DA66D15311E750075A728 /* DOFCloud.vert in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1380,8 +1388,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E4EB6923138AFD0F00A09F29 /* Project.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
-				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				ARCHS = "$(ONLY_ACTIVE_ARCH_PRE_XCODE_3_1)";
 				CONFIGURATION_BUILD_DIR = "$(SRCROOT)/bin/";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
@@ -1397,6 +1404,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = NO;
 				GCC_WARN_UNUSED_VALUE = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
+				ONLY_ACTIVE_ARCH_PRE_XCODE_3_1 = "$(NATIVE_ARCH)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-D__MACOSX_CORE__",
 					"-lpthread",
