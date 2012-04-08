@@ -188,6 +188,35 @@ void testApp::processGeometry(){
 	//*
 	//***************************************************
 
+
+    
+    float perlinAmp = timeline.getKeyframeValue("Perlin Amp");
+    float perlinDensity = timeline.getKeyframeValue("Perlin Density");
+    float perlinSpeed = timeline.getKeyframeValue("Perlin Speed");
+    float contract = timeline.getKeyframeValue("Contract");
+    float explode = timeline.getKeyframeValue("Explode");
+    
+    ofVec3f center(0,0,0);
+    for(int i = 0; i < renderer.getMesh().getVertices().size(); i++){
+        center += renderer.getMesh().getVertex(i);
+    }
+    center /= renderer.getMesh().getVertices().size();
+    
+    for(int i = 0; i < renderer.getMesh().getVertices().size(); i++){
+        ofVec3f& vert = renderer.getMesh().getVertices()[i];
+        if(perlinAmp > 0){
+            renderer.getMesh().getVertices()[i] += ofVec3f(ofSignedNoise(vert.x/perlinDensity, vert.y/perlinDensity, vert.z/perlinDensity, ofGetElapsedTimef()/perlinDensity)*perlinAmp,
+                                                           ofSignedNoise(vert.z/perlinDensity, vert.x/perlinDensity, vert.y/perlinDensity, ofGetElapsedTimef()/perlinDensity)*perlinAmp,
+                                                           ofSignedNoise(vert.y/perlinDensity, vert.z/perlinDensity, vert.x/perlinDensity, ofGetElapsedTimef()/perlinDensity)*perlinAmp );
+
+        }
+        
+        vert.interpolate(center, contract);
+        if(explode != 0){
+            vert += (vert - center).normalize() * explode;
+        }
+    }
+    
 //	for(int i = 0; i < renderer.getMesh().getVertices().size(); i++){
 //		renderer.getMesh().getVertices()[i].z += sin(i/30.0 + timeline.getCurrentFrame())*25;
 //	}
@@ -890,7 +919,14 @@ void testApp::populateTimelineElements(){
     timeline.addKeyframes("Sine Period", currentCompositionDirectory + "SinePeriod.xml", ofRange(.1, 10) );
     
     timeline.addPage("Geometry Modifiers", true);
+    timeline.addKeyframes("Perlin Amp", "PerlinAmp.xml", ofRange(0, 200.0) );
+    timeline.addKeyframes("Perlin Density", "PerlinDensity.xml", ofRange(0, 200.0) );
+    timeline.addKeyframes("Perlin Speed", "PerlinSpeed.xml", ofRange(0, 200.0) );    
+    timeline.addKeyframes("Contract", "Contract.xml", ofRange(0, 1.0) );
+    timeline.addKeyframes("Explode", "Explode.xml", ofRange(0, 300) );
 
+    timeline.addPage("Lumen Noise", true);
+    
 	timeline.addPage("Alignment", true);
 	timeline.addElement("Video", &videoTimelineElement);
 	timeline.addElement("Depth Sequence", &depthSequence);
