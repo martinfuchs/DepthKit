@@ -24,10 +24,7 @@ void testApp::setup(){
 	cameraTrack.setCamera(cam);
 	cam.loadCameraPosition();
 	
-    useDOF = true;
 	currentSimplify = 2;
-	lineSize = 1;
-	pointSize = 1;
 	
 	farClip = 5000;
 	videoInPercent = 0.0;
@@ -46,7 +43,9 @@ void testApp::setup(){
 	viewComps = false;
 	
 	shouldResetDuration = false;
-	
+    drawDepthDistortion = true;
+	drawGeometryDistortion = true;
+
 	shouldSaveCameraPoint = false;
 	shouldClearCameraMoves = false;
 	
@@ -65,11 +64,12 @@ void testApp::setup(){
 	
 	fboRectangle = ofRectangle(250, 100, 1280*.75, 720*.75);
 	fbo.allocate(1920, 1080, GL_RGBA, 4);
-		
+    swapFbo.allocate(1920, 1080, GL_RGBA);
     
     DOFCloud.load("shaders/DOFCloud");
-//  dofFocusDistance = 500;
-//	dofAperture = .2;
+    DOFCloud.begin();
+    DOFCloud.setUniform1i("sampler2DRect src_tex_unit0", 0);
+    DOFCloud.end();
  
 	newCompButton = new ofxMSAInteractiveObjectWithDelegate();
 	newCompButton->setLabel("New Comp");
@@ -92,14 +92,18 @@ void testApp::setup(){
 	gui.addToggle("Draw Pointcloud", drawPointcloud);
 	gui.addToggle("Draw Wireframe", drawWireframe);
 	gui.addToggle("Draw Mesh", drawMesh);
-	gui.addSlider("Point Size", pointSize, 1, 10);
-	gui.addSlider("Line Thickness", lineSize, 1, 10);
+	gui.addToggle("Depth Distortion", drawDepthDistortion);
+	gui.addToggle("Geometry Distortion", drawGeometryDistortion);
+    
+    //TODO make params
+//	gui.addSlider("Point Size", pointSize, 1, 10);
+//	gui.addSlider("Line Thickness", lineSize, 1, 10);
 	gui.addSlider("Edge Cull", currentEdgeCull, 1, 500);
 	gui.addSlider("Z Far Clip", farClip, 2, 5000);
 	gui.addSlider("Simplify", currentSimplify, 1, 8);
 	
 	gui.addPage("Sequence");
-	gui.addSlider("Rotate Mesh",renderer.rotateMeshX, 0, 360);
+	//gui.addSlider("Rotate Mesh",renderer.rotateMeshX, 0, 360);
 	gui.addToggle("Reset Cam Pos", shouldResetCamera);
 	gui.addSlider("Camera Speed", cam.speed, .1, 40);
 	gui.addSlider("Cam Roll Speed", cam.rollSpeed, .01, 2);
@@ -145,10 +149,68 @@ void testApp::setup(){
 
 }
 
+
+//Labbers: YOU CAN ADD TIMELINE ELEMENTS HERE
+void testApp::populateTimelineElements(){
+	
+	timeline.setPageName("Camera");
+	timeline.addElement("Camera", &cameraTrack);
+	timeline.addElement("Video", &videoTimelineElement);
+
+    timeline.addPage("Mesh", true);
+    timeline.addKeyframes("Mesh Alpha", currentCompositionDirectory + "meshAlpha.xml", ofRange(0,1.0) );
+    timeline.addKeyframes("Mesh White", currentCompositionDirectory + "meshWhite.xml", ofRange(0,1.0) );
+
+    timeline.addPage("Wireframe", true);
+    timeline.addKeyframes("Wireframe Alpha", currentCompositionDirectory + "wireframeAlpha.xml", ofRange(0,1.0) );
+    timeline.addKeyframes("Wireframe Thickness", currentCompositionDirectory + "wireframeThickness.xml", ofRange(1.0,20.0) );
+	timeline.addKeyframes("Wireframe White", currentCompositionDirectory + "wireframeWhite.xml", ofRange(0,1.0) );
+    timeline.addKeyframes("Wireframe DOF Alpha", currentCompositionDirectory + "dofWireframeAlpha.xml", ofRange(0, 1.0) );
+    timeline.addKeyframes("Wireframe DOF Focal", currentCompositionDirectory + "dofWireframeFocalDistance.xml", ofRange(0, 400) );
+    timeline.addKeyframes("Wireframe DOF Aperture", currentCompositionDirectory + "dofLineAperture.xml", ofRange(0, .1) );
+
+    timeline.addPage("Point", true);
+    timeline.addKeyframes("Point Alpha", currentCompositionDirectory + "pointAlpha.xml", ofRange(0,1.0) );
+    timeline.addKeyframes("Point Size", currentCompositionDirectory + "pointSize.xml", ofRange(1.0,20.0) );	
+    timeline.addKeyframes("Point White", currentCompositionDirectory + "pointWhite.xml", ofRange(0,1.0) );
+    
+    timeline.addPage("Point DOF", true);
+    timeline.addKeyframes("Point DOF Alpha", currentCompositionDirectory + "dofPointAlpha.xml", ofRange(0, 1.0) );
+    timeline.addKeyframes("Point DOF Focal", currentCompositionDirectory + "dofPointFocalDistance.xml", ofRange(0, 600) );
+    timeline.addKeyframes("Point DOF Aperture", currentCompositionDirectory + "dofPointAperture.xml", ofRange(0, .1) );
+    timeline.addKeyframes("Point DOF Reduce Blowout", currentCompositionDirectory + "dofBlowoutReduce.xml", ofRange(1.0, 20.0) );
+    
+    timeline.addPage("Depth Distortion", true);
+    timeline.addKeyframes("Noise", currentCompositionDirectory + "DepthNoise.xml", ofRange(0, 5000) );
+    timeline.addKeyframes("Sine Amplitude", currentCompositionDirectory + "SineAmp.xml", ofRange(0, 5000) );
+    timeline.addKeyframes("Sine Speed", currentCompositionDirectory + "SineSpeed.xml", ofRange(-200, 200) );
+    timeline.addKeyframes("Sine Period", currentCompositionDirectory + "SinePeriod.xml", ofRange(.1, 10) );
+    
+    timeline.addPage("Geometry Distortion", true);
+    timeline.addKeyframes("Perlin Amp", "PerlinAmp.xml", ofRange(0, 200.0) );
+    timeline.addKeyframes("Perlin Density", "PerlinDensity.xml", ofRange(0, 200.0) );
+    timeline.addKeyframes("Perlin Speed", "PerlinSpeed.xml", ofRange(0, 200.0) );    
+    timeline.addKeyframes("Contract", "Contract.xml", ofRange(0, 1.0) );
+    timeline.addKeyframes("Explode", "Explode.xml", ofRange(0, 300) );
+    
+//    timeline.addPage("Lumen Noise", true);
+    
+	timeline.addPage("Alignment", true);
+	timeline.addElement("Video", &videoTimelineElement);
+	timeline.addElement("Depth Sequence", &depthSequence);
+	timeline.addElement("Alignment", &alignmentScrubber);
+    
+	timeline.setCurrentPage("Rendering");
+	
+	playerElementAdded = true;
+}
+
 #pragma mark customization
 //--------------------------------------------------------------
 void testApp::processDepthFrame(){
 	
+    if(!drawDepthDistortion) return;
+    
     float noise = timeline.getKeyframeValue("Noise");
     float sineAmp = timeline.getKeyframeValue("Sine Amplitude");
     float sineSpeed = timeline.getKeyframeValue("Sine Speed");
@@ -187,7 +249,7 @@ void testApp::processGeometry(){
 	//* renderer.getMesh() contains mesh with indeces and texture coordinates 
 	//*
 	//***************************************************
-
+    if(!drawGeometryDistortion) return;
 
     
     float perlinAmp = timeline.getKeyframeValue("Perlin Amp");
@@ -232,41 +294,175 @@ void testApp::drawGeometry(){
 	//*
 	//***************************************************
 	
-	if(drawPointcloud){
-        if(useDOF){
-            DOFCloud.begin();
-            DOFCloud.setUniform1f( "focusDistance", timeline.getKeyframeValue("Focal Distance") );
-            DOFCloud.setUniform1f( "aperture", timeline.getKeyframeValue("Aperture") );
-        }
-		
-        ofPushStyle();
-		glPointSize(pointSize);
-		renderer.drawPointCloud();
-		ofPopStyle();
+    
+    float pointAlpha = timeline.getKeyframeValue("Point Alpha");
+    float pointDOFAlpha = timeline.getKeyframeValue("Point DOF Alpha");
+    
+    float wireAlpha = timeline.getKeyframeValue("Wireframe Alpha");
+    float wirframeDOFAlpha  = timeline.getKeyframeValue("Wireframe DOF Alpha");
+
+    float meshAlpha = timeline.getKeyframeValue("Mesh Alpha");
+
+    fbo.begin();
+    ofClear(0,0,0,0);
+    fbo.end();
+    ofRectangle renderFboRect = ofRectangle(0, 0, fbo.getWidth(), fbo.getHeight());
+    if(drawMesh && meshAlpha > 0){
         
-        if(useDOF){
-            DOFCloud.end();
-        }
-	}
-	
-	if(drawWireframe){
-		ofPushStyle();
-		glLineWidth(lineSize);
-		renderer.drawWireFrame();
-		ofPopStyle();
-	}
-	
-	if(drawMesh){
-		ofPushStyle();
+        swapFbo.begin();
+        ofClear(0,0,0,0);
+        
+        cam.begin(renderFboRect);
+        
+        ofPushStyle();
 		renderer.drawMesh();
 		ofPopStyle();
-	}	
+        
+        cam.end();
+        
+        swapFbo.end();
 
-//	for(int i = 0; i < 200; i++){
-//		ofNode n;
-//		n.setPosition(ofVec3f(ofRandom(-200,200),ofRandom(-200,200),ofRandom(-200,200)));
-//		n.draw();
-//	}
+        //composite
+        fbo.begin();
+        
+        ofPushStyle();
+        ofEnableAlphaBlending();
+        ofSetColor(255, 255, 255, meshAlpha*255);
+        swapFbo.getTextureReference().draw(renderFboRect);
+        ofPopStyle();
+        
+        fbo.end();        
+	}
+
+    if(drawWireframe && wireAlpha > 0){
+        swapFbo.begin();
+        ofClear(0,0,0,0);
+        
+        cam.begin(renderFboRect);
+        
+        ofPushStyle();
+		renderer.drawWireFrame();
+		ofPopStyle();
+      
+        cam.end();
+        
+        swapFbo.end();
+	
+        //composite
+        fbo.begin();
+        
+        ofPushStyle();
+        ofEnableAlphaBlending();
+        ofSetColor(255, 255, 255, wireAlpha*255);
+        swapFbo.getTextureReference().draw(renderFboRect);
+        ofPopStyle();
+        
+        fbo.end();     
+    }
+    
+    if(drawPointcloud){
+        if(pointDOFAlpha > 0){
+            
+            swapFbo.begin();
+            ofClear(0,0,0,0);
+            
+            cam.begin(renderFboRect);
+            ofPushStyle();
+            glPushAttrib(GL_ENABLE_BIT);
+            ofEnableBlendMode(OF_BLENDMODE_SCREEN);
+            //ofEnableAlphaBlending();
+            glEnable(GL_POINT_SMOOTH); // makes circular points
+            glEnable(GL_VERTEX_PROGRAM_POINT_SIZE_ARB);	// allows per-point size
+            glDisable(GL_DEPTH_TEST);		
+            //glEnable(GL_DEPTH_TEST);
+            
+            DOFCloud.begin();
+            DOFCloud.setUniform1f("focusDistance", timeline.getKeyframeValue("Point DOF Focal") );
+            DOFCloud.setUniform1f("aperture", timeline.getKeyframeValue("Point DOF Aperture") );
+            DOFCloud.setUniform1f("minPointSize", timeline.getKeyframeValue("Point Size"));
+            DOFCloud.setUniform1f("blowoutReduce", timeline.getKeyframeValue("Point DOF Reduce Blowout"));
+
+            ofPushMatrix();
+            glScaled(1, -1, 1);
+
+            renderer.getRGBTexture().getTextureReference().bind();
+//            if(currentlyRendering){
+//                hiResPlayer->getTextureReference().bind();
+//            }
+//            else{
+//                lowResPlayer->getTextureReference().bind();
+//            }
+            renderer.getMesh().drawVertices();        
+            renderer.getRGBTexture().getTextureReference().unbind();
+
+//            if(currentlyRendering){
+//                hiResPlayer->getTextureReference().unbind();
+//            }
+//            else{
+//                lowResPlayer->getTextureReference().unbind();
+//            }
+            
+            DOFCloud.end();
+            
+            glPopAttrib();
+
+            ofPopStyle();
+            
+            cam.end();
+            
+            swapFbo.end();
+            
+            //composite
+            fbo.begin();
+            
+            ofPushStyle();
+            ofEnableAlphaBlending();
+            ofSetColor(255, 255, 255, pointDOFAlpha*255);
+            swapFbo.getTextureReference().draw(renderFboRect);
+            ofPopStyle();
+            
+            fbo.end();
+        }
+
+        if(pointAlpha > 0){
+            
+            //render
+            swapFbo.begin();
+            ofClear(0,0,0,0);
+            
+            cam.begin(renderFboRect);
+            
+            ofPushStyle();
+            glPointSize(timeline.getKeyframeValue("Point Size"));
+            renderer.drawPointCloud();
+            ofPopStyle();
+            
+            cam.end();
+            
+            swapFbo.end();
+            
+            //composite
+            fbo.begin();
+            
+            ofPushStyle();
+            ofEnableAlphaBlending();
+            ofSetColor(255, 255, 255, pointAlpha*255);
+            swapFbo.getTextureReference().draw(renderFboRect);
+            ofPopStyle();
+            
+            fbo.end();
+            
+        }
+    }
+    
+    ofPushStyle();
+    ofSetColor(0);
+    ofRect(fboRectangle);
+    ofPopStyle();
+    
+    ofEnableAlphaBlending();
+    fbo.getTextureReference().draw(fboRectangle);
+	
 }
 
 //************************************************************
@@ -552,7 +748,7 @@ void testApp::update(){
 	}
 	
 	//update shaders
-	renderer.fadeToWhite = timeline.getKeyframeValue("White");
+//	renderer.fadeToWhite = timeline.getKeyframeValue("White");
 	if(!temporalAlignmentMode && !currentlyRendering && lowResPlayer->getSpeed() == 0.0){
 		videoTimelineElement.selectFrame(timeline.getCurrentFrame());
 	}	
@@ -608,22 +804,15 @@ void testApp::draw(){
 	if(allLoaded){
 		
 		if(!viewComps){
-			fbo.begin();
-			ofClear(0, 0, 0);
-			
-			cam.begin(ofRectangle(0, 0, fbo.getWidth(), fbo.getHeight()));
-			
-			drawGeometry();
-			
-			cam.end();
-			
-			fbo.end();	
-			
+            
 			//cout << timeline.getDrawRect().height << " tl height " << endl;
 			
+            
+            
 			if(!ofGetMousePressed(0)){
 				timeline.setOffset(ofVec2f(0, ofGetHeight() - timeline.getDrawRect().height));
 			}
+            
 			fboRectangle.height = (timeline.getDrawRect().y - fboRectangle.y - 20);
 			fboRectangle.width = 16.0/9.0*fboRectangle.height;
 			ofDrawBitmapString(currentCompositionDirectory, ofPoint(fboRectangle.x, fboRectangle.y-15));
@@ -641,12 +830,9 @@ void testApp::draw(){
 				fboRectangle.width = 16.0/9.0*fboRectangle.height;
 				ofDrawBitmapString(currentCompositionDirectory, ofPoint(fboRectangle.x, fboRectangle.y-15));
 			}
+            
+            drawGeometry();
 
-            ofPushStyle();
-			ofSetColor(0);
-            ofRect(fboRectangle);
-			ofPopStyle();
-            fbo.getTextureReference().draw(fboRectangle);
             
 			if(currentlyRendering){
 				fbo.getTextureReference().readToPixels(savingImage.getPixelsRef());
@@ -672,9 +858,9 @@ void testApp::draw(){
 				}
 			}
 			
-			if(sampleCamera){
-				ofDrawBitmapString("RECORDING CAMERA", ofPoint(600, 10));
-			}
+//			if(sampleCamera){
+//				ofDrawBitmapString("RECORDING CAMERA", ofPoint(600, 10));
+//			}
 		}
 		
 		gui.setDraw(!currentlyRendering && !presentMode);
@@ -900,43 +1086,6 @@ bool testApp::loadVideoFile(string hiResPath, string lowResPath){
 	return true;
 }
 
-//Labbers: YOU CAN ADD TIMELINE ELEMENTS HERE
-void testApp::populateTimelineElements(){
-	
-	timeline.setPageName("Rendering");
-	timeline.addElement("Camera", &cameraTrack);
-	timeline.addElement("Video", &videoTimelineElement);
-	timeline.addKeyframes("White", currentCompositionDirectory + "white.xml", ofRange(0,1.0) );
-	
-    timeline.addPage("Depth of Field", true);
-    timeline.addKeyframes("Focal Distance", currentCompositionDirectory + "focalDistance.xml", ofRange(0, 1500) );
-    timeline.addKeyframes("Aperture", currentCompositionDirectory + "aperture.xml", ofRange(0, .2) );
-
-    timeline.addPage("Depth Filters", true);
-    timeline.addKeyframes("Noise", currentCompositionDirectory + "DepthNoise.xml", ofRange(0, 5000) );
-    timeline.addKeyframes("Sine Amplitude", currentCompositionDirectory + "SineAmp.xml", ofRange(0, 5000) );
-    timeline.addKeyframes("Sine Speed", currentCompositionDirectory + "SineSpeed.xml", ofRange(-200, 200) );
-    timeline.addKeyframes("Sine Period", currentCompositionDirectory + "SinePeriod.xml", ofRange(.1, 10) );
-    
-    timeline.addPage("Geometry Modifiers", true);
-    timeline.addKeyframes("Perlin Amp", "PerlinAmp.xml", ofRange(0, 200.0) );
-    timeline.addKeyframes("Perlin Density", "PerlinDensity.xml", ofRange(0, 200.0) );
-    timeline.addKeyframes("Perlin Speed", "PerlinSpeed.xml", ofRange(0, 200.0) );    
-    timeline.addKeyframes("Contract", "Contract.xml", ofRange(0, 1.0) );
-    timeline.addKeyframes("Explode", "Explode.xml", ofRange(0, 300) );
-
-    timeline.addPage("Lumen Noise", true);
-    
-	timeline.addPage("Alignment", true);
-	timeline.addElement("Video", &videoTimelineElement);
-	timeline.addElement("Depth Sequence", &depthSequence);
-	timeline.addElement("Alignment", &alignmentScrubber);
-    
-	timeline.setCurrentPage("Rendering");
-	
-	playerElementAdded = true;
-}
-
 //--------------------------------------------------------------
 void testApp::loadTimelineFromCurrentComp(){
 
@@ -944,9 +1093,9 @@ void testApp::loadTimelineFromCurrentComp(){
 	alignmentScrubber.videoSequence = &videoTimelineElement;
 	alignmentScrubber.depthSequence = &depthSequence;
 	
-	ofxTLKeyframer* white = (ofxTLKeyframer*)timeline.getElement("White");
-	white->setXMLFileName( currentCompositionDirectory + "white.xml");
-	white->load();	
+//	ofxTLKeyframer* white = (ofxTLKeyframer*)timeline.getElement("White");
+//	white->setXMLFileName( currentCompositionDirectory + "white.xml");
+//	white->load();	
 	
     //TODO make this universal
     
@@ -1052,8 +1201,8 @@ void testApp::saveComposition(){
 	projectsettings.setValue("xscale", currentXScale);
 	projectsettings.setValue("yscale", currentYScale);
 	
-	projectsettings.setValue("pointSize", pointSize);
-	projectsettings.setValue("lineSize", lineSize);
+//	projectsettings.setValue("pointSize", pointSize);
+//	projectsettings.setValue("lineSize", lineSize);
 	projectsettings.setValue("pointcloud", drawPointcloud);
 	projectsettings.setValue("wireframe", drawWireframe);
 	projectsettings.setValue("mesh", drawMesh);
@@ -1130,8 +1279,8 @@ bool testApp::loadCompositionAtIndex(int i){
 	currentXScale = projectsettings.getValue("xscale", 1.0);
 	currentYScale = projectsettings.getValue("yscale", 1.0);
 	
-	pointSize = projectsettings.getValue("pointSize", 1);
-	lineSize = projectsettings.getValue("lineSize", 1);
+//	pointSize = projectsettings.getValue("pointSize", 1);
+//	lineSize = projectsettings.getValue("lineSize", 1);
 	currentEdgeCull = projectsettings.getValue("edgeCull", 50);
 	farClip = projectsettings.getValue("farClip", 5000);
 	drawPointcloud = projectsettings.getValue("pointcloud", false);

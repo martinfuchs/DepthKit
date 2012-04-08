@@ -113,6 +113,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxDepthHoleFiller holeFiller;
 	
 	ofRectangle fboRectangle;
+    ofFbo swapFbo; //used for temp drawing
 	ofFbo fbo;
 	ofImage savingImage;
 	string saveFolder;
@@ -150,8 +151,9 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	bool drawPointcloud;
 	bool drawWireframe;
 	bool drawMesh;
-	int pointSize;
-	int lineSize;
+	bool drawDepthDistortion;
+	bool drawGeometryDistortion;
+    
 	int currentSimplify;
 
 	
@@ -177,8 +179,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	string pathDelim;
     
     ofShader DOFCloud;
-    bool useDOF;
-    float dofFocalDistance;
-    float dofAperature;
+//    float dofFocalDistance;
+//    float dofAperature;
     
 };
