@@ -114,7 +114,10 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	
 	ofRectangle fboRectangle;
     ofFbo swapFbo; //used for temp drawing
-	ofFbo fbo;
+	ofFbo fbo1;
+    ofFbo fbo2;
+    int curbuf;
+    
 	ofImage savingImage;
 	string saveFolder;
 	
@@ -179,7 +182,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	string pathDelim;
     
     ofShader DOFCloud;
-//    float dofFocalDistance;
-//    float dofAperature;
+    ofShader alphaFadeShader;
+    ofShader gaussianBlur;
     
 };

@@ -63,14 +63,33 @@ void testApp::setup(){
 	savingImage.allocate(1920,1080, OF_IMAGE_COLOR);
 	
 	fboRectangle = ofRectangle(250, 100, 1280*.75, 720*.75);
-	fbo.allocate(1920, 1080, GL_RGBA, 4);
-    swapFbo.allocate(1920, 1080, GL_RGBA);
+    swapFbo.allocate(1920, 1080, GL_RGBA, 4);
+	curbuf = 0;
+    fbo1.allocate(1920, 1080, GL_RGBA32F_ARB);
+	fbo2.allocate(1920, 1080, GL_RGBA32F_ARB);
+    
+    fbo1.begin();
+    ofClear(0,0,0,0);
+    fbo1.end();
+    fbo2.begin();
+    ofClear(0,0,0,0);
+    fbo2.end();
     
     DOFCloud.load("shaders/DOFCloud");
     DOFCloud.begin();
-    DOFCloud.setUniform1i("sampler2DRect src_tex_unit0", 0);
+    DOFCloud.setUniform1i("src_tex_unit0", 0);
     DOFCloud.end();
  
+    alphaFadeShader.load("shaders/alphafade");
+    alphaFadeShader.begin();
+    alphaFadeShader.setUniform1i("self", 0);
+    alphaFadeShader.end();
+
+    gaussianBlur.load("shaders/alphafade");
+    gaussianBlur.begin();
+    gaussianBlur.setUniform1i("self", 0);
+    gaussianBlur.end();
+
 	newCompButton = new ofxMSAInteractiveObjectWithDelegate();
 	newCompButton->setLabel("New Comp");
 	newCompButton->setDelegate(this);
@@ -87,6 +106,8 @@ void testApp::setup(){
 	timeline.setOffset(ofVec2f(0, ofGetHeight() - 200));
 	timeline.setPageName("Main");
 	timeline.setDurationInFrames(300); //base duration
+    timeline.setMovePlayheadOnDrag(false);
+    
 	loadCompositions();
 
 	gui.addToggle("Draw Pointcloud", drawPointcloud);
@@ -96,14 +117,12 @@ void testApp::setup(){
 	gui.addToggle("Geometry Distortion", drawGeometryDistortion);
     
     //TODO make params
-//	gui.addSlider("Point Size", pointSize, 1, 10);
-//	gui.addSlider("Line Thickness", lineSize, 1, 10);
 	gui.addSlider("Edge Cull", currentEdgeCull, 1, 500);
 	gui.addSlider("Z Far Clip", farClip, 2, 5000);
 	gui.addSlider("Simplify", currentSimplify, 1, 8);
 	
 	gui.addPage("Sequence");
-	//gui.addSlider("Rotate Mesh",renderer.rotateMeshX, 0, 360);
+
 	gui.addToggle("Reset Cam Pos", shouldResetCamera);
 	gui.addSlider("Camera Speed", cam.speed, .1, 40);
 	gui.addSlider("Cam Roll Speed", cam.rollSpeed, .01, 2);
@@ -146,7 +165,6 @@ void testApp::setup(){
 	currentLockCamera = false;
 	cameraTrack.lockCameraToTrack = false;
     
-
 }
 
 
@@ -157,22 +175,21 @@ void testApp::populateTimelineElements(){
 	timeline.addElement("Camera", &cameraTrack);
 	timeline.addElement("Video", &videoTimelineElement);
 
+    timeline.addPage("Motion Trails", true);
+    timeline.addKeyframes("Decay", currentCompositionDirectory + "trailsRefresh.xml", ofRange(.9,1.0) );
+    
     timeline.addPage("Mesh", true);
     timeline.addKeyframes("Mesh Alpha", currentCompositionDirectory + "meshAlpha.xml", ofRange(0,1.0) );
-    timeline.addKeyframes("Mesh White", currentCompositionDirectory + "meshWhite.xml", ofRange(0,1.0) );
 
     timeline.addPage("Wireframe", true);
     timeline.addKeyframes("Wireframe Alpha", currentCompositionDirectory + "wireframeAlpha.xml", ofRange(0,1.0) );
     timeline.addKeyframes("Wireframe Thickness", currentCompositionDirectory + "wireframeThickness.xml", ofRange(1.0,20.0) );
-	timeline.addKeyframes("Wireframe White", currentCompositionDirectory + "wireframeWhite.xml", ofRange(0,1.0) );
-    timeline.addKeyframes("Wireframe DOF Alpha", currentCompositionDirectory + "dofWireframeAlpha.xml", ofRange(0, 1.0) );
-    timeline.addKeyframes("Wireframe DOF Focal", currentCompositionDirectory + "dofWireframeFocalDistance.xml", ofRange(0, 400) );
-    timeline.addKeyframes("Wireframe DOF Aperture", currentCompositionDirectory + "dofLineAperture.xml", ofRange(0, .1) );
+    timeline.addKeyframes("Wireframe Blur", currentCompositionDirectory + "wireframeBlur.xml", ofRange(0, 5.0) );
+//	timeline.addKeyframes("Wireframe White", currentCompositionDirectory + "wireframeWhite.xml", ofRange(0,1.0) );
 
     timeline.addPage("Point", true);
     timeline.addKeyframes("Point Alpha", currentCompositionDirectory + "pointAlpha.xml", ofRange(0,1.0) );
     timeline.addKeyframes("Point Size", currentCompositionDirectory + "pointSize.xml", ofRange(1.0,20.0) );	
-    timeline.addKeyframes("Point White", currentCompositionDirectory + "pointWhite.xml", ofRange(0,1.0) );
     
     timeline.addPage("Point DOF", true);
     timeline.addKeyframes("Point DOF Alpha", currentCompositionDirectory + "dofPointAlpha.xml", ofRange(0, 1.0) );
@@ -182,16 +199,14 @@ void testApp::populateTimelineElements(){
     
     timeline.addPage("Depth Distortion", true);
     timeline.addKeyframes("Noise", currentCompositionDirectory + "DepthNoise.xml", ofRange(0, 5000) );
-    timeline.addKeyframes("Sine Amplitude", currentCompositionDirectory + "SineAmp.xml", ofRange(0, 5000) );
+    timeline.addKeyframes("Sine Amplitude", currentCompositionDirectory + "SineAmp.xml", ofRange(0, 100) );
     timeline.addKeyframes("Sine Speed", currentCompositionDirectory + "SineSpeed.xml", ofRange(-200, 200) );
-    timeline.addKeyframes("Sine Period", currentCompositionDirectory + "SinePeriod.xml", ofRange(.1, 10) );
+    timeline.addKeyframes("Sine Period", currentCompositionDirectory + "SinePeriod.xml", ofRange(.01, 10) );
     
-    timeline.addPage("Geometry Distortion", true);
+    timeline.addPage("Geometry  Distortion", true);
     timeline.addKeyframes("Perlin Amp", "PerlinAmp.xml", ofRange(0, 200.0) );
     timeline.addKeyframes("Perlin Density", "PerlinDensity.xml", ofRange(0, 200.0) );
     timeline.addKeyframes("Perlin Speed", "PerlinSpeed.xml", ofRange(0, 200.0) );    
-    timeline.addKeyframes("Contract", "Contract.xml", ofRange(0, 1.0) );
-    timeline.addKeyframes("Explode", "Explode.xml", ofRange(0, 300) );
     
 //    timeline.addPage("Lumen Noise", true);
     
@@ -213,6 +228,7 @@ void testApp::processDepthFrame(){
     
     float noise = timeline.getKeyframeValue("Noise");
     float sineAmp = timeline.getKeyframeValue("Sine Amplitude");
+    sineAmp *= sineAmp;
     float sineSpeed = timeline.getKeyframeValue("Sine Speed");
     float sinePeriod = timeline.getKeyframeValue("Sine Period");
     
@@ -255,8 +271,10 @@ void testApp::processGeometry(){
     float perlinAmp = timeline.getKeyframeValue("Perlin Amp");
     float perlinDensity = timeline.getKeyframeValue("Perlin Density");
     float perlinSpeed = timeline.getKeyframeValue("Perlin Speed");
-    float contract = timeline.getKeyframeValue("Contract");
-    float explode = timeline.getKeyframeValue("Explode");
+//    float contract = timeline.getKeyframeValue("Contract");
+//    float explode = timeline.getKeyframeValue("Explode");
+    float contract = 0; //timeline.getKeyframeValue("Contract");
+    float explode = 0; //timeline.getKeyframeValue("Explode");
     
     ofVec3f center(0,0,0);
     for(int i = 0; i < renderer.getMesh().getVertices().size(); i++){
@@ -270,10 +288,9 @@ void testApp::processGeometry(){
             renderer.getMesh().getVertices()[i] += ofVec3f(ofSignedNoise(vert.x/perlinDensity, vert.y/perlinDensity, vert.z/perlinDensity, ofGetElapsedTimef()/perlinDensity)*perlinAmp,
                                                            ofSignedNoise(vert.z/perlinDensity, vert.x/perlinDensity, vert.y/perlinDensity, ofGetElapsedTimef()/perlinDensity)*perlinAmp,
                                                            ofSignedNoise(vert.y/perlinDensity, vert.z/perlinDensity, vert.x/perlinDensity, ofGetElapsedTimef()/perlinDensity)*perlinAmp );
-
         }
         
-        vert.interpolate(center, contract);
+        //vert.interpolate(center, contract);
         if(explode != 0){
             vert += (vert - center).normalize() * explode;
         }
@@ -294,19 +311,31 @@ void testApp::drawGeometry(){
 	//*
 	//***************************************************
 	
-    
     float pointAlpha = timeline.getKeyframeValue("Point Alpha");
     float pointDOFAlpha = timeline.getKeyframeValue("Point DOF Alpha");
     
     float wireAlpha = timeline.getKeyframeValue("Wireframe Alpha");
-    float wirframeDOFAlpha  = timeline.getKeyframeValue("Wireframe DOF Alpha");
+//    float wirframeDOFAlpha  = timeline.getKeyframeValue("Wireframe DOF Alpha");
 
     float meshAlpha = timeline.getKeyframeValue("Mesh Alpha");
 
-    fbo.begin();
-    ofClear(0,0,0,0);
-    fbo.end();
+    ofFbo& fbo = curbuf == 0 ? fbo1 : fbo2;
+    ofFbo& backbuf = curbuf == 0 ? fbo2 : fbo1;
+    curbuf = (curbuf + 1 ) % 2;
+    
     ofRectangle renderFboRect = ofRectangle(0, 0, fbo.getWidth(), fbo.getHeight());
+    fbo.begin();
+    ofClear(0.0, 0.0, 0.0, 0.0);
+    ofEnableAlphaBlending();
+    alphaFadeShader.begin();
+    
+    alphaFadeShader.setUniform1f("fadeSpeed", timeline.getKeyframeValue("Decay"));
+    backbuf.getTextureReference().draw(renderFboRect);
+    
+	alphaFadeShader.end();
+    
+    fbo.end();
+    
     if(drawMesh && meshAlpha > 0){
         
         swapFbo.begin();
@@ -335,6 +364,7 @@ void testApp::drawGeometry(){
 	}
 
     if(drawWireframe && wireAlpha > 0){
+        
         swapFbo.begin();
         ofClear(0,0,0,0);
         
@@ -354,7 +384,12 @@ void testApp::drawGeometry(){
         ofPushStyle();
         ofEnableAlphaBlending();
         ofSetColor(255, 255, 255, wireAlpha*255);
+        
+        gaussianBlur.begin();
+        gaussianBlur.setUniform1f("sampleOffset", timeline.getKeyframeValue("Wireframe Blur"));
         swapFbo.getTextureReference().draw(renderFboRect);
+        gaussianBlur.end();
+        
         ofPopStyle();
         
         fbo.end();     
@@ -367,10 +402,11 @@ void testApp::drawGeometry(){
             ofClear(0,0,0,0);
             
             cam.begin(renderFboRect);
+            
             ofPushStyle();
             glPushAttrib(GL_ENABLE_BIT);
+            
             ofEnableBlendMode(OF_BLENDMODE_SCREEN);
-            //ofEnableAlphaBlending();
             glEnable(GL_POINT_SMOOTH); // makes circular points
             glEnable(GL_VERTEX_PROGRAM_POINT_SIZE_ARB);	// allows per-point size
             glDisable(GL_DEPTH_TEST);		
@@ -386,21 +422,8 @@ void testApp::drawGeometry(){
             glScaled(1, -1, 1);
 
             renderer.getRGBTexture().getTextureReference().bind();
-//            if(currentlyRendering){
-//                hiResPlayer->getTextureReference().bind();
-//            }
-//            else{
-//                lowResPlayer->getTextureReference().bind();
-//            }
             renderer.getMesh().drawVertices();        
             renderer.getRGBTexture().getTextureReference().unbind();
-
-//            if(currentlyRendering){
-//                hiResPlayer->getTextureReference().unbind();
-//            }
-//            else{
-//                lowResPlayer->getTextureReference().unbind();
-//            }
             
             DOFCloud.end();
             
@@ -462,7 +485,7 @@ void testApp::drawGeometry(){
     
     ofEnableAlphaBlending();
     fbo.getTextureReference().draw(fboRectangle);
-	
+    
 }
 
 //************************************************************
@@ -835,6 +858,7 @@ void testApp::draw(){
 
             
 			if(currentlyRendering){
+                ofFbo& fbo =  curbuf == 0 ? fbo1 : fbo2;
 				fbo.getTextureReference().readToPixels(savingImage.getPixelsRef());
 				char filename[512];
 				sprintf(filename, "%s/save_%05d.png", saveFolder.c_str(), currentRenderFrame);
