@@ -1,7 +1,7 @@
 #version 110
 
 uniform sampler2DRect self;
-uniform float sampleOffset;
+uniform vec2 sampleOffset;
 
 float weights[21];
 void main()
@@ -30,11 +30,11 @@ void main()
 
 
 	vec4 sum = vec4( 0.0, 0.0, 0.0, 0.0);
-	vec2 baseOffset = -10.0 * vec2(sampleOffset);
+	vec2 baseOffset = -10.0 * sampleOffset;
 	vec2 offset = vec2( 0.0, 0.0 );
 	for( int s = 0; s < 21; ++s ) {
 		sum += texture2DRect( self, gl_TexCoord[0].st + baseOffset + offset )  * weights[s];
-		offset += vec2(sampleOffset);
+		offset += sampleOffset;
 	}
     
 	gl_FragColor = sum;

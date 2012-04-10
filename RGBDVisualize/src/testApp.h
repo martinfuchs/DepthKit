@@ -120,7 +120,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     
 	ofImage savingImage;
 	string saveFolder;
-	
+	string lastSavedDate;
 
 	float currentXMultiplyShift;
 	float currentYMultiplyShift;

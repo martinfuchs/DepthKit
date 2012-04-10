@@ -85,7 +85,7 @@ void testApp::setup(){
     alphaFadeShader.setUniform1i("self", 0);
     alphaFadeShader.end();
 
-    gaussianBlur.load("shaders/alphafade");
+    gaussianBlur.load("shaders/gaussian_blur");
     gaussianBlur.begin();
     gaussianBlur.setUniform1i("self", 0);
     gaussianBlur.end();
@@ -185,13 +185,13 @@ void testApp::populateTimelineElements(){
     timeline.addKeyframes("Wireframe Alpha", currentCompositionDirectory + "wireframeAlpha.xml", ofRange(0,1.0) );
     timeline.addKeyframes("Wireframe Thickness", currentCompositionDirectory + "wireframeThickness.xml", ofRange(1.0,20.0) );
     timeline.addKeyframes("Wireframe Blur", currentCompositionDirectory + "wireframeBlur.xml", ofRange(0, 5.0) );
-//	timeline.addKeyframes("Wireframe White", currentCompositionDirectory + "wireframeWhite.xml", ofRange(0,1.0) );
 
     timeline.addPage("Point", true);
     timeline.addKeyframes("Point Alpha", currentCompositionDirectory + "pointAlpha.xml", ofRange(0,1.0) );
     timeline.addKeyframes("Point Size", currentCompositionDirectory + "pointSize.xml", ofRange(1.0,20.0) );	
     
     timeline.addPage("Point DOF", true);
+    timeline.addKeyframes("Point DOF Size", currentCompositionDirectory + "dofPointSize.xml", ofRange(1.0, 20.0) );	
     timeline.addKeyframes("Point DOF Alpha", currentCompositionDirectory + "dofPointAlpha.xml", ofRange(0, 1.0) );
     timeline.addKeyframes("Point DOF Focal", currentCompositionDirectory + "dofPointFocalDistance.xml", ofRange(0, 600) );
     timeline.addKeyframes("Point DOF Aperture", currentCompositionDirectory + "dofPointAperture.xml", ofRange(0, .1) );
@@ -371,6 +371,7 @@ void testApp::drawGeometry(){
         cam.begin(renderFboRect);
         
         ofPushStyle();
+        ofSetLineWidth(timeline.getKeyframeValue("Wireframe Thickness"));
 		renderer.drawWireFrame();
 		ofPopStyle();
       
@@ -386,8 +387,13 @@ void testApp::drawGeometry(){
         ofSetColor(255, 255, 255, wireAlpha*255);
         
         gaussianBlur.begin();
-        gaussianBlur.setUniform1f("sampleOffset", timeline.getKeyframeValue("Wireframe Blur"));
+        float blur = timeline.getKeyframeValue("Wireframe Blur");
+        gaussianBlur.setUniform2f("sampleOffset", 0, blur);
         swapFbo.getTextureReference().draw(renderFboRect);
+        
+        gaussianBlur.setUniform2f("sampleOffset", blur, 0);
+        swapFbo.getTextureReference().draw(renderFboRect);
+
         gaussianBlur.end();
         
         ofPopStyle();
@@ -415,7 +421,7 @@ void testApp::drawGeometry(){
             DOFCloud.begin();
             DOFCloud.setUniform1f("focusDistance", timeline.getKeyframeValue("Point DOF Focal") );
             DOFCloud.setUniform1f("aperture", timeline.getKeyframeValue("Point DOF Aperture") );
-            DOFCloud.setUniform1f("minPointSize", timeline.getKeyframeValue("Point Size"));
+            DOFCloud.setUniform1f("minPointSize", timeline.getKeyframeValue("Point DOF Size"));
             DOFCloud.setUniform1f("blowoutReduce", timeline.getKeyframeValue("Point DOF Reduce Blowout"));
 
             ofPushMatrix();
@@ -634,6 +640,13 @@ void testApp::update(){
 	}
 	
 	if(startRenderMode){
+        fbo1.begin();
+        ofClear(0,0,0,0);
+        fbo1.end();
+        fbo2.begin();
+        ofClear(0,0,0,0);
+        fbo2.end();
+        
 		viewComps = false;
 		saveComposition();
 		for(int i = 0; i < comps.size(); i++){
@@ -745,8 +758,7 @@ void testApp::update(){
 	   currentMirror != renderer.mirror ||
 	   currentZFuzz != renderer.ZFuzz ||
 	   fillHoles != holeFiller.enable ||
-	   currentHoleKernelSize != holeFiller.getKernelSize() ||
-	   currentHoleFillIterations != holeFiller.getIterations())
+	   currentHoleKernelSize != holeFiller.getKernelSize())
 	{		
 		renderer.xshift = currentXAdditiveShift;
 		renderer.yshift = currentYAdditiveShift;
@@ -763,8 +775,8 @@ void testApp::update(){
 		holeFiller.enable = fillHoles;
 		holeFiller.setKernelSize(currentHoleKernelSize);
 		currentHoleKernelSize = holeFiller.getKernelSize();
-		holeFiller.setIterations(currentHoleFillIterations);
-		currentHoleFillIterations = holeFiller.getIterations();
+//		holeFiller.setIterations(currentHoleFillIterations);
+//		currentHoleFillIterations = holeFiller.getIterations();
 		
 		//renderer.update();
 		updateRenderer(*lowResPlayer);
@@ -798,11 +810,8 @@ void testApp::updateRenderer(ofVideoPlayer& fromPlayer){
 		renderer.setDepthImage(depthSequence.currentDepthRaw);
 	}
 
-//	if(holeFiller.enable){
-		holeFilledPixels.setFromExternalPixels(depthSequence.currentDepthRaw, 640, 480, 1);
-		holeFiller.close(holeFilledPixels);
-        //memcpy(depthSequence.currentDepthRaw, holeFilledPixels.getPixels(), 640*480*sizeof(unsigned short));
-//	}
+    holeFilledPixels.setFromExternalPixels(depthSequence.currentDepthRaw, 640, 480, 1);
+    holeFiller.close(holeFilledPixels);
 	
     processDepthFrame();
     
@@ -838,8 +847,8 @@ void testApp::draw(){
             
 			fboRectangle.height = (timeline.getDrawRect().y - fboRectangle.y - 20);
 			fboRectangle.width = 16.0/9.0*fboRectangle.height;
-			ofDrawBitmapString(currentCompositionDirectory, ofPoint(fboRectangle.x, fboRectangle.y-15));
-
+			ofDrawBitmapString(currentCompositionDirectory + " -- " + lastSavedDate, ofPoint(fboRectangle.x, fboRectangle.y-15));
+			
 			if(presentMode){
 				fboRectangle.x = 0;
 				fboRectangle.y = 0;
@@ -1117,15 +1126,12 @@ void testApp::loadTimelineFromCurrentComp(){
 	alignmentScrubber.videoSequence = &videoTimelineElement;
 	alignmentScrubber.depthSequence = &depthSequence;
 	
-//	ofxTLKeyframer* white = (ofxTLKeyframer*)timeline.getElement("White");
-//	white->setXMLFileName( currentCompositionDirectory + "white.xml");
-//	white->load();	
-	
-    //TODO make this universal
-    
+    timeline.loadElementsFromFolder(currentCompositionDirectory);
+        
 	string cameraSaveFile = currentCompositionDirectory + "camera.xml";
 	cameraTrack.setXMLFileName(cameraSaveFile);
 	cameraTrack.setup();	
+    cameraTrack.load();
 }
 
 //--------------------------------------------------------------
@@ -1214,8 +1220,14 @@ void testApp::newComposition(){
 void testApp::saveComposition(){
 	
 	cam.saveCameraPosition();
-	cout << "writing camera position to " << cam.cameraPositionFile << endl;
-	//cameraRecorder.writeToFile(cameraSaveFile);
+	cameraTrack.save();
+    
+	projectsettings.setValue("drawPointcloud", drawPointcloud);
+	projectsettings.setValue("drawWireframe", drawWireframe);
+	projectsettings.setValue("drawMesh", drawMesh);
+    projectsettings.setValue("drawDepthDistortion", drawDepthDistortion);
+	projectsettings.setValue("drawGeometryDistortion", drawGeometryDistortion);
+    
 	projectsettings.setValue("cameraSpeed", cam.speed);
 	projectsettings.setValue("cameraRollSpeed", cam.rollSpeed);
 	projectsettings.setValue("xmult", currentXMultiplyShift);
@@ -1225,8 +1237,10 @@ void testApp::saveComposition(){
 	projectsettings.setValue("xscale", currentXScale);
 	projectsettings.setValue("yscale", currentYScale);
 	
-//	projectsettings.setValue("pointSize", pointSize);
-//	projectsettings.setValue("lineSize", lineSize);
+    projectsettings.setValue("fillholes", fillHoles);
+    projectsettings.setValue("kernelSize", currentHoleKernelSize);
+    projectsettings.setValue("zfuzz", currentZFuzz);
+    
 	projectsettings.setValue("pointcloud", drawPointcloud);
 	projectsettings.setValue("wireframe", drawWireframe);
 	projectsettings.setValue("mesh", drawMesh);
@@ -1243,6 +1257,8 @@ void testApp::saveComposition(){
 	projectsettings.setValue("xrot", renderer.rotateMeshX);
 	
 	projectsettings.saveFile();
+    
+    lastSavedDate = "Last Saved on " + ofToString(ofGetMonth() ) + "/" + ofToString( ofGetDay()) + " at " + ofToString(ofGetHours()) + ":" + ofToString( ofGetMinutes() )  + ":" + ofToString( ofGetSeconds() );
 }
 
 void testApp::objectDidRollOver(ofxMSAInteractiveObject* object, int x, int y){
@@ -1281,14 +1297,12 @@ void testApp::objectDidRelease(ofxMSAInteractiveObject* object, int x, int y, in
 			
 //--------------------------------------------------------------
 bool testApp::loadCompositionAtIndex(int i){
-//	stopCameraPlayback();
 	stopCameraRecord();
 	
 	currentCompositionDirectory = comps[i]->fullCompPath + pathDelim;
 	currentCompIndex = i;
 
 	allLoaded = loadAssetsFromCompositionDirectory( currentCompositionDirectory+".."+pathDelim+".."+pathDelim );
-
 	if(!allLoaded){
 		return false;
 	}
@@ -1296,6 +1310,12 @@ bool testApp::loadCompositionAtIndex(int i){
 	cam.speed = projectsettings.getValue("cameraSpeed", 20.);
 	cam.rollSpeed = projectsettings.setValue("cameraRollSpeed", 1);
 	
+	drawPointcloud = projectsettings.getValue("drawPointcloud", true);
+	drawWireframe = projectsettings.getValue("drawWireframe", true);
+	drawMesh = projectsettings.getValue("drawMesh", true);
+	drawDepthDistortion = projectsettings.getValue("drawDepthDistortion", true);
+	drawGeometryDistortion= projectsettings.getValue("drawGeometryDistortion", true);
+    
 	currentXMultiplyShift = projectsettings.getValue("xmult", 0.);
 	currentYMultiplyShift = projectsettings.getValue("ymult", 0.);
 	currentXAdditiveShift = projectsettings.getValue("xshift", 0.);
@@ -1303,8 +1323,6 @@ bool testApp::loadCompositionAtIndex(int i){
 	currentXScale = projectsettings.getValue("xscale", 1.0);
 	currentYScale = projectsettings.getValue("yscale", 1.0);
 	
-//	pointSize = projectsettings.getValue("pointSize", 1);
-//	lineSize = projectsettings.getValue("lineSize", 1);
 	currentEdgeCull = projectsettings.getValue("edgeCull", 50);
 	farClip = projectsettings.getValue("farClip", 5000);
 	drawPointcloud = projectsettings.getValue("pointcloud", false);
@@ -1318,6 +1336,10 @@ bool testApp::loadCompositionAtIndex(int i){
 	videoOutPercent = projectsettings.getValue("videoout", 1.);
 	renderer.rotateMeshX = projectsettings.getValue("xrot", 0);
 	
+    fillHoles = projectsettings.getValue("fillholes", false);
+    currentHoleKernelSize = projectsettings.getValue("kernelSize", 1);
+	currentZFuzz = projectsettings.getValue("zfuzz", 0.);
+
 	//error condition for corrupted comps
 	if(currentDuration <= 0){
 		currentDuration = lowResPlayer->getTotalNumFrames();
@@ -1333,8 +1355,11 @@ bool testApp::loadCompositionAtIndex(int i){
 	//LOAD CAMERA SAVE AND POS
 	cam.cameraPositionFile = currentCompositionDirectory + "camera_position.xml";
 	cam.loadCameraPosition();
-	timeline.setCurrentPage("Main");
-	
+    
+//	timeline.setCurrentPage("Main");
+    
+    //turn off view comps
+	viewComps = false;
 }	
 
 //--------------------------------------------------------------
