@@ -13,7 +13,8 @@ void testApp::setup(){
 #else
 	pathDelim = "/";
 #endif
-	
+
+    cam.setup();
 	cam.speed = 40;
 	cam.autosavePosition = true;
 	cam.usemouse = true;
@@ -23,6 +24,8 @@ void testApp::setup(){
 	cam.targetNode.setScale(1,-1,1);
 	cameraTrack.setCamera(cam);
 	cam.loadCameraPosition();
+	cam.maximumY =  120;
+	cam.minimumY = -120;
 	
 	currentSimplify = 2;
 	
@@ -159,8 +162,6 @@ void testApp::setup(){
 	currentYAdditiveShift = 0;
 	currentRotationCompensation = 0;	
 	
-	cam.maximumY =  120;
-	cam.minimumY = -120;
 	
 	currentLockCamera = false;
 	cameraTrack.lockCameraToTrack = false;
@@ -176,10 +177,10 @@ void testApp::populateTimelineElements(){
 	timeline.addElement("Video", &videoTimelineElement);
 
     timeline.addPage("Motion Trails", true);
-    timeline.addKeyframes("Decay", currentCompositionDirectory + "trailsRefresh.xml", ofRange(.9,1.0) );
+    timeline.addKeyframes("Decay", currentCompositionDirectory + "trailsRefresh.xml", ofRange(0.0 ,1.0) );
     
-    timeline.addPage("Mesh", true);
-    timeline.addKeyframes("Mesh Alpha", currentCompositionDirectory + "meshAlpha.xml", ofRange(0,1.0) );
+//    timeline.addPage("Mesh", true);
+//    timeline.addKeyframes("Mesh Alpha", currentCompositionDirectory + "meshAlpha.xml", ofRange(0,1.0) );
 
     timeline.addPage("Wireframe", true);
     timeline.addKeyframes("Wireframe Alpha", currentCompositionDirectory + "wireframeAlpha.xml", ofRange(0,1.0) );
@@ -313,12 +314,11 @@ void testApp::drawGeometry(){
 	
     float pointAlpha = timeline.getKeyframeValue("Point Alpha");
     float pointDOFAlpha = timeline.getKeyframeValue("Point DOF Alpha");
-    
     float wireAlpha = timeline.getKeyframeValue("Wireframe Alpha");
-//    float wirframeDOFAlpha  = timeline.getKeyframeValue("Wireframe DOF Alpha");
+    
 
-    float meshAlpha = timeline.getKeyframeValue("Mesh Alpha");
-
+    //helps eliminate zfight by translating the mesh occluder slightly back from the camera
+    ofVec3f camTranslateVec = cam.getLookAtDir() * .1;
     ofFbo& fbo = curbuf == 0 ? fbo1 : fbo2;
     ofFbo& backbuf = curbuf == 0 ? fbo2 : fbo1;
     curbuf = (curbuf + 1 ) % 2;
@@ -329,6 +329,9 @@ void testApp::drawGeometry(){
     ofEnableAlphaBlending();
     alphaFadeShader.begin();
     
+    float decay = timeline.getKeyframeValue("Decay");
+    decay *= decay;
+    
     alphaFadeShader.setUniform1f("fadeSpeed", timeline.getKeyframeValue("Decay"));
     backbuf.getTextureReference().draw(renderFboRect);
     
@@ -336,6 +339,7 @@ void testApp::drawGeometry(){
     
     fbo.end();
     
+    /*
     if(drawMesh && meshAlpha > 0){
         
         swapFbo.begin();
@@ -362,7 +366,8 @@ void testApp::drawGeometry(){
         
         fbo.end();        
 	}
-
+	*/
+    
     if(drawWireframe && wireAlpha > 0){
         
         swapFbo.begin();
@@ -371,6 +376,16 @@ void testApp::drawGeometry(){
         cam.begin(renderFboRect);
         
         ofPushStyle();
+        
+        //occlude points behind the mesh
+        ofPushMatrix();
+        ofEnableAlphaBlending();
+        ofSetColor(0, 0, 0, 0);
+        ofTranslate(camTranslateVec);
+        renderer.drawMesh();
+        ofPopMatrix();
+        
+		ofSetColor(255);        
         ofSetLineWidth(timeline.getKeyframeValue("Wireframe Thickness"));
 		renderer.drawWireFrame();
 		ofPopStyle();
@@ -462,6 +477,15 @@ void testApp::drawGeometry(){
             cam.begin(renderFboRect);
             
             ofPushStyle();
+            //occlude points behind the mesh
+            ofPushMatrix();
+            ofEnableAlphaBlending();
+            ofSetColor(0, 0, 0, 0);
+            ofTranslate(camTranslateVec);
+            renderer.drawMesh();
+            ofPopMatrix();
+            
+            ofSetColor(255);
             glPointSize(timeline.getKeyframeValue("Point Size"));
             renderer.drawPointCloud();
             ofPopStyle();
@@ -782,6 +806,10 @@ void testApp::update(){
 		updateRenderer(*lowResPlayer);
 	}
 	
+    if(timeline.getUserChangedValue()){
+    	updateRenderer(*lowResPlayer);
+    }
+    
 	//update shaders
 //	renderer.fadeToWhite = timeline.getKeyframeValue("White");
 	if(!temporalAlignmentMode && !currentlyRendering && lowResPlayer->getSpeed() == 0.0){
