@@ -24,6 +24,7 @@ void testApp::setup(){
 	cameraTrack.setCamera(cam);
 	cam.loadCameraPosition();
 	
+
 	currentSimplify = 2;
 	lineSize = 1;
 	pointSize = 1;
@@ -32,6 +33,8 @@ void testApp::setup(){
 	videoInPercent = 0.0;
 	videoOutPercent = 1.0;
 	enableVideoInOut = false;
+	
+	currentZFuzz = 0;
 	
 	hiResPlayer = NULL;
 	lowResPlayer = NULL;
@@ -49,6 +52,11 @@ void testApp::setup(){
 	
 	temporalAlignmentMode = false;
 	captureFramePair = false;
+
+	fillHoles = false;
+	currentHoleKernelSize = 1;
+	currentHoleFillIterations = 1;
+	
 
 	sampleCamera = false;
 	
@@ -102,9 +110,16 @@ void testApp::setup(){
 	gui.addToggle("Mirror", currentMirror);
 	gui.addSlider("X Multiply Shift", currentXMultiplyShift, -75, 75);
 	gui.addSlider("Y Multiply Shift", currentYMultiplyShift, -75, 75);
+	
+	gui.addPage("Depth Refinement");
+	gui.addToggle("Fill Holes", fillHoles);
+	gui.addSlider("Hole Kernel Size", currentHoleKernelSize, 1, 20);
+	gui.addSlider("Z Fuzz", currentZFuzz, 0, .25);
+	
 	gui.addToggle("TemporalAlignmentMode", temporalAlignmentMode);
 	gui.addToggle("Capture Frame Pair", captureFramePair);
-		
+
+	
 	gui.addPage("Batching");
 	gui.addToggle("View Comps", viewComps);
 	gui.addToggle("Render Batch", startRenderMode);
@@ -453,8 +468,12 @@ void testApp::update(){
 	   currentSimplify != renderer.getSimplification() ||
 	   currentEdgeCull != renderer.edgeCull ||
 	   farClip != renderer.farClip ||
-	   currentMirror != renderer.mirror) {
-		
+	   currentMirror != renderer.mirror ||
+	   currentZFuzz != renderer.ZFuzz ||
+	   fillHoles != holeFiller.enable ||
+	   currentHoleKernelSize != holeFiller.getKernelSize() ||
+	   currentHoleFillIterations != holeFiller.getIterations())
+	{		
 		renderer.xshift = currentXAdditiveShift;
 		renderer.yshift = currentYAdditiveShift;
 		renderer.xmult = currentXMultiplyShift;
@@ -465,8 +484,16 @@ void testApp::update(){
 		renderer.setSimplification(currentSimplify);
 		renderer.farClip = farClip;
 		renderer.mirror = currentMirror;
+		renderer.ZFuzz = currentZFuzz;
 		
-		renderer.update();
+		holeFiller.enable = fillHoles;
+		holeFiller.setKernelSize(currentHoleKernelSize);
+		currentHoleKernelSize = holeFiller.getKernelSize();
+		holeFiller.setIterations(currentHoleFillIterations);
+		currentHoleFillIterations = holeFiller.getIterations();
+		
+		//renderer.update();
+		updateRenderer(*lowResPlayer);
 	}
 	
 	//update shaders
@@ -495,6 +522,12 @@ void testApp::updateRenderer(ofVideoPlayer& fromPlayer){
 	else{
 		lowResPlayer->setFrame(videoTimelineElement.getSelectedFrame());
 		renderer.setDepthImage(depthSequence.currentDepthRaw);
+	}
+
+	if(holeFiller.enable){
+		holeFilledPixels.setFromExternalPixels(depthSequence.currentDepthRaw, 640, 480, 1);
+		holeFiller.close(holeFilledPixels);
+		renderer.setDepthImage(holeFilledPixels.getPixels());	
 	}
 
 	processDepthFrame();

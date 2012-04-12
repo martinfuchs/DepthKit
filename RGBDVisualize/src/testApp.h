@@ -12,6 +12,7 @@
 #include "ofxMSAInteractiveObjectDelegate.h"
 #include "ofxSimpleGuiToo.h"
 #include "ofxTLCameraTrack.h"
+#include "ofxDepthHoleFiller.h"
 
 typedef struct {
 	ofxMSAInteractiveObjectWithDelegate* load;
@@ -95,7 +96,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	bool viewComps;
 	
 	unsigned short* depthPixelDecodeBuffer;
-
+	ofShortPixels holeFilledPixels;
+	
 	bool allLoaded;
 
 	ofxGameCamera cam;
@@ -107,6 +109,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxTLVideoPlayer videoTimelineElement;
 	ofxTLDepthImageSequence depthSequence;
 	ofxTLVideoDepthAlignmentScrubber alignmentScrubber;
+	
+	ofxDepthHoleFiller holeFiller;
 	
 	ofRectangle fboRectangle;
 	ofFbo fbo;
@@ -121,6 +125,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	float currentXScale;
 	float currentYScale;
 	float currentRotationCompensation;
+	float currentZFuzz;
 	
 	bool currentLockCamera;
 	
@@ -149,6 +154,11 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	int lineSize;
 	int currentSimplify;
 
+	
+	bool fillHoles;
+	int currentHoleKernelSize;
+	int currentHoleFillIterations;
+	
 	bool hasHiresVideo;
 	
 	bool startRenderMode;
@@ -157,6 +167,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	int lastRenderFrame;
 	int numFramesToRender;
 	int numFramesRendered;
+	
 	ofImage testImageOne;
 	ofImage testImageTwo;
 	
