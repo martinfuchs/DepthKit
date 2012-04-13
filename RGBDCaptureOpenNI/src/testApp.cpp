@@ -1,6 +1,5 @@
 #include "testApp.h"
 #include "ofxXmlSettings.h"
-//#include "ofxDepthImageProviderFreenect.h"
 #include "ofxDepthImageProviderOpenNI.h"
 
 //--------------------------------------------------------------
