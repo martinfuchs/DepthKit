@@ -11,7 +11,7 @@ void testApp::setup(){
 	ofBackground(255*0);
 	
     gui.setImageProvider( new ofxDepthImageProviderFreenect() ); 
-	gui.setup();	
+	gui.setup();
 		
 }
 
@@ -30,7 +30,7 @@ void testApp::keyPressed(int key){
 }
 
 void testApp::exit() {
-	gui.exit();
+
 }
 
 //--------------------------------------------------------------
