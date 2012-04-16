@@ -32,10 +32,13 @@ void main()
 	vec4 sum = vec4( 0.0, 0.0, 0.0, 0.0);
 	vec2 baseOffset = -10.0 * sampleOffset;
 	vec2 offset = vec2( 0.0, 0.0 );
+    float alphasum = 0.0;
 	for( int s = 0; s < 21; ++s ) {
-		sum += texture2DRect( self, gl_TexCoord[0].st + baseOffset + offset )  * weights[s];
+        vec4 texel = texture2DRect( self, gl_TexCoord[0].st + baseOffset + offset );
+        alphasum += texel.a * weights[s];
+		sum += texel * texel.a * weights[s];
 		offset += sampleOffset;
 	}
-    
-	gl_FragColor = sum;
+    sum.a = alphasum != 0.0 ? sum.a / alphasum : 0.0;
+	gl_FragColor = sum * gl_Color;
 }

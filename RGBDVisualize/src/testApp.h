@@ -51,7 +51,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	bool loadAlignmentMatrices(string path);
 	
 	ofxXmlSettings projectsettings;
-	ofxXmlSettings compositions;
+
 	void loadCompositions();
 	void newComposition();
 	void saveComposition();
@@ -89,10 +89,10 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofVideoPlayer* hiResPlayer;
 	ofVideoPlayer* lowResPlayer;
 		
+    bool pauseRender;
 	bool temporalAlignmentMode;
 	bool captureFramePair;
 	long currentDepthFrame;
-	
 	bool viewComps;
 	
 	unsigned short* depthPixelDecodeBuffer;
@@ -113,10 +113,14 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxDepthHoleFiller holeFiller;
 	
 	ofRectangle fboRectangle;
+    
     ofFbo swapFbo; //used for temp drawing
 	ofFbo fbo1;
     ofFbo fbo2;
     int curbuf;
+    
+    ofRectangle depthAlignAssistRect;
+    ofRectangle colorAlignAssistRect;
     
 	ofImage savingImage;
 	string saveFolder;
@@ -134,6 +138,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	bool currentLockCamera;
 	
 	bool shouldResetDuration;
+    bool setDurationToClipLength;
 	int currentDuration;
 	
 	bool currentMirror;
@@ -141,8 +146,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	
 	float currentRotateMeshX;
 	
-	float farClip;
-	float currentEdgeCull;
+//	float farClip;
+//	float currentEdgeCull;
 	bool shouldSaveCameraPoint;
 	bool shouldClearCameraMoves;
 	bool shouldResetCamera;
@@ -158,7 +163,6 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	bool drawGeometryDistortion;
     
 	int currentSimplify;
-
 	
 	bool fillHoles;
 	int currentHoleKernelSize;

@@ -5,7 +5,7 @@ uniform float fadeSpeed;
 void main()
 {
 	vec4 samp = texture2DRect(self, gl_TexCoord[0].st);
-	samp.a *= fadeSpeed;
+	samp.a -= fadeSpeed;
     
 	gl_FragColor = samp;
 }
