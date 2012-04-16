@@ -32,7 +32,6 @@ void testApp::setup(){
     currentMirror = false;
 	currentSimplify = 2;
 	
-//	farClip = 5000;
 	videoInPercent = 0.0;
 	videoOutPercent = 1.0;
 	enableVideoInOut = false;
@@ -849,28 +848,21 @@ void testApp::update(){
     renderer.meshRotate.y = timeline.getKeyframeValue("Y Rotate");
     renderer.meshRotate.z = timeline.getKeyframeValue("Z Rotate");
     
-	if(currentXAdditiveShift != renderer.yshift ||
-	   currentYAdditiveShift != renderer.yshift ||
-	   currentXMultiplyShift != renderer.xmult ||
+	if(currentXMultiplyShift != renderer.xmult ||
 	   currentYMultiplyShift != renderer.ymult ||
-	   currentXScale != renderer.xscale ||
-	   currentYScale != renderer.yscale ||
-	   currentRotationCompensation != renderer.rotationCompensation ||
 	   currentSimplify != renderer.getSimplification() ||
-//	   currentEdgeCull != renderer.edgeCull ||
-//	   farClip != renderer.farClip ||
 	   currentMirror != renderer.mirror ||
 	   currentZFuzz != renderer.ZFuzz ||
 	   fillHoles != holeFiller.enable ||
 	   currentHoleKernelSize != holeFiller.getKernelSize() ||
        currentHoleFillIterations != holeFiller.getIterations())
 	{		
-		renderer.xshift = currentXAdditiveShift;
-		renderer.yshift = currentYAdditiveShift;
+//		renderer.xshift = currentXAdditiveShift;
+//		renderer.yshift = currentYAdditiveShift;
 		renderer.xmult = currentXMultiplyShift;
 		renderer.ymult = currentYMultiplyShift;
-		renderer.xscale = currentXScale;
-		renderer.yscale = currentYScale;
+//		renderer.xscale = currentXScale;
+//		renderer.yscale = currentYScale;
 		renderer.setSimplification(currentSimplify);
 		renderer.ZFuzz = currentZFuzz;
 		renderer.mirror = currentMirror;

@@ -144,10 +144,6 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	bool currentMirror;
 	bool presentMode;
 	
-	float currentRotateMeshX;
-	
-//	float farClip;
-//	float currentEdgeCull;
 	bool shouldSaveCameraPoint;
 	bool shouldClearCameraMoves;
 	bool shouldResetCamera;
