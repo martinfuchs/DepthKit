@@ -65,7 +65,8 @@ void testApp::setup(){
 	setDurationToClipLength = false;
     
 	sampleCamera = false;
-	
+	shouldExportSettings = false;
+    
 	savingImage.setUseTexture(false);
 	savingImage.allocate(1920,1080, OF_IMAGE_COLOR);
 	
@@ -154,7 +155,8 @@ void testApp::setup(){
 	gui.addPage("Batching");
 	gui.addToggle("View Comps", viewComps);
 	gui.addToggle("Render Batch", startRenderMode);
-
+	gui.addToggle("Export Settings", shouldExportSettings);
+    
 	gui.loadFromXML();
 	gui.toggleDraw();
 	
@@ -616,7 +618,7 @@ void testApp::keyPressed(int key){
     if(key == 'L'){
     	currentLockCamera = !currentLockCamera;
     }
-        
+
 	if(key == 'i'){
 		timeline.setCurrentTimeToInPoint();	
 	}
@@ -696,12 +698,36 @@ void testApp::update(){
         drawWireframe = true;
 		timeline.setCurrentPage("Alignment");
 //        gui.setPage(4);
-
 	}
 	
+    if(shouldExportSettings){
+        settingsExporter.zThreshold = timeline.getKeyframeValue("Z Threshold");
+        settingsExporter.edgeClip = timeline.getKeyframeValue("Edge Snip");
+        settingsExporter.offset = ofVec2f(currentXMultiplyShift, currentYMultiplyShift);
+        settingsExporter.simplify = currentSimplify;
+        settingsExporter.startFrame = timeline.getInFrame();
+        settingsExporter.endFrame = timeline.getOutFrame();
+        
+        settingsExporter.drawPointcloud = drawPointcloud;
+        settingsExporter.drawWireframe = drawWireframe;
+        
+        settingsExporter.wireFrameSize = timeline.getKeyframeValue("Wireframe Thickness");
+        settingsExporter.pointSize = timeline.getKeyframeValue("Point Size");
+        
+        settingsExporter.fillHoles = fillHoles;
+        settingsExporter.kernelSize = holeFiller.getKernelSize();
+        settingsExporter.iterations = holeFiller.getIterations();
+        
+        settingsExporter.cameraPosition.setPosition(cam.getPosition());
+        settingsExporter.cameraPosition.setOrientation(cam.getOrientationQuat());
+		
+        settingsExporter.saveToXml(currentCompositionDirectory + "SettingsExport.xml");
+        cout << "saved settings to " << (currentCompositionDirectory + "SettingsExport.xml") << endl;
+        shouldExportSettings = false;
+    }
+    
 	if(currentLockCamera != cameraTrack.lockCameraToTrack){
 		if(!currentLockCamera){
-
 			cam.targetNode.setPosition(cam.getPosition());
 			cam.targetNode.setOrientation(cam.getOrientationQuat());
 			cam.rotationX = cam.targetXRot = -cam.getHeading();
@@ -764,7 +790,7 @@ void testApp::update(){
 		
 		renderer.setRGBTexture(*hiResPlayer);
 		renderer.setTextureScale(1.0, 1.0);
-		//		currentSimplify = 1;
+        
 		lastRenderFrame = currentRenderFrame-1;
 		numFramesToRender = timeline.getOutFrame() - timeline.getInFrame();
 		numFramesRendered = 0;
@@ -883,10 +909,6 @@ void testApp::update(){
     	updateRenderer(*lowResPlayer);
     }
     
-	//update shaders
-//	renderer.fadeToWhite = timeline.getKeyframeValue("White");
-
-
 	if(!temporalAlignmentMode && !currentlyRendering && lowResPlayer->getSpeed() == 0.0){
 		videoTimelineElement.selectFrame(timeline.getCurrentFrame());
 	}	

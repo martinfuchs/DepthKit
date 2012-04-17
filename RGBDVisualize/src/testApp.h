@@ -13,6 +13,7 @@
 #include "ofxSimpleGuiToo.h"
 #include "ofxTLCameraTrack.h"
 #include "ofxDepthHoleFiller.h"
+#include "ofxRGBDRenderSettings.h"
 
 typedef struct {
 	ofxMSAInteractiveObjectWithDelegate* load;
@@ -94,7 +95,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	bool captureFramePair;
 	long currentDepthFrame;
 	bool viewComps;
-	
+	bool shouldExportSettings;
+    
 	unsigned short* depthPixelDecodeBuffer;
 	ofShortPixels holeFilledPixels;
 	
@@ -109,8 +111,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxTLVideoPlayer videoTimelineElement;
 	ofxTLDepthImageSequence depthSequence;
 	ofxTLVideoDepthAlignmentScrubber alignmentScrubber;
-	
 	ofxDepthHoleFiller holeFiller;
+	ofxRGBDRenderSettings settingsExporter;
 	
 	ofRectangle fboRectangle;
     
