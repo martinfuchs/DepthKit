@@ -137,6 +137,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	float currentRotationCompensation;
 	float currentZFuzz;
 	
+    bool pointsSelfOcclude;
+    bool wireframeSelfOccludes;
 	bool currentLockCamera;
 	
 	bool shouldResetDuration;

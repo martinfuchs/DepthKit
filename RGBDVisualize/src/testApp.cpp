@@ -37,7 +37,9 @@ void testApp::setup(){
 	enableVideoInOut = false;
 	
 	currentZFuzz = 0;
-	
+    pointsSelfOcclude = false;
+    wireframeSelfOccludes = false;
+    
 	hiResPlayer = NULL;
 	lowResPlayer = NULL;
 	startRenderMode = false;
@@ -66,15 +68,19 @@ void testApp::setup(){
     
 	sampleCamera = false;
 	shouldExportSettings = false;
-    
-	savingImage.setUseTexture(false);
-	savingImage.allocate(1920,1080, OF_IMAGE_COLOR);
+
+    //TODO set through interface
+    int fboWidth  = 1920;
+    int fboHeight = 1080;
 	
-	fboRectangle = ofRectangle(250, 100, 1280*.75, 720*.75);
-    swapFbo.allocate(1920, 1080, GL_RGBA, 4);
+	savingImage.setUseTexture(false);
+	savingImage.allocate(fboWidth,fboHeight, OF_IMAGE_COLOR);
+	
+	fboRectangle = ofRectangle(250, 100, fboWidth, fboHeight);
+    swapFbo.allocate(fboWidth, fboHeight, GL_RGBA, 4);
 	curbuf = 0;
-    fbo1.allocate(1920, 1080, GL_RGBA32F_ARB);
-	fbo2.allocate(1920, 1080, GL_RGBA32F_ARB);
+    fbo1.allocate(fboWidth, fboHeight, GL_RGBA32F_ARB);
+	fbo2.allocate(fboWidth, fboHeight, GL_RGBA32F_ARB);
     
     fbo1.begin();
     ofClear(0,0,0,0);
@@ -125,7 +131,9 @@ void testApp::setup(){
 	gui.addToggle("Draw Mesh", drawMesh);
 	gui.addToggle("Depth Distortion", drawDepthDistortion);
 	gui.addToggle("Geometry Distortion", drawGeometryDistortion);
-
+	gui.addToggle("Points Self Occlude", pointsSelfOcclude);
+	gui.addToggle("Wireframe Self Occlude", wireframeSelfOccludes);
+    
 	gui.addPage("Camera");
     gui.addToggle("Reset Cam Pos", shouldResetCamera);
 	gui.addSlider("Camera Speed", cam.speed, .1, 40);
@@ -148,7 +156,7 @@ void testApp::setup(){
 	gui.addToggle("Fill Holes", fillHoles);
 	gui.addSlider("Hole Kernel Size", currentHoleKernelSize, 1, 20);
 	gui.addSlider("Hole Fill Iterations", currentHoleFillIterations, 1, 20);
-	gui.addSlider("Z Fuzz", currentZFuzz, 0, .25);
+//	gui.addSlider("Z Fuzz", currentZFuzz, 0, .25);
 	gui.addToggle("TemporalAlignmentMode", temporalAlignmentMode);
 	gui.addToggle("Capture Frame Pair", captureFramePair);
 
@@ -165,7 +173,6 @@ void testApp::setup(){
 	currentXAdditiveShift = 0;
 	currentYAdditiveShift = 0;
 	currentRotationCompensation = 0;	
-	
 	
 	currentLockCamera = false;
 	cameraTrack.lockCameraToTrack = false;
@@ -315,6 +322,8 @@ void testApp::processGeometry(){
 
 void testApp::drawGeometry(){
 	
+    
+    
 	//***************************************************
 	//CUSTOMIZATION: YOU CAN DRAW WHATEVER YOU WANT HERE TOO OR USE SHADERS
 	//*
@@ -385,13 +394,15 @@ void testApp::drawGeometry(){
         
         swapFbo.begin();
         ofClear(0,0,0,0);
-        
+        glEnable(GL_DEPTH_TEST);
+
         cam.begin(renderFboRect);
         
         ofPushStyle();
 		renderer.drawMesh();
 		ofPopStyle();
-        
+        glDisable(GL_DEPTH_TEST);
+
         cam.end();
         
         swapFbo.end();
@@ -405,26 +416,29 @@ void testApp::drawGeometry(){
         swapFbo.getTextureReference().draw(renderFboRect);
         ofPopStyle();
         
-        fbo.end();        
+        fbo.end();       
+        
 	}
     
     if(drawWireframe && wireAlpha > 0){
-        
+
         swapFbo.begin();
         ofClear(0,0,0,0);
         
         cam.begin(renderFboRect);
-        
         ofPushStyle();
         
-        //occlude points behind the mesh
-        ofPushMatrix();
         ofEnableAlphaBlending();
-        ofSetColor(0, 0, 0, 0);
-        ofTranslate(camTranslateVec);
-        renderer.drawMesh();
-        ofPopMatrix();
-
+        glEnable(GL_DEPTH_TEST);
+        
+        if(wireframeSelfOccludes){
+            //occlude points behind the mesh
+            ofPushMatrix();
+            ofSetColor(0, 0, 0, 0);
+            ofTranslate(camTranslateVec);
+            renderer.drawMesh(false);
+            ofPopMatrix();
+        }
         
 //        glEnable(GL_BLEND);
 //        glBlendFunc(GL_ONE, GL_ZERO);
@@ -432,13 +446,15 @@ void testApp::drawGeometry(){
 //        glDisable(GL_SMOOTH_LINE_WIDTH_RANGE);
 //        ofDisableSmoothing();
 //        ofDisableAlphaBlending();
-		ofEnableAlphaBlending();
+        ofEnableAlphaBlending();
+        glEnable(GL_DEPTH_TEST);
         
 		ofSetColor(255);        
         ofSetLineWidth(timeline.getKeyframeValue("Wireframe Thickness"));
 		renderer.drawWireFrame();
+		ofPopStyle();
         
-		ofPopStyle();      
+        glDisable(GL_DEPTH_TEST);
         cam.end();
         
         swapFbo.end();
@@ -470,7 +486,7 @@ void testApp::drawGeometry(){
     
     if(drawPointcloud){
         if(pointDOFAlpha > 0){
-            
+            glDisable(GL_DEPTH_TEST);
             swapFbo.begin();
             ofClear(0,0,0,0);
             
@@ -489,7 +505,11 @@ void testApp::drawGeometry(){
             DOFCloud.setUniform1f("aperture", timeline.getKeyframeValue("Point DOF Aperture") );
             DOFCloud.setUniform1f("minPointSize", timeline.getKeyframeValue("Point DOF Size"));
             DOFCloud.setUniform1f("blowoutReduce", timeline.getKeyframeValue("Point DOF Reduce Blowout"));
-
+            renderer.setupProjectionUniforms(DOFCloud);
+            renderer.drawPointCloud(false);
+            renderer.restortProjection();
+            
+            /*
             ofPushMatrix();
 			ofScale(1, -1, 1);
             ofRotate(renderer.meshRotate.x,1,0,0);
@@ -500,6 +520,7 @@ void testApp::drawGeometry(){
             renderer.getMesh().drawVertices();        
             renderer.getRGBTexture().getTextureReference().unbind();
             ofPopMatrix();
+            */
             
             DOFCloud.end();
             
@@ -520,6 +541,7 @@ void testApp::drawGeometry(){
             ofPopStyle();
             
             fbo.end();
+         
         }
 
         if(pointAlpha > 0){
@@ -532,30 +554,32 @@ void testApp::drawGeometry(){
             
             ofPushStyle();
             //occlude points behind the mesh
-            ofPushMatrix();
+            
             ofEnableAlphaBlending();
-            ofSetColor(0, 0, 0, 0);
-            ofTranslate(camTranslateVec);
-            renderer.drawMesh();
-            ofPopMatrix();
+            glEnable(GL_DEPTH_TEST);
+            if(pointsSelfOcclude){
+                ofSetColor(0, 0, 0, 0);
+                ofTranslate(camTranslateVec);
+                renderer.drawMesh(false);
+            }
             
             ofSetColor(255);
+//            glEnable(GL_DEPTH_TEST);
             ofEnableAlphaBlending();
             glEnable(GL_POINT_SMOOTH); // makes circular points
             glEnable(GL_VERTEX_PROGRAM_POINT_SIZE_ARB);	// allows per-point size
-            glEnable(GL_BLEND);
-            //glBlendFunc(GL_ZERO, GL_ONE);
             glPointSize(timeline.getKeyframeValue("Point Size"));
             renderer.drawPointCloud();
             ofPopStyle();
             
+            glDisable(GL_DEPTH_TEST);
             cam.end();
             
             swapFbo.end();
             
             //composite
             fbo.begin();
-            
+
             ofPushStyle();
             ofEnableAlphaBlending();
             ofSetColor(255, 255, 255, pointAlpha*255);
@@ -627,6 +651,12 @@ void testApp::keyPressed(int key){
 		timeline.setCurrentTimeToOutPoint();
 	}
 	
+    if(key == '1'){
+        DOFCloud.load("shaders/DOFCloud");
+        DOFCloud.begin();
+        DOFCloud.setUniform1i("src_tex_unit0", 0);
+        DOFCloud.end();        
+    }
 
 	//RECORD CAMERA
 //	if(key == 'R'){	
@@ -701,8 +731,11 @@ void testApp::update(){
 	}
 	
     if(shouldExportSettings){
+        
+        settingsExporter.mirror = currentMirror;
         settingsExporter.zThreshold = timeline.getKeyframeValue("Z Threshold");
         settingsExporter.edgeClip = timeline.getKeyframeValue("Edge Snip");
+        
         settingsExporter.offset = ofVec2f(currentXMultiplyShift, currentYMultiplyShift);
         settingsExporter.simplify = currentSimplify;
         settingsExporter.startFrame = timeline.getInFrame();
@@ -968,20 +1001,23 @@ void testApp::draw(){
 			fboRectangle.width = 16.0/9.0*fboRectangle.height;
 			ofDrawBitmapString(currentCompositionDirectory + " -- " + lastSavedDate, ofPoint(fboRectangle.x, fboRectangle.y-15));
 			
+            float aspect = 1.0*fbo1.getWidth()/fbo1.getHeight();
 			if(presentMode){
 				fboRectangle.x = 0;
 				fboRectangle.y = 0;
 				fboRectangle.height = ofGetHeight();
-				fboRectangle.width = 16.0/9.0*fboRectangle.height;
+				fboRectangle.width = aspect*fboRectangle.height;
 			}
 			else {
 				fboRectangle.x = 250;
 				fboRectangle.y = 100;
 				fboRectangle.height = (timeline.getDrawRect().y - fboRectangle.y - 20);
-				fboRectangle.width = 16.0/9.0*fboRectangle.height;
+				fboRectangle.width = aspect*fboRectangle.height;
 				ofDrawBitmapString(currentCompositionDirectory, ofPoint(fboRectangle.x, fboRectangle.y-15));
 			}
-            
+            newCompButton->setPosAndSize(fboRectangle.x+fboRectangle.width+25, 0, 100, 25);	
+            saveCompButton->setPosAndSize(fboRectangle.x+fboRectangle.width+25, 25, 100, 25);
+
             drawGeometry();
             
 			if(temporalAlignmentMode){
@@ -992,6 +1028,7 @@ void testApp::draw(){
                 lowResPlayer->draw(colorAlignAssistRect);
 				depthSequence.currentDepthImage.draw(depthAlignAssistRect);
             }
+            
 			if(currentlyRendering){
                 ofFbo& fbo =  curbuf == 0 ? fbo1 : fbo2;
 				fbo.getTextureReference().readToPixels(savingImage.getPixelsRef());
@@ -1162,7 +1199,7 @@ bool testApp::loadAssetsFromCompositionDirectory(string currentMediaFolder) {
 	}
 	
 	if(!loadDepthSequence(depthImageDirectory)){
-		ofSystemAlertDialog("Load Failed -- Couldn't load depth iamges.");
+		ofSystemAlertDialog("Load Failed -- Couldn't load depth images.");
 		return false;
 	}
 	
@@ -1364,7 +1401,9 @@ void testApp::saveComposition(){
 	projectsettings.setValue("drawMesh", drawMesh);
     projectsettings.setValue("drawDepthDistortion", drawDepthDistortion);
 	projectsettings.setValue("drawGeometryDistortion", drawGeometryDistortion);
-    
+    projectsettings.setValue("pointsSelfOcclude",pointsSelfOcclude);
+	projectsettings.setValue("wireframeSelfOccludes",wireframeSelfOccludes);
+
 	projectsettings.setValue("cameraSpeed", cam.speed);
 	projectsettings.setValue("cameraRollSpeed", cam.rollSpeed);
 	projectsettings.setValue("xmult", currentXMultiplyShift);
@@ -1452,6 +1491,9 @@ bool testApp::loadCompositionAtIndex(int i){
 	drawDepthDistortion = projectsettings.getValue("drawDepthDistortion", true);
 	drawGeometryDistortion= projectsettings.getValue("drawGeometryDistortion", true);
     
+    pointsSelfOcclude = projectsettings.getValue("pointsSelfOcclude", false);
+	wireframeSelfOccludes = projectsettings.getValue("wireframeSelfOccludes",false);
+
 	currentXMultiplyShift = projectsettings.getValue("xmult", 0.);
 	currentYMultiplyShift = projectsettings.getValue("ymult", 0.);
 	currentXAdditiveShift = projectsettings.getValue("xshift", 0.);
@@ -1558,7 +1600,7 @@ void testApp::toggleCameraPlayback(){
 //--------------------------------------------------------------
 void testApp::windowResized(int w, int h){
 	timeline.setWidth(w);
-	timeline.setOffset(ofVec2f(0, ofGetHeight() - timeline.getDrawRect().height));
+	timeline.setOffset(ofVec2f(0, ofGetHeight() - timeline.getDrawRect().height));    
 }
 
 //--------------------------------------------------------------
