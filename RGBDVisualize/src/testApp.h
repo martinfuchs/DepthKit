@@ -51,6 +51,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	bool loadVideoFile(string hiResPath, string lowResPath); //hires can be ""
 	bool loadAlignmentMatrices(string path);
 	
+    void loadShaders();
+    
 	ofxXmlSettings projectsettings;
 
 	void loadCompositions();
@@ -119,6 +121,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofFbo swapFbo; //used for temp drawing
 	ofFbo fbo1;
     ofFbo fbo2;
+    ofFbo dofBuffer;
+    ofFbo dofBlurBuffer;
     int curbuf;
     
     ofRectangle depthAlignAssistRect;
@@ -137,6 +141,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	float currentRotationCompensation;
 	float currentZFuzz;
 	
+
+    
     bool pointsSelfOcclude;
     bool wireframeSelfOccludes;
 	bool currentLockCamera;
@@ -176,7 +182,9 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	int lastRenderFrame;
 	int numFramesToRender;
 	int numFramesRendered;
-	
+	bool rendererDirty;
+    ofNode renderedCameraPos;
+    
 	ofImage testImageOne;
 	ofImage testImageTwo;
 	
@@ -185,8 +193,12 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 
 	string pathDelim;
     
+    bool drawDOF;
     ofShader DOFCloud;
     ofShader alphaFadeShader;
     ofShader gaussianBlur;
+    ofShader dofRange;
+    ofShader dofBlur;
     
+
 };

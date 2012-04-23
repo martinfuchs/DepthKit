@@ -30,7 +30,7 @@ void testApp::setup(){
 	cam.rollSpeed = 1;
     
     currentMirror = false;
-	currentSimplify = 2;
+//	currentSimplify = 2;
 	
 	videoInPercent = 0.0;
 	videoOutPercent = 1.0;
@@ -68,7 +68,8 @@ void testApp::setup(){
     
 	sampleCamera = false;
 	shouldExportSettings = false;
-
+    rendererDirty = true;
+    
     //TODO set through interface
     int fboWidth  = 1920;
     int fboHeight = 1080;
@@ -81,6 +82,8 @@ void testApp::setup(){
 	curbuf = 0;
     fbo1.allocate(fboWidth, fboHeight, GL_RGBA32F_ARB);
 	fbo2.allocate(fboWidth, fboHeight, GL_RGBA32F_ARB);
+    dofBuffer.allocate(fboWidth, fboHeight, GL_RGB32F_ARB, 4);
+    dofBlurBuffer.allocate(fboWidth, fboHeight, GL_RGB32F_ARB);
     
     fbo1.begin();
     ofClear(0,0,0,0);
@@ -88,22 +91,15 @@ void testApp::setup(){
     fbo2.begin();
     ofClear(0,0,0,0);
     fbo2.end();
+    dofBuffer.begin();
+    ofClear(0,0,0,0);
+    dofBuffer.end();
+    dofBlurBuffer.begin();
+    ofClear(0,0,0,0);
+    dofBlurBuffer.end();
     
-    DOFCloud.load("shaders/DOFCloud");
-    DOFCloud.begin();
-    DOFCloud.setUniform1i("src_tex_unit0", 0);
-    DOFCloud.end();
- 
-    alphaFadeShader.load("shaders/alphafade");
-    alphaFadeShader.begin();
-    alphaFadeShader.setUniform1i("self", 0);
-    alphaFadeShader.end();
-
-    gaussianBlur.load("shaders/gaussian_blur");
-    gaussianBlur.begin();
-    gaussianBlur.setUniform1i("self", 0);
-    gaussianBlur.end();
-
+    loadShaders();
+    
 	newCompButton = new ofxMSAInteractiveObjectWithDelegate();
 	newCompButton->setLabel("New Comp");
 	newCompButton->setDelegate(this);
@@ -125,7 +121,7 @@ void testApp::setup(){
 	loadCompositions();
 
 	gui.addToggle("Pause Render", pauseRender);
-	gui.addSlider("Simplify", currentSimplify, 1, 8);
+//	gui.addSlider("Simplify", currentSimplify, 1, 8);
 	gui.addToggle("Draw Pointcloud", drawPointcloud);
 	gui.addToggle("Draw Wireframe", drawWireframe);
 	gui.addToggle("Draw Mesh", drawMesh);
@@ -133,6 +129,7 @@ void testApp::setup(){
 	gui.addToggle("Geometry Distortion", drawGeometryDistortion);
 	gui.addToggle("Points Self Occlude", pointsSelfOcclude);
 	gui.addToggle("Wireframe Self Occlude", wireframeSelfOccludes);
+    gui.addToggle("Draw DOF", drawDOF);
     
 	gui.addPage("Camera");
     gui.addToggle("Reset Cam Pos", shouldResetCamera);
@@ -156,7 +153,6 @@ void testApp::setup(){
 	gui.addToggle("Fill Holes", fillHoles);
 	gui.addSlider("Hole Kernel Size", currentHoleKernelSize, 1, 20);
 	gui.addSlider("Hole Fill Iterations", currentHoleFillIterations, 1, 20);
-//	gui.addSlider("Z Fuzz", currentZFuzz, 0, .25);
 	gui.addToggle("TemporalAlignmentMode", temporalAlignmentMode);
 	gui.addToggle("Capture Frame Pair", captureFramePair);
 
@@ -179,6 +175,29 @@ void testApp::setup(){
     
 }
 
+void testApp::loadShaders(){
+    DOFCloud.load("shaders/DOFCloud");
+    DOFCloud.begin();
+    DOFCloud.setUniform1i("src_tex_unit0", 0);
+    DOFCloud.end();
+    
+    alphaFadeShader.load("shaders/alphafade");
+    alphaFadeShader.begin();
+    alphaFadeShader.setUniform1i("self", 0);
+    alphaFadeShader.end();
+    
+    gaussianBlur.load("shaders/gaussian_blur");
+    gaussianBlur.begin();
+    gaussianBlur.setUniform1i("tex", 0);
+    gaussianBlur.end();
+    
+    dofRange.load("shaders/dofrange"); 
+    dofBlur.load("shaders/dofblur");
+    dofBlur.begin();
+    dofBlur.setUniform1i("tex", 0);
+    dofBlur.setUniform1i("range", 1);
+    dofBlur.end();
+}
 
 //Labbers: YOU CAN ADD TIMELINE ELEMENTS HERE
 void testApp::populateTimelineElements(){
@@ -189,10 +208,12 @@ void testApp::populateTimelineElements(){
 
     //rendering
     timeline.addPage("Global Rendering", true);
+    timeline.addKeyframes("Motion Trail Decay", currentCompositionDirectory + "motionTrailDecay.xml", ofRange(.05 ,1.0), 1.0 );
+    timeline.addKeyframes("Simplify", currentCompositionDirectory + "simplify.xml", ofRange(1, 8), 2.);
     timeline.addKeyframes("Edge Snip", currentCompositionDirectory + "edgeSnip.xml", ofRange(1.0, 6000), 6000 );
     timeline.addKeyframes("Z Threshold", currentCompositionDirectory + "zThreshold.xml", ofRange(1.0, 6000), 6000 );
-    timeline.addKeyframes("Motion Trail Decay", currentCompositionDirectory + "motionTrailDecay.xml", ofRange(.05 ,1.0), 1.0 );
-    
+
+
     timeline.addPage("Mesh", true);
     timeline.addKeyframes("Mesh Alpha", currentCompositionDirectory + "meshAlpha.xml", ofRange(0,1.0) );
 	timeline.addKeyframes("X Rotate", currentCompositionDirectory + "meshXRot.xml", ofRange(-360,360), 0.);
@@ -201,19 +222,28 @@ void testApp::populateTimelineElements(){
     
     timeline.addPage("Wireframe", true);
     timeline.addKeyframes("Wireframe Alpha", currentCompositionDirectory + "wireframeAlpha.xml", ofRange(0,1.0), 1.0 );
-    timeline.addKeyframes("Wireframe Thickness", currentCompositionDirectory + "wireframeThickness.xml", ofRange(1.0,20.0) );
+    timeline.addKeyframes("Wireframe Thickness", currentCompositionDirectory + "wireframeThickness.xml", ofRange(1.0,sqrtf(20.0)) );
     timeline.addKeyframes("Wireframe Blur", currentCompositionDirectory + "wireframeBlur.xml", ofRange(0, 5.0) );
-
+     
     timeline.addPage("Point", true);
     timeline.addKeyframes("Point Alpha", currentCompositionDirectory + "pointAlpha.xml", ofRange(0,1.0) );
-    timeline.addKeyframes("Point Size", currentCompositionDirectory + "pointSize.xml", ofRange(1.0,20.0) );	
+    timeline.addKeyframes("Point Size", currentCompositionDirectory + "pointSize.xml", ofRange(1.0, sqrtf(20.0) ) );	
     
+    timeline.addPage("Depth of Field", true);
+    timeline.addKeyframes("DOF Distance", currentCompositionDirectory + "DOFDistance.xml", ofRange(0,sqrtf(1000.0)), 10 );
+    timeline.addKeyframes("DOF Range", currentCompositionDirectory + "DOFRange.xml", ofRange(10,sqrtf(500.0)) );
+    timeline.addKeyframes("DOF Blur", currentCompositionDirectory + "DOFBlur.xml", ofRange(0,5.0) );
+//    timeline.addKeyframes("Fog Near", currentCompositionDirectory + "FogNear.xml", ofRange(0,5000.0), 5000 );
+//    timeline.addKeyframes("Fog Range", currentCompositionDirectory + "FogRange.xml", ofRange(0,5000.0), 5000 );
+
+    /*
     timeline.addPage("Point DOF", true);
     timeline.addKeyframes("Point DOF Size", currentCompositionDirectory + "dofPointSize.xml", ofRange(1.0, 20.0) );	
     timeline.addKeyframes("Point DOF Alpha", currentCompositionDirectory + "dofPointAlpha.xml", ofRange(0, 1.0) );
     timeline.addKeyframes("Point DOF Focal", currentCompositionDirectory + "dofPointFocalDistance.xml", ofRange(0, 600) );
     timeline.addKeyframes("Point DOF Aperture", currentCompositionDirectory + "dofPointAperture.xml", ofRange(0, .1) );
     timeline.addKeyframes("Point DOF Reduce Blowout", currentCompositionDirectory + "dofBlowoutReduce.xml", ofRange(1.0, 20.0) );
+    */
     
     timeline.addPage("Depth Distortion", true);
     timeline.addKeyframes("Noise", currentCompositionDirectory + "DepthNoise.xml", ofRange(0, 5000) );
@@ -321,8 +351,6 @@ void testApp::processGeometry(){
 }
 
 void testApp::drawGeometry(){
-	
-    
     
 	//***************************************************
 	//CUSTOMIZATION: YOU CAN DRAW WHATEVER YOU WANT HERE TOO OR USE SHADERS
@@ -330,66 +358,365 @@ void testApp::drawGeometry(){
 	//* draw whatever you want!
 	//*
 	//***************************************************
-	
+
+
     float pointAlpha = timeline.getKeyframeValue("Point Alpha");
-    float pointDOFAlpha = timeline.getKeyframeValue("Point DOF Alpha");
     float wireAlpha = timeline.getKeyframeValue("Wireframe Alpha");
     float meshAlpha = timeline.getKeyframeValue("Mesh Alpha");
-
+	
     if(!alignmentScrubber.ready()){
         pointAlpha = 0;
-        pointDOFAlpha = 0;
         wireAlpha = 1.0;
         meshAlpha = 0.0;    
     }
     
     //helps eliminate zfight by translating the mesh occluder slightly back from the camera
-    ofVec3f camTranslateVec = cam.getLookAtDir();
-    ofFbo& fbo = curbuf == 0 ? fbo1 : fbo2;
-    ofFbo& backbuf = curbuf == 0 ? fbo2 : fbo1;
-    //curbuf = (curbuf + 1 ) % 2;
-    
-    ofRectangle renderFboRect = ofRectangle(0, 0, fbo.getWidth(), fbo.getHeight());
+    ofVec3f camTranslateVec = cam.getLookAtDir();    
+    ofRectangle renderFboRect = ofRectangle(0, 0, fbo1.getWidth(), fbo1.getHeight());
     
     if(pauseRender){
         ofPushStyle();
         ofSetColor(255,0,0);
         
         ofRect(fboRectangle);
-        fbo.getTextureReference().draw(fboRectangle);
+        fbo1.getTextureReference().draw(fboRectangle);
         ofPopStyle();
 	    return;
     }
     
-    /*
-     old alpha fade way not working
-    fbo.begin();
-    ofClear(0.0, 0.0, 0.0, 0.0);
-    ofEnableAlphaBlending();
-    alphaFadeShader.begin();
-    float decay = timeline.getKeyframeValue("Motion Trail Decay");
-    decay *= decay;
+    rendererDirty |= (renderedCameraPos.getPosition() != cam.getPosition() || 
+                      renderedCameraPos.getOrientationQuat() != cam.getOrientationQuat() );
+
+    if(rendererDirty){
+        
+        renderedCameraPos.setPosition(cam.getPosition());
+        renderedCameraPos.setOrientation(cam.getOrientationQuat());
+        /*
+         old alpha fade way not working
+        fbo.begin();
+        ofClear(0.0, 0.0, 0.0, 0.0);
+        ofEnableAlphaBlending();
+        alphaFadeShader.begin();
+        float decay = timeline.getKeyframeValue("Motion Trail Decay");
+        decay *= decay;
+        
+        alphaFadeShader.setUniform1f("fadeSpeed", decay);
+        backbuf.getTextureReference().draw(renderFboRect);
+        
+        alphaFadeShader.end();
+        
+        fbo.end();
+        */
+        ofBlendMode blendMode = OF_BLENDMODE_SCREEN;
+        
+        //new way of doing trails that kills alpha backgrounds.
+        fbo1.begin();
+        ofPushStyle();
+        ofEnableAlphaBlending();
+        float decay = timeline.getKeyframeValue("Motion Trail Decay");
+        decay *= decay; //exponential
+        ofSetColor(0, 0, 0, decay*255);
+        ofRect(renderFboRect);
+        ofPopStyle();
+        fbo1.end();
+
+        if(drawMesh && meshAlpha > 0){
+            
+            swapFbo.begin();
+            
+            ofClear(0,0,0,0);
+            glEnable(GL_DEPTH_TEST);
+            cam.begin(renderFboRect);
+            ofPushStyle();
+            renderer.drawMesh();
+            ofPopStyle();
+            glDisable(GL_DEPTH_TEST);
+            
+            cam.end();
+            
+            swapFbo.end();
+            
+            //composite
+            fbo1.begin();
+            
+            ofPushStyle();
+            ofEnableAlphaBlending();
+            //ofEnableBlendMode(OF_BLENDMODE_ADD);
+            ofSetColor(255, 255, 255, meshAlpha*255);
+            swapFbo.getTextureReference().draw(renderFboRect);
+            ofPopStyle();
+            
+            fbo1.end();       
+            
+        }
+        
+        if(drawWireframe && wireAlpha > 0){
+                
+            swapFbo.begin();
+            ofClear(0,0,0,0);
+            
+            cam.begin(renderFboRect);
+            ofPushStyle();
+            
+            ofEnableAlphaBlending();
+            glEnable(GL_DEPTH_TEST);
+            
+            if(wireframeSelfOccludes){
+                //occlude points behind the mesh
+                ofPushMatrix();
+                ofSetColor(0, 0, 0, 0);
+                ofTranslate(camTranslateVec);
+                renderer.drawMesh(false);
+                ofPopMatrix();
+            }
+            
+            //ofEnableAlphaBlending();
+            ofEnableBlendMode(blendMode);
+            glEnable(GL_DEPTH_TEST);
+            
+            ofSetColor(255);        
+            float thickness = timeline.getKeyframeValue("Wireframe Thickness");
+            thickness *= thickness;
+            ofSetLineWidth(thickness);
+            renderer.drawWireFrame();
+            ofPopStyle();
+            
+            glDisable(GL_DEPTH_TEST);
+            cam.end();
+            
+            swapFbo.end();
+            
+            //composite
+            fbo1.begin();
+            
+            ofPushStyle();
+            //ofEnableAlphaBlending();
+            ofEnableBlendMode(blendMode);
+            ofSetColor(255, 255, 255, wireAlpha*255);
+            swapFbo.getTextureReference().draw(renderFboRect);
+            ofPopStyle();
+            
+            fbo1.end();
+            
+        }
+        
+        if(drawPointcloud && pointAlpha > 0){
+            
+            swapFbo.begin();
+            ofClear(0,0,0,0);
+            
+            cam.begin(renderFboRect);
+            
+            ofPushStyle();
+            //occlude points behind the mesh
+            
+            ofEnableAlphaBlending();
+            glEnable(GL_DEPTH_TEST);
+            if(pointsSelfOcclude){
+                ofPushMatrix();
+                ofSetColor(0, 0, 0, 0);
+                ofTranslate(camTranslateVec);
+                renderer.drawMesh(false);
+                ofPopMatrix();
+            }
+            ofEnableBlendMode(blendMode);
+            ofSetColor(255);
+            //glEnable(GL_DEPTH_TEST);
+            //ofEnableAlphaBlending();
+            glEnable(GL_POINT_SMOOTH); // makes circular points
+            //glEnable(GL_VERTEX_PROGRAM_POINT_SIZE_ARB);	// allows per-point size
+            float pointSize = timeline.getKeyframeValue("Point Size");
+            glPointSize(pointSize*pointSize);
+            renderer.drawPointCloud();
+            ofPopStyle();
+            
+            glDisable(GL_DEPTH_TEST);
+            cam.end();
+            
+            swapFbo.end();
+            
+            //composite
+            fbo1.begin();
+            
+            ofPushStyle();
+            //ofEnableAlphaBlending();
+            ofEnableBlendMode(blendMode);
+            ofSetColor(255, 255, 255, pointAlpha*255);
+            swapFbo.getTextureReference().draw(renderFboRect);
+            ofPopStyle();
+            
+            fbo1.end();
+        }
+
+        if(drawDOF){
+            //render DOF
+            float dofFocalDistance = timeline.getKeyframeValue("DOF Distance");
+            dofFocalDistance*=dofFocalDistance;
+            float dofFocalRange = timeline.getKeyframeValue("DOF Range");
+            dofFocalRange*=dofFocalRange;
+            float dofBlurAmount = timeline.getKeyframeValue("DOF Blur");
+//            float fogNear = timeline.getKeyframeValue("Fog Near");
+//            float fogRange = timeline.getKeyframeValue("Fog Range");
+            
+            //DRAW THE DOF B&W BUFFER
+            dofBuffer.begin();
+            ofClear(255,255,255,255);
+            
+            cam.begin(renderFboRect);
+            glEnable(GL_DEPTH_TEST);
+            
+            dofRange.begin();
+            dofRange.setUniform1f("focalDistance", dofFocalDistance);
+            dofRange.setUniform1f("focalRange", dofFocalRange);
+//            dofRange.setUniform1f("fogNear", fogNear);
+//            dofRange.setUniform1f("fogRange", fogRange);
+            
+            ofDisableAlphaBlending();
+            renderer.drawMesh(false);
+            //renderer.drawWireFrame(false);
+            dofRange.end();
+            
+            glDisable(GL_DEPTH_TEST);
+            cam.end();
+            
+            dofBuffer.end();
+            
+            /*
+            dofBlurBuffer.begin();
+            ofClear(0,0,0,0);
+            
+            gaussianBlur.begin();
+            gaussianBlur.setUniform2f("sampleOffset", 0.0, 0.0);
+            dofBuffer.getTextureReference().draw(renderFboRect);
+            gaussianBlur.end();
+            
+            dofBlurBuffer.end();
+            */
+            
+            //composite
+            fbo2.begin();
+            ofClear(0.0,0.0,0.0,0.0);
+            
+            ofPushStyle();
+            ofEnableBlendMode(blendMode);
+            
+            ofSetColor(255);
+            dofBlur.begin();
+            
+            //mulit-text
+            //our shader uses two textures, the top layer and the alpha
+            //we can load two textures into a shader using the multi texture coordinate extensions
+            glActiveTexture(GL_TEXTURE0_ARB);
+            fbo1.getTextureReference().bind();
+            
+            glActiveTexture(GL_TEXTURE1_ARB);
+            dofBuffer.getTextureReference().bind();
+            
+            dofBlur.setUniform2f("sampleOffset", dofBlurAmount, 0);
+            //draw a quad the size of the frame
+            glBegin(GL_QUADS);
+            
+            //move the mask around with the mouse by modifying the texture coordinates
+            glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, 0);
+            glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, 0);		
+            glVertex2f(0, 0);
+            
+            glMultiTexCoord2d(GL_TEXTURE0_ARB, renderFboRect.width, 0);
+            glMultiTexCoord2d(GL_TEXTURE1_ARB, renderFboRect.width, 0);		
+            glVertex2f(renderFboRect.width, 0);
+            
+            glMultiTexCoord2d(GL_TEXTURE0_ARB, renderFboRect.width, renderFboRect.height);
+            glMultiTexCoord2d(GL_TEXTURE1_ARB, renderFboRect.width, renderFboRect.height);
+            glVertex2f(renderFboRect.width, renderFboRect.height);
+            
+            glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, renderFboRect.height);
+            glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, renderFboRect.height);		
+            glVertex2f(0, renderFboRect.height);
+            
+            glEnd();
+
+            
+            //deactive and clean up
+            glActiveTexture(GL_TEXTURE1_ARB);
+            dofBuffer.getTextureReference().unbind();
+            
+            glActiveTexture(GL_TEXTURE0_ARB);
+            fbo1.getTextureReference().unbind();
+            
+            dofBlur.end();
+
+            ofPopStyle();
+            
+            fbo2.end();     
+            
+            fbo1.begin();
+            ofClear(0.0,0.0,0.0,0.0);
+            
+            ofPushStyle();
+            ofEnableBlendMode(blendMode);
+            
+            ofSetColor(255, 255, 255, 255);
+            dofBlur.begin();
+            
+            //mulit-text
+            //our shader uses two textures, the top layer and the alpha
+            //we can load two textures into a shader using the multi texture coordinate extensions
+            glActiveTexture(GL_TEXTURE0_ARB);
+            fbo2.getTextureReference().bind();
+            
+            glActiveTexture(GL_TEXTURE1_ARB);
+            dofBuffer.getTextureReference().bind();
+                    
+            dofBlur.setUniform2f("sampleOffset", 0, dofBlurAmount);
+            glBegin(GL_QUADS);
+            
+            //move the mask around with the mouse by modifying the texture coordinates
+            glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, 0);
+            glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, 0);		
+            glVertex2f(0, 0);
+            
+            glMultiTexCoord2d(GL_TEXTURE0_ARB, renderFboRect.width, 0);
+            glMultiTexCoord2d(GL_TEXTURE1_ARB, renderFboRect.width, 0);		
+            glVertex2f(renderFboRect.width, 0);
+            
+            glMultiTexCoord2d(GL_TEXTURE0_ARB, renderFboRect.width, renderFboRect.height);
+            glMultiTexCoord2d(GL_TEXTURE1_ARB, renderFboRect.width, renderFboRect.height);
+            glVertex2f(renderFboRect.width, renderFboRect.height);
+            
+            glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, renderFboRect.height);
+            glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, renderFboRect.height);		
+            glVertex2f(0, renderFboRect.height);
+            
+            glEnd();
+            
+            //deactive and clean up
+            glActiveTexture(GL_TEXTURE1_ARB);
+            dofBuffer.getTextureReference().unbind();
+            
+            glActiveTexture(GL_TEXTURE0_ARB);
+            fbo2.getTextureReference().unbind();
+            
+            dofBlur.end();
+            
+            ofPopStyle();
+            
+            fbo1.end();
+        }
+        
+        rendererDirty = false;
+	}
     
-    alphaFadeShader.setUniform1f("fadeSpeed", decay);
-    backbuf.getTextureReference().draw(renderFboRect);
-    
-	alphaFadeShader.end();
-    
-    fbo.end();
-	*/
-    
-    //new way of doing trails that kills alpha backgrounds.
-    fbo.begin();
     ofPushStyle();
-    ofEnableAlphaBlending();
-    float decay = timeline.getKeyframeValue("Motion Trail Decay");
-    decay *= decay; //exponential
-    ofSetColor(0, 0, 0, decay*255);
-    ofRect(renderFboRect);
+    ofSetColor(0);
+    ofRect(fboRectangle);
     ofPopStyle();
-    fbo.end();
-
-
+    
+    ofEnableAlphaBlending();
+    fbo1.getTextureReference().draw(fboRectangle);
+    
+    return;
+    /*
+    //OLD WAY --- 
     if(drawMesh && meshAlpha > 0){
         
         swapFbo.begin();
@@ -397,7 +724,6 @@ void testApp::drawGeometry(){
         glEnable(GL_DEPTH_TEST);
 
         cam.begin(renderFboRect);
-        
         ofPushStyle();
 		renderer.drawMesh();
 		ofPopStyle();
@@ -411,7 +737,8 @@ void testApp::drawGeometry(){
         fbo.begin();
         
         ofPushStyle();
-        ofEnableAlphaBlending();
+        //ofEnableAlphaBlending();
+        ofEnableBlendMode(OF_BLENDMODE_ADD);
         ofSetColor(255, 255, 255, meshAlpha*255);
         swapFbo.getTextureReference().draw(renderFboRect);
         ofPopStyle();
@@ -420,68 +747,163 @@ void testApp::drawGeometry(){
         
 	}
     
-    if(drawWireframe && wireAlpha > 0){
+    if(drawWireframe){
+        
+    	if(wireAlpha > 0){
 
-        swapFbo.begin();
-        ofClear(0,0,0,0);
-        
-        cam.begin(renderFboRect);
-        ofPushStyle();
-        
-        ofEnableAlphaBlending();
-        glEnable(GL_DEPTH_TEST);
-        
-        if(wireframeSelfOccludes){
-            //occlude points behind the mesh
-            ofPushMatrix();
-            ofSetColor(0, 0, 0, 0);
-            ofTranslate(camTranslateVec);
-            renderer.drawMesh(false);
-            ofPopMatrix();
-        }
-        
-//        glEnable(GL_BLEND);
-//        glBlendFunc(GL_ONE, GL_ZERO);
-//        glDisable(GL_SMOOTH_LINE_WIDTH_GRANULARITY);
-//        glDisable(GL_SMOOTH_LINE_WIDTH_RANGE);
-//        ofDisableSmoothing();
-//        ofDisableAlphaBlending();
-        ofEnableAlphaBlending();
-        glEnable(GL_DEPTH_TEST);
-        
-		ofSetColor(255);        
-        ofSetLineWidth(timeline.getKeyframeValue("Wireframe Thickness"));
-		renderer.drawWireFrame();
-		ofPopStyle();
-        
-        glDisable(GL_DEPTH_TEST);
-        cam.end();
-        
-        swapFbo.end();
-	
-        //composite
-        fbo.begin();
-        
-        ofPushStyle();
-        ofEnableAlphaBlending();
-        ofSetColor(255, 255, 255, wireAlpha*255);
-        float blur = timeline.getKeyframeValue("Wireframe Blur");
-        if(blur > 0){
-            gaussianBlur.begin();
-            gaussianBlur.setUniform2f("sampleOffset", 0, blur);
-            swapFbo.getTextureReference().draw(renderFboRect);
+            swapFbo.begin();
+            ofClear(0,0,0,0);
             
-            gaussianBlur.setUniform2f("sampleOffset", blur, 0);
-            swapFbo.getTextureReference().draw(renderFboRect);
-
-            gaussianBlur.end();
-        }
-        else{
-        	swapFbo.getTextureReference().draw(renderFboRect);
-        }
-        ofPopStyle();
+            cam.begin(renderFboRect);
+            ofPushStyle();
+            
+            ofEnableAlphaBlending();
+            glEnable(GL_DEPTH_TEST);
+            
+            if(wireframeSelfOccludes){
+                //occlude points behind the mesh
+                ofPushMatrix();
+                ofSetColor(0, 0, 0, 0);
+                ofTranslate(camTranslateVec);
+                renderer.drawMesh(false);
+                ofPopMatrix();
+            }
+            
+            ofEnableAlphaBlending();
+            glEnable(GL_DEPTH_TEST);
+            
+            ofSetColor(255);        
+            ofSetLineWidth(timeline.getKeyframeValue("Wireframe Thickness"));
+            renderer.drawWireFrame();
+            ofPopStyle();
+            
+            glDisable(GL_DEPTH_TEST);
+            cam.end();
+            
+            swapFbo.end();
         
-        fbo.end();     
+            //composite
+            fbo.begin();
+            
+            ofPushStyle();
+            ofEnableAlphaBlending();
+            ofSetColor(255, 255, 255, wireAlpha*255);
+            float blur = timeline.getKeyframeValue("Wireframe Blur");
+            if(blur > 0){
+                gaussianBlur.begin();
+                gaussianBlur.setUniform2f("sampleOffset", 0, blur);
+                swapFbo.getTextureReference().draw(renderFboRect);
+                
+                gaussianBlur.setUniform2f("sampleOffset", blur, 0);
+                swapFbo.getTextureReference().draw(renderFboRect);
+
+                gaussianBlur.end();
+            }
+            else{
+                swapFbo.getTextureReference().draw(renderFboRect);
+            }
+            ofPopStyle();
+		}
+        
+        fbo.end();  
+        
+        if(wireframeDOFAlpha > 0){
+
+            float dofFocalDistance = timeline.getKeyframeValue("Wireframe DOF Distance");
+            float dofFocalRange = timeline.getKeyframeValue("Wireframe DOF Range");
+			float dofBlurAmount = timeline.getKeyframeValue("Wireframe DOF Blur");
+
+            //DRAW THE DOF B&W BUFFER
+            dofBuffer.begin();
+            ofClear(0,0,0,0);
+
+            cam.begin(renderFboRect);
+            
+            dofRange.begin();
+            dofRange.setUniform1f("focalDistance", dofFocalDistance);
+            dofRange.setUniform1f("focalRange", dofFocalRange);
+            glEnable(GL_DEPTH_TEST);
+            renderer.drawMesh(false);
+            glDisable(GL_DEPTH_TEST);
+            dofRange.end();
+            cam.end();
+
+            dofBuffer.end();
+            
+            swapFbo.begin();
+			ofClear(0,0,0,0);
+            cam.begin(renderFboRect);
+            ofPushStyle();
+            
+            ofEnableAlphaBlending();
+            glEnable(GL_DEPTH_TEST);
+            
+            ofSetColor(255);        
+            ofSetLineWidth(timeline.getKeyframeValue("Wireframe DOF Thickness"));
+            renderer.drawWireFrame();
+            ofPopStyle();
+            
+            glDisable(GL_DEPTH_TEST);
+            cam.end();
+
+            swapFbo.end();
+		    
+            //composite
+            fbo.begin();
+            
+            ofPushStyle();
+            ofEnableBlendMode(OF_BLENDMODE_ADD);
+            
+            ofSetColor(255, 255, 255, wireframeDOFAlpha*255);
+            dofBlur.begin();
+            dofBlur.setUniform2f("sampleOffset", dofBlurAmount, 0);
+            
+            //mulit-text
+            //our shader uses two textures, the top layer and the alpha
+            //we can load two textures into a shader using the multi texture coordinate extensions
+            glActiveTexture(GL_TEXTURE0_ARB);
+            swapFbo.getTextureReference().bind();
+            
+            glActiveTexture(GL_TEXTURE1_ARB);
+            dofBuffer.getTextureReference().bind();
+            
+            //draw a quad the size of the frame
+            glBegin(GL_QUADS);
+            
+            //move the mask around with the mouse by modifying the texture coordinates
+            glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, 0);
+            glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, 0);		
+            glVertex2f(0, 0);
+            
+            glMultiTexCoord2d(GL_TEXTURE0_ARB, renderFboRect.width, 0);
+            glMultiTexCoord2d(GL_TEXTURE1_ARB, renderFboRect.width, 0);		
+            glVertex2f(renderFboRect.width, 0);
+            
+            glMultiTexCoord2d(GL_TEXTURE0_ARB, renderFboRect.width, renderFboRect.height);
+            glMultiTexCoord2d(GL_TEXTURE1_ARB, renderFboRect.width, renderFboRect.height);
+            glVertex2f(renderFboRect.width, renderFboRect.height);
+            
+            glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, renderFboRect.height);
+            glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, renderFboRect.height);		
+            glVertex2f(0, renderFboRect.height);
+            
+            glEnd();
+            
+            //deactive and clean up
+            glActiveTexture(GL_TEXTURE1_ARB);
+            dofBuffer.getTextureReference().unbind();
+            
+            glActiveTexture(GL_TEXTURE0_ARB);
+            swapFbo.getTextureReference().unbind();
+            
+            
+            dofBlur.end();
+            
+            ofPopStyle();
+            
+            fbo.end();     
+        }
+
     }
     
     if(drawPointcloud){
@@ -508,19 +930,7 @@ void testApp::drawGeometry(){
             renderer.setupProjectionUniforms(DOFCloud);
             renderer.drawPointCloud(false);
             renderer.restortProjection();
-            
-            /*
-            ofPushMatrix();
-			ofScale(1, -1, 1);
-            ofRotate(renderer.meshRotate.x,1,0,0);
-            ofRotate(renderer.meshRotate.y,0,1,0);
-            ofRotate(renderer.meshRotate.z,0,0,1);
-            
-            renderer.getRGBTexture().getTextureReference().bind();
-            renderer.getMesh().drawVertices();        
-            renderer.getRGBTexture().getTextureReference().unbind();
-            ofPopMatrix();
-            */
+
             
             DOFCloud.end();
             
@@ -598,7 +1008,7 @@ void testApp::drawGeometry(){
     
     ofEnableAlphaBlending();
     fbo.getTextureReference().draw(fboRectangle);
-    
+ 	*/   
 }
 
 //************************************************************
@@ -652,10 +1062,7 @@ void testApp::keyPressed(int key){
 	}
 	
     if(key == '1'){
-        DOFCloud.load("shaders/DOFCloud");
-        DOFCloud.begin();
-        DOFCloud.setUniform1i("src_tex_unit0", 0);
-        DOFCloud.end();        
+        loadShaders();
     }
 
 	//RECORD CAMERA
@@ -737,7 +1144,8 @@ void testApp::update(){
         settingsExporter.edgeClip = timeline.getKeyframeValue("Edge Snip");
         
         settingsExporter.offset = ofVec2f(currentXMultiplyShift, currentYMultiplyShift);
-        settingsExporter.simplify = currentSimplify;
+//        settingsExporter.simplify = currentSimplify;
+        settingsExporter.simplify = renderer.getSimplification();
         settingsExporter.startFrame = timeline.getInFrame();
         settingsExporter.endFrame = timeline.getOutFrame();
         
@@ -814,7 +1222,7 @@ void testApp::update(){
 		
 		startRenderMode = false;
 		currentlyRendering = true;
-		saveFolder = currentCompositionDirectory + "rendered"+pathDelim;
+		saveFolder = currentCompositionDirectory + "rendered" + pathDelim;
 		ofDirectory outputDirectory(saveFolder);
 		if(!outputDirectory.exists()) outputDirectory.create(true);
 		hiResPlayer->play();
@@ -906,10 +1314,16 @@ void testApp::update(){
 	renderer.meshRotate.x = timeline.getKeyframeValue("X Rotate");
     renderer.meshRotate.y = timeline.getKeyframeValue("Y Rotate");
     renderer.meshRotate.z = timeline.getKeyframeValue("Z Rotate");
+    int simplification = int( timeline.getKeyframeValue("Simplify") );
+
+	if(renderer.getSimplification() != simplification){
+    	renderer.setSimplification(simplification);
+        cout << "setting simplification " << renderer.getSimplification() << " and " << simplification << endl;
+    }
     
 	if(currentXMultiplyShift != renderer.xmult ||
 	   currentYMultiplyShift != renderer.ymult ||
-	   currentSimplify != renderer.getSimplification() ||
+	   //currentSimplify != renderer.getSimplification() ||
 	   currentMirror != renderer.mirror ||
 	   currentZFuzz != renderer.ZFuzz ||
 	   fillHoles != holeFiller.enable ||
@@ -922,7 +1336,7 @@ void testApp::update(){
 		renderer.ymult = currentYMultiplyShift;
 //		renderer.xscale = currentXScale;
 //		renderer.yscale = currentYScale;
-		renderer.setSimplification(currentSimplify);
+//		renderer.setSimplification(currentSimplify);
 		renderer.ZFuzz = currentZFuzz;
 		renderer.mirror = currentMirror;
 //		renderer.edgeCull = currentEdgeCull;
@@ -939,6 +1353,7 @@ void testApp::update(){
 	}
 	
     if(timeline.getUserChangedValue()){
+        cout << "value changed" << endl;
     	updateRenderer(*lowResPlayer);
     }
     
@@ -983,6 +1398,8 @@ void testApp::updateRenderer(ofVideoPlayer& fromPlayer){
 	
 	currentDepthFrame = depthSequence.getSelectedFrame();
 
+    cout << "renderer is dirty" << endl;
+    rendererDirty = true;
 }
 
 //--------------------------------------------------------------
@@ -1020,13 +1437,17 @@ void testApp::draw(){
 
             drawGeometry();
             
+            colorAlignAssistRect = ofRectangle(fboRectangle.x + fboRectangle.width, fboRectangle.y, fboRectangle.width/3, fboRectangle.height/3);
+            float ratio = colorAlignAssistRect.width / lowResPlayer->getWidth();
+            depthAlignAssistRect = ofRectangle(colorAlignAssistRect.x, colorAlignAssistRect.y+colorAlignAssistRect.height,
+                                               640 * ratio, 480 * ratio);            
 			if(temporalAlignmentMode){
-                colorAlignAssistRect = ofRectangle(fboRectangle.x + fboRectangle.width, fboRectangle.y, fboRectangle.width/3, fboRectangle.height/3);
-                float ratio = colorAlignAssistRect.width / lowResPlayer->getWidth();
-                depthAlignAssistRect = ofRectangle(colorAlignAssistRect.x, colorAlignAssistRect.y+colorAlignAssistRect.height,
-                                                   640 * ratio, 480 * ratio);
                 lowResPlayer->draw(colorAlignAssistRect);
 				depthSequence.currentDepthImage.draw(depthAlignAssistRect);
+            }
+            else{
+				dofBuffer.getTextureReference().draw(colorAlignAssistRect);
+    	        //dofBlurBuffer.getTextureReference().draw(colorAlignAssistRect);
             }
             
 			if(currentlyRendering){
@@ -1403,6 +1824,7 @@ void testApp::saveComposition(){
 	projectsettings.setValue("drawGeometryDistortion", drawGeometryDistortion);
     projectsettings.setValue("pointsSelfOcclude",pointsSelfOcclude);
 	projectsettings.setValue("wireframeSelfOccludes",wireframeSelfOccludes);
+	projectsettings.setValue("drawDOF",drawDOF);
 
 	projectsettings.setValue("cameraSpeed", cam.speed);
 	projectsettings.setValue("cameraRollSpeed", cam.rollSpeed);
@@ -1421,7 +1843,7 @@ void testApp::saveComposition(){
 	projectsettings.setValue("pointcloud", drawPointcloud);
 	projectsettings.setValue("wireframe", drawWireframe);
 	projectsettings.setValue("mesh", drawMesh);
-	projectsettings.setValue("simplify",currentSimplify);
+//	projectsettings.setValue("simplify",currentSimplify);
 	projectsettings.setValue("mirror", currentMirror);
 	projectsettings.setValue("duration", currentDuration);
 	
@@ -1490,6 +1912,7 @@ bool testApp::loadCompositionAtIndex(int i){
 	drawMesh = projectsettings.getValue("drawMesh", true);
 	drawDepthDistortion = projectsettings.getValue("drawDepthDistortion", true);
 	drawGeometryDistortion= projectsettings.getValue("drawGeometryDistortion", true);
+    drawDOF = projectsettings.getValue("drawDOF",true);
     
     pointsSelfOcclude = projectsettings.getValue("pointsSelfOcclude", false);
 	wireframeSelfOccludes = projectsettings.getValue("wireframeSelfOccludes",false);
@@ -1506,7 +1929,7 @@ bool testApp::loadCompositionAtIndex(int i){
 	drawPointcloud = projectsettings.getValue("pointcloud", false);
 	drawWireframe = projectsettings.getValue("wireframe", false);
 	drawMesh = projectsettings.getValue("mesh", false);
-	currentSimplify = projectsettings.getValue("simplify", 1);
+//	currentSimplify = projectsettings.getValue("simplify", 1);
 	currentMirror = projectsettings.getValue("mirror", false);
 	currentDuration = projectsettings.getValue("duration", int(videoTimelineElement.videoThumbs.size()) );
 	enableVideoInOut = projectsettings.getValue("videoinout", false);

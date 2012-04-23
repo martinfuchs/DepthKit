@@ -69,6 +69,10 @@
 		E738E8EE153C735400BDA0F3 /* ofxDepthImageSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E738E8ED153C735400BDA0F3 /* ofxDepthImageSequence.cpp */; };
 		E738E8F7153CC34400BDA0F3 /* ofxRGBDRenderSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E738E8F5153CC34200BDA0F3 /* ofxRGBDRenderSettings.cpp */; };
 		E73BE0B314A3B784004FE0E5 /* ofxDepthImageCompressor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E73BE0B114A3B784004FE0E5 /* ofxDepthImageCompressor.cpp */; };
+		E7997A611541D06600D4130C /* dofblur.frag in Sources */ = {isa = PBXBuildFile; fileRef = E7997A5D1541D06500D4130C /* dofblur.frag */; };
+		E7997A621541D06600D4130C /* dofblur.vert in Sources */ = {isa = PBXBuildFile; fileRef = E7997A5E1541D06500D4130C /* dofblur.vert */; };
+		E7997A631541D06600D4130C /* dofrange.frag in Sources */ = {isa = PBXBuildFile; fileRef = E7997A5F1541D06600D4130C /* dofrange.frag */; };
+		E7997A641541D06600D4130C /* dofrange.vert in Sources */ = {isa = PBXBuildFile; fileRef = E7997A601541D06600D4130C /* dofrange.vert */; };
 		E7DF569A147CA28300A3A9C7 /* ofxTimeline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DF5677147CA28300A3A9C7 /* ofxTimeline.cpp */; };
 		E7DF569C147CA28300A3A9C7 /* ofxTLElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DF567C147CA28300A3A9C7 /* ofxTLElement.cpp */; };
 		E7DF569D147CA28300A3A9C7 /* ofxTLElementHeader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DF567E147CA28300A3A9C7 /* ofxTLElementHeader.cpp */; };
@@ -321,6 +325,10 @@
 		E738E8F6153CC34200BDA0F3 /* ofxRGBDRenderSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDRenderSettings.h; sourceTree = "<group>"; };
 		E73BE0B114A3B784004FE0E5 /* ofxDepthImageCompressor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDepthImageCompressor.cpp; sourceTree = "<group>"; };
 		E73BE0B214A3B784004FE0E5 /* ofxDepthImageCompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxDepthImageCompressor.h; sourceTree = "<group>"; };
+		E7997A5D1541D06500D4130C /* dofblur.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = dofblur.frag; sourceTree = "<group>"; };
+		E7997A5E1541D06500D4130C /* dofblur.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = dofblur.vert; sourceTree = "<group>"; };
+		E7997A5F1541D06600D4130C /* dofrange.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = dofrange.frag; sourceTree = "<group>"; };
+		E7997A601541D06600D4130C /* dofrange.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = dofrange.vert; sourceTree = "<group>"; };
 		E7DF5677147CA28300A3A9C7 /* ofxTimeline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTimeline.cpp; sourceTree = "<group>"; };
 		E7DF5678147CA28300A3A9C7 /* ofxTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTimeline.h; sourceTree = "<group>"; };
 		E7DF567C147CA28300A3A9C7 /* ofxTLElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLElement.cpp; sourceTree = "<group>"; };
@@ -866,6 +874,10 @@
 		A69D77DC14E0E5A900963BF2 /* shaders */ = {
 			isa = PBXGroup;
 			children = (
+				E7997A5D1541D06500D4130C /* dofblur.frag */,
+				E7997A5E1541D06500D4130C /* dofblur.vert */,
+				E7997A601541D06600D4130C /* dofrange.vert */,
+				E7997A5F1541D06600D4130C /* dofrange.frag */,
 				E7F96F0D153E8D0F005841A9 /* unproject.frag */,
 				E7F96F0E153E8D0F005841A9 /* unproject.vert */,
 				A67962F915329B8F000443D4 /* gaussian_blur.frag */,
@@ -1412,6 +1424,10 @@
 				E738E8F7153CC34400BDA0F3 /* ofxRGBDRenderSettings.cpp in Sources */,
 				E7F96F0F153E8D0F005841A9 /* unproject.frag in Sources */,
 				E7F96F10153E8D0F005841A9 /* unproject.vert in Sources */,
+				E7997A611541D06600D4130C /* dofblur.frag in Sources */,
+				E7997A621541D06600D4130C /* dofblur.vert in Sources */,
+				E7997A631541D06600D4130C /* dofrange.frag in Sources */,
+				E7997A641541D06600D4130C /* dofrange.vert in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

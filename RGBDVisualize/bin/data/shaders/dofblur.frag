@@ -1,6 +1,8 @@
 #version 110
+#extension GL_ARB_texture_rectangle : enable
 
 uniform sampler2DRect tex;
+uniform sampler2DRect range;
 uniform vec2 sampleOffset;
 
 float weights[21];
@@ -28,18 +30,18 @@ void main()
 	weights[19] = 0.014053461291849008;
 	weights[20] = 0.00916792765601138;
 
-	vec3 sum = vec3( 0.0, 0.0, 0.0);
-	vec2 baseOffset = -10.0 * sampleOffset;
+	vec3 sum = vec3(0.0, 0.0, 0.0);
+    vec4 rangeTexel = texture2DRect(range, gl_TexCoord[1].st);
+    vec2 blurOffset = sampleOffset * rangeTexel.r;
+	vec2 baseOffset = -10.0 * blurOffset;
 	vec2 offset = vec2( 0.0, 0.0 );
-
+	
 	for( int s = 0; s < 21; ++s ) {
         vec4 texel = texture2DRect( tex, gl_TexCoord[0].st + baseOffset + offset );
-        //alphasum += texel.a * weights[s];
-		//sum += texel * texel.a * weights[s];
-        sum += texel.rgb *  weights[s];
-		offset += sampleOffset;
+        sum += texel.rgb * weights[s];
+		offset += blurOffset;
 	}
-    //sum.a = alphasum != 0.0 ? sum.a / alphasum : 0.0;
-	gl_FragColor.rgb = sum * gl_Color.rgb;
-    gl_FragColor.a = 1.0;
+    
+	gl_FragColor.rgb = sum * gl_Color.rgb;// * rangeTexel.g; //attenuate for fog
+    gl_FragColor.a = gl_Color.a;
 }
