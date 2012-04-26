@@ -23,7 +23,6 @@ You can move the checkerboard or the camera. It doesn't matter which one you mov
 Here is a step by step process to create the calibration
 
 ## Preparation
-
 - Attach the Kinect to the SLR using the quick release bracket and mount and place the pair on a video tripod with a fluid head.
 - Cover Kinect IR laser emitter
 - Plug your Kinect into your computer.
@@ -119,6 +118,7 @@ Once you've organized all your MediaBin you can begin creating compositions.
 	- scrub through the timeline by clicking on the bar with the yellow tickers. You should see the footage playing back in 3d with matched temporal and depth alignment
 
 
+
 Clicking and dragging the mouse rotates the camera. ASDW moves you like a first person video game. E and C boom up and down in space. R+Q rotate. "Reset view" button helps when you mess it up or get lost.
 
 # EXPORTING
@@ -126,3 +126,6 @@ Clicking and dragging the mouse rotates the camera. ASDW moves you like a first 
 When you've created a few compositions you should be ready to render full resolution output. To export go to the 4th page of the GUI by clicking on the top-left label with the page name. Select the View Comps toggle button to see the list of compositions. Next to each name there is a small toggle box. Check the ones you want to render, they'll turn yellow. When you click the Render Batch button sit back and relax as your high resolution sequences are generated and saved to disk.  The final frames are output as PNGs into the composition folders. Use After Effects or Quicktime Pro 7 to turn the image sequence into a move file.  The *original* frame numbers are also stored in the file name to assist with synchronizing audio back into the movie.
 
 NOTE: Remember to *save* your current composition before clicking Render Batch
+
+ASDWEC moves you in 3D space. Mouse rotates the camera. "Reset view" button helps when you mess it up or get lost.
+

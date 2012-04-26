@@ -12,6 +12,9 @@ git clone git@github.com:Flightphase/ofxSimpleGuiToo
 git clone git@github.com:obviousjim/ofxRGBDepth
 git clone git@github.com:obviousjim/ofxCv
 git clone git@github.com:obviousjim/ofxCameraTrack
+git clone git@github.com:obviousjim/ofxKinect
+git clone git@github.com:obviousjim/ofxOpenNI
+git clone git@github.com:obviousjim/ofxMSATimer
 
 cd ofxCv/
 git checkout opencv-2.3
