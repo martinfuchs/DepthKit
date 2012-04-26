@@ -13,6 +13,7 @@
 #include "ofxSimpleGuiToo.h"
 #include "ofxTLCameraTrack.h"
 #include "ofxDepthHoleFiller.h"
+#include "ofxRGBDRenderSettings.h"
 
 typedef struct {
 	ofxMSAInteractiveObjectWithDelegate* load;
@@ -50,8 +51,10 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	bool loadVideoFile(string hiResPath, string lowResPath); //hires can be ""
 	bool loadAlignmentMatrices(string path);
 	
+    void loadShaders();
+    
 	ofxXmlSettings projectsettings;
-	ofxXmlSettings compositions;
+
 	void loadCompositions();
 	void newComposition();
 	void saveComposition();
@@ -89,12 +92,13 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofVideoPlayer* hiResPlayer;
 	ofVideoPlayer* lowResPlayer;
 		
+    bool pauseRender;
 	bool temporalAlignmentMode;
 	bool captureFramePair;
 	long currentDepthFrame;
-	
 	bool viewComps;
-	
+	bool shouldExportSettings;
+    
 	unsigned short* depthPixelDecodeBuffer;
 	ofShortPixels holeFilledPixels;
 	
@@ -109,14 +113,24 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxTLVideoPlayer videoTimelineElement;
 	ofxTLDepthImageSequence depthSequence;
 	ofxTLVideoDepthAlignmentScrubber alignmentScrubber;
-	
 	ofxDepthHoleFiller holeFiller;
+	ofxRGBDRenderSettings settingsExporter;
 	
 	ofRectangle fboRectangle;
-	ofFbo fbo;
+    
+    ofFbo swapFbo; //used for temp drawing
+	ofFbo fbo1;
+    ofFbo fbo2;
+    ofFbo dofBuffer;
+    ofFbo dofBlurBuffer;
+    int curbuf;
+    
+    ofRectangle depthAlignAssistRect;
+    ofRectangle colorAlignAssistRect;
+    
 	ofImage savingImage;
 	string saveFolder;
-	
+	string lastSavedDate;
 
 	float currentXMultiplyShift;
 	float currentYMultiplyShift;
@@ -127,18 +141,19 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	float currentRotationCompensation;
 	float currentZFuzz;
 	
+
+    
+    bool pointsSelfOcclude;
+    bool wireframeSelfOccludes;
 	bool currentLockCamera;
 	
 	bool shouldResetDuration;
+    bool setDurationToClipLength;
 	int currentDuration;
 	
 	bool currentMirror;
 	bool presentMode;
 	
-	float currentRotateMeshX;
-	
-	float farClip;
-	float currentEdgeCull;
 	bool shouldSaveCameraPoint;
 	bool shouldClearCameraMoves;
 	bool shouldResetCamera;
@@ -150,10 +165,10 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	bool drawPointcloud;
 	bool drawWireframe;
 	bool drawMesh;
-	int pointSize;
-	int lineSize;
+	bool drawDepthDistortion;
+	bool drawGeometryDistortion;
+    
 	int currentSimplify;
-
 	
 	bool fillHoles;
 	int currentHoleKernelSize;
@@ -167,7 +182,9 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	int lastRenderFrame;
 	int numFramesToRender;
 	int numFramesRendered;
-	
+	bool rendererDirty;
+    ofNode renderedCameraPos;
+    
 	ofImage testImageOne;
 	ofImage testImageTwo;
 	
@@ -175,4 +192,13 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofLight light;
 
 	string pathDelim;
+    
+    bool drawDOF;
+    ofShader DOFCloud;
+    ofShader alphaFadeShader;
+    ofShader gaussianBlur;
+    ofShader dofRange;
+    ofShader dofBlur;
+    
+
 };
