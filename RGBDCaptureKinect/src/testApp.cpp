@@ -2,8 +2,8 @@
 #include "ofxXmlSettings.h"
 #include "ofxDepthImageProviderFreenect.h"
 
-//--------------------------------------------------------------
 
+//--------------------------------------------------------------
 void testApp::setup(){
 
 	ofEnableAlphaBlending();

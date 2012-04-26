@@ -64,6 +64,7 @@
 		E4C2424810CC5A17004149E2 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C2424510CC5A17004149E2 /* Cocoa.framework */; };
 		E4C2424910CC5A17004149E2 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C2424610CC5A17004149E2 /* IOKit.framework */; };
 		E4EB6799138ADC1D00A09F29 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
+		E7084AF01538D59200398E5A /* ofxMSATimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7084AEE1538D59200398E5A /* ofxMSATimer.cpp */; };
 		E71EB42914A17E7400D23DE5 /* ofxDepthImageCompressor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E71EB42814A17E7400D23DE5 /* ofxDepthImageCompressor.cpp */; };
 		E77D88F01497D6A200713F52 /* Calibration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77D88911497D6A200713F52 /* Calibration.cpp */; };
 		E77D88F11497D6A200713F52 /* ContourFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77D88921497D6A200713F52 /* ContourFinder.cpp */; };
@@ -273,6 +274,8 @@
 		E4C2424610CC5A17004149E2 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
 		E4EB691F138AFCF100A09F29 /* CoreOF.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = CoreOF.xcconfig; path = ../../../libs/openFrameworksCompiled/project/osx/CoreOF.xcconfig; sourceTree = SOURCE_ROOT; };
 		E4EB6923138AFD0F00A09F29 /* Project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
+		E7084AEE1538D59200398E5A /* ofxMSATimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMSATimer.cpp; sourceTree = "<group>"; };
+		E7084AEF1538D59200398E5A /* ofxMSATimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMSATimer.h; sourceTree = "<group>"; };
 		E71EB42714A17E7400D23DE5 /* ofxDepthImageCompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxDepthImageCompressor.h; sourceTree = "<group>"; };
 		E71EB42814A17E7400D23DE5 /* ofxDepthImageCompressor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDepthImageCompressor.cpp; sourceTree = "<group>"; };
 		E77D88731497D5FC00713F52 /* Project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
@@ -724,6 +727,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				E7084AEC1538D59200398E5A /* ofxMSATimer */,
 				E790FA041510FA2A00157AAC /* ofxKinect */,
 				E78D6120149A8783004806BF /* ofxGameCamera */,
 				A638C76B14943A260060809C /* ofxTextInputField */,
@@ -814,6 +818,24 @@
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 			);
 			name = openFrameworks;
+			sourceTree = "<group>";
+		};
+		E7084AEC1538D59200398E5A /* ofxMSATimer */ = {
+			isa = PBXGroup;
+			children = (
+				E7084AED1538D59200398E5A /* src */,
+			);
+			name = ofxMSATimer;
+			path = ../../../addons/ofxMSATimer;
+			sourceTree = "<group>";
+		};
+		E7084AED1538D59200398E5A /* src */ = {
+			isa = PBXGroup;
+			children = (
+				E7084AEF1538D59200398E5A /* ofxMSATimer.h */,
+				E7084AEE1538D59200398E5A /* ofxMSATimer.cpp */,
+			);
+			path = src;
 			sourceTree = "<group>";
 		};
 		E77D88831497D6A200713F52 /* ofxCv */ = {
@@ -1659,6 +1681,7 @@
 				E790FB3A1510FA2C00157AAC /* ofxKinect.cpp in Sources */,
 				A6AC3642151A6CE500C55DB6 /* ofxDepthImageProviderFreenect.cpp in Sources */,
 				E78B769015374AE200DD2D94 /* ofxRGBDCaptureGui.cpp in Sources */,
+				E7084AF01538D59200398E5A /* ofxMSATimer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

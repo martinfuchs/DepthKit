@@ -65,6 +65,7 @@
 		E4EB6799138ADC1D00A09F29 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E71EB42914A17E7400D23DE5 /* ofxDepthImageCompressor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E71EB42814A17E7400D23DE5 /* ofxDepthImageCompressor.cpp */; };
 		E75A4C431536D3BD006395F7 /* ofxRGBDCaptureGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E75A4C421536D3BD006395F7 /* ofxRGBDCaptureGui.cpp */; };
+		E77AEC3D1538EEF5007F77B2 /* ofxMSATimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77AEC3B1538EEF5007F77B2 /* ofxMSATimer.cpp */; };
 		E77D88F01497D6A200713F52 /* Calibration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77D88911497D6A200713F52 /* Calibration.cpp */; };
 		E77D88F11497D6A200713F52 /* ContourFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77D88921497D6A200713F52 /* ContourFinder.cpp */; };
 		E77D88F21497D6A200713F52 /* Distance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77D88931497D6A200713F52 /* Distance.cpp */; };
@@ -257,6 +258,8 @@
 		E71EB42814A17E7400D23DE5 /* ofxDepthImageCompressor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDepthImageCompressor.cpp; sourceTree = "<group>"; };
 		E75A4C421536D3BD006395F7 /* ofxRGBDCaptureGui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDCaptureGui.cpp; sourceTree = "<group>"; };
 		E75A4C441536D3CD006395F7 /* ofxRGBDCaptureGui.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxRGBDCaptureGui.h; sourceTree = "<group>"; };
+		E77AEC3B1538EEF5007F77B2 /* ofxMSATimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMSATimer.cpp; sourceTree = "<group>"; };
+		E77AEC3C1538EEF5007F77B2 /* ofxMSATimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMSATimer.h; sourceTree = "<group>"; };
 		E77D88731497D5FC00713F52 /* Project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
 		E77D88881497D6A200713F52 /* Calibration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Calibration.h; sourceTree = "<group>"; };
 		E77D88891497D6A200713F52 /* ContourFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContourFinder.h; sourceTree = "<group>"; };
@@ -834,6 +837,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				E77AEC391538EEF5007F77B2 /* ofxMSATimer */,
 				E77FFE3415365A1500AA10DF /* ofxOpenNI */,
 				E78D6120149A8783004806BF /* ofxGameCamera */,
 				A638C76B14943A260060809C /* ofxTextInputField */,
@@ -933,6 +937,24 @@
 				E75A4C421536D3BD006395F7 /* ofxRGBDCaptureGui.cpp */,
 			);
 			path = gui;
+			sourceTree = "<group>";
+		};
+		E77AEC391538EEF5007F77B2 /* ofxMSATimer */ = {
+			isa = PBXGroup;
+			children = (
+				E77AEC3A1538EEF5007F77B2 /* src */,
+			);
+			name = ofxMSATimer;
+			path = ../../../addons/ofxMSATimer;
+			sourceTree = "<group>";
+		};
+		E77AEC3A1538EEF5007F77B2 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				E77AEC3B1538EEF5007F77B2 /* ofxMSATimer.cpp */,
+				E77AEC3C1538EEF5007F77B2 /* ofxMSATimer.h */,
+			);
+			path = src;
 			sourceTree = "<group>";
 		};
 		E77D88831497D6A200713F52 /* ofxCv */ = {
@@ -1710,6 +1732,7 @@
 				E77FFE5815365A8B00AA10DF /* ofxTrackedUser.cpp in Sources */,
 				E77FFE5915365A8B00AA10DF /* ofxUserGenerator.cpp in Sources */,
 				E75A4C431536D3BD006395F7 /* ofxRGBDCaptureGui.cpp in Sources */,
+				E77AEC3D1538EEF5007F77B2 /* ofxMSATimer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
