@@ -16,6 +16,7 @@ void main(void)
 	withinRGB.xy += 1.;
 	withinRGB.xy /= 2.;
 	withinRGB.y = 1. - withinRGB.y;
+	withinRGB.x = 1. - withinRGB.x;
 	//withinRGB.xy += vec2(0, .043);
 	withinRGB.xy += fudge;
     
