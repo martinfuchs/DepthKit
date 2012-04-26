@@ -148,8 +148,8 @@ void testApp::setup(){
 	
 	gui.addPage("Tweaks");
     gui.addToggle("Mirror", currentMirror);
-	gui.addSlider("X Multiply Shift", currentXMultiplyShift, -75, 75);
-	gui.addSlider("Y Multiply Shift", currentYMultiplyShift, -75, 75);
+	gui.addSlider("X Multiply Shift", currentXMultiplyShift, -.15, .15);
+	gui.addSlider("Y Multiply Shift", currentYMultiplyShift, -.15, .15);
 	gui.addToggle("Fill Holes", fillHoles);
 	gui.addSlider("Hole Kernel Size", currentHoleKernelSize, 1, 20);
 	gui.addSlider("Hole Fill Iterations", currentHoleFillIterations, 1, 20);
@@ -771,21 +771,20 @@ void testApp::keyPressed(int key){
     if(key == '1'){
         loadShaders();
     }
-
-	//RECORD CAMERA
-//	if(key == 'R'){	
-//		toggleCameraRecord();
-//	}
-	
-	//PLAYBACK CAMERA
-//	if(key == 'P'){
-//		toggleCameraPlayback();
-//	}
+    if(key == '2'){
+        if( &renderer.getRGBTexture() == lowResPlayer){
+            renderer.setRGBTexture(*hiResPlayer);                
+        }
+        else{
+            renderer.setRGBTexture(*lowResPlayer);    
+        }
+    }
 	
 	if(key == '\t'){
 		videoTimelineElement.toggleThumbs();
 		depthSequence.toggleThumbs();
 	}
+    
 }
 
 //--------------------------------------------------------------
@@ -973,7 +972,12 @@ void testApp::update(){
 	}
 	
 	if(!currentlyRendering){
-		lowResPlayer->update();	
+        lowResPlayer->update();
+	    if(&renderer.getRGBTexture() == hiResPlayer){
+            hiResPlayer->setFrame(lowResPlayer->getCurrentFrame());
+            hiResPlayer->update();        	
+        }
+        
 		if(!temporalAlignmentMode && lowResPlayer->isFrameNew()){
 			updateRenderer(*lowResPlayer);
 		}
@@ -1110,8 +1114,8 @@ void testApp::updateRenderer(ofVideoPlayer& fromPlayer){
 //--------------------------------------------------------------
 void testApp::draw(){	
 	ofBackground(255*.2);
-	if(allLoaded){
-		
+    
+	if(allLoaded){		
 		if(!viewComps){
             
 			//cout << timeline.getDrawRect().height << " tl height " << endl;
@@ -1205,6 +1209,7 @@ void testApp::draw(){
 				ofRect(*comps[i]->toggle);
 			}
 			else if(comps[i]->batchExport){
+            	cout << "comp  " << i << " is ready for export" << endl;
 				ofSetColor(255,255,100, 200);
 				ofRect(*comps[i]->toggle);
 			}
@@ -1412,7 +1417,12 @@ bool testApp::loadVideoFile(string hiResPath, string lowResPath){
 	videoTimelineElement.setVideoPlayer(*lowResPlayer, videoThumbsPath);
 	lowResPlayer->play();
 	lowResPlayer->setSpeed(0);
-	
+    
+    //TEMP
+    hiResPlayer->play();
+    hiResPlayer->setSpeed(0);
+    hiResPlayer->setVolume(0);
+
 	return true;
 }
 
@@ -1453,6 +1463,7 @@ void testApp::loadCompositions(){
 
 //--------------------------------------------------------------
 void testApp::refreshCompButtons(){
+    cout << "refreshing comp buttons" << endl;
 	ofDirectory dir(mediaBinDirectory);
 	dir.listDir();
 	int mediaFolders = dir.numFiles();
@@ -1475,11 +1486,11 @@ void testApp::refreshCompButtons(){
 			if(currentCompButton >= comps.size()){
 				comp = new Comp();
 				comp->load  = new ofxMSAInteractiveObjectWithDelegate();
-				comp->load->setup();
+//				comp->load->setup();
 				comp->load->setDelegate(this);
 				
 				comp->toggle = new ofxMSAInteractiveObjectWithDelegate();
-				comp->toggle->setup();
+//				comp->toggle->setup();
 				comp->toggle->setDelegate(this);				
 				comps.push_back(comp);
 			}
@@ -1584,8 +1595,11 @@ void testApp::objectDidRelease(ofxMSAInteractiveObject* object, int x, int y, in
 		for(int i = 0; i < comps.size(); i++){
 			
 			if(comps[i]->toggle == object){
+                
 				comps[i]->wasRenderedInBatch = false;
 				comps[i]->batchExport = !comps[i]->batchExport;
+                cout << "selecting comp " << i << " for render " << comps[i]->batchExport << endl;
+                
 				break;
 			}
 
@@ -1676,6 +1690,7 @@ void testApp::objectDidMouseMove(ofxMSAInteractiveObject* object, int x, int y){
 
 //--------------------------------------------------------------
 void testApp::finishRender(){
+    cout << "finishing render" << endl;
 	currentlyRendering = false;
 	comps[currentCompIndex]->batchExport = false;
 	comps[currentCompIndex]->wasRenderedInBatch = true;

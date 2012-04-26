@@ -1,8 +1,11 @@
 # RGBD Toolkit
-
 A software system for filmmaking with Kinect paired with a Digital SLR Video camera.
 
-RGBD PreRelease v. 001 for Mac OS X and Windows
+http://www.rgbdtoolkit.com + http://rgbd.tumblr.com/
+
+Check out the documentation at: https://vimeo.com/39505902
+
+Current Version is RGBD PreRelease v. 002 for Mac OS X and Windows Released on April 26th 2012
 
 This manual was graciously written by the wonderful and talented video installation artist i.m klif (http://vimeo.com/32631165) during our Resonate workshop in Belgrade, Serbia on March 16th 2012 and edited by James George on March 24th 2012.
 
@@ -14,7 +17,7 @@ Calibration process requires fair amount of IR light. The easier and cheapest wa
 
 To create a calibration we take pairs of images from each camera looking at a checkerboard. Shooting is done so that we capture pairs of images using Kinect and DSLR. It is important to remember that we need to shoot in video mode on DSLR and not in photo mode. If you forget this calibration will not work. Zoom on the DSLR should be at the widest setting, and it is not bad idea to put little piece of tape on zoom ring so that you make sure it will not move. If you accidentally move the ring you'll need to redo the calibration process.
 
-Print and mount this [LINK] checkerboard to hard foam board or wood. It is very important to use this particular checkerboard image as the algorithm is searching for exactly that number of corners. During calibration place mount the board to a sturdy stand. It can not be hand held by hand.
+Print and mount this checkerboard (https://github.com/downloads/obviousjim/RGBDToolkit/chessboard_a4.pdf) to hard foam board or wood. It is very important to use this particular checkerboard image as the algorithm is searching for exactly that number of corners. During calibration place mount the board to a sturdy stand. It can not be hand held by hand.
 
 Typically it takes between 13 and 19 pairs of images to get good calibration. We shoot 3 depths: the close one (30-40cm from the lens) takes only one exposure (checkerboard almost fills the frame), middle (80-90cm from the lens) and far (150-200cm from the lens). At each distance other than close, pan the tripod ones take 9 exposures each, 
 

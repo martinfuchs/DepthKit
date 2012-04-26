@@ -8,7 +8,7 @@
 #include "ofxTimeline.h"
 #include "ofxTLVideoPlayer.h"
 #include "ofxTLVideoDepthAlignmentScrubber.h"
-#include "ofxTLDepthImageSequence.h";
+#include "ofxTLDepthImageSequence.h"
 #include "ofxMSAInteractiveObjectDelegate.h"
 #include "ofxSimpleGuiToo.h"
 #include "ofxTLCameraTrack.h"
