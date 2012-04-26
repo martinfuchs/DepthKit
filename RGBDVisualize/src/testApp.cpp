@@ -197,6 +197,8 @@ void testApp::loadShaders(){
     dofBlur.setUniform1i("tex", 0);
     dofBlur.setUniform1i("range", 1);
     dofBlur.end();
+    
+    renderer.reloadShader();
 }
 
 //Labbers: YOU CAN ADD TIMELINE ELEMENTS HERE
@@ -713,302 +715,7 @@ void testApp::drawGeometry(){
     
     ofEnableAlphaBlending();
     fbo1.getTextureReference().draw(fboRectangle);
-    
-    return;
-    /*
-    //OLD WAY --- 
-    if(drawMesh && meshAlpha > 0){
-        
-        swapFbo.begin();
-        ofClear(0,0,0,0);
-        glEnable(GL_DEPTH_TEST);
-
-        cam.begin(renderFboRect);
-        ofPushStyle();
-		renderer.drawMesh();
-		ofPopStyle();
-        glDisable(GL_DEPTH_TEST);
-
-        cam.end();
-        
-        swapFbo.end();
-
-        //composite
-        fbo.begin();
-        
-        ofPushStyle();
-        //ofEnableAlphaBlending();
-        ofEnableBlendMode(OF_BLENDMODE_ADD);
-        ofSetColor(255, 255, 255, meshAlpha*255);
-        swapFbo.getTextureReference().draw(renderFboRect);
-        ofPopStyle();
-        
-        fbo.end();       
-        
-	}
-    
-    if(drawWireframe){
-        
-    	if(wireAlpha > 0){
-
-            swapFbo.begin();
-            ofClear(0,0,0,0);
-            
-            cam.begin(renderFboRect);
-            ofPushStyle();
-            
-            ofEnableAlphaBlending();
-            glEnable(GL_DEPTH_TEST);
-            
-            if(wireframeSelfOccludes){
-                //occlude points behind the mesh
-                ofPushMatrix();
-                ofSetColor(0, 0, 0, 0);
-                ofTranslate(camTranslateVec);
-                renderer.drawMesh(false);
-                ofPopMatrix();
-            }
-            
-            ofEnableAlphaBlending();
-            glEnable(GL_DEPTH_TEST);
-            
-            ofSetColor(255);        
-            ofSetLineWidth(timeline.getKeyframeValue("Wireframe Thickness"));
-            renderer.drawWireFrame();
-            ofPopStyle();
-            
-            glDisable(GL_DEPTH_TEST);
-            cam.end();
-            
-            swapFbo.end();
-        
-            //composite
-            fbo.begin();
-            
-            ofPushStyle();
-            ofEnableAlphaBlending();
-            ofSetColor(255, 255, 255, wireAlpha*255);
-            float blur = timeline.getKeyframeValue("Wireframe Blur");
-            if(blur > 0){
-                gaussianBlur.begin();
-                gaussianBlur.setUniform2f("sampleOffset", 0, blur);
-                swapFbo.getTextureReference().draw(renderFboRect);
-                
-                gaussianBlur.setUniform2f("sampleOffset", blur, 0);
-                swapFbo.getTextureReference().draw(renderFboRect);
-
-                gaussianBlur.end();
-            }
-            else{
-                swapFbo.getTextureReference().draw(renderFboRect);
-            }
-            ofPopStyle();
-		}
-        
-        fbo.end();  
-        
-        if(wireframeDOFAlpha > 0){
-
-            float dofFocalDistance = timeline.getKeyframeValue("Wireframe DOF Distance");
-            float dofFocalRange = timeline.getKeyframeValue("Wireframe DOF Range");
-			float dofBlurAmount = timeline.getKeyframeValue("Wireframe DOF Blur");
-
-            //DRAW THE DOF B&W BUFFER
-            dofBuffer.begin();
-            ofClear(0,0,0,0);
-
-            cam.begin(renderFboRect);
-            
-            dofRange.begin();
-            dofRange.setUniform1f("focalDistance", dofFocalDistance);
-            dofRange.setUniform1f("focalRange", dofFocalRange);
-            glEnable(GL_DEPTH_TEST);
-            renderer.drawMesh(false);
-            glDisable(GL_DEPTH_TEST);
-            dofRange.end();
-            cam.end();
-
-            dofBuffer.end();
-            
-            swapFbo.begin();
-			ofClear(0,0,0,0);
-            cam.begin(renderFboRect);
-            ofPushStyle();
-            
-            ofEnableAlphaBlending();
-            glEnable(GL_DEPTH_TEST);
-            
-            ofSetColor(255);        
-            ofSetLineWidth(timeline.getKeyframeValue("Wireframe DOF Thickness"));
-            renderer.drawWireFrame();
-            ofPopStyle();
-            
-            glDisable(GL_DEPTH_TEST);
-            cam.end();
-
-            swapFbo.end();
-		    
-            //composite
-            fbo.begin();
-            
-            ofPushStyle();
-            ofEnableBlendMode(OF_BLENDMODE_ADD);
-            
-            ofSetColor(255, 255, 255, wireframeDOFAlpha*255);
-            dofBlur.begin();
-            dofBlur.setUniform2f("sampleOffset", dofBlurAmount, 0);
-            
-            //mulit-text
-            //our shader uses two textures, the top layer and the alpha
-            //we can load two textures into a shader using the multi texture coordinate extensions
-            glActiveTexture(GL_TEXTURE0_ARB);
-            swapFbo.getTextureReference().bind();
-            
-            glActiveTexture(GL_TEXTURE1_ARB);
-            dofBuffer.getTextureReference().bind();
-            
-            //draw a quad the size of the frame
-            glBegin(GL_QUADS);
-            
-            //move the mask around with the mouse by modifying the texture coordinates
-            glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, 0);
-            glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, 0);		
-            glVertex2f(0, 0);
-            
-            glMultiTexCoord2d(GL_TEXTURE0_ARB, renderFboRect.width, 0);
-            glMultiTexCoord2d(GL_TEXTURE1_ARB, renderFboRect.width, 0);		
-            glVertex2f(renderFboRect.width, 0);
-            
-            glMultiTexCoord2d(GL_TEXTURE0_ARB, renderFboRect.width, renderFboRect.height);
-            glMultiTexCoord2d(GL_TEXTURE1_ARB, renderFboRect.width, renderFboRect.height);
-            glVertex2f(renderFboRect.width, renderFboRect.height);
-            
-            glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, renderFboRect.height);
-            glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, renderFboRect.height);		
-            glVertex2f(0, renderFboRect.height);
-            
-            glEnd();
-            
-            //deactive and clean up
-            glActiveTexture(GL_TEXTURE1_ARB);
-            dofBuffer.getTextureReference().unbind();
-            
-            glActiveTexture(GL_TEXTURE0_ARB);
-            swapFbo.getTextureReference().unbind();
-            
-            
-            dofBlur.end();
-            
-            ofPopStyle();
-            
-            fbo.end();     
-        }
-
-    }
-    
-    if(drawPointcloud){
-        if(pointDOFAlpha > 0){
-            glDisable(GL_DEPTH_TEST);
-            swapFbo.begin();
-            ofClear(0,0,0,0);
-            
-            cam.begin(renderFboRect);
-                        
-            ofPushStyle();
-            glPushAttrib(GL_ENABLE_BIT);
-            
-            ofEnableBlendMode(OF_BLENDMODE_SCREEN);
-            glEnable(GL_POINT_SMOOTH); // makes circular points
-            glEnable(GL_VERTEX_PROGRAM_POINT_SIZE_ARB);	// allows per-point size
-            glDisable(GL_DEPTH_TEST);		
-            
-            DOFCloud.begin();
-            DOFCloud.setUniform1f("focusDistance", timeline.getKeyframeValue("Point DOF Focal") );
-            DOFCloud.setUniform1f("aperture", timeline.getKeyframeValue("Point DOF Aperture") );
-            DOFCloud.setUniform1f("minPointSize", timeline.getKeyframeValue("Point DOF Size"));
-            DOFCloud.setUniform1f("blowoutReduce", timeline.getKeyframeValue("Point DOF Reduce Blowout"));
-            renderer.setupProjectionUniforms(DOFCloud);
-            renderer.drawPointCloud(false);
-            renderer.restortProjection();
-
-            
-            DOFCloud.end();
-            
-            glPopAttrib();
-            ofPopStyle();
-            
-            cam.end();
-            
-            swapFbo.end();
-            
-            //composite
-            fbo.begin();
-            
-            ofPushStyle();
-            ofEnableAlphaBlending();
-            ofSetColor(255, 255, 255, pointDOFAlpha*255);
-            swapFbo.getTextureReference().draw(renderFboRect);
-            ofPopStyle();
-            
-            fbo.end();
-         
-        }
-
-        if(pointAlpha > 0){
-            
-            //render
-            swapFbo.begin();
-            ofClear(0,0,0,0);
-            
-            cam.begin(renderFboRect);
-            
-            ofPushStyle();
-            //occlude points behind the mesh
-            
-            ofEnableAlphaBlending();
-            glEnable(GL_DEPTH_TEST);
-            if(pointsSelfOcclude){
-                ofSetColor(0, 0, 0, 0);
-                ofTranslate(camTranslateVec);
-                renderer.drawMesh(false);
-            }
-            
-            ofSetColor(255);
-//            glEnable(GL_DEPTH_TEST);
-            ofEnableAlphaBlending();
-            glEnable(GL_POINT_SMOOTH); // makes circular points
-            glEnable(GL_VERTEX_PROGRAM_POINT_SIZE_ARB);	// allows per-point size
-            glPointSize(timeline.getKeyframeValue("Point Size"));
-            renderer.drawPointCloud();
-            ofPopStyle();
-            
-            glDisable(GL_DEPTH_TEST);
-            cam.end();
-            
-            swapFbo.end();
-            
-            //composite
-            fbo.begin();
-
-            ofPushStyle();
-            ofEnableAlphaBlending();
-            ofSetColor(255, 255, 255, pointAlpha*255);
-            swapFbo.getTextureReference().draw(renderFboRect);
-            ofPopStyle();
-            
-            fbo.end();
-            
-        }
-    }
-    
-    ofPushStyle();
-    ofSetColor(0);
-    ofRect(fboRectangle);
-    ofPopStyle();
-    
-    ofEnableAlphaBlending();
-    fbo.getTextureReference().draw(fboRectangle);
- 	*/   
+      
 }
 
 //************************************************************
@@ -1353,7 +1060,6 @@ void testApp::update(){
 	}
 	
     if(timeline.getUserChangedValue()){
-        cout << "value changed" << endl;
     	updateRenderer(*lowResPlayer);
     }
     
@@ -1383,11 +1089,11 @@ void testApp::updateRenderer(ofVideoPlayer& fromPlayer){
 		renderer.setDepthImage(depthSequence.currentDepthRaw);
 	}
 
-    holeFilledPixels.setFromExternalPixels(depthSequence.currentDepthRaw, 640, 480, 1);
+    holeFilledPixels.setFromExternalPixels(depthSequence.currentDepthRaw.getPixels(), 640, 480, 1);
     holeFiller.close(holeFilledPixels);
-	
+
     processDepthFrame();
-    
+
     renderer.setDepthImage(holeFilledPixels.getPixels());	
 	renderer.update();
 	processGeometry();
@@ -1398,7 +1104,6 @@ void testApp::updateRenderer(ofVideoPlayer& fromPlayer){
 	
 	currentDepthFrame = depthSequence.getSelectedFrame();
 
-    cout << "renderer is dirty" << endl;
     rendererDirty = true;
 }
 
@@ -1649,7 +1354,7 @@ bool testApp::loadDepthSequence(string path){
 	
 	depthSequence.setup();
 	
-	depthPixelDecodeBuffer = depthSequence.currentDepthRaw;
+	depthPixelDecodeBuffer = depthSequence.currentDepthRaw.getPixels();
 	renderer.setDepthImage(depthPixelDecodeBuffer);
 	
 	return depthSequence.loadSequence(path);
