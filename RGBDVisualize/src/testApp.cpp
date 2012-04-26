@@ -249,9 +249,9 @@ void testApp::populateTimelineElements(){
     
     timeline.addPage("Depth Distortion", true);
     timeline.addKeyframes("Noise", currentCompositionDirectory + "DepthNoise.xml", ofRange(0, 5000) );
-    timeline.addKeyframes("Sine Amplitude", currentCompositionDirectory + "SineAmp.xml", ofRange(0, 15) );
-    timeline.addKeyframes("Sine Speed", currentCompositionDirectory + "SineSpeed.xml", ofRange(-200, 200) );
-    timeline.addKeyframes("Sine Period", currentCompositionDirectory + "SinePeriod.xml", ofRange(.01, 10) );
+    timeline.addKeyframes("Sine Amplitude", currentCompositionDirectory + "SineAmp.xml", ofRange(0, sqrtf(100)) );
+    timeline.addKeyframes("Sine Frequency", currentCompositionDirectory + "SineFrequency.xml", ofRange(.00, 1) );
+    timeline.addKeyframes("Sine Speed", currentCompositionDirectory + "SineSpeed.xml", ofRange(-sqrtf(1.5), sqrtf(1.5)), 0 );
     
     timeline.addPage("Geometry  Distortion", true);
     timeline.addKeyframes("Perlin Amp", "PerlinAmp.xml", ofRange(0, 200.0) );
@@ -277,11 +277,13 @@ void testApp::processDepthFrame(){
     if(!drawDepthDistortion) return;
     
     float noise = timeline.getKeyframeValue("Noise");
-    float sineAmp = timeline.getKeyframeValue("Sine Amplitude");
-    sineAmp *= sineAmp;
     float sineSpeed = timeline.getKeyframeValue("Sine Speed");
-    float sinePeriod = timeline.getKeyframeValue("Sine Period");
-    
+    float sineAmp = timeline.getKeyframeValue("Sine Amplitude");
+    float sineFrequency = timeline.getKeyframeValue("Sine Frequency");
+    sineFrequency *= sineFrequency;
+    sineSpeed = sineSpeed;
+    sineAmp *= sineAmp;
+
 	for(int y = 0; y <	480; y++){
 		for(int x = 0; x < 640; x++){
 			int index = y*640+x;
@@ -296,8 +298,8 @@ void testApp::processDepthFrame(){
                 holeFilledPixels.getPixels()[index] += ofRandom(noise);   
             }
             
-            if(sineAmp > 0){
-                holeFilledPixels.getPixels()[index] += sin( y * sinePeriod + timeline.getCurrentFrame() * sineSpeed ) * sineAmp;
+            if(sineAmp > 0 && holeFilledPixels.getPixels()[index] > 0){
+                holeFilledPixels.getPixels()[index] += sin( y * sineFrequency + timeline.getCurrentFrame() * sineSpeed ) * sineAmp;
             }
             			
 			//for example delete every other line
