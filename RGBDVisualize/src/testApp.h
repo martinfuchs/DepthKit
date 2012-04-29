@@ -143,8 +143,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	
 
     
-    bool pointsSelfOcclude;
-    bool wireframeSelfOccludes;
+    bool selfOcclude;
+//    bool wireframeSelfOccludes;
 	bool currentLockCamera;
 	
 	bool shouldResetDuration;

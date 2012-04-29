@@ -136,7 +136,6 @@
 		E790FB381510FA2C00157AAC /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = E790FABD1510FA2B00157AAC /* LICENSE.txt */; };
 		E790FB391510FA2C00157AAC /* README.markdown in Resources */ = {isa = PBXBuildFile; fileRef = E790FABE1510FA2C00157AAC /* README.markdown */; };
 		E790FB3A1510FA2C00157AAC /* ofxKinect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E790FAC11510FA2C00157AAC /* ofxKinect.cpp */; };
-		E7EF809914DE5474007CD3CA /* RGBD.icns in Resources */ = {isa = PBXBuildFile; fileRef = E7EF809714DE5460007CD3CA /* RGBD.icns */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -451,7 +450,6 @@
 		E790FAC01510FA2C00157AAC /* ofxBase3DVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxBase3DVideo.h; sourceTree = "<group>"; };
 		E790FAC11510FA2C00157AAC /* ofxKinect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxKinect.cpp; sourceTree = "<group>"; };
 		E790FAC21510FA2C00157AAC /* ofxKinect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxKinect.h; sourceTree = "<group>"; };
-		E7EF809714DE5460007CD3CA /* RGBD.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = RGBD.icns; path = bin/data/RGBD.icns; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -794,7 +792,6 @@
 			isa = PBXGroup;
 			children = (
 				E77D88731497D5FC00713F52 /* Project.xcconfig */,
-				E7EF809714DE5460007CD3CA /* RGBD.icns */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
@@ -1561,7 +1558,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E7EF809914DE5474007CD3CA /* RGBD.icns in Resources */,
 				E790FB0E1510FA2C00157AAC /* APACHE20 in Resources */,
 				E790FB101510FA2C00157AAC /* CONTRIB in Resources */,
 				E790FB121510FA2C00157AAC /* GPL2 in Resources */,

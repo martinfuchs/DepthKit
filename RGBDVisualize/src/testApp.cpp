@@ -37,8 +37,7 @@ void testApp::setup(){
 	enableVideoInOut = false;
 	
 	currentZFuzz = 0;
-    pointsSelfOcclude = false;
-    wireframeSelfOccludes = false;
+    selfOcclude = false;
     
 	hiResPlayer = NULL;
 	lowResPlayer = NULL;
@@ -80,10 +79,16 @@ void testApp::setup(){
 	fboRectangle = ofRectangle(250, 100, fboWidth, fboHeight);
     swapFbo.allocate(fboWidth, fboHeight, GL_RGBA, 4);
 	curbuf = 0;
+    /*
     fbo1.allocate(fboWidth, fboHeight, GL_RGBA32F_ARB);
 	fbo2.allocate(fboWidth, fboHeight, GL_RGBA32F_ARB);
     dofBuffer.allocate(fboWidth, fboHeight, GL_RGB32F_ARB, 4);
     dofBlurBuffer.allocate(fboWidth, fboHeight, GL_RGB32F_ARB);
+    */
+    fbo1.allocate(fboWidth, fboHeight, GL_RGBA);
+	fbo2.allocate(fboWidth, fboHeight, GL_RGBA);
+    dofBuffer.allocate(fboWidth, fboHeight, GL_RGB, 4);
+    dofBlurBuffer.allocate(fboWidth, fboHeight, GL_RGBA);
     
     fbo1.begin();
     ofClear(0,0,0,0);
@@ -127,8 +132,8 @@ void testApp::setup(){
 	gui.addToggle("Draw Mesh", drawMesh);
 	gui.addToggle("Depth Distortion", drawDepthDistortion);
 	gui.addToggle("Geometry Distortion", drawGeometryDistortion);
-	gui.addToggle("Points Self Occlude", pointsSelfOcclude);
-	gui.addToggle("Wireframe Self Occlude", wireframeSelfOccludes);
+	gui.addToggle("Self Occlude", selfOcclude);
+//	gui.addToggle("Wireframe Self Occlude", wireframeSelfOccludes);
     gui.addToggle("Draw DOF", drawDOF);
     
 	gui.addPage("Camera");
@@ -150,7 +155,7 @@ void testApp::setup(){
     gui.addToggle("Mirror", currentMirror);
 	gui.addSlider("X Multiply Shift", currentXMultiplyShift, -.15, .15);
 	gui.addSlider("Y Multiply Shift", currentYMultiplyShift, -.15, .15);
-	gui.addToggle("Fill Holes", fillHoles);
+	gui.addToggle("Fill Holes", fillHoles);	
 	gui.addSlider("Hole Kernel Size", currentHoleKernelSize, 1, 20);
 	gui.addSlider("Hole Fill Iterations", currentHoleFillIterations, 1, 20);
 	gui.addToggle("TemporalAlignmentMode", temporalAlignmentMode);
@@ -211,10 +216,9 @@ void testApp::populateTimelineElements(){
     //rendering
     timeline.addPage("Global Rendering", true);
     timeline.addKeyframes("Motion Trail Decay", currentCompositionDirectory + "motionTrailDecay.xml", ofRange(.05 ,1.0), 1.0 );
-    timeline.addKeyframes("Simplify", currentCompositionDirectory + "simplify.xml", ofRange(1, 8), 2.);
+    timeline.addKeyframes("Simplify", currentCompositionDirectory + "simplify.xml", ofRange(1, 8), 2);
     timeline.addKeyframes("Edge Snip", currentCompositionDirectory + "edgeSnip.xml", ofRange(1.0, 6000), 6000 );
-    timeline.addKeyframes("Z Threshold", currentCompositionDirectory + "zThreshold.xml", ofRange(1.0, 6000), 6000 );
-
+    timeline.addKeyframes("Z Threshold", currentCompositionDirectory + "zThreshold.xml", ofRange(1.0, sqrtf(6000)), sqrtf(6000) );
 
     timeline.addPage("Mesh", true);
     timeline.addKeyframes("Mesh Alpha", currentCompositionDirectory + "meshAlpha.xml", ofRange(0,1.0) );
@@ -225,7 +229,6 @@ void testApp::populateTimelineElements(){
     timeline.addPage("Wireframe", true);
     timeline.addKeyframes("Wireframe Alpha", currentCompositionDirectory + "wireframeAlpha.xml", ofRange(0,1.0), 1.0 );
     timeline.addKeyframes("Wireframe Thickness", currentCompositionDirectory + "wireframeThickness.xml", ofRange(1.0,sqrtf(20.0)) );
-    timeline.addKeyframes("Wireframe Blur", currentCompositionDirectory + "wireframeBlur.xml", ofRange(0, 5.0) );
      
     timeline.addPage("Point", true);
     timeline.addKeyframes("Point Alpha", currentCompositionDirectory + "pointAlpha.xml", ofRange(0,1.0) );
@@ -235,18 +238,7 @@ void testApp::populateTimelineElements(){
     timeline.addKeyframes("DOF Distance", currentCompositionDirectory + "DOFDistance.xml", ofRange(0,sqrtf(1000.0)), 10 );
     timeline.addKeyframes("DOF Range", currentCompositionDirectory + "DOFRange.xml", ofRange(10,sqrtf(500.0)) );
     timeline.addKeyframes("DOF Blur", currentCompositionDirectory + "DOFBlur.xml", ofRange(0,5.0) );
-//    timeline.addKeyframes("Fog Near", currentCompositionDirectory + "FogNear.xml", ofRange(0,5000.0), 5000 );
-//    timeline.addKeyframes("Fog Range", currentCompositionDirectory + "FogRange.xml", ofRange(0,5000.0), 5000 );
 
-    /*
-    timeline.addPage("Point DOF", true);
-    timeline.addKeyframes("Point DOF Size", currentCompositionDirectory + "dofPointSize.xml", ofRange(1.0, 20.0) );	
-    timeline.addKeyframes("Point DOF Alpha", currentCompositionDirectory + "dofPointAlpha.xml", ofRange(0, 1.0) );
-    timeline.addKeyframes("Point DOF Focal", currentCompositionDirectory + "dofPointFocalDistance.xml", ofRange(0, 600) );
-    timeline.addKeyframes("Point DOF Aperture", currentCompositionDirectory + "dofPointAperture.xml", ofRange(0, .1) );
-    timeline.addKeyframes("Point DOF Reduce Blowout", currentCompositionDirectory + "dofBlowoutReduce.xml", ofRange(1.0, 20.0) );
-    */
-    
     timeline.addPage("Depth Distortion", true);
     timeline.addKeyframes("Noise", currentCompositionDirectory + "DepthNoise.xml", ofRange(0, 5000) );
     timeline.addKeyframes("Sine Amplitude", currentCompositionDirectory + "SineAmp.xml", ofRange(0, sqrtf(100)) );
@@ -295,17 +287,15 @@ void testApp::processDepthFrame(){
 			//*
 			//***************************************************			
             if(noise > 0){
-                holeFilledPixels.getPixels()[index] += ofRandom(noise);   
+                //holeFilledPixels.getPixels()[index] += ofRandom(noise);   
+                depthSequence.currentDepthRaw.getPixels()[index] += ofRandom(noise);  
             }
             
             if(sineAmp > 0 && holeFilledPixels.getPixels()[index] > 0){
-                holeFilledPixels.getPixels()[index] += sin( y * sineFrequency + timeline.getCurrentFrame() * sineSpeed ) * sineAmp;
+                //holeFilledPixels.getPixels()[index] += sin( y * sineFrequency + timeline.getCurrentFrame() * sineSpeed ) * sineAmp;
+                depthSequence.currentDepthRaw.getPixels()[index] += sin( y * sineFrequency + timeline.getCurrentFrame() * sineSpeed ) * sineAmp;
             }
             			
-			//for example delete every other line
-//			if(y % 4 == 0){
-//				depthPixelDecodeBuffer[index] = 0;
-//			}
 		}
 	}
 }
@@ -411,6 +401,7 @@ void testApp::drawGeometry(){
         
         fbo.end();
         */
+        
         ofBlendMode blendMode = OF_BLENDMODE_SCREEN;
         
         //new way of doing trails that kills alpha backgrounds.
@@ -465,7 +456,7 @@ void testApp::drawGeometry(){
             ofEnableAlphaBlending();
             glEnable(GL_DEPTH_TEST);
             
-            if(wireframeSelfOccludes){
+            if(selfOcclude){
                 //occlude points behind the mesh
                 ofPushMatrix();
                 ofSetColor(0, 0, 0, 0);
@@ -474,8 +465,8 @@ void testApp::drawGeometry(){
                 ofPopMatrix();
             }
             
-            //ofEnableAlphaBlending();
-            ofEnableBlendMode(blendMode);
+            ofEnableAlphaBlending();
+            //ofEnableBlendMode(blendMode);
             glEnable(GL_DEPTH_TEST);
             
             ofSetColor(255);        
@@ -516,7 +507,7 @@ void testApp::drawGeometry(){
             
             ofEnableAlphaBlending();
             glEnable(GL_DEPTH_TEST);
-            if(pointsSelfOcclude){
+            if(selfOcclude){
                 ofPushMatrix();
                 ofSetColor(0, 0, 0, 0);
                 ofTranslate(camTranslateVec);
@@ -773,14 +764,14 @@ void testApp::keyPressed(int key){
     if(key == '1'){
         loadShaders();
     }
-    if(key == '2'){
-        if( &renderer.getRGBTexture() == lowResPlayer){
-            renderer.setRGBTexture(*hiResPlayer);                
-        }
-        else{
-            renderer.setRGBTexture(*lowResPlayer);    
-        }
-    }
+//    if(key == '2'){
+//        if( &renderer.getRGBTexture() == lowResPlayer){
+//            renderer.setRGBTexture(*hiResPlayer);                
+//        }
+//        else{
+//            renderer.setRGBTexture(*lowResPlayer);    
+//        }
+//    }
 	
 	if(key == '\t'){
 		videoTimelineElement.toggleThumbs();
@@ -810,7 +801,7 @@ void testApp::mousePressed(int x, int y, int button){
 
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){
-	
+	rendererDirty = true; //catch all for buttons...
 }
 
 
@@ -907,8 +898,8 @@ void testApp::update(){
 	}
 	
 	if(startRenderMode && !hasHiresVideo){
-		ofSystemAlertDialog("This composition doesn't have a hi res movie so we can't render!");
-		startRenderMode = false;
+//		ofSystemAlertDialog("This composition doesn't have a hi res movie so we can't render!");
+//		startRenderMode = false;
 	}
 	
 	if(startRenderMode){
@@ -932,13 +923,16 @@ void testApp::update(){
 		currentlyRendering = true;
 		saveFolder = currentCompositionDirectory + "rendered" + pathDelim;
 		ofDirectory outputDirectory(saveFolder);
-		if(!outputDirectory.exists()) outputDirectory.create(true);
-		hiResPlayer->play();
-		hiResPlayer->setSpeed(0);
-		hiResPlayer->setVolume(0);
-		
-		renderer.setRGBTexture(*hiResPlayer);
-		renderer.setTextureScale(1.0, 1.0);
+		if(!outputDirectory.exists()){
+	         outputDirectory.create(true);   
+        }
+        
+        if(hasHiresVideo){
+			hiResPlayer->play();
+			hiResPlayer->setSpeed(0);
+			hiResPlayer->setVolume(0);
+            renderer.setRGBTexture(*hiResPlayer);
+		}        
         
 		lastRenderFrame = currentRenderFrame-1;
 		numFramesToRender = timeline.getOutFrame() - timeline.getInFrame();
@@ -951,9 +945,17 @@ void testApp::update(){
 	if(currentlyRendering){
 		//hiResPlayer->setFrame(currentRenderFrame % hiResPlayer->getTotalNumFrames());
 		timeline.setCurrentFrame(currentRenderFrame);
-		videoTimelineElement.selectFrame(currentRenderFrame);		
-		hiResPlayer->setFrame(videoTimelineElement.selectFrame(currentRenderFrame));
-		hiResPlayer->update();
+		videoTimelineElement.selectFrame(currentRenderFrame);
+	    if(&renderer.getRGBTexture() == hiResPlayer){
+			hiResPlayer->setFrame(videoTimelineElement.selectFrame(currentRenderFrame));
+			hiResPlayer->update();
+            updateRenderer(*hiResPlayer);		
+        }
+        else{
+			lowResPlayer->setFrame(videoTimelineElement.selectFrame(currentRenderFrame));
+			lowResPlayer->update();
+            updateRenderer(*lowResPlayer);		            
+        }
 		
 //		cout << "would have set hi res frame to " << currentRenderFrame % hiResPlayer->getTotalNumFrames() << endl;
 //		cout << "instead set it to " << hiResPlayer->getCurrentFrame() << endl;
@@ -970,7 +972,7 @@ void testApp::update(){
 		//		cout << "	set to percent " << 1.0*currentRenderFrame/hiResPlayer->getTotalNumFrames() << " actual percent " << hiResPlayer->getPosition() << endl;
 		////////
 		
-		updateRenderer(*hiResPlayer);		
+		
 	}
 	
 	if(!currentlyRendering){
@@ -1024,6 +1026,7 @@ void testApp::update(){
 	
     renderer.edgeCull = timeline.getKeyframeValue("Edge Snip");
     renderer.farClip  = timeline.getKeyframeValue("Z Threshold");
+    renderer.farClip *= renderer.farClip;
 	renderer.meshRotate.x = timeline.getKeyframeValue("X Rotate");
     renderer.meshRotate.y = timeline.getKeyframeValue("Y Rotate");
     renderer.meshRotate.z = timeline.getKeyframeValue("Z Rotate");
@@ -1031,7 +1034,6 @@ void testApp::update(){
 
 	if(renderer.getSimplification() != simplification){
     	renderer.setSimplification(simplification);
-        cout << "setting simplification " << renderer.getSimplification() << " and " << simplification << endl;
     }
     
 	if(currentXMultiplyShift != renderer.xmult ||
@@ -1043,17 +1045,10 @@ void testApp::update(){
 	   currentHoleKernelSize != holeFiller.getKernelSize() ||
        currentHoleFillIterations != holeFiller.getIterations())
 	{		
-//		renderer.xshift = currentXAdditiveShift;
-//		renderer.yshift = currentYAdditiveShift;
 		renderer.xmult = currentXMultiplyShift;
 		renderer.ymult = currentYMultiplyShift;
-//		renderer.xscale = currentXScale;
-//		renderer.yscale = currentYScale;
-//		renderer.setSimplification(currentSimplify);
 		renderer.ZFuzz = currentZFuzz;
 		renderer.mirror = currentMirror;
-//		renderer.edgeCull = currentEdgeCull;
-//		renderer.farClip = farClip;
 		
 		holeFiller.enable = fillHoles;
 		holeFiller.setKernelSize(currentHoleKernelSize);
@@ -1095,12 +1090,13 @@ void testApp::updateRenderer(ofVideoPlayer& fromPlayer){
 		renderer.setDepthImage(depthSequence.currentDepthRaw);
 	}
 
-    holeFilledPixels.setFromExternalPixels(depthSequence.currentDepthRaw.getPixels(), 640, 480, 1);
-    holeFiller.close(holeFilledPixels);
-
+    //holeFilledPixels.setFromExternalPixels(depthSequence.currentDepthRaw.getPixels(), 640, 480, 1);
+    //holeFiller.close(holeFilledPixels);
+	holeFiller.close(depthSequence.currentDepthRaw);
     processDepthFrame();
 
-    renderer.setDepthImage(holeFilledPixels.getPixels());	
+    //renderer.setDepthImage(holeFilledPixels.getPixels());	
+    renderer.setDepthImage(depthSequence.currentDepthRaw);	
 	renderer.update();
 	processGeometry();
 	
@@ -1116,7 +1112,14 @@ void testApp::updateRenderer(ofVideoPlayer& fromPlayer){
 //--------------------------------------------------------------
 void testApp::draw(){	
 	ofBackground(255*.2);
-    
+    if(comps.size() == 0){
+	    newCompButton->setPosAndSize(50, 50, 200, 200);	
+    	saveCompButton->setPosAndSize(0, -200, 100, 25);//hidden
+    }
+    else{
+        newCompButton->setPosAndSize(comps[0]->toggle->x, comps[0]->toggle->y-25, 100, 25);	
+    }
+
 	if(allLoaded){		
 		if(!viewComps){
             
@@ -1156,9 +1159,8 @@ void testApp::draw(){
                 lowResPlayer->draw(colorAlignAssistRect);
 				depthSequence.currentDepthImage.draw(depthAlignAssistRect);
             }
-            else{
+            else if(drawDOF){
 				dofBuffer.getTextureReference().draw(colorAlignAssistRect);
-    	        //dofBlurBuffer.getTextureReference().draw(colorAlignAssistRect);
             }
             
 			if(currentlyRendering){
@@ -1211,7 +1213,6 @@ void testApp::draw(){
 				ofRect(*comps[i]->toggle);
 			}
 			else if(comps[i]->batchExport){
-            	cout << "comp  " << i << " is ready for export" << endl;
 				ofSetColor(255,255,100, 200);
 				ofRect(*comps[i]->toggle);
 			}
@@ -1248,16 +1249,20 @@ bool testApp::loadNewProject(){
 		return false;
 	}
 	
+    pauseRender = false;
+    drawWireframe = true;
+
 	saveComposition();
 	refreshCompButtons();
 	loadTimelineFromCurrentComp();
 	
+    viewComps = false;
 	allLoaded = true;
+    
 	return true;
 }
 
 bool testApp::loadAssetsFromCompositionDirectory(string currentMediaFolder) {
-//	cout << "loading media folder " << currentMediaFolder << endl;
 	
 	if(!playerElementAdded){
 		populateTimelineElements();
@@ -1394,18 +1399,18 @@ bool testApp::loadVideoFile(string hiResPath, string lowResPath){
 		return false;		
 	}
 	
-	if(hasHiresVideo){
-		renderer.setTextureScale(1.0*lowResPlayer->getWidth()/hiResPlayer->getWidth(), 
-								 1.0*lowResPlayer->getHeight()/hiResPlayer->getHeight());
-	}
-	else { //refer to the calibration stats
-
-		float fullsizedWidth  = renderer.getRGBCalibration().getDistortedIntrinsics().getImageSize().width;
-		float fullsizedHeight = renderer.getRGBCalibration().getDistortedIntrinsics().getImageSize().height; 
-//		cout << "image size is " << fullsizedWidth << " " << fullsizedHeight << endl;
-		renderer.setTextureScale(1.0*lowResPlayer->getWidth()/fullsizedWidth, 
-								 1.0*lowResPlayer->getHeight()/fullsizedHeight);
-	}
+//	if(hasHiresVideo){
+//		renderer.setTextureScale(1.0*lowResPlayer->getWidth()/hiResPlayer->getWidth(), 
+//								 1.0*lowResPlayer->getHeight()/hiResPlayer->getHeight());
+//	}
+//	else { //refer to the calibration stats
+//
+//		float fullsizedWidth  = renderer.getRGBCalibration().getDistortedIntrinsics().getImageSize().width;
+//		float fullsizedHeight = renderer.getRGBCalibration().getDistortedIntrinsics().getImageSize().height; 
+////		cout << "image size is " << fullsizedWidth << " " << fullsizedHeight << endl;
+//		renderer.setTextureScale(1.0*lowResPlayer->getWidth()/fullsizedWidth, 
+//								 1.0*lowResPlayer->getHeight()/fullsizedHeight);
+//	}
 	
 	renderer.setRGBTexture(*lowResPlayer);
 	string videoThumbsPath = ofFilePath::removeExt(lowResPath);
@@ -1421,9 +1426,9 @@ bool testApp::loadVideoFile(string hiResPath, string lowResPath){
 	lowResPlayer->setSpeed(0);
     
     //TEMP
-    hiResPlayer->play();
-    hiResPlayer->setSpeed(0);
-    hiResPlayer->setVolume(0);
+//    hiResPlayer->play();
+//    hiResPlayer->setSpeed(0);
+//    hiResPlayer->setVolume(0);
 
 	return true;
 }
@@ -1540,18 +1545,18 @@ void testApp::saveComposition(){
 	projectsettings.setValue("drawMesh", drawMesh);
     projectsettings.setValue("drawDepthDistortion", drawDepthDistortion);
 	projectsettings.setValue("drawGeometryDistortion", drawGeometryDistortion);
-    projectsettings.setValue("pointsSelfOcclude",pointsSelfOcclude);
-	projectsettings.setValue("wireframeSelfOccludes",wireframeSelfOccludes);
+    projectsettings.setValue("selfOcclude",selfOcclude);
+//	projectsettings.setValue("wireframeSelfOccludes",wireframeSelfOccludes);
 	projectsettings.setValue("drawDOF",drawDOF);
 
 	projectsettings.setValue("cameraSpeed", cam.speed);
 	projectsettings.setValue("cameraRollSpeed", cam.rollSpeed);
 	projectsettings.setValue("xmult", currentXMultiplyShift);
 	projectsettings.setValue("ymult", currentYMultiplyShift);
-	projectsettings.setValue("xshift", currentXAdditiveShift);
-	projectsettings.setValue("yshift", currentYAdditiveShift);
-	projectsettings.setValue("xscale", currentXScale);
-	projectsettings.setValue("yscale", currentYScale);
+//	projectsettings.setValue("xshift", currentXAdditiveShift);
+//	projectsettings.setValue("yshift", currentYAdditiveShift);
+//	projectsettings.setValue("xscale", currentXScale);
+//	projectsettings.setValue("yscale", currentYScale);
 	
     projectsettings.setValue("fillholes", fillHoles);
     projectsettings.setValue("kernelSize", currentHoleKernelSize);
@@ -1635,8 +1640,8 @@ bool testApp::loadCompositionAtIndex(int i){
 	drawGeometryDistortion= projectsettings.getValue("drawGeometryDistortion", true);
     drawDOF = projectsettings.getValue("drawDOF",true);
     
-    pointsSelfOcclude = projectsettings.getValue("pointsSelfOcclude", false);
-	wireframeSelfOccludes = projectsettings.getValue("wireframeSelfOccludes",false);
+//    pointsSelfOcclude = projectsettings.getValue("pointsSelfOcclude", false);
+	selfOcclude = projectsettings.getValue("selfOcclude",false);
 
 	currentXMultiplyShift = projectsettings.getValue("xmult", 0.);
 	currentYMultiplyShift = projectsettings.getValue("ymult", 0.);
@@ -1661,7 +1666,7 @@ bool testApp::loadCompositionAtIndex(int i){
     fillHoles = projectsettings.getValue("fillholes", false);
     currentHoleKernelSize = projectsettings.getValue("kernelSize", 1);
     currentHoleFillIterations = projectsettings.getValue("holeIterations", 1);
-	currentZFuzz = projectsettings.getValue("zfuzz", 0.);
+//	currentZFuzz = projectsettings.getValue("zfuzz", 0.);
 
 	//error condition for corrupted comps
 	//if(currentDuration <= 0){
@@ -1707,8 +1712,8 @@ void testApp::finishRender(){
 	//no more left, we are done
 	//stopCameraPlayback();
 	renderer.setRGBTexture(*lowResPlayer);
-	renderer.setTextureScale(1.0*lowResPlayer->getWidth()/hiResPlayer->getWidth(), 
-							 1.0*lowResPlayer->getHeight()/hiResPlayer->getHeight());
+//	renderer.setTextureScale(1.0*lowResPlayer->getWidth()/hiResPlayer->getWidth(), 
+//							 1.0*lowResPlayer->getHeight()/hiResPlayer->getHeight());
 }
 
 
