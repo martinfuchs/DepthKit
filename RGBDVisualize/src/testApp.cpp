@@ -181,20 +181,20 @@ void testApp::setup(){
 }
 
 void testApp::loadShaders(){
-    DOFCloud.load("shaders/DOFCloud");
-    DOFCloud.begin();
-    DOFCloud.setUniform1i("src_tex_unit0", 0);
-    DOFCloud.end();
+//    DOFCloud.load("shaders/DOFCloud");
+//    DOFCloud.begin();
+//    DOFCloud.setUniform1i("src_tex_unit0", 0);
+//    DOFCloud.end();
+//    
+//    alphaFadeShader.load("shaders/alphafade");
+//    alphaFadeShader.begin();
+//    alphaFadeShader.setUniform1i("self", 0);
+//    alphaFadeShader.end();
     
-    alphaFadeShader.load("shaders/alphafade");
-    alphaFadeShader.begin();
-    alphaFadeShader.setUniform1i("self", 0);
-    alphaFadeShader.end();
-    
-    gaussianBlur.load("shaders/gaussian_blur");
-    gaussianBlur.begin();
-    gaussianBlur.setUniform1i("tex", 0);
-    gaussianBlur.end();
+//    gaussianBlur.load("shaders/gaussian_blur");
+//    gaussianBlur.begin();
+//    gaussianBlur.setUniform1i("tex", 0);
+//    gaussianBlur.end();
     
     dofRange.load("shaders/dofrange"); 
     dofBlur.load("shaders/dofblur");
@@ -575,18 +575,6 @@ void testApp::drawGeometry(){
             cam.end();
             
             dofBuffer.end();
-            
-            /*
-            dofBlurBuffer.begin();
-            ofClear(0,0,0,0);
-            
-            gaussianBlur.begin();
-            gaussianBlur.setUniform2f("sampleOffset", 0.0, 0.0);
-            dofBuffer.getTextureReference().draw(renderFboRect);
-            gaussianBlur.end();
-            
-            dofBlurBuffer.end();
-            */
             
             //composite
             fbo2.begin();

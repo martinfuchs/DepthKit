@@ -30,7 +30,7 @@ void testApp::keyPressed(int key){
 }
 
 void testApp::exit() {
-	captureGui.exit();          
+       
 }
 
 //--------------------------------------------------------------

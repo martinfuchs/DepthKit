@@ -21,16 +21,8 @@
 		A60F753F14772397007E1206 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A60F753914772397007E1206 /* tinyxmlerror.cpp */; };
 		A60F754014772397007E1206 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A60F753A14772397007E1206 /* tinyxmlparser.cpp */; };
 		A60F754114772397007E1206 /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A60F753C14772397007E1206 /* ofxXmlSettings.cpp */; };
-		A61A26B7153260AA004D9BFC /* alphafade.frag in Sources */ = {isa = PBXBuildFile; fileRef = A61A26B5153260AA004D9BFC /* alphafade.frag */; };
-		A61A26B8153260AA004D9BFC /* alphafade.vert in Sources */ = {isa = PBXBuildFile; fileRef = A61A26B6153260AA004D9BFC /* alphafade.vert */; };
 		A6477C7A149D679300908B2B /* ofxRGBDRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6477C78149D679300908B2B /* ofxRGBDRenderer.cpp */; };
 		A659ED12148A7CA9002E8A1C /* ofxTLColors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A659ED10148A7CA9002E8A1C /* ofxTLColors.cpp */; };
-		A67962FB15329B8F000443D4 /* gaussian_blur.frag in Sources */ = {isa = PBXBuildFile; fileRef = A67962F915329B8F000443D4 /* gaussian_blur.frag */; };
-		A67962FC15329B8F000443D4 /* gaussian_blur.vert in Sources */ = {isa = PBXBuildFile; fileRef = A67962FA15329B8F000443D4 /* gaussian_blur.vert */; };
-		A68DA66C15311E750075A728 /* DOFCloud.frag in Sources */ = {isa = PBXBuildFile; fileRef = A68DA66A15311E750075A728 /* DOFCloud.frag */; };
-		A68DA66D15311E750075A728 /* DOFCloud.vert in Sources */ = {isa = PBXBuildFile; fileRef = A68DA66B15311E750075A728 /* DOFCloud.vert */; };
-		A69D77EB14E0E5A900963BF2 /* colorcontrol.frag in Sources */ = {isa = PBXBuildFile; fileRef = A69D77DD14E0E5A900963BF2 /* colorcontrol.frag */; };
-		A69D77EC14E0E5A900963BF2 /* colorcontrol.vert in Sources */ = {isa = PBXBuildFile; fileRef = A69D77DE14E0E5A900963BF2 /* colorcontrol.vert */; };
 		A6ECC6BD15300A820009D0D9 /* ofxDepthHoleFiller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6ECC6BB15300A820009D0D9 /* ofxDepthHoleFiller.cpp */; };
 		A6EE31A214E21B030068A5E7 /* ofxTLCameraTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6EE319D14E21B030068A5E7 /* ofxTLCameraTrack.cpp */; };
 		A6EE31A314E21B030068A5E7 /* ofxCameraTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6EE31A014E21B030068A5E7 /* ofxCameraTrack.cpp */; };
@@ -184,18 +176,10 @@
 		A60F753A14772397007E1206 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
 		A60F753C14772397007E1206 /* ofxXmlSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxXmlSettings.cpp; sourceTree = "<group>"; };
 		A60F753D14772397007E1206 /* ofxXmlSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxXmlSettings.h; sourceTree = "<group>"; };
-		A61A26B5153260AA004D9BFC /* alphafade.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = alphafade.frag; sourceTree = "<group>"; };
-		A61A26B6153260AA004D9BFC /* alphafade.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = alphafade.vert; sourceTree = "<group>"; };
 		A6477C78149D679300908B2B /* ofxRGBDRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDRenderer.cpp; sourceTree = "<group>"; };
 		A6477C79149D679300908B2B /* ofxRGBDRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDRenderer.h; sourceTree = "<group>"; };
 		A659ED10148A7CA9002E8A1C /* ofxTLColors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLColors.cpp; sourceTree = "<group>"; };
 		A659ED11148A7CA9002E8A1C /* ofxTLColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLColors.h; sourceTree = "<group>"; };
-		A67962F915329B8F000443D4 /* gaussian_blur.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = gaussian_blur.frag; sourceTree = "<group>"; };
-		A67962FA15329B8F000443D4 /* gaussian_blur.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = gaussian_blur.vert; sourceTree = "<group>"; };
-		A68DA66A15311E750075A728 /* DOFCloud.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DOFCloud.frag; sourceTree = "<group>"; };
-		A68DA66B15311E750075A728 /* DOFCloud.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DOFCloud.vert; sourceTree = "<group>"; };
-		A69D77DD14E0E5A900963BF2 /* colorcontrol.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = colorcontrol.frag; sourceTree = "<group>"; };
-		A69D77DE14E0E5A900963BF2 /* colorcontrol.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = colorcontrol.vert; sourceTree = "<group>"; };
 		A6ECC6BB15300A820009D0D9 /* ofxDepthHoleFiller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDepthHoleFiller.cpp; sourceTree = "<group>"; };
 		A6ECC6BC15300A820009D0D9 /* ofxDepthHoleFiller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxDepthHoleFiller.h; sourceTree = "<group>"; };
 		A6EE319D14E21B030068A5E7 /* ofxTLCameraTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLCameraTrack.cpp; sourceTree = "<group>"; };
@@ -646,14 +630,6 @@
 				E7997A5F1541D06600D4130C /* dofrange.frag */,
 				E7F96F0D153E8D0F005841A9 /* unproject.frag */,
 				E7F96F0E153E8D0F005841A9 /* unproject.vert */,
-				A67962F915329B8F000443D4 /* gaussian_blur.frag */,
-				A67962FA15329B8F000443D4 /* gaussian_blur.vert */,
-				A61A26B5153260AA004D9BFC /* alphafade.frag */,
-				A61A26B6153260AA004D9BFC /* alphafade.vert */,
-				A68DA66A15311E750075A728 /* DOFCloud.frag */,
-				A68DA66B15311E750075A728 /* DOFCloud.vert */,
-				A69D77DD14E0E5A900963BF2 /* colorcontrol.frag */,
-				A69D77DE14E0E5A900963BF2 /* colorcontrol.vert */,
 			);
 			path = shaders;
 			sourceTree = "<group>";
@@ -1412,17 +1388,9 @@
 				E7F4F30214AFF95C00198383 /* ofxSimpleGuiToo.cpp in Sources */,
 				E7F4F30314AFF95C00198383 /* ofxSimpleGuiValueControl.cpp in Sources */,
 				E7F4F35814AFF9C200198383 /* ofxMSAInteractiveObject.cpp in Sources */,
-				A69D77EB14E0E5A900963BF2 /* colorcontrol.frag in Sources */,
-				A69D77EC14E0E5A900963BF2 /* colorcontrol.vert in Sources */,
 				A6EE31A214E21B030068A5E7 /* ofxTLCameraTrack.cpp in Sources */,
 				A6EE31A314E21B030068A5E7 /* ofxCameraTrack.cpp in Sources */,
 				A6ECC6BD15300A820009D0D9 /* ofxDepthHoleFiller.cpp in Sources */,
-				A68DA66C15311E750075A728 /* DOFCloud.frag in Sources */,
-				A68DA66D15311E750075A728 /* DOFCloud.vert in Sources */,
-				A61A26B7153260AA004D9BFC /* alphafade.frag in Sources */,
-				A61A26B8153260AA004D9BFC /* alphafade.vert in Sources */,
-				A67962FB15329B8F000443D4 /* gaussian_blur.frag in Sources */,
-				A67962FC15329B8F000443D4 /* gaussian_blur.vert in Sources */,
 				E738E674153C414700BDA0F3 /* ofxRGBDCompositionManager.cpp in Sources */,
 				E738E8EE153C735400BDA0F3 /* ofxDepthImageSequence.cpp in Sources */,
 				E738E8F7153CC34400BDA0F3 /* ofxRGBDRenderSettings.cpp in Sources */,
