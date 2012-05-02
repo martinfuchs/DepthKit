@@ -134,15 +134,14 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 
 	float currentXMultiplyShift;
 	float currentYMultiplyShift;
-	float currentXAdditiveShift;
-	float currentYAdditiveShift;
-	float currentXScale;
-	float currentYScale;
-	float currentRotationCompensation;
-	float currentZFuzz;
+//	float currentXAdditiveShift;
+//	float currentYAdditiveShift;
+//	float currentXScale;
+//	float currentYScale;
+//	float currentRotationCompensation;
+//	float currentZFuzz;
 	
 
-    
     bool selfOcclude;
 	bool currentLockCamera;
 	
