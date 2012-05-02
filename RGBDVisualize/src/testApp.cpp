@@ -36,7 +36,7 @@ void testApp::setup(){
 	videoOutPercent = 1.0;
 	enableVideoInOut = false;
 	
-	currentZFuzz = 0;
+//	currentZFuzz = 0;
     selfOcclude = false;
     
 	hiResPlayer = NULL;
@@ -169,11 +169,11 @@ void testApp::setup(){
 	gui.loadFromXML();
 	gui.toggleDraw();
 	
-	currentXScale = 1.0;
-	currentYScale = 1.0;
-	currentXAdditiveShift = 0;
-	currentYAdditiveShift = 0;
-	currentRotationCompensation = 0;	
+//	currentXScale = 1.0;
+//	currentYScale = 1.0;
+//	currentXAdditiveShift = 0;
+//	currentYAdditiveShift = 0;
+//	currentRotationCompensation = 0;	
 	
 	currentLockCamera = false;
 	cameraTrack.lockCameraToTrack = false;
@@ -267,6 +267,10 @@ void testApp::populateTimelineElements(){
 void testApp::processDepthFrame(){
 	
     if(!drawDepthDistortion) return;
+    
+    if(!depthSequence.currentDepthRaw.isAllocated()){
+        return;
+    }
     
     float noise = timeline.getKeyframeValue("Noise");
     float sineSpeed = timeline.getKeyframeValue("Sine Speed");
@@ -1028,14 +1032,14 @@ void testApp::update(){
 	   currentYMultiplyShift != renderer.ymult ||
 	   //currentSimplify != renderer.getSimplification() ||
 	   currentMirror != renderer.mirror ||
-	   currentZFuzz != renderer.ZFuzz ||
+//	   currentZFuzz != renderer.ZFuzz ||
 	   fillHoles != holeFiller.enable ||
 	   currentHoleKernelSize != holeFiller.getKernelSize() ||
        currentHoleFillIterations != holeFiller.getIterations())
 	{		
 		renderer.xmult = currentXMultiplyShift;
 		renderer.ymult = currentYMultiplyShift;
-		renderer.ZFuzz = currentZFuzz;
+//		renderer.ZFuzz = currentZFuzz;
 		renderer.mirror = currentMirror;
 		
 		holeFiller.enable = fillHoles;
@@ -1549,7 +1553,7 @@ void testApp::saveComposition(){
     projectsettings.setValue("fillholes", fillHoles);
     projectsettings.setValue("kernelSize", currentHoleKernelSize);
     projectsettings.setValue("holeIterations", currentHoleFillIterations);
-    projectsettings.setValue("zfuzz", currentZFuzz);
+//    projectsettings.setValue("zfuzz", currentZFuzz);
     
 	projectsettings.setValue("pointcloud", drawPointcloud);
 	projectsettings.setValue("wireframe", drawWireframe);
@@ -1633,10 +1637,10 @@ bool testApp::loadCompositionAtIndex(int i){
 
 	currentXMultiplyShift = projectsettings.getValue("xmult", 0.);
 	currentYMultiplyShift = projectsettings.getValue("ymult", 0.);
-	currentXAdditiveShift = projectsettings.getValue("xshift", 0.);
-	currentYAdditiveShift = projectsettings.getValue("yshift", 0.);
-	currentXScale = projectsettings.getValue("xscale", 1.0);
-	currentYScale = projectsettings.getValue("yscale", 1.0);
+//	currentXAdditiveShift = projectsettings.getValue("xshift", 0.);
+//	currentYAdditiveShift = projectsettings.getValue("yshift", 0.);
+//	currentXScale = projectsettings.getValue("xscale", 1.0);
+//	currentYScale = projectsettings.getValue("yscale", 1.0);
 	
 //	currentEdgeCull = projectsettings.getValue("edgeCull", 50);
 //	farClip = projectsettings.getValue("farClip", 5000);
