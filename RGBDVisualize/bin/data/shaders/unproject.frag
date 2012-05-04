@@ -5,7 +5,6 @@ uniform sampler2DRect tex0;
 void main()
 {
 	vec4 col = texture2DRect(tex0, gl_TexCoord[0].st);
-	col.a = 1.;
-	gl_FragColor = col;
+	gl_FragColor = col * gl_Color;
 
 }
