@@ -126,14 +126,12 @@ void testApp::setup(){
 	loadCompositions();
 
 	gui.addToggle("Pause Render", pauseRender);
-//	gui.addSlider("Simplify", currentSimplify, 1, 8);
 	gui.addToggle("Draw Pointcloud", drawPointcloud);
 	gui.addToggle("Draw Wireframe", drawWireframe);
 	gui.addToggle("Draw Mesh", drawMesh);
 	gui.addToggle("Depth Distortion", drawDepthDistortion);
 	gui.addToggle("Geometry Distortion", drawGeometryDistortion);
 	gui.addToggle("Self Occlude", selfOcclude);
-//	gui.addToggle("Wireframe Self Occlude", wireframeSelfOccludes);
     gui.addToggle("Draw DOF", drawDOF);
     
 	gui.addPage("Camera");
@@ -177,21 +175,6 @@ void testApp::setup(){
 }
 
 void testApp::loadShaders(){
-//    DOFCloud.load("shaders/DOFCloud");
-//    DOFCloud.begin();
-//    DOFCloud.setUniform1i("src_tex_unit0", 0);
-//    DOFCloud.end();
-//    
-//    alphaFadeShader.load("shaders/alphafade");
-//    alphaFadeShader.begin();
-//    alphaFadeShader.setUniform1i("self", 0);
-//    alphaFadeShader.end();
-    
-//    gaussianBlur.load("shaders/gaussian_blur");
-//    gaussianBlur.begin();
-//    gaussianBlur.setUniform1i("tex", 0);
-//    gaussianBlur.end();
-    
     dofRange.load("shaders/dofrange"); 
     dofBlur.load("shaders/dofblur");
     dofBlur.begin();
@@ -295,7 +278,6 @@ void testApp::processDepthFrame(){
             }
             
             if(sineAmp > 0 && depthSequence.currentDepthRaw.getPixels()[index] > 0){
-                //holeFilledPixels.getPixels()[index] += sin( y * sineFrequency + timeline.getCurrentFrame() * sineSpeed ) * sineAmp;
                 depthSequence.currentDepthRaw.getPixels()[index] += sin( y * sineFrequency + timeline.getCurrentFrame() * sineSpeed ) * sineAmp;
             }			
 		}
@@ -760,7 +742,7 @@ void testApp::keyPressed(int key){
 		timeline.setCurrentTimeToOutPoint();
 	}
 	
-    if(key == '1'){
+    if(key == 'S'){
         loadShaders();
     }
 //    if(key == '2'){
