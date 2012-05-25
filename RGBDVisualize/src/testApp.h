@@ -100,10 +100,11 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	bool shouldExportSettings;
     
 	unsigned short* depthPixelDecodeBuffer;
-	ofShortPixels holeFilledPixels;
+//	ofShortPixels holeFilledPixels;
 	
 	bool allLoaded;
-
+    float accumulatedPerlinOffset;
+    
 	ofxGameCamera cam;
 	ofxTLCameraTrack cameraTrack;
 	bool sampleCamera;

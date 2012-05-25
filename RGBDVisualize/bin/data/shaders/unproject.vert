@@ -4,6 +4,7 @@ uniform vec2 fudge;
 void main(void)
 {
 	gl_Position = ftransform();
+    gl_FrontColor = gl_Color;
     
 	mat4 tTex = gl_TextureMatrix[0];
 	vec4 texCd = tTex * gl_Vertex;
@@ -15,7 +16,6 @@ void main(void)
     texCd.x = 1. - texCd.x;
 	texCd.xy += fudge;
     
-	//debug = -tTex[3][2] > 20. ? 1. : 0.;
 	texCd.xy *= dim;
 	gl_TexCoord[0] = texCd;
 }
