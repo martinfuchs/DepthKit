@@ -118,6 +118,7 @@
 		E77FFF7F15365D3600AA10DF /* opencv_video.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E77FFF7215365D3500AA10DF /* opencv_video.a */; };
 		E78D615F149A8784004806BF /* ofxGameCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78D615B149A8784004806BF /* ofxGameCamera.cpp */; };
 		E790F90E15101FB600157AAC /* ofxDepthImageProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E790F90D15101FB600157AAC /* ofxDepthImageProvider.cpp */; };
+		E7A8758F1577D32800B8DB70 /* ofxRGBDMediaTake.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7A8758D1577D32800B8DB70 /* ofxRGBDMediaTake.cpp */; };
 		E7EF809914DE5474007CD3CA /* RGBD.icns in Resources */ = {isa = PBXBuildFile; fileRef = E7EF809714DE5460007CD3CA /* RGBD.icns */; };
 /* End PBXBuildFile section */
 
@@ -169,7 +170,6 @@
 		A638BD64149438DE0060809C /* ofxDepthImageRecorder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDepthImageRecorder.cpp; sourceTree = "<group>"; };
 		A638BD65149438DE0060809C /* ofxDepthImageRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxDepthImageRecorder.h; sourceTree = "<group>"; };
 		A638C0A4149439080060809C /* defaultColors.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = defaultColors.xml; sourceTree = "<group>"; };
-		A638C2801494390B0060809C /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		A638C2821494390B0060809C /* ofxTimeline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTimeline.cpp; sourceTree = "<group>"; };
 		A638C2831494390B0060809C /* ofxTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTimeline.h; sourceTree = "<group>"; };
 		A638C2841494390B0060809C /* ofxTLColors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLColors.cpp; sourceTree = "<group>"; };
@@ -547,6 +547,8 @@
 		E78D615C149A8784004806BF /* ofxGameCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxGameCamera.h; sourceTree = "<group>"; };
 		E790F90C15101FB600157AAC /* ofxDepthImageProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxDepthImageProvider.h; sourceTree = "<group>"; };
 		E790F90D15101FB600157AAC /* ofxDepthImageProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDepthImageProvider.cpp; sourceTree = "<group>"; };
+		E7A8758D1577D32800B8DB70 /* ofxRGBDMediaTake.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDMediaTake.cpp; sourceTree = "<group>"; };
+		E7A8758E1577D32800B8DB70 /* ofxRGBDMediaTake.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDMediaTake.h; sourceTree = "<group>"; };
 		E7EF809714DE5460007CD3CA /* RGBD.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = RGBD.icns; path = bin/data/RGBD.icns; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -687,6 +689,8 @@
 		A638BD61149438DE0060809C /* src */ = {
 			isa = PBXGroup;
 			children = (
+				E7A8758E1577D32800B8DB70 /* ofxRGBDMediaTake.h */,
+				E7A8758D1577D32800B8DB70 /* ofxRGBDMediaTake.cpp */,
 				A6477C70149D678500908B2B /* ofxRGBDAlignment.h */,
 				A6477C6F149D678500908B2B /* ofxRGBDAlignment.cpp */,
 				A638BD63149438DE0060809C /* ofxCvCheckerboardPreview.h */,
@@ -705,7 +709,6 @@
 			isa = PBXGroup;
 			children = (
 				A638C0A3149439080060809C /* assets */,
-				A638C2801494390B0060809C /* README */,
 				A638C2811494390B0060809C /* src */,
 			);
 			name = ofxTimeline;
@@ -1737,6 +1740,7 @@
 				E77FFE5915365A8B00AA10DF /* ofxUserGenerator.cpp in Sources */,
 				E75A4C431536D3BD006395F7 /* ofxRGBDCaptureGui.cpp in Sources */,
 				E77AEC3D1538EEF5007F77B2 /* ofxMSATimer.cpp in Sources */,
+				E7A8758F1577D32800B8DB70 /* ofxRGBDMediaTake.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
