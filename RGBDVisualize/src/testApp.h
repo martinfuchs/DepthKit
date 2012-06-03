@@ -147,6 +147,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	string mediaBinFolder;
 	ofVideoPlayer* hiResPlayer;
 	ofVideoPlayer* lowResPlayer;
+	bool hasHiresVideo;
 
 	long currentDepthFrame;
     bool viewComps;
@@ -180,7 +181,6 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofImage savingImage;
 	string saveFolder;
 	string lastSavedDate;    
-	bool hasHiresVideo;
 
 	bool currentlyRendering;
 	int currentRenderFrame;
