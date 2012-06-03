@@ -26,6 +26,7 @@ typedef struct {
     string compositionFolder;
     ofxMSAInteractiveObjectWithDelegate* toggle;
     ofxMSAInteractiveObjectWithDelegate* load;
+    bool inRenderQueue;
 } CompButton;
 
 typedef struct {

@@ -61,12 +61,8 @@ void testApp::setup(){
 
     drawDepthDistortion = true;
 	drawGeometryDistortion = true;
-
-//	shouldSaveCameraPoint = false;
-//	shouldClearCameraMoves = false;
 	
 	temporalAlignmentMode = false;
-//	captureFramePair = false;
 
 	fillHoles = false;
 	currentHoleKernelSize = 1;
@@ -151,7 +147,6 @@ void testApp::setup(){
 	timeline.setDurationInFrames(300); //base duration
     timeline.setMovePlayheadOnDrag(false);
     
-	//loadCompositions();
 	gui.setup("Settings", "defaultGuiSettings.xml");
     gui.add(pauseRender.setup("Pause Render", ofxParameter<bool>()));
     gui.add(drawPointcloud.setup("Draw Pointcloud",ofxParameter<bool>()));
@@ -290,11 +285,7 @@ void testApp::processDepthFrame(){
                 depthSequence.currentDepthRaw.getPixels()[index] += sin( y * sineFrequency + timeline.getCurrentFrame() * sineSpeed ) * sineAmp;
             }			
 		}
-	}
-    
-    //Mat m_element_m = getStructuringElement(MORPH_RECT, cv::Size(kernelSize, kernelSize));
-    //ofxCv::blur(depthSequence.currentDepthRaw, blur);
-    
+	}    
 }
 
 void testApp::processGeometry(){
@@ -331,16 +322,10 @@ void testApp::processGeometry(){
                                                            ofSignedNoise(vert.y/perlinDensity, vert.z/perlinDensity, vert.x/perlinDensity, accumulatedPerlinOffset)*perlinAmp );
         }
         
-        //vert.interpolate(center, contract);
         if(explode != 0){
             vert += (vert - center).normalize() * explode;
         }
     }
-    
-//	for(int i = 0; i < renderer.getMesh().getVertices().size(); i++){
-//		renderer.getMesh().getVertices()[i].z += sin(i/30.0 + timeline.getCurrentFrame())*25;
-//	}
-	
 }
 
 void testApp::drawGeometry(){
@@ -384,22 +369,6 @@ void testApp::drawGeometry(){
         
         renderedCameraPos.setPosition(cam.getPosition());
         renderedCameraPos.setOrientation(cam.getOrientationQuat());
-        /*
-         old alpha fade way not working
-        fbo.begin();
-        ofClear(0.0, 0.0, 0.0, 0.0);
-        ofEnableAlphaBlending();
-        alphaFadeShader.begin();
-        float decay = timeline.getKeyframeValue("Motion Trail Decay");
-        decay *= decay;
-        
-        alphaFadeShader.setUniform1f("fadeSpeed", decay);
-        backbuf.getTextureReference().draw(renderFboRect);
-        
-        alphaFadeShader.end();
-        
-        fbo.end();
-        */
         
         ofBlendMode blendMode = OF_BLENDMODE_SCREEN;
         
@@ -407,8 +376,7 @@ void testApp::drawGeometry(){
         fbo1.begin();
         ofPushStyle();
         ofEnableAlphaBlending();
-        float decay = timeline.getKeyframeValue("Motion Trail Decay");
-        decay *= decay; //exponential
+        float decay = powf(timeline.getKeyframeValue("Motion Trail Decay"), 2.0);
         ofSetColor(0, 0, 0, decay*255);
         ofRect(renderFboRect);
         ofPopStyle();
@@ -843,6 +811,7 @@ void testApp::update(){
         renderQueue.erase(renderQueue.begin() + renderQueueIndexToRemove);
         populateRenderQueue();
         renderQueueIndexToRemove = -1;
+        populateCompositionsForTake();
     }
     
     cam.speed = cameraSpeed;
@@ -866,7 +835,7 @@ void testApp::update(){
             if(!renderQueue[i].completed){
                 selectedTake = renderQueue[i].take;
                 currentCompShortName = renderQueue[i].compShortName;
-                loadComposition(renderQueue[i].compositionFolder);
+                loadComposition(renderQueue[i].compositionFolder + "/");
                 foundCompToRender = true;
                 renderQueue[i].completed = true;
                 break;
@@ -975,6 +944,7 @@ void testApp::update(){
 		if(!temporalAlignmentMode && lowResPlayer->isFrameNew()){
 			updateRenderer(*lowResPlayer);
 		}
+        
 		//cout << "timeline is " << videoTimelineElement.getSelectedFrame() << " and player is " << lowResPlayer->getCurrentFrame() << endl;; 
 		if(temporalAlignmentMode && (currentDepthFrame != depthSequence.getSelectedFrame())){
 			updateRenderer(*lowResPlayer);
@@ -1129,9 +1099,7 @@ void testApp::draw(){
 					finishRender();
 				}
 			}
-        }
-		
-        if(!viewComps){
+            
 			if(!currentlyRendering){
 				gui.draw();
             }
@@ -1140,20 +1108,26 @@ void testApp::draw(){
 		
 		ofSetColor(255);
 	}
-    
+
     if(viewComps){
+        
         ofPushStyle();
-        ofSetColor(timeline.getColors().backgroundColor, 40);
+        ofSetColor(timeline.getColors().highlightColor, 255);
         ofEnableAlphaBlending();
         for(int i = 0; i < renderQueue.size(); i++){
             if(renderQueue[i].completed){
                 ofRect(*renderQueue[i].remove);
             }
         }
+        for(int i = 0; i < comps.size(); i++){
+            if(comps[i].inRenderQueue){
+                ofRect(*comps[i].toggle);
+            }
+        }
         ofPopStyle();
     }
-}
 
+}
 
 #pragma mark compositions
 //--------------------------------------------------------------
@@ -1367,6 +1341,13 @@ void testApp::populateCompositionsForTake(){
         comp.toggle->setDelegate(this);        
         comp.toggle->setPosAndSize(compx+300, compy,25,25);
         comp.compositionFolder = compositionsDirectory.getPath(c);
+        comp.inRenderQueue = false;
+        for(int i = 0; i < renderQueue.size(); i++){
+            if(comp.compositionFolder == renderQueue[i].compositionFolder){
+                comp.inRenderQueue = true;
+                break;
+            }
+        }
         
         compy += 25;
         if(compy > ofGetHeight()-100){
@@ -1450,12 +1431,15 @@ void testApp::saveComposition(){
     changeCompButton->setLabel(currentCompShortName + " -- " + lastSavedDate);
 }
 
+//--------------------------------------------------------------
 void testApp::objectDidRollOver(ofxMSAInteractiveObject* object, int x, int y){
 }
 
+//--------------------------------------------------------------
 void testApp::objectDidRollOut(ofxMSAInteractiveObject* object, int x, int y){
 }
 
+//--------------------------------------------------------------
 void testApp::objectDidPress(ofxMSAInteractiveObject* object, int x, int y, int button){
 }
 
@@ -1518,7 +1502,19 @@ void testApp::objectDidRelease(ofxMSAInteractiveObject* object, int x, int y, in
             }
             
             if(object == comps[i].toggle){
-                addCompToRenderQueue(&comps[i]);
+                if(comps[i].inRenderQueue){
+                    //remove it
+                    for(int j = 0; j < renderQueue.size(); j++){
+                        if(renderQueue[j].compositionFolder == comps[i].compositionFolder){
+                            renderQueueIndexToRemove = j;
+                            break;
+                        }
+                    }
+                }
+                else {
+                    addCompToRenderQueue(&comps[i]);                    
+	                comps[i].inRenderQueue = true;
+                }
                 return;
             }
         }
@@ -1615,14 +1611,14 @@ bool testApp::loadComposition(string compositionDirectory){
 
 void testApp::addCompToRenderQueue(CompButton* comp){
     for(int i = 0; i < renderQueue.size(); i++){
-        if(comp->compositionFolder + "/" == renderQueue[i].compositionFolder){
+        if(comp->compositionFolder == renderQueue[i].compositionFolder){
             return;
         }
     }
     
     RenderButton b;
     b.take = selectedTake;
-    b.compositionFolder = comp->compositionFolder +"/";
+    b.compositionFolder = comp->compositionFolder;
     b.remove = NULL;
 	b.compShortName = comp->load->getLabel();
     
