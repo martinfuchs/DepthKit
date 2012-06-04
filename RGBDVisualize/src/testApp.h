@@ -104,11 +104,13 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle currentMirror;
 	ofxFloatSlider currentXMultiplyShift;
     ofxFloatSlider currentYMultiplyShift;
+    ofxToggle undistortImages;
     ofxToggle fillHoles;
     ofxIntSlider currentHoleKernelSize;
     ofxIntSlider currentHoleFillIterations;
     ofxToggle temporalAlignmentMode;
     ofxButton captureFramePair;
+
     bool startRenderMode;
 
 	//MSA Object delegate
@@ -179,6 +181,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofRectangle depthAlignAssistRect;
     ofRectangle colorAlignAssistRect;
     
+
 	ofImage savingImage;
 	string saveFolder;
 	string lastSavedDate;    

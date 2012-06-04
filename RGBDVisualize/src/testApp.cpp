@@ -164,6 +164,7 @@ void testApp::setup(){
     gui.add(currentLockCamera.setup("Lock to Track", ofxParameter<bool>()));
     
     gui.add(currentMirror.setup("Mirror", ofxParameter<bool>()));
+    gui.add(undistortImages.setup("Undistort", ofxParameter<bool>()));
     gui.add(currentXMultiplyShift.setup("X Shift", ofxParameter<float>(), -.15, .15));
     gui.add(currentYMultiplyShift.setup("Y Shift", ofxParameter<float>(), -.15, .15));
     gui.add(fillHoles.setup("Fill Holes", ofxParameter<bool>()));
@@ -443,6 +444,7 @@ void testApp::drawGeometry(){
             renderer.drawWireFrame();
             ofPopStyle();
             
+            renderer.drawProjectionDebug();
             glDisable(GL_DEPTH_TEST);
             cam.end();
             
@@ -775,7 +777,7 @@ void testApp::mouseReleased(int x, int y, int button){
 }
 
 //***************************************************
-///Labbers: Everything below here is application logic
+///Everything below here is application logic
 //***************************************************
 #pragma mark application logic
 //--------------------------------------------------------------
@@ -957,6 +959,7 @@ void testApp::update(){
 		if(captureFramePair && temporalAlignmentMode){
 			alignmentScrubber.registerCurrentAlignment();
 			alignmentScrubber.save();
+            temporalAlignmentMode = false;
 		}
 	}
 		
@@ -984,12 +987,13 @@ void testApp::update(){
 	   currentMirror != renderer.mirror ||
 	   fillHoles != holeFiller.enable ||
 	   currentHoleKernelSize != holeFiller.getKernelSize() ||
-       currentHoleFillIterations != holeFiller.getIterations())
+       currentHoleFillIterations != holeFiller.getIterations()||
+       undistortImages == renderer.forceUndistortOff)
 	{		
 		renderer.xmult = currentXMultiplyShift;
 		renderer.ymult = currentYMultiplyShift;
 		renderer.mirror = currentMirror;
-		
+		renderer.forceUndistortOff = !undistortImages;
 		holeFiller.enable = fillHoles;
 		holeFiller.setKernelSize(currentHoleKernelSize);
 		currentHoleKernelSize = holeFiller.getKernelSize();
@@ -1011,7 +1015,12 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::updateRenderer(ofVideoPlayer& fromPlayer){
 	
-	if (!temporalAlignmentMode) {
+	if (temporalAlignmentMode) {
+        lowResPlayer->setFrame(videoTimelineElement.getSelectedFrame());
+        depthSequence.selectFrame(depthSequence.getSelectedFrame()); //hack to fix compounding hole filling;
+		renderer.setDepthImage(depthSequence.currentDepthRaw);
+    }
+    else{
 		if(alignmentScrubber.getPairSequence().isSequenceTimebased()){
 			long movieMillis = fromPlayer.getPosition() * fromPlayer.getDuration()*1000;
 			currentDepthFrame = alignmentScrubber.getPairSequence().getDepthFrameForVideoFrame(movieMillis);
@@ -1022,10 +1031,6 @@ void testApp::updateRenderer(ofVideoPlayer& fromPlayer){
 			depthSequence.selectFrame(currentDepthFrame);
 		}
 		renderer.setDepthImage(depthPixelDecodeBuffer);
-	}
-	else{
-		lowResPlayer->setFrame(videoTimelineElement.getSelectedFrame());
-		renderer.setDepthImage(depthSequence.currentDepthRaw);
 	}
 
 	holeFiller.close(depthSequence.currentDepthRaw);
