@@ -12,15 +12,13 @@
 #include "ofxMSAInteractiveObjectDelegate.h"
 #include "ofxTLCameraTrack.h"
 #include "ofxDepthHoleFiller.h"
-#include "ofxRGBDMediaTake.h"
+#include "ofxRGBDScene.h"
 #include "ofxGui.h"
 
-
 typedef struct {
-	ofxRGBDMediaTake take;
+	ofxRGBDScene scene;
     ofxMSAInteractiveObjectWithDelegate* button;
-} TakeButton;
-
+} SceneButton;
 
 typedef struct {
     string compositionFolder;
@@ -30,7 +28,7 @@ typedef struct {
 } CompButton;
 
 typedef struct {
-    TakeButton* take;
+    SceneButton* sceneButton;
     bool completed;
     string compositionFolder;
     string compShortName;
@@ -68,15 +66,15 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     
 	ofxXmlSettings projectsettings;
 	void loadNewMediaBin();
-	void populateTakes();
-    void populateCompositionsForTake();
+	void populateScenes();
+    void populateCompositionsForScene();
     void populateRenderQueue();
     
 	void newComposition();
     void loadDefaults();
 	void saveComposition();
 	bool loadComposition(string compositionDirectory);
-	bool loadAssetsForTake(TakeButton* take);
+	bool loadAssetsForScene(SceneButton* scene);
     void resetCameraPosition();
     	
     ofxPanel gui;
@@ -121,13 +119,13 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxMSAInteractiveObjectWithDelegate* saveCompAsNewButton;
     ofxMSAInteractiveObjectWithDelegate* renderBatch;
     
-    vector<TakeButton> takes;
+    vector<SceneButton> scenes;
     vector<CompButton> comps;
     vector<RenderButton> renderQueue;
     
-	TakeButton* selectedTake;
+	SceneButton* selectedScene;
     CompButton* selectedComp;
-    TakeButton* loadedTake;
+    SceneButton* loadedScene;
     
  	void objectDidRollOver(ofxMSAInteractiveObject* object, int x, int y);
     void objectDidRollOut(ofxMSAInteractiveObject* object, int x, int y);
@@ -135,7 +133,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	void objectDidRelease(ofxMSAInteractiveObject* object, int x, int y, int button);	
 	void objectDidMouseMove(ofxMSAInteractiveObject* object, int x, int y);
     
-    bool isTakeLoaded;
+    bool isSceneLoaded;
     
 	void populateTimelineElements();
 	bool playerElementAdded;
@@ -155,7 +153,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	long currentDepthFrame;
     bool viewComps;
     
-	unsigned short* depthPixelDecodeBuffer;
+//	unsigned short* depthPixelDecodeBuffer;
     float accumulatedPerlinOffset;
     
 	ofxGameCamera cam;
@@ -181,7 +179,6 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofRectangle depthAlignAssistRect;
     ofRectangle colorAlignAssistRect;
     
-
 	ofImage savingImage;
 	string saveFolder;
 	string lastSavedDate;    
