@@ -153,7 +153,6 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	long currentDepthFrame;
     bool viewComps;
     
-//	unsigned short* depthPixelDecodeBuffer;
     float accumulatedPerlinOffset;
     
 	ofxGameCamera cam;
@@ -198,6 +197,4 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofShader gaussianBlur;
     ofShader dofRange;
     ofShader dofBlur;
-    
-
 };

@@ -1,13 +1,8 @@
 #include "testApp.h"
 
-
-
-
 //Fix batch rendering system
 	// -- when a comp is loded say if it's in the queue or not
 	// -- add render queue button to top of list
-
-
 
 //--------------------------------------------------------------
 void testApp::setup(){
@@ -1027,7 +1022,6 @@ void testApp::updateRenderer(ofVideoPlayer& fromPlayer){
 			currentDepthFrame = alignmentScrubber.getPairSequence().getDepthFrameForVideoFrame(fromPlayer.getCurrentFrame());
 			depthSequence.selectFrame(currentDepthFrame);
 		}
-        //renderer.setDepthImage(depthPixelDecodeBuffer);
 	}
 
 	holeFiller.close(depthSequence.currentDepthRaw);
