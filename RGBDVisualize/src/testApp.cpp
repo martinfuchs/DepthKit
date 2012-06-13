@@ -183,7 +183,9 @@ void testApp::loadShaders(){
     dofBlur.setUniform1i("range", 1);
     dofBlur.end();
     
+    cout << "loading renderer shader" << endl;
     renderer.reloadShader();
+    cout << "done loading renderer shader" << endl;
 }
 
 //Labbers: YOU CAN ADD TIMELINE ELEMENTS HERE
@@ -359,7 +361,7 @@ void testApp::drawGeometry(){
     
     rendererDirty |= (renderedCameraPos.getPosition() != cam.getPosition() || 
                       renderedCameraPos.getOrientationQuat() != cam.getOrientationQuat() );
-
+    
     if(rendererDirty){
         
         renderedCameraPos.setPosition(cam.getPosition());
@@ -423,7 +425,7 @@ void testApp::drawGeometry(){
                 ofPushMatrix();
                 ofSetColor(0, 0, 0, 0);
                 ofTranslate(camTranslateVec);
-                renderer.drawMesh(false);
+                renderer.drawMesh();
                 ofPopMatrix();
             }
             
@@ -474,7 +476,7 @@ void testApp::drawGeometry(){
                 ofPushMatrix();
                 ofSetColor(0, 0, 0, 0);
                 ofTranslate(camTranslateVec);
-                renderer.drawMesh(false);
+                renderer.drawMesh();
                 ofPopMatrix();
             }
             ofEnableAlphaBlending();
@@ -527,7 +529,7 @@ void testApp::drawGeometry(){
 //            dofRange.setUniform1f("fogRange", fogRange);
             
             ofDisableAlphaBlending();
-            renderer.drawMesh(false);
+            renderer.drawMesh();
             //renderer.drawWireFrame(false);
             dofRange.end();
             
