@@ -100,7 +100,15 @@ void testApp::setup(){
     ofClear(0,0,0,0);
     dofBlurBuffer.end();
     
-    loadShaders();
+    
+	timeline.setup();
+	timeline.getColors().loadColors("defaultColors.xml");
+	timeline.setOffset(ofVec2f(0, ofGetHeight() - 200));
+	timeline.setPageName("Main");
+	timeline.setDurationInFrames(300); //base duration
+    timeline.setMovePlayheadOnDrag(false);
+    
+    
     
 	newCompButton = new ofxMSAInteractiveObjectWithDelegate();
 	newCompButton->setLabel("Create New Composition From This Scene");
@@ -136,16 +144,7 @@ void testApp::setup(){
     renderBatch->setLabel("Start Rendering Queue >>");
 	renderBatch->setDelegate(this);
     setButtonColors(renderBatch);
-    
-	timeline.setup();
-	timeline.getColors().loadColors("defaultColors.xml");
-	timeline.setOffset(ofVec2f(0, ofGetHeight() - 200));
-	timeline.setPageName("Main");
-	timeline.setDurationInFrames(300); //base duration
-    timeline.setMovePlayheadOnDrag(false);
-    
-    //colorize buttons
-    
+
 	gui.setup("Settings", "defaultGuiSettings.xml");
     gui.add(pauseRender.setup("Pause Render", ofxParameter<bool>()));
     gui.add(drawPointcloud.setup("Draw Pointcloud",ofxParameter<bool>()));
@@ -174,6 +173,8 @@ void testApp::setup(){
     
     gui.loadFromFile("defaultGuiSettings.xml");
     
+    loadShaders();
+    
 	currentLockCamera = false;
 	cameraTrack.lockCameraToTrack = false;
     
@@ -183,7 +184,6 @@ void testApp::setup(){
     if(defaultBin.loadFile("defaultBin.xml")){
 		mediaBinFolder = defaultBin.getValue("bin", "");
         mediaBinButton->setLabel(mediaBinFolder);
-        cout << "populating bin " << mediaBinFolder << endl;
 		populateScenes();
     }
     else{
@@ -192,16 +192,20 @@ void testApp::setup(){
 }
 
 void testApp::loadShaders(){
-    dofRange.load("shaders/dofrange"); 
+    //dofRange.load("shaders/dofrange"); 
+    dofRange.setGeometryInputType(GL_TRIANGLES);
+    dofRange.setGeometryOutputType(GL_TRIANGLE_STRIP);
+    dofRange.setGeometryOutputCount(3);
+    dofRange.load("shaders/dofrange.vert", "shaders/dofrange.frag", "shaders/dofrange.geom"); 
     dofBlur.load("shaders/dofblur");
     dofBlur.begin();
     dofBlur.setUniform1i("tex", 0);
     dofBlur.setUniform1i("range", 1);
     dofBlur.end();
     
-    cout << "loading renderer shader" << endl;
-    renderer.reloadShader();
-    cout << "done loading renderer shader" << endl;
+//    cout << "loading renderer shader" << endl;
+//    renderer.reloadShader();
+//    cout << "done loading renderer shader" << endl;
 }
 
 //Labbers: YOU CAN ADD TIMELINE ELEMENTS HERE
@@ -278,7 +282,9 @@ void testApp::processDepthFrame(){
     sineFrequency *= sineFrequency;
     sineSpeed = sineSpeed;
     sineAmp *= sineAmp;
-
+	if(sineAmp == 0 && noise == 0){
+        return;
+    }
 	for(int y = 0; y <	480; y++){
 		for(int x = 0; x < 640; x++){
 			int index = y*640+x;
@@ -377,7 +383,7 @@ void testApp::drawGeometry(){
     
     rendererDirty |= (renderedCameraPos.getPosition() != cam.getPosition() || 
                       renderedCameraPos.getOrientationQuat() != cam.getOrientationQuat() );
-    
+
     if(rendererDirty){
         
         renderedCameraPos.setPosition(cam.getPosition());
@@ -545,7 +551,7 @@ void testApp::drawGeometry(){
 //            dofRange.setUniform1f("fogRange", fogRange);
             
             ofDisableAlphaBlending();
-            renderer.drawMesh();
+            renderer.drawMesh(dofRange);
             //renderer.drawWireFrame(false);
             dofRange.end();
             
@@ -928,7 +934,8 @@ void testApp::update(){
 	
 	cam.applyRotation = !cameraTrack.lockCameraToTrack;
 	cam.applyTranslation = !cameraTrack.lockCameraToTrack;
-
+    //cam.usemouse = false;
+    
 	if(currentlyRendering){
 		timeline.setCurrentFrame(currentRenderFrame);
 		videoTimelineElement.selectFrame(currentRenderFrame);
@@ -1009,7 +1016,7 @@ void testApp::update(){
 	   fillHoles != holeFiller.enable ||
 	   currentHoleKernelSize != holeFiller.getKernelSize() ||
        currentHoleFillIterations != holeFiller.getIterations()||
-       undistortImages == renderer.forceUndistortOff || true)
+       undistortImages == renderer.forceUndistortOff)
 	{		
 		renderer.xshift = currentXMultiplyShift;
 		renderer.yshift = currentYMultiplyShift;
@@ -1039,7 +1046,6 @@ void testApp::updateRenderer(ofVideoPlayer& fromPlayer){
 	if (temporalAlignmentMode) {
         lowResPlayer->setFrame(videoTimelineElement.getSelectedFrame());
         depthSequence.selectFrame(depthSequence.getSelectedFrame()); //hack to fix compounding hole filling;
-		renderer.setDepthImage(depthSequence.currentDepthRaw);
     }
     else{
 		if(alignmentScrubber.getPairSequence().isSequenceTimebased()){
@@ -1054,9 +1060,9 @@ void testApp::updateRenderer(ofVideoPlayer& fromPlayer){
 	}
 
 	holeFiller.close(depthSequence.currentDepthRaw);
-    processDepthFrame();
 
-    renderer.setDepthImage(depthSequence.currentDepthRaw);	
+    //renderer.setDepthImage(depthSequence.currentDepthRaw);	
+    processDepthFrame();
 	renderer.update();
 	processGeometry();
 	
@@ -1318,6 +1324,7 @@ void testApp::populateScenes(){
         sceneButton.button->setDelegate(this);				       
         sceneButton.button->setPosAndSize(compx,compy,250,25);
         sceneButton.button->setLabel(sceneButton.scene.name);
+        setButtonColors(sceneButton.button);
         
         compy += 25;
         if(compy > ofGetHeight()-100){
@@ -1326,6 +1333,11 @@ void testApp::populateScenes(){
         }        
         scenes.push_back( sceneButton );
 	}
+    
+    if(scenes.size() == 0){
+        ofSystemAlertDialog(mediaBinFolder + " hs no valid scenes! Make sure to select the folder containing all of the scenes.");
+        mediaBinButton->setLabel("Load MediaBin");
+    }
 }
 
 //--------------------------------------------------------------
@@ -1364,12 +1376,14 @@ void testApp::populateCompositionsForScene(){
         comp.load->setup();
         comp.load->setDelegate(this);
         comp.load->setPosAndSize(compx, compy, 300, 25);
+        setButtonColors(comp.load);
         
         comp.toggle = new ofxMSAInteractiveObjectWithDelegate();
         comp.toggle->setLabel("R");
         comp.toggle->setup();
         comp.toggle->setDelegate(this);        
         comp.toggle->setPosAndSize(compx+300, compy,25,25);
+        setButtonColors(comp.toggle);
         comp.compositionFolder = compositionsDirectory.getPath(c);
         comp.inRenderQueue = false;
         for(int i = 0; i < renderQueue.size(); i++){
@@ -1704,6 +1718,7 @@ void testApp::populateRenderQueue(){
         renderQueue[i].remove->setDelegate(this);
         renderQueue[i].remove->setPosAndSize(posx, posy, 225, 25);
         renderQueue[i].remove->setLabel("[x] " + selectedScene->scene.name + " : " + renderQueue[i].compShortName );
+        setButtonColors(renderQueue[i].remove);
         renderQueue[i].completed = false;
         
 		posy+=25;

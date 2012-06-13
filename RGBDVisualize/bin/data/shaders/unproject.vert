@@ -9,7 +9,6 @@ uniform vec2 imageSize;
 uniform vec2 fov;
 uniform float farClip;
 
-
 varying float VZPositionValid0;
 void main(void)
 {
@@ -21,7 +20,6 @@ void main(void)
                           gl_Vertex.z, 1.0);
         
         //projective texture on the 
-        //gl_Position = ftransform();
         gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * pos;
         gl_FrontColor = gl_Color;
         

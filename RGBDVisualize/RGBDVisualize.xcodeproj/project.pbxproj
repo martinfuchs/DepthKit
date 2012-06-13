@@ -70,6 +70,7 @@
 		E7997A621541D06600D4130C /* dofblur.vert in Sources */ = {isa = PBXBuildFile; fileRef = E7997A5E1541D06500D4130C /* dofblur.vert */; };
 		E7997A631541D06600D4130C /* dofrange.frag in Sources */ = {isa = PBXBuildFile; fileRef = E7997A5F1541D06600D4130C /* dofrange.frag */; };
 		E7997A641541D06600D4130C /* dofrange.vert in Sources */ = {isa = PBXBuildFile; fileRef = E7997A601541D06600D4130C /* dofrange.vert */; };
+		E79C454C15890A76002CF86B /* dofrange.geom in Sources */ = {isa = PBXBuildFile; fileRef = E79C454B15890A75002CF86B /* dofrange.geom */; };
 		E7BA26031585546A004F657F /* unproject.geom in Sources */ = {isa = PBXBuildFile; fileRef = E7BA26021585546A004F657F /* unproject.geom */; };
 		E7DF569A147CA28300A3A9C7 /* ofxTimeline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DF5677147CA28300A3A9C7 /* ofxTimeline.cpp */; };
 		E7DF569C147CA28300A3A9C7 /* ofxTLElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DF567C147CA28300A3A9C7 /* ofxTLElement.cpp */; };
@@ -316,6 +317,7 @@
 		E7997A5E1541D06500D4130C /* dofblur.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = dofblur.vert; sourceTree = "<group>"; };
 		E7997A5F1541D06600D4130C /* dofrange.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = dofrange.frag; sourceTree = "<group>"; };
 		E7997A601541D06600D4130C /* dofrange.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = dofrange.vert; sourceTree = "<group>"; };
+		E79C454B15890A75002CF86B /* dofrange.geom */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = dofrange.geom; sourceTree = "<group>"; };
 		E7BA26021585546A004F657F /* unproject.geom */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = unproject.geom; sourceTree = "<group>"; };
 		E7DF5677147CA28300A3A9C7 /* ofxTimeline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTimeline.cpp; sourceTree = "<group>"; };
 		E7DF5678147CA28300A3A9C7 /* ofxTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTimeline.h; sourceTree = "<group>"; };
@@ -593,6 +595,7 @@
 				E7997A5D1541D06500D4130C /* dofblur.frag */,
 				E7997A5E1541D06500D4130C /* dofblur.vert */,
 				E7997A601541D06600D4130C /* dofrange.vert */,
+				E79C454B15890A75002CF86B /* dofrange.geom */,
 				E7997A5F1541D06600D4130C /* dofrange.frag */,
 				E7F96F0D153E8D0F005841A9 /* unproject.frag */,
 				E7BA26021585546A004F657F /* unproject.geom */,
@@ -1328,6 +1331,7 @@
 				E77C754615798B9B0016FA54 /* ofxToggle.cpp in Sources */,
 				E77797981583FB8C0041CEAF /* ofxRGBDScene.cpp in Sources */,
 				E7BA26031585546A004F657F /* unproject.geom in Sources */,
+				E79C454C15890A76002CF86B /* dofrange.geom in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
