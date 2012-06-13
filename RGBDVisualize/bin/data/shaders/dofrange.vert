@@ -11,9 +11,9 @@ uniform float focalRange;
 uniform float fogNear;
 uniform float fogRange;
 
+
 varying float VInFocus0;
 varying float VZPositionValid0;
-
 void main(void)
 {
 	if(gl_Vertex.z < farClip && gl_Vertex.z > 200.){

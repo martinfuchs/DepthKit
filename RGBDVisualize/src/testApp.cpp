@@ -447,7 +447,10 @@ void testApp::drawGeometry(){
                 ofPushMatrix();
                 ofSetColor(0, 0, 0, 0);
                 ofTranslate(camTranslateVec);
-                renderer.drawMesh();
+                dofRange.begin();
+                dofRange.setUniform1f("blackout", 0.);
+                dofRange.end();
+                renderer.drawMesh(dofRange);
                 ofPopMatrix();
             }
             
@@ -498,7 +501,10 @@ void testApp::drawGeometry(){
                 ofPushMatrix();
                 ofSetColor(0, 0, 0, 0);
                 ofTranslate(camTranslateVec);
-                renderer.drawMesh();
+                dofRange.begin();
+                dofRange.setUniform1f("blackout", 0.);
+                dofRange.end();
+                renderer.drawMesh(dofRange);
                 ofPopMatrix();
             }
             ofEnableAlphaBlending();
@@ -547,13 +553,13 @@ void testApp::drawGeometry(){
             dofRange.begin();
             dofRange.setUniform1f("focalDistance", dofFocalDistance);
             dofRange.setUniform1f("focalRange", dofFocalRange);
-//            dofRange.setUniform1f("fogNear", fogNear);
-//            dofRange.setUniform1f("fogRange", fogRange);
+            dofRange.setUniform1f("blackout", 1.);
+            dofRange.end();
             
             ofDisableAlphaBlending();
             renderer.drawMesh(dofRange);
             //renderer.drawWireFrame(false);
-            dofRange.end();
+//            dofRange.end();
             
             glDisable(GL_DEPTH_TEST);
             cam.end();
