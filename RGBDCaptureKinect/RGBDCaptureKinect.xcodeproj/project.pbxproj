@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A6143AD81588154900D84CA5 /* ofxRGBDScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6143AD61588154900D84CA5 /* ofxRGBDScene.cpp */; };
 		A638BC161494386A0060809C /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A638BC0F1494386A0060809C /* tinyxml.cpp */; };
 		A638BC171494386A0060809C /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A638BC111494386A0060809C /* tinyxmlerror.cpp */; };
 		A638BC181494386A0060809C /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A638BC121494386A0060809C /* tinyxmlparser.cpp */; };
@@ -68,7 +69,6 @@
 		E70ECF58154DCB3A0000DCCD /* RGBD.icns in Resources */ = {isa = PBXBuildFile; fileRef = E70ECF57154DCB390000DCCD /* RGBD.icns */; };
 		E7121EFC1549A23500BA5A72 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E7121EFB1549A23500BA5A72 /* libz.dylib */; };
 		E71EB42914A17E7400D23DE5 /* ofxDepthImageCompressor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E71EB42814A17E7400D23DE5 /* ofxDepthImageCompressor.cpp */; };
-		E75E7C2E157C21930004B5EB /* ofxRGBDMediaTake.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E75E7C2C157C21930004B5EB /* ofxRGBDMediaTake.cpp */; };
 		E77D88F01497D6A200713F52 /* Calibration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77D88911497D6A200713F52 /* Calibration.cpp */; };
 		E77D88F11497D6A200713F52 /* ContourFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77D88921497D6A200713F52 /* ContourFinder.cpp */; };
 		E77D88F21497D6A200713F52 /* Distance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77D88931497D6A200713F52 /* Distance.cpp */; };
@@ -93,11 +93,8 @@
 		E78B770C15374C1800DD2D94 /* opencv_video.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E78B76FF15374C1800DD2D94 /* opencv_video.a */; };
 		E78D615F149A8784004806BF /* ofxGameCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78D615B149A8784004806BF /* ofxGameCamera.cpp */; };
 		E790F90E15101FB600157AAC /* ofxDepthImageProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E790F90D15101FB600157AAC /* ofxDepthImageProvider.cpp */; };
-		E790FB0E1510FA2C00157AAC /* APACHE20 in Resources */ = {isa = PBXBuildFile; fileRef = E790FA711510FA2B00157AAC /* APACHE20 */; };
 		E790FB0F1510FA2C00157AAC /* cameras.c in Sources */ = {isa = PBXBuildFile; fileRef = E790FA721510FA2B00157AAC /* cameras.c */; };
-		E790FB101510FA2C00157AAC /* CONTRIB in Resources */ = {isa = PBXBuildFile; fileRef = E790FA741510FA2B00157AAC /* CONTRIB */; };
 		E790FB111510FA2C00157AAC /* core.c in Sources */ = {isa = PBXBuildFile; fileRef = E790FA751510FA2B00157AAC /* core.c */; };
-		E790FB121510FA2C00157AAC /* GPL2 in Resources */ = {isa = PBXBuildFile; fileRef = E790FA771510FA2B00157AAC /* GPL2 */; };
 		E790FB131510FA2C00157AAC /* freenect.dll in Resources */ = {isa = PBXBuildFile; fileRef = E790FA7A1510FA2B00157AAC /* freenect.dll */; };
 		E790FB141510FA2C00157AAC /* freenect.lib in Frameworks */ = {isa = PBXBuildFile; fileRef = E790FA7B1510FA2B00157AAC /* freenect.lib */; };
 		E790FB151510FA2C00157AAC /* libfreenect.pc.in in Resources */ = {isa = PBXBuildFile; fileRef = E790FA7E1510FA2B00157AAC /* libfreenect.pc.in */; };
@@ -135,7 +132,6 @@
 		E790FB351510FA2C00157AAC /* libusb0_x86.dll in Resources */ = {isa = PBXBuildFile; fileRef = E790FABA1510FA2B00157AAC /* libusb0_x86.dll */; };
 		E790FB361510FA2C00157AAC /* Xbox_NUI_Motor.cat in Resources */ = {isa = PBXBuildFile; fileRef = E790FABB1510FA2B00157AAC /* Xbox_NUI_Motor.cat */; };
 		E790FB371510FA2C00157AAC /* Xbox_NUI_Motor.inf in Resources */ = {isa = PBXBuildFile; fileRef = E790FABC1510FA2B00157AAC /* Xbox_NUI_Motor.inf */; };
-		E790FB381510FA2C00157AAC /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = E790FABD1510FA2B00157AAC /* LICENSE.txt */; };
 		E790FB391510FA2C00157AAC /* README.markdown in Resources */ = {isa = PBXBuildFile; fileRef = E790FABE1510FA2C00157AAC /* README.markdown */; };
 		E790FB3A1510FA2C00157AAC /* ofxKinect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E790FAC11510FA2C00157AAC /* ofxKinect.cpp */; };
 /* End PBXBuildFile section */
@@ -171,6 +167,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A6143AD61588154900D84CA5 /* ofxRGBDScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDScene.cpp; sourceTree = "<group>"; };
+		A6143AD71588154900D84CA5 /* ofxRGBDScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDScene.h; sourceTree = "<group>"; };
 		A638BC0D1494386A0060809C /* install.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = install.xml; sourceTree = "<group>"; };
 		A638BC0F1494386A0060809C /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
 		A638BC101494386A0060809C /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
@@ -282,8 +280,6 @@
 		E7121EFB1549A23500BA5A72 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		E71EB42714A17E7400D23DE5 /* ofxDepthImageCompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxDepthImageCompressor.h; sourceTree = "<group>"; };
 		E71EB42814A17E7400D23DE5 /* ofxDepthImageCompressor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDepthImageCompressor.cpp; sourceTree = "<group>"; };
-		E75E7C2C157C21930004B5EB /* ofxRGBDMediaTake.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDMediaTake.cpp; sourceTree = "<group>"; };
-		E75E7C2D157C21930004B5EB /* ofxRGBDMediaTake.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDMediaTake.h; sourceTree = "<group>"; };
 		E77D88731497D5FC00713F52 /* Project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
 		E77D88881497D6A200713F52 /* Calibration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Calibration.h; sourceTree = "<group>"; };
 		E77D88891497D6A200713F52 /* ContourFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContourFinder.h; sourceTree = "<group>"; };
@@ -401,13 +397,10 @@
 		E78D615C149A8784004806BF /* ofxGameCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxGameCamera.h; sourceTree = "<group>"; };
 		E790F90C15101FB600157AAC /* ofxDepthImageProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxDepthImageProvider.h; sourceTree = "<group>"; };
 		E790F90D15101FB600157AAC /* ofxDepthImageProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDepthImageProvider.cpp; sourceTree = "<group>"; };
-		E790FA711510FA2B00157AAC /* APACHE20 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = APACHE20; sourceTree = "<group>"; };
 		E790FA721510FA2B00157AAC /* cameras.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cameras.c; sourceTree = "<group>"; };
 		E790FA731510FA2B00157AAC /* cameras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cameras.h; sourceTree = "<group>"; };
-		E790FA741510FA2B00157AAC /* CONTRIB */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CONTRIB; sourceTree = "<group>"; };
 		E790FA751510FA2B00157AAC /* core.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = core.c; sourceTree = "<group>"; };
 		E790FA761510FA2B00157AAC /* freenect_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = freenect_internal.h; sourceTree = "<group>"; };
-		E790FA771510FA2B00157AAC /* GPL2 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GPL2; sourceTree = "<group>"; };
 		E790FA7A1510FA2B00157AAC /* freenect.dll */ = {isa = PBXFileReference; lastKnownFileType = file; path = freenect.dll; sourceTree = "<group>"; };
 		E790FA7B1510FA2B00157AAC /* freenect.lib */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = freenect.lib; sourceTree = "<group>"; };
 		E790FA7C1510FA2B00157AAC /* libfreenect-registration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "libfreenect-registration.h"; sourceTree = "<group>"; };
@@ -450,7 +443,6 @@
 		E790FABA1510FA2B00157AAC /* libusb0_x86.dll */ = {isa = PBXFileReference; lastKnownFileType = file; path = libusb0_x86.dll; sourceTree = "<group>"; };
 		E790FABB1510FA2B00157AAC /* Xbox_NUI_Motor.cat */ = {isa = PBXFileReference; lastKnownFileType = file; path = Xbox_NUI_Motor.cat; sourceTree = "<group>"; };
 		E790FABC1510FA2B00157AAC /* Xbox_NUI_Motor.inf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Xbox_NUI_Motor.inf; sourceTree = "<group>"; };
-		E790FABD1510FA2B00157AAC /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		E790FABE1510FA2C00157AAC /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.markdown; sourceTree = "<group>"; };
 		E790FAC01510FA2C00157AAC /* ofxBase3DVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxBase3DVideo.h; sourceTree = "<group>"; };
 		E790FAC11510FA2C00157AAC /* ofxKinect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxKinect.cpp; sourceTree = "<group>"; };
@@ -580,8 +572,8 @@
 		A638BD61149438DE0060809C /* src */ = {
 			isa = PBXGroup;
 			children = (
-				E75E7C2D157C21930004B5EB /* ofxRGBDMediaTake.h */,
-				E75E7C2C157C21930004B5EB /* ofxRGBDMediaTake.cpp */,
+				A6143AD61588154900D84CA5 /* ofxRGBDScene.cpp */,
+				A6143AD71588154900D84CA5 /* ofxRGBDScene.h */,
 				A6477C70149D678500908B2B /* ofxRGBDAlignment.h */,
 				A6477C6F149D678500908B2B /* ofxRGBDAlignment.cpp */,
 				A638BD63149438DE0060809C /* ofxCvCheckerboardPreview.h */,
@@ -1199,7 +1191,6 @@
 			isa = PBXGroup;
 			children = (
 				E790FA6F1510FA2B00157AAC /* libs */,
-				E790FABD1510FA2B00157AAC /* LICENSE.txt */,
 				E790FABE1510FA2C00157AAC /* README.markdown */,
 				E790FABF1510FA2C00157AAC /* src */,
 			);
@@ -1219,13 +1210,10 @@
 		E790FA701510FA2B00157AAC /* libfreenect */ = {
 			isa = PBXGroup;
 			children = (
-				E790FA711510FA2B00157AAC /* APACHE20 */,
 				E790FA721510FA2B00157AAC /* cameras.c */,
 				E790FA731510FA2B00157AAC /* cameras.h */,
-				E790FA741510FA2B00157AAC /* CONTRIB */,
 				E790FA751510FA2B00157AAC /* core.c */,
 				E790FA761510FA2B00157AAC /* freenect_internal.h */,
-				E790FA771510FA2B00157AAC /* GPL2 */,
 				E790FA781510FA2B00157AAC /* lib */,
 				E790FA7C1510FA2B00157AAC /* libfreenect-registration.h */,
 				E790FA7D1510FA2B00157AAC /* libfreenect.h */,
@@ -1566,9 +1554,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E790FB0E1510FA2C00157AAC /* APACHE20 in Resources */,
-				E790FB101510FA2C00157AAC /* CONTRIB in Resources */,
-				E790FB121510FA2C00157AAC /* GPL2 in Resources */,
 				E790FB131510FA2C00157AAC /* freenect.dll in Resources */,
 				E790FB151510FA2C00157AAC /* libfreenect.pc.in in Resources */,
 				E790FB1A1510FA2C00157AAC /* libusb0.dll in Resources */,
@@ -1601,7 +1586,6 @@
 				E790FB351510FA2C00157AAC /* libusb0_x86.dll in Resources */,
 				E790FB361510FA2C00157AAC /* Xbox_NUI_Motor.cat in Resources */,
 				E790FB371510FA2C00157AAC /* Xbox_NUI_Motor.inf in Resources */,
-				E790FB381510FA2C00157AAC /* LICENSE.txt in Resources */,
 				E790FB391510FA2C00157AAC /* README.markdown in Resources */,
 				E70ECF58154DCB3A0000DCCD /* RGBD.icns in Resources */,
 			);
@@ -1691,7 +1675,7 @@
 				A6AC3642151A6CE500C55DB6 /* ofxDepthImageProviderFreenect.cpp in Sources */,
 				E78B769015374AE200DD2D94 /* ofxRGBDCaptureGui.cpp in Sources */,
 				E7084AF01538D59200398E5A /* ofxMSATimer.cpp in Sources */,
-				E75E7C2E157C21930004B5EB /* ofxRGBDMediaTake.cpp in Sources */,
+				A6143AD81588154900D84CA5 /* ofxRGBDScene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
