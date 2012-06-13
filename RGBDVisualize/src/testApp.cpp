@@ -1,8 +1,5 @@
 #include "testApp.h"
 
-//Fix batch rendering system
-	// -- when a comp is loded say if it's in the queue or not
-	// -- add render queue button to top of list
 
 //--------------------------------------------------------------
 void testApp::setup(){
@@ -10,7 +7,7 @@ void testApp::setup(){
 	ofSetFrameRate(60);
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
-	ofBackground(0);
+	ofBackground(22);
 
 #ifdef TARGET_WIN32
 	pathDelim = "\\";
@@ -109,30 +106,36 @@ void testApp::setup(){
 	newCompButton->setLabel("Create New Composition From This Scene");
 	newCompButton->setDelegate(this);
 	newCompButton->setPosAndSize(fboRectangle.x+fboRectangle.width+25, 0, 100, 25);
-    
+    setButtonColors(newCompButton);
+                    
 	saveCompButton = new ofxMSAInteractiveObjectWithDelegate();
 	saveCompButton->setLabel("Save Comp");
 	saveCompButton->setDelegate(this);
 	saveCompButton->setPosAndSize(750, 0, 125, 25);
-    
+    setButtonColors(saveCompButton);
+                    
 	saveCompAsNewButton = new ofxMSAInteractiveObjectWithDelegate();
 	saveCompAsNewButton->setLabel("Copy To New");
 	saveCompAsNewButton->setDelegate(this);
 	saveCompAsNewButton->setPosAndSize(750, 25, 125, 25);
-
+    setButtonColors(saveCompAsNewButton);
+                    
     mediaBinButton = new ofxMSAInteractiveObjectWithDelegate();
 	mediaBinButton->setLabel("Load MediaBin");
 	mediaBinButton->setDelegate(this);
 	mediaBinButton->setPosAndSize(250,0, 500, 25);
-    
+    setButtonColors(mediaBinButton);
+                    
     changeCompButton = new ofxMSAInteractiveObjectWithDelegate();
 	changeCompButton->setLabel("Change Comp");
 	changeCompButton->setDelegate(this);
 	changeCompButton->setPosAndSize(250,25, 500, 25);
+    setButtonColors(changeCompButton);
 
     renderBatch = new ofxMSAInteractiveObjectWithDelegate();
     renderBatch->setLabel("Start Rendering Queue >>");
 	renderBatch->setDelegate(this);
+    setButtonColors(renderBatch);
     
 	timeline.setup();
 	timeline.getColors().loadColors("defaultColors.xml");
@@ -140,6 +143,8 @@ void testApp::setup(){
 	timeline.setPageName("Main");
 	timeline.setDurationInFrames(300); //base duration
     timeline.setMovePlayheadOnDrag(false);
+    
+    //colorize buttons
     
 	gui.setup("Settings", "defaultGuiSettings.xml");
     gui.add(pauseRender.setup("Pause Render", ofxParameter<bool>()));
@@ -173,6 +178,17 @@ void testApp::setup(){
 	cameraTrack.lockCameraToTrack = false;
     
     accumulatedPerlinOffset = 0;    
+    
+    ofxXmlSettings defaultBin;
+    if(defaultBin.loadFile("defaultBin.xml")){
+		mediaBinFolder = defaultBin.getValue("bin", "");
+        mediaBinButton->setLabel(mediaBinFolder);
+        cout << "populating bin " << mediaBinFolder << endl;
+		populateScenes();
+    }
+    else{
+        ofLogError("No default bin found");
+    }
 }
 
 void testApp::loadShaders(){
@@ -651,10 +667,21 @@ void testApp::drawGeometry(){
         rendererDirty = false;
 	}
     
+    /*
     ofPushStyle();
     ofSetColor(0);
     ofRect(fboRectangle);
     ofPopStyle();
+    
+    fbo1.begin();
+    ofPushStyle();
+    ofClear(255,255,0,255);
+    
+    renderer.drawWireFrame();
+
+    ofPopStyle();
+    fbo1.end();
+    */
     
     ofEnableAlphaBlending();
     fbo1.getTextureReference().draw(fboRectangle);
@@ -982,7 +1009,7 @@ void testApp::update(){
 	   fillHoles != holeFiller.enable ||
 	   currentHoleKernelSize != holeFiller.getKernelSize() ||
        currentHoleFillIterations != holeFiller.getIterations()||
-       undistortImages == renderer.forceUndistortOff)
+       undistortImages == renderer.forceUndistortOff || true)
 	{		
 		renderer.xshift = currentXMultiplyShift;
 		renderer.yshift = currentYMultiplyShift;
@@ -1060,6 +1087,7 @@ void testApp::draw(){
             fboRectangle.y = 50;
             fboRectangle.height = (timeline.getDrawRect().y - fboRectangle.y - 20);
             fboRectangle.width = aspect*fboRectangle.height;
+            
             drawGeometry();
             
             colorAlignAssistRect = ofRectangle(fboRectangle.x + fboRectangle.width, fboRectangle.y, fboRectangle.width/3, fboRectangle.height/3);
@@ -1097,7 +1125,7 @@ void testApp::draw(){
 					finishRender();
 				}
 			}
-            
+            ofDrawBitmapString("fps: " + ofToString(ofGetFrameRate()), saveCompButton->x + saveCompButton->width + 10, saveCompButton->y + 10);
 			if(!currentlyRendering){
 				gui.draw();
             }
@@ -1255,6 +1283,10 @@ void testApp::loadNewMediaBin(){
 		mediaBinFolder = r.getPath();
         mediaBinButton->setLabel(mediaBinFolder);
 		populateScenes();
+        //save it
+        ofxXmlSettings defaultBin;
+        defaultBin.setValue("bin", mediaBinFolder);
+        defaultBin.saveFile("defaultBin.xml");
 	}
 }
 
@@ -1276,7 +1308,7 @@ void testApp::populateScenes(){
 	for(int i = 0; i < mediaFolders; i++){
 		
         SceneButton sceneButton;
-        sceneButton.scene.loadFromFolder(dir.getPath(i));
+        sceneButton.scene.loadFromFolder(dir.getPath(i), false);
         if(!sceneButton.scene.valid()){
             continue;
         }
@@ -1391,6 +1423,18 @@ void testApp::resetCameraPosition(){
     cam.targetXRot = -180;
     cam.targetYRot = 0;
     cam.rotationZ = 0;    
+}
+
+//--------------------------------------------------------------
+void testApp::setButtonColors(ofxMSAInteractiveObjectWithDelegate* btn){
+	ofColor downColor  = ofColor(255, 120, 0);
+	ofColor idleColor  = ofColor(220, 200, 200);
+	ofColor hoverColor = ofColor(255*.2, 255*.2, 30*.2);
+
+    btn->setIdleColor(idleColor);
+    btn->setDownColor(downColor);
+    btn->setHoverColor(hoverColor);
+
 }
 
 //--------------------------------------------------------------
@@ -1596,6 +1640,7 @@ bool testApp::loadComposition(string compositionDirectory){
     else {
         ofLogError("loadComposition -- xyshift not present!!");
     }
+    
     alignmentScrubber.setup();
 	alignmentScrubber.videoSequence = &videoTimelineElement;
 	alignmentScrubber.depthSequence = &depthSequence;
@@ -1606,6 +1651,9 @@ bool testApp::loadComposition(string compositionDirectory){
     //fix up pairings file back into the main dir
     alignmentScrubber.setXMLFileName(selectedScene->scene.pairingsFile);
     alignmentScrubber.load();
+    if(alignmentScrubber.ready()){ //failsafe to not leave the temopral alignment mode on
+        temporalAlignmentMode = false;
+    }
     //    cout << "parings file is " << selectedScene->scene.pairingsFile << " ready? " << alignmentScrubber.ready() << endl;
 	cameraTrack.setup();	
     cameraTrack.load();

@@ -119,6 +119,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxMSAInteractiveObjectWithDelegate* saveCompAsNewButton;
     ofxMSAInteractiveObjectWithDelegate* renderBatch;
     
+    void setButtonColors(ofxMSAInteractiveObjectWithDelegate* btn);
+    
     vector<SceneButton> scenes;
     vector<CompButton> comps;
     vector<RenderButton> renderQueue;
