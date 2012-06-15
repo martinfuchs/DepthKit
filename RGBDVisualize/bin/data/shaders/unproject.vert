@@ -28,8 +28,7 @@ void main(void)
         vec4 texCd = tTex * pos;
         texCd.xyz /= texCd.w;
         
-        texCd.x *= -1.;
-        texCd.y *= -1.;
+        texCd.xy *= -1.;
         texCd.xy += 1.;
         texCd.xy /= 2.;
         texCd.xy += fudge;

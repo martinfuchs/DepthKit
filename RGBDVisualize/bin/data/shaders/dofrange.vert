@@ -24,23 +24,6 @@ void main(void)
         //projective texture on the 
         gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * pos;
         gl_FrontColor = gl_Color;
-        
-//        mat4 tTex = gl_TextureMatrix[0];
-//        //vec4 texCd = tTex * gl_Vertex;
-//        vec4 texCd = tTex * pos;
-//        texCd.xyz /= texCd.w;
-//        
-//        texCd.x *= -1.;
-//        texCd.y *= -1.;
-//        texCd.xy += 1.;
-//        texCd.xy /= 2.;
-//        texCd.xy += fudge;
-//        
-//        texCd.xy *= dim;
-//        gl_TexCoord[0] = texCd;
-        
-        //fog = clamp( (fogNear - gl_Position.z) / fogRange, 0.0, 1.0);
-
         VZPositionValid0 = 1.;
     }
     else {

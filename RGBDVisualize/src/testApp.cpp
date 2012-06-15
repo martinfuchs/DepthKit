@@ -193,10 +193,11 @@ void testApp::setup(){
 
 void testApp::loadShaders(){
     //dofRange.load("shaders/dofrange"); 
-    dofRange.setGeometryInputType(GL_TRIANGLES);
-    dofRange.setGeometryOutputType(GL_TRIANGLE_STRIP);
-    dofRange.setGeometryOutputCount(3);
-    dofRange.load("shaders/dofrange.vert", "shaders/dofrange.frag", "shaders/dofrange.geom"); 
+//    dofRange.setGeometryInputType(GL_TRIANGLES);
+//    dofRange.setGeometryOutputType(GL_TRIANGLE_STRIP);
+//    dofRange.setGeometryOutputCount(3);
+//    dofRange.load("shaders/dofrange.vert", "shaders/dofrange.frag", "shaders/dofrange.geom"); 
+    dofRange.load("shaders/dofrange");
     dofBlur.load("shaders/dofblur");
     dofBlur.begin();
     dofBlur.setUniform1i("tex", 0);
@@ -216,25 +217,25 @@ void testApp::populateTimelineElements(){
 	timeline.addElement("Video", &videoTimelineElement);
 
     //rendering
-    timeline.addPage("Global Rendering", true);
-    timeline.addKeyframes("Motion Trail Decay", currentCompositionDirectory + "motionTrailDecay.xml", ofRange(.05 ,1.0), 1.0 );
+    timeline.addPage("Geoemtry", true);
+//    timeline.addKeyframes("Motion Trail Decay", currentCompositionDirectory + "motionTrailDecay.xml", ofRange(.05 ,1.0), 1.0 );
     timeline.addKeyframes("Simplify", currentCompositionDirectory + "simplify.xml", ofRange(1, 8), 2);
-    timeline.addKeyframes("Edge Snip", currentCompositionDirectory + "edgeSnip.xml", ofRange(1.0, 6000), 6000 );
+//    timeline.addKeyframes("Edge Snip", currentCompositionDirectory + "edgeSnip.xml", ofRange(1.0, 6000), 6000 );
     timeline.addKeyframes("Z Threshold", currentCompositionDirectory + "zThreshold.xml", ofRange(1.0, sqrtf(6000)), sqrtf(6000) );
-
-    timeline.addPage("Mesh", true);
-    timeline.addKeyframes("Mesh Alpha", currentCompositionDirectory + "meshAlpha.xml", ofRange(0,1.0) );
 	timeline.addKeyframes("X Rotate", currentCompositionDirectory + "meshXRot.xml", ofRange(-360,360), 0.);
     timeline.addKeyframes("Y Rotate", currentCompositionDirectory + "meshYRot.xml", ofRange(-360,360), 0.);
     timeline.addKeyframes("Z Rotate", currentCompositionDirectory + "meshZRot.xml", ofRange(-360,360), 0.);
-    
-    timeline.addPage("Wireframe", true);
-    timeline.addKeyframes("Wireframe Alpha", currentCompositionDirectory + "wireframeAlpha.xml", ofRange(0,1.0), 1.0 );
-    timeline.addKeyframes("Wireframe Thickness", currentCompositionDirectory + "wireframeThickness.xml", ofRange(1.0,sqrtf(20.0)) );
-     
-    timeline.addPage("Point", true);
+
+    timeline.addPage("Rendering", true);
     timeline.addKeyframes("Point Alpha", currentCompositionDirectory + "pointAlpha.xml", ofRange(0,1.0) );
     timeline.addKeyframes("Point Size", currentCompositionDirectory + "pointSize.xml", ofRange(1.0, sqrtf(20.0) ) );	
+    timeline.addKeyframes("Wireframe Alpha", currentCompositionDirectory + "wireframeAlpha.xml", ofRange(0,1.0), 1.0 );
+    timeline.addKeyframes("Wireframe Thickness", currentCompositionDirectory + "wireframeThickness.xml", ofRange(1.0,sqrtf(20.0)) );
+    timeline.addKeyframes("Mesh Alpha", currentCompositionDirectory + "meshAlpha.xml", ofRange(0,1.0) );
+    
+//    timeline.addPage("Wireframe", true);
+     
+//    timeline.addPage("Point", true);
     
     timeline.addPage("Depth of Field", true);
     timeline.addKeyframes("DOF Distance", currentCompositionDirectory + "DOFDistance.xml", ofRange(0,sqrtf(1000.0)), 10 );
@@ -246,7 +247,7 @@ void testApp::populateTimelineElements(){
     timeline.addKeyframes("Sine Amplitude", currentCompositionDirectory + "SineAmp.xml", ofRange(0, sqrtf(100)) );
     timeline.addKeyframes("Sine Frequency", currentCompositionDirectory + "SineFrequency.xml", ofRange(.00, 1) );
     timeline.addKeyframes("Sine Speed", currentCompositionDirectory + "SineSpeed.xml", ofRange(-sqrtf(1.5), sqrtf(1.5)), 0 );
-    timeline.addKeyframes("Depth Blur", currentCompositionDirectory + "DepthBlur.xml", ofRange(0, 10), 0 );
+//    timeline.addKeyframes("Depth Blur", currentCompositionDirectory + "DepthBlur.xml", ofRange(0, 10), 0 );
     
     timeline.addPage("Geometry  Distortion", true);
     timeline.addKeyframes("Perlin Amp", "PerlinAmp.xml", ofRange(0, 200.0) );
@@ -308,12 +309,6 @@ void testApp::processDepthFrame(){
 }
 
 void testApp::processGeometry(){
-	//***************************************************
-	//CUSTOMIZATION: YOU CAN MANIPULATE YOUR MESH HERE
-	//*
-	//* renderer.getMesh() contains mesh with indeces and texture coordinates 
-	//*
-	//***************************************************
     if(!drawGeometryDistortion) return;
 
     float perlinAmp = timeline.getKeyframeValue("Perlin Amp");
@@ -348,14 +343,6 @@ void testApp::processGeometry(){
 }
 
 void testApp::drawGeometry(){
-    
-	//***************************************************
-	//CUSTOMIZATION: YOU CAN DRAW WHATEVER YOU WANT HERE TOO OR USE SHADERS
-	//*
-	//* draw whatever you want!
-	//*
-	//***************************************************
-
 
     float pointAlpha = timeline.getKeyframeValue("Point Alpha");
     float wireAlpha = timeline.getKeyframeValue("Wireframe Alpha");
@@ -395,7 +382,8 @@ void testApp::drawGeometry(){
         fbo1.begin();
         ofPushStyle();
         ofEnableAlphaBlending();
-        float decay = powf(timeline.getKeyframeValue("Motion Trail Decay"), 2.0);
+        //float decay = powf(timeline.getKeyframeValue("Motion Trail Decay"), 2.0);
+        float decay = 1.0;
         ofSetColor(0, 0, 0, decay*255);
         ofRect(renderFboRect);
         ofPopStyle();
@@ -1006,7 +994,7 @@ void testApp::update(){
         resetCameraPosition();
 	}
 	
-    renderer.edgeCull = timeline.getKeyframeValue("Edge Snip");
+    //renderer.edgeCull = timeline.getKeyframeValue("Edge Snip");
     renderer.farClip  = powf(timeline.getKeyframeValue("Z Threshold"), 2.0);
 	renderer.meshRotate.x = timeline.getKeyframeValue("X Rotate");
     renderer.meshRotate.y = timeline.getKeyframeValue("Y Rotate");
@@ -1490,6 +1478,7 @@ void testApp::saveComposition(){
 	xyshift.setValue("xshift", currentXMultiplyShift);
 	xyshift.setValue("yshift", currentYMultiplyShift);
     xyshift.saveFile();
+    selectedScene->scene.hasXYShift = true;
     
     cout << "saved shift file of " << loadedScene->scene.xyshiftFile << endl;
     
