@@ -30,15 +30,20 @@ Current Version is RGBD PreRelease v. 003 for Mac OS X and Windows Released on J
 This manual was graciously written by the wonderful and talented video installation artist i.m klif (http://vimeo.com/32631165) during our Resonate workshop in Belgrade, Serbia on March 16th 2012 and edited by James George on March 24th 2012.
 
 RGBDToolkit is a labor of love by James George http://www.jamesgeorge.org
+
 Collaborators Alexander Porter and Jonathan Minard
+
 Development has been provked, inspired and assisted by Kyle McDonald and Elliot Woods
 
 Supported by:
+
 The Frank-Ratchye Studio for Creative Inquiry http://studioforcreativeinquiry.org/
+
 Eyebeam Art+Technology center http://eyebeam.org
+
 YCAM InterLab http://www.ycam.jp/en/interlab/
 
-Very special thanks to the Resonate Festival, Eyeo Festival, and Art && Code - 
+Very special thanks to the Resonate Festival, Eyeo Festival, and Art && Code.
 
 # CALIBRATION
 
