@@ -315,8 +315,6 @@ void testApp::processGeometry(){
     float perlinDensity = timeline.getKeyframeValue("Perlin Density");
     float perlinSpeed = timeline.getKeyframeValue("Perlin Speed");
     perlinSpeed *= perlinSpeed;
-//    float contract = timeline.getKeyframeValue("Contract");
-//    float explode = timeline.getKeyframeValue("Explode");
     float contract = 0; //timeline.getKeyframeValue("Contract");
     float explode = 0; //timeline.getKeyframeValue("Explode");
     
