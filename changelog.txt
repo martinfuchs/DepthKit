@@ -57,7 +57,7 @@ First release for Resonate Festival
 
 RGBDToolkit is a labor of love by James George http://www.jamesgeorge.org
 Collaborators Alexander Porter and Jonathan Minard
-Development has been pushed and inspired by Kyle McDonald (http://kylemcdonald.net) and Elliot Woods
+Development has been pushed and inspired by Kyle McDonald (http://kylemcdonald.net) and Elliot Woods (http://kimchiandchips.com)
 
 Supported by:
 The Frank-Ratchye Studio for Creative Inquiry http://studioforcreativeinquiry.org/
