@@ -22,6 +22,9 @@
 
 A software suite for filmmaking with Kinect paired with a Digital SLR Video camera.
 
+Watch the tutorials here:
+https://vimeo.com/album/1977644
+
 http://www.rgbdtoolkit.com + http://rgbd.tumblr.com/
 Check out the documentation at: https://vimeo.com/39505902
 
