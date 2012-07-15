@@ -30,6 +30,11 @@ Known Issues:
 - Simplify level 3 has some weird tearing in the mesh
 - No way to change the render resolution from 1920x1080
 
+=======
+0031 - July 15th 2012
+- Fixed pattern size bug that was causing weird calibration issues
+- Fixed crash on exit in Capture application
+
 003 - June 15th 2012
 - Consolidated FrameExtract and Calibrate app into the Capture app
 - Switched from ofxSimpleGui to ofxGui

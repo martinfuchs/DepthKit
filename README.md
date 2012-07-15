@@ -22,13 +22,20 @@
 
 A software suite for filmmaking with Kinect paired with a Digital SLR Video camera.
 
+
 Watch the tutorials here:
 https://vimeo.com/album/1977644
+
+*********************************************************************************
+DOWNLOAD THE EXAMPLE MEDIA BIN AT: http://www.rgbdtoolkit.com/ExampleMediaBin.zip
+*********************************************************************************
+
 
 http://www.rgbdtoolkit.com + http://rgbd.tumblr.com/
 Check out the documentation at: https://vimeo.com/39505902
 
-Current Version is RGBD PreRelease v. 003 for Mac OS X and Windows Released on June 15th 2012
+Current Version is RGBD PreRelease v. 0031 for Mac OS X and Windows Released on July 15th 2012
+
 
 This manual was graciously written by the wonderful and talented video installation artist i.m klif (http://vimeo.com/32631165) during our Resonate workshop in Belgrade, Serbia on March 16th 2012 and edited by James George on March 24th 2012.
 
@@ -47,6 +54,19 @@ Eyebeam Art+Technology center http://eyebeam.org
 YCAM InterLab http://www.ycam.jp/en/interlab/
 
 Very special thanks to the Resonate Festival, Eyeo Festival, and Art && Code.
+
+=======
+
+# COMPATIBILITY
+
+The RGBDToolkit is compatible with the Microsoft XBOX Kinect and the Asus Xtion series. (http://www.newegg.com/Product/Product.aspx?Item=N82E16826785030)
+
+To use the Asus Xtion sensor you must install the drivers. The easiest way is to use the sensecast installer package: http://sensecast.com/files/Sensecast.and.Libs.Installer.v.0.02.dmg
+
+Or you can compile and install from source here: https://github.com/PrimeSense/Sensor
+
+* To use the Kinect run the RGBDCaptureKinect application
+* To use the Asus Xtion pro run the RGBDCaptureOpenNI Application
 
 # CALIBRATION
 
