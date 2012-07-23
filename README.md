@@ -43,7 +43,7 @@ RGBDToolkit is a labor of love by James George http://www.jamesgeorge.org
 
 Collaborators Alexander Porter and Jonathan Minard
 
-Development has been provked, inspired and assisted by Kyle McDonald and Elliot Woods
+Development has been provoked, inspired and assisted by Kyle McDonald and Elliot Woods
 
 Supported by:
 
