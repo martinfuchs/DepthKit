@@ -2,6 +2,7 @@
 
 uniform vec2 dim;
 uniform vec2 fudge;
+uniform vec2 scale;
 
 //uniform sampler2DRect depthTexture;
 uniform vec2 principalPoint;
@@ -31,6 +32,7 @@ void main(void)
     texCd.xy *= -1.;
     texCd.xy += 1.;
     texCd.xy /= 2.;
+    texCd.xy *= scale;
     texCd.xy += fudge;
     
     texCd.xy *= dim;

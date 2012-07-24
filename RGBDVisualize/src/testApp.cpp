@@ -60,6 +60,9 @@ void testApp::setup(){
 	currentHoleKernelSize = 1;
 	currentHoleFillIterations = 1;
     
+    currentXScale = 1.0;
+    currentYScale = 1.0;
+    
 	sampleCamera = false;
     rendererDirty = true;
     isSceneLoaded = false;
@@ -165,6 +168,9 @@ void testApp::setup(){
     gui.add(undistortImages.setup("Undistort", ofxParameter<bool>()));
     gui.add(currentXMultiplyShift.setup("X Shift", ofxParameter<float>(), -.15, .15));
     gui.add(currentYMultiplyShift.setup("Y Shift", ofxParameter<float>(), -.15, .15));
+    gui.add(currentXScale.setup("X Scale", ofxParameter<float>(), .90, 1.10));
+    gui.add(currentYScale.setup("Y Scale", ofxParameter<float>(), .90, 1.10));
+
     gui.add(fillHoles.setup("Fill Holes", ofxParameter<bool>()));
     gui.add(currentHoleKernelSize.setup("Hole Kernel Size", ofxParameter<int>(), 1, 10));
     gui.add(currentHoleFillIterations.setup("Hole Fill Iterations", ofxParameter<int>(), 1, 20));
@@ -290,12 +296,6 @@ void testApp::processDepthFrame(){
 		for(int x = 0; x < 640; x++){
 			int index = y*640+x;
             
-			//***************************************************
-			//CUSTOMIZATION: YOU CAN PROCESS YOUR RAW DEPTH FRAME HERE
-			//* 
-			//* depthPixelDecodeBuffer contains the raw depth image
-			//*
-			//***************************************************			
             if(noise > 0){
                 //holeFilledPixels.getPixels()[index] += ofRandom(noise);   
                 depthSequence.currentDepthRaw.getPixels()[index] += ofRandom(noise);  
@@ -1004,6 +1004,8 @@ void testApp::update(){
     
 	if(currentXMultiplyShift != renderer.xshift ||
 	   currentYMultiplyShift != renderer.yshift ||
+       currentXScale != renderer.xscale ||
+       currentYScale != renderer.yscale ||
 	   currentMirror != renderer.mirror ||
 	   fillHoles != holeFiller.enable ||
 	   currentHoleKernelSize != holeFiller.getKernelSize() ||
@@ -1012,6 +1014,8 @@ void testApp::update(){
 	{		
 		renderer.xshift = currentXMultiplyShift;
 		renderer.yshift = currentYMultiplyShift;
+        renderer.xscale = currentXScale;
+        renderer.yscale = currentYScale;
 		renderer.mirror = currentMirror;
 		renderer.forceUndistortOff = !undistortImages;
 		holeFiller.enable = fillHoles;
@@ -1475,7 +1479,10 @@ void testApp::saveComposition(){
     xyshift.loadFile(loadedScene->scene.xyshiftFile);
 	xyshift.setValue("xshift", currentXMultiplyShift);
 	xyshift.setValue("yshift", currentYMultiplyShift);
+	xyshift.setValue("xscale", currentXScale);
+	xyshift.setValue("yscale", currentYScale);
     xyshift.saveFile();
+    
     selectedScene->scene.hasXYShift = true;
     
     cout << "saved shift file of " << loadedScene->scene.xyshiftFile << endl;
@@ -1627,6 +1634,8 @@ bool testApp::loadComposition(string compositionDirectory){
 
         currentXMultiplyShift = projectsettings.getValue("xmult", 0.);
         currentYMultiplyShift = projectsettings.getValue("ymult", 0.);
+        currentXScale = projectsettings.getValue("xscale", 1.);
+        currentYScale = projectsettings.getValue("yscale", 1.);
 
         fillHoles = projectsettings.getValue("fillholes", false);
         currentHoleKernelSize = projectsettings.getValue("kernelSize", 1);
@@ -1642,6 +1651,9 @@ bool testApp::loadComposition(string compositionDirectory){
     if(selectedScene->scene.hasXYShift && xyshift.loadFile(selectedScene->scene.xyshiftFile)){
         currentXMultiplyShift = xyshift.getValue("xshift", 0.);
         currentYMultiplyShift = xyshift.getValue("yshift", 0.);
+        currentXScale = xyshift.getValue("xscale", 1.);
+        currentYScale = xyshift.getValue("yscale", 1.);
+
 //        cout << "laoded shift file of " << loadedScene->scene.xyshiftFile << " current x " << currentXMultiplyShift << " current y " <<  currentYMultiplyShift << endl;
     }
     else {

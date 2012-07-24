@@ -102,6 +102,9 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle currentMirror;
 	ofxFloatSlider currentXMultiplyShift;
     ofxFloatSlider currentYMultiplyShift;
+    ofxFloatSlider currentXScale;
+    ofxFloatSlider currentYScale;
+
     ofxToggle undistortImages;
     ofxToggle fillHoles;
     ofxIntSlider currentHoleKernelSize;
