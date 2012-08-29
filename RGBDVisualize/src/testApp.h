@@ -6,13 +6,14 @@
 #include "ofxDepthImageRecorder.h"
 #include "ofxGameCamera.h"
 #include "ofxTimeline.h"
-#include "ofxTLVideoPlayer.h"
+#include "ofxTLVideoTrack.h"
 #include "ofxTLVideoDepthAlignmentScrubber.h"
 #include "ofxTLDepthImageSequence.h"
 #include "ofxMSAInteractiveObjectDelegate.h"
 #include "ofxTLCameraTrack.h"
 #include "ofxDepthHoleFiller.h"
 #include "ofxRGBDScene.h"
+#include "ofxRGBDPlayer.h"
 #include "ofxGui.h"
 
 typedef struct {
@@ -52,7 +53,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
  	
-	void updateRenderer(ofVideoPlayer& fromPlayer);
+	void updateRenderer();
 	void processDepthFrame();
 	void processGeometry();
 	void drawGeometry();
@@ -69,7 +70,10 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	void populateScenes();
     void populateCompositionsForScene();
     void populateRenderQueue();
-    
+
+	void clearCompositionButtons();
+	void clearRenderQueue();
+	
 	void newComposition();
     void loadDefaults();
 	void saveComposition();
@@ -141,7 +145,6 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     bool isSceneLoaded;
     
 	void populateTimelineElements();
-	bool playerElementAdded;
 	int renderQueueIndexToRemove;
 	
 	void addCompToRenderQueue(CompButton* comp);
@@ -151,55 +154,53 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	string currentCompositionDirectory;
     string currentCompositionLabel;
 	string mediaBinFolder;
-	ofVideoPlayer* hiResPlayer;
-	ofVideoPlayer* lowResPlayer;
-	bool hasHiresVideo;
-
-	long currentDepthFrame;
+	
     bool viewComps;
-    
     float accumulatedPerlinOffset;
     
 	ofxGameCamera cam;
-	ofxTLCameraTrack cameraTrack;
-	bool sampleCamera;
-    
-	ofxRGBDRenderer renderer;	
+	ofxTLCameraTrack* cameraTrack;
+	
 	ofxTimeline timeline;
-	ofxTLVideoPlayer videoTimelineElement;
+	ofxTLVideoTrack* videoTrack;
+	
+	ofxRGBDPlayer player;
+	ofxRGBDRenderer renderer;
 	ofxTLDepthImageSequence depthSequence;
 	ofxTLVideoDepthAlignmentScrubber alignmentScrubber;
 	ofxDepthHoleFiller holeFiller;
 	
-	ofRectangle fboRectangle;
-    
+	ofRectangle fboRectangle;    
+    ofRectangle depthAlignAssistRect;
+    ofRectangle colorAlignAssistRect;
+
+	ofShader DOFCloud;
+    ofShader alphaFadeShader;
+    ofShader gaussianBlur;
+    ofShader dofRange;
+    ofShader dofBlur;
+
     ofFbo swapFbo; //used for temp drawing
 	ofFbo fbo1;
     ofFbo fbo2;
     ofFbo dofBuffer;
     ofFbo dofBlurBuffer;
     int curbuf;
-    
-    ofRectangle depthAlignAssistRect;
-    ofRectangle colorAlignAssistRect;
-    
+
 	ofImage savingImage;
 	string saveFolder;
 	string lastSavedDate;    
 
 	bool currentlyRendering;
 	int currentRenderFrame;
-	int lastRenderFrame;
-	int numFramesToRender;
-	int numFramesRendered;
+	//used for temporal aligmnet nudging
+	int currentDepthFrame;
+	int currentVideoFrame;
+//	int numFramesToRender;
+//	int numFramesRendered;
 	bool rendererDirty;
     ofNode renderedCameraPos;
     
 	string pathDelim;
     
-    ofShader DOFCloud;
-    ofShader alphaFadeShader;
-    ofShader gaussianBlur;
-    ofShader dofRange;
-    ofShader dofBlur;
 };

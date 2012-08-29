@@ -63,6 +63,7 @@ void testApp::setup(){
     loadDefaultScene();
 	webMImage.allocate(640*2,480, OF_IMAGE_COLOR);
 	createRainbowPallet();
+	player.updateVideoPlayer = false;
 }
 
 //--------------------------------------------------------------
@@ -127,9 +128,14 @@ void testApp::update(){
 	
     ofRectangle wholeRect = ofRectangle(timeline.getBottomLeft(), ofGetWidth(), ofGetHeight() - timeline.getDrawRect().height - webMImage.getHeight());
 	if(player.isLoaded()){
-		previewRect = wholeRect.scaleIntoMe(ofRectangle(0,0, player.getVideoPlayer()->getWidth(), player.getVideoPlayer()->getHeight()));
+		ofRectangle videoRect = ofRectangle(0,0, player.getVideoPlayer()->getWidth(), player.getVideoPlayer()->getHeight());
+		previewRect = wholeRect.scaleIntoMe(videoRect);
 		previewRect.x = gui.getWidth();
 		gui.setPosition(timeline.getBottomLeft());
+		ofRectangle webMRect = ofRectangle(0,0,webMImage.getWidth(), webMImage.getHeight());
+		smallVideoPreviewRect = webMRect.scaleIntoMe(videoRect);
+		smallVideoPreviewRect.x = webMImage.getWidth();
+		smallVideoPreviewRect.y = previewRect.getMaxY();
 	}
 	else {
 		previewRect = wholeRect;
@@ -211,8 +217,10 @@ void testApp::draw(){
 		}
         glDisable(GL_DEPTH_TEST);
         cam.end();
+		player.getVideoPlayer()->draw(smallVideoPreviewRect);
     }
 	webMImage.draw(0,previewRect.getMaxY());
+	
 	timeline.draw();
     gui.draw();
 }
@@ -220,6 +228,7 @@ void testApp::draw(){
 //--------------------------------------------------------------
 void testApp::renderWebMImage(){
 	meshBuilder.updateMesh(player.getDepthPixels());
+	return;
 	depthEncodingMaxDepth = maxDepth;
 	ofShortPixels& p = player.getDepthPixels();
 	ofMesh& m = meshBuilder.getMesh();

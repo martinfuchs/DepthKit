@@ -74,6 +74,7 @@ class testApp : public ofBaseApp{
     bool loadDefaultScene();
     bool loadScene(string takeDirectory);
 	
+	ofRectangle smallVideoPreviewRect;
 	ofRectangle previewRect;
 	
 	ofImage webMImage;

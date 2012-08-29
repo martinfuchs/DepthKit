@@ -18,19 +18,19 @@ void testApp::setup(){
     renderQueueIndexToRemove = -1;
     
     cam.setup();
-	cam.speed = 40;
+	cameraSpeed = cam.speed = 20;
 	cam.autosavePosition = true;
 	cam.usemouse = true;
 	cam.useArrowKeys = false;
 	cam.setFarClip(30000);
 	cam.setScale(1, -1, 1);
 	cam.targetNode.setScale(1,-1,1);
-	cameraTrack.setCamera(cam);
 	cam.loadCameraPosition();
 	cam.maximumY =  120;
 	cam.minimumY = -120;
-	cam.rollSpeed = 1;
-    
+	cameraRollSpeed = cam.rollSpeed = 1;
+
+	
     selectedScene = NULL;
     selectedComp = NULL;
     loadedScene = NULL;
@@ -43,12 +43,9 @@ void testApp::setup(){
 	
     selfOcclude = false;
     
-	hiResPlayer = NULL;
-	lowResPlayer = NULL;
 	startRenderMode = false;
 	currentlyRendering = false;
 
-	playerElementAdded = false;
 	viewComps = false;
 
     drawDepthDistortion = true;
@@ -63,7 +60,7 @@ void testApp::setup(){
     currentXScale = 1.0;
     currentYScale = 1.0;
     
-	sampleCamera = false;
+	player.updateVideoPlayer = false;
     rendererDirty = true;
     isSceneLoaded = false;
     
@@ -105,13 +102,11 @@ void testApp::setup(){
     
     
 	timeline.setup();
-	timeline.getColors().loadColors("defaultColors.xml");
+	timeline.getColors().load("defaultColors.xml");
 	timeline.setOffset(ofVec2f(0, ofGetHeight() - 200));
 	timeline.setPageName("Main");
 	timeline.setDurationInFrames(300); //base duration
     timeline.setMovePlayheadOnDrag(false);
-    
-    
     
 	newCompButton = new ofxMSAInteractiveObjectWithDelegate();
 	newCompButton->setLabel("Create New Composition From This Scene");
@@ -153,8 +148,8 @@ void testApp::setup(){
     gui.add(drawPointcloud.setup("Draw Pointcloud",ofxParameter<bool>()));
     gui.add(drawWireframe.setup("Draw Wireframe",ofxParameter<bool>()));
     gui.add(drawMesh.setup("Draw Mesh",ofxParameter<bool>()));
-    gui.add(drawDepthDistortion.setup("Depth Distortion", ofxParameter<bool>()));
-    gui.add(drawGeometryDistortion.setup("Geometry Distortion", ofxParameter<bool>()));
+//    gui.add(drawDepthDistortion.setup("Depth Distortion", ofxParameter<bool>()));
+//    gui.add(drawGeometryDistortion.setup("Geometry Distortion", ofxParameter<bool>()));
     gui.add(selfOcclude.setup("Self Occlude", ofxParameter<bool>()));
     gui.add(drawDOF.setup("Draw DOF", ofxParameter<bool>()));
     
@@ -181,8 +176,10 @@ void testApp::setup(){
     
     loadShaders();
     
+	populateTimelineElements();
+	
 	currentLockCamera = false;
-	cameraTrack.lockCameraToTrack = false;
+	cameraTrack->lockCameraToTrack = false;
     
     accumulatedPerlinOffset = 0;    
     
@@ -198,76 +195,75 @@ void testApp::setup(){
 }
 
 void testApp::loadShaders(){
-    //dofRange.load("shaders/dofrange"); 
-//    dofRange.setGeometryInputType(GL_TRIANGLES);
-//    dofRange.setGeometryOutputType(GL_TRIANGLE_STRIP);
-//    dofRange.setGeometryOutputCount(3);
-//    dofRange.load("shaders/dofrange.vert", "shaders/dofrange.frag", "shaders/dofrange.geom"); 
     dofRange.load("shaders/dofrange");
     dofBlur.load("shaders/dofblur");
     dofBlur.begin();
     dofBlur.setUniform1i("tex", 0);
     dofBlur.setUniform1i("range", 1);
     dofBlur.end();
-    
-//    cout << "loading renderer shader" << endl;
 //    renderer.reloadShader();
-//    cout << "done loading renderer shader" << endl;
+
 }
 
 //Labbers: YOU CAN ADD TIMELINE ELEMENTS HERE
 void testApp::populateTimelineElements(){
 	
 	timeline.setPageName("Camera");
-	timeline.addElement("Camera", &cameraTrack);
-	timeline.addElement("Video", &videoTimelineElement);
+	cameraTrack = new ofxTLCameraTrack();
+	cameraTrack->setCamera(cam);
+	timeline.addTrack("Camera", cameraTrack);
+	videoTrack = new ofxTLVideoTrack();
+	timeline.addTrack("Video", videoTrack);
 
     //rendering
     timeline.addPage("Geometry", true);
-//    timeline.addKeyframes("Motion Trail Decay", currentCompositionDirectory + "motionTrailDecay.xml", ofRange(.05 ,1.0), 1.0 );
-    timeline.addKeyframes("Simplify", currentCompositionDirectory + "simplify.xml", ofRange(1, 8), 2);
-//    timeline.addKeyframes("Edge Snip", currentCompositionDirectory + "edgeSnip.xml", ofRange(1.0, 6000), 6000 );
-    timeline.addKeyframes("Z Threshold", currentCompositionDirectory + "zThreshold.xml", ofRange(1.0, sqrtf(6000)), sqrtf(6000) );
-	timeline.addKeyframes("X Rotate", currentCompositionDirectory + "meshXRot.xml", ofRange(-360,360), 0.);
-    timeline.addKeyframes("Y Rotate", currentCompositionDirectory + "meshYRot.xml", ofRange(-360,360), 0.);
-    timeline.addKeyframes("Z Rotate", currentCompositionDirectory + "meshZRot.xml", ofRange(-360,360), 0.);
+//    timeline.addCurves("Motion Trail Decay", currentCompositionDirectory + "motionTrailDecay.xml", ofRange(.05 ,1.0), 1.0 );
+    timeline.addCurves("Simplify", currentCompositionDirectory + "simplify.xml", ofRange(1, 8), 2);
+//    timeline.addCurves("Edge Snip", currentCompositionDirectory + "edgeSnip.xml", ofRange(1.0, 6000), 6000 );
+    timeline.addCurves("Z Threshold", currentCompositionDirectory + "zThreshold.xml", ofRange(1.0, sqrtf(6000)), sqrtf(6000) );
+	timeline.addCurves("X Rotate", currentCompositionDirectory + "meshXRot.xml", ofRange(-360,360), 0.);
+    timeline.addCurves("Y Rotate", currentCompositionDirectory + "meshYRot.xml", ofRange(-360,360), 0.);
+    timeline.addCurves("Z Rotate", currentCompositionDirectory + "meshZRot.xml", ofRange(-360,360), 0.);
 
     timeline.addPage("Rendering", true);
-    timeline.addKeyframes("Point Alpha", currentCompositionDirectory + "pointAlpha.xml", ofRange(0,1.0) );
-    timeline.addKeyframes("Point Size", currentCompositionDirectory + "pointSize.xml", ofRange(1.0, sqrtf(20.0) ) );	
-    timeline.addKeyframes("Wireframe Alpha", currentCompositionDirectory + "wireframeAlpha.xml", ofRange(0,1.0), 1.0 );
-    timeline.addKeyframes("Wireframe Thickness", currentCompositionDirectory + "wireframeThickness.xml", ofRange(1.0,sqrtf(20.0)) );
-    timeline.addKeyframes("Mesh Alpha", currentCompositionDirectory + "meshAlpha.xml", ofRange(0,1.0) );
+    timeline.addCurves("Point Alpha", currentCompositionDirectory + "pointAlpha.xml", ofRange(0,1.0) );
+    timeline.addCurves("Point Size", currentCompositionDirectory + "pointSize.xml", ofRange(1.0, sqrtf(20.0) ) );	
+    timeline.addCurves("Wireframe Alpha", currentCompositionDirectory + "wireframeAlpha.xml", ofRange(0,1.0), 1.0 );
+    timeline.addCurves("Wireframe Thickness", currentCompositionDirectory + "wireframeThickness.xml", ofRange(1.0,sqrtf(20.0)) );
+    timeline.addCurves("Mesh Alpha", currentCompositionDirectory + "meshAlpha.xml", ofRange(0,1.0) );
     
 //    timeline.addPage("Wireframe", true);
      
 //    timeline.addPage("Point", true);
     
     timeline.addPage("Depth of Field", true);
-    timeline.addKeyframes("DOF Distance", currentCompositionDirectory + "DOFDistance.xml", ofRange(0,sqrtf(1000.0)), 10 );
-    timeline.addKeyframes("DOF Range", currentCompositionDirectory + "DOFRange.xml", ofRange(10,sqrtf(500.0)) );
-    timeline.addKeyframes("DOF Blur", currentCompositionDirectory + "DOFBlur.xml", ofRange(0,5.0) );
+    timeline.addCurves("DOF Distance", currentCompositionDirectory + "DOFDistance.xml", ofRange(0,sqrtf(1500.0)), 10 );
+    timeline.addCurves("DOF Range", currentCompositionDirectory + "DOFRange.xml", ofRange(10,sqrtf(1500.0)) );
+    timeline.addCurves("DOF Blur", currentCompositionDirectory + "DOFBlur.xml", ofRange(0,5.0) );
 
+	/*
     timeline.addPage("Depth Distortion", true);
-    timeline.addKeyframes("Noise", currentCompositionDirectory + "DepthNoise.xml", ofRange(0, 5000) );
-    timeline.addKeyframes("Sine Amplitude", currentCompositionDirectory + "SineAmp.xml", ofRange(0, sqrtf(100)) );
-    timeline.addKeyframes("Sine Frequency", currentCompositionDirectory + "SineFrequency.xml", ofRange(.00, 1) );
-    timeline.addKeyframes("Sine Speed", currentCompositionDirectory + "SineSpeed.xml", ofRange(-sqrtf(1.5), sqrtf(1.5)), 0 );
-//    timeline.addKeyframes("Depth Blur", currentCompositionDirectory + "DepthBlur.xml", ofRange(0, 10), 0 );
-    
+    timeline.addCurves("Noise", currentCompositionDirectory + "DepthNoise.xml", ofRange(0, 5000) );
+    timeline.addCurves("Sine Amplitude", currentCompositionDirectory + "SineAmp.xml", ofRange(0, sqrtf(100)) );
+    timeline.addCurves("Sine Frequency", currentCompositionDirectory + "SineFrequency.xml", ofRange(.00, 1) );
+    timeline.addCurves("Sine Speed", currentCompositionDirectory + "SineSpeed.xml", ofRange(-sqrtf(1.5), sqrtf(1.5)), 0 );
+//    timeline.addCurves("Depth Blur", currentCompositionDirectory + "DepthBlur.xml", ofRange(0, 10), 0 );
+	*/
+	
+	/*
     timeline.addPage("Geometry  Distortion", true);
-    timeline.addKeyframes("Perlin Amp", "PerlinAmp.xml", ofRange(0, 200.0) );
-    timeline.addKeyframes("Perlin Density", "PerlinDensity.xml", ofRange(0, 200.0) );
-    timeline.addKeyframes("Perlin Speed", "PerlinSpeed.xml", ofRange(0, sqrtf(15.)) );    
-    
+    timeline.addCurves("Perlin Amp", "PerlinAmp.xml", ofRange(0, 200.0) );
+    timeline.addCurves("Perlin Density", "PerlinDensity.xml", ofRange(0, 200.0) );
+    timeline.addCurves("Perlin Speed", "PerlinSpeed.xml", ofRange(0, sqrtf(15.)) );    
+    */
+	
 	timeline.addPage("Alignment", true);
-	timeline.addElement("Video", &videoTimelineElement);
-	timeline.addElement("Depth Sequence", &depthSequence);
-	timeline.addElement("Alignment", &alignmentScrubber);
+	timeline.addTrack("Video", videoTrack);
+	timeline.addTrack("Depth Sequence", &depthSequence);
+	timeline.addTrack("Alignment", &alignmentScrubber);
     
 	timeline.setCurrentPage("Rendering");
-	
-	playerElementAdded = true;
+
 }
 
 #pragma mark customization
@@ -275,16 +271,19 @@ void testApp::populateTimelineElements(){
 void testApp::processDepthFrame(){
 	
     if(!drawDepthDistortion) return;
-    
-    if(!depthSequence.currentDepthRaw.isAllocated()){
-        return;
-    }
 
-    float noise = timeline.getKeyframeValue("Noise");
-    float sineSpeed = timeline.getKeyframeValue("Sine Speed");
-    float sineAmp = timeline.getKeyframeValue("Sine Amplitude");
-    float sineFrequency = timeline.getKeyframeValue("Sine Frequency");
-    int blur = timeline.getKeyframeValue("Depth Blur");
+    if(!player.isLoaded()){
+		return;
+	}
+//    if(!depthSequence.currentDepthRaw.isAllocated()){
+//        return;
+//    }
+
+    float noise = timeline.getValue("Noise");
+    float sineSpeed = timeline.getValue("Sine Speed");
+    float sineAmp = timeline.getValue("Sine Amplitude");
+    float sineFrequency = timeline.getValue("Sine Frequency");
+    int blur = timeline.getValue("Depth Blur");
     
     sineFrequency *= sineFrequency;
     sineSpeed = sineSpeed;
@@ -298,11 +297,12 @@ void testApp::processDepthFrame(){
             
             if(noise > 0){
                 //holeFilledPixels.getPixels()[index] += ofRandom(noise);   
-                depthSequence.currentDepthRaw.getPixels()[index] += ofRandom(noise);  
+                //depthSequence.currentDepthRaw.getPixels()[index] += ofRandom(noise);
+				player.getDepthPixels()[index] += ofRandom(noise);
             }
             
-            if(sineAmp > 0 && depthSequence.currentDepthRaw.getPixels()[index] > 0){
-                depthSequence.currentDepthRaw.getPixels()[index] += sin( y * sineFrequency + timeline.getCurrentFrame() * sineSpeed ) * sineAmp;
+            if(sineAmp > 0 && player.getDepthPixels()[index] > 0){
+                player.getDepthPixels()[index] += sin( y * sineFrequency + timeline.getCurrentFrame() * sineSpeed ) * sineAmp;
             }			
 		}
 	}    
@@ -311,12 +311,12 @@ void testApp::processDepthFrame(){
 void testApp::processGeometry(){
     if(!drawGeometryDistortion) return;
 
-    float perlinAmp = timeline.getKeyframeValue("Perlin Amp");
-    float perlinDensity = timeline.getKeyframeValue("Perlin Density");
-    float perlinSpeed = timeline.getKeyframeValue("Perlin Speed");
+    float perlinAmp = timeline.getValue("Perlin Amp");
+    float perlinDensity = timeline.getValue("Perlin Density");
+    float perlinSpeed = timeline.getValue("Perlin Speed");
     perlinSpeed *= perlinSpeed;
-    float contract = 0; //timeline.getKeyframeValue("Contract");
-    float explode = 0; //timeline.getKeyframeValue("Explode");
+    float contract = 0; //timeline.getValue("Contract");
+    float explode = 0; //timeline.getValue("Explode");
     
     accumulatedPerlinOffset += perlinSpeed;
     
@@ -342,9 +342,9 @@ void testApp::processGeometry(){
 
 void testApp::drawGeometry(){
 
-    float pointAlpha = timeline.getKeyframeValue("Point Alpha");
-    float wireAlpha = timeline.getKeyframeValue("Wireframe Alpha");
-    float meshAlpha = timeline.getKeyframeValue("Mesh Alpha");
+    float pointAlpha = timeline.getValue("Point Alpha");
+    float wireAlpha = timeline.getValue("Wireframe Alpha");
+    float meshAlpha = timeline.getValue("Mesh Alpha");
 	
     if(!alignmentScrubber.ready()){
         pointAlpha = 0;
@@ -370,7 +370,7 @@ void testApp::drawGeometry(){
                       renderedCameraPos.getOrientationQuat() != cam.getOrientationQuat() );
 
     if(rendererDirty){
-        
+
         renderedCameraPos.setPosition(cam.getPosition());
         renderedCameraPos.setOrientation(cam.getOrientationQuat());
         
@@ -380,7 +380,7 @@ void testApp::drawGeometry(){
         fbo1.begin();
         ofPushStyle();
         ofEnableAlphaBlending();
-        //float decay = powf(timeline.getKeyframeValue("Motion Trail Decay"), 2.0);
+        //float decay = powf(timeline.getValue("Motion Trail Decay"), 2.0);
         float decay = 1.0;
         ofSetColor(0, 0, 0, decay*255);
         ofRect(renderFboRect);
@@ -445,7 +445,7 @@ void testApp::drawGeometry(){
             glEnable(GL_DEPTH_TEST);
             
             ofSetColor(255*wireAlpha);        
-            float thickness = timeline.getKeyframeValue("Wireframe Thickness");
+            float thickness = timeline.getValue("Wireframe Thickness");
             thickness *= thickness;
             ofSetLineWidth(thickness);
             renderer.drawWireFrame();
@@ -496,7 +496,7 @@ void testApp::drawGeometry(){
             ofEnableAlphaBlending();
             ofSetColor(255*pointAlpha);
             glEnable(GL_POINT_SMOOTH); // makes circular points
-            float pointSize = timeline.getKeyframeValue("Point Size");
+            float pointSize = timeline.getValue("Point Size");
             glPointSize(pointSize*pointSize);
             renderer.drawPointCloud();
             ofPopStyle();
@@ -521,13 +521,13 @@ void testApp::drawGeometry(){
 
         if(drawDOF){
             //render DOF
-            float dofFocalDistance = timeline.getKeyframeValue("DOF Distance");
+            float dofFocalDistance = timeline.getValue("DOF Distance");
             dofFocalDistance*=dofFocalDistance;
-            float dofFocalRange = timeline.getKeyframeValue("DOF Range");
+            float dofFocalRange = timeline.getValue("DOF Range");
             dofFocalRange*=dofFocalRange;
-            float dofBlurAmount = timeline.getKeyframeValue("DOF Blur");
-//            float fogNear = timeline.getKeyframeValue("Fog Near");
-//            float fogRange = timeline.getKeyframeValue("Fog Range");
+            float dofBlurAmount = timeline.getValue("DOF Blur");
+//            float fogNear = timeline.getValue("Fog Near");
+//            float fogRange = timeline.getValue("Fog Range");
             
             //DRAW THE DOF B&W BUFFER
             dofBuffer.begin();
@@ -710,17 +710,11 @@ void testApp::keyPressed(int key){
 	}
 	
 	if(key == ' '){
-		if(lowResPlayer->getSpeed() != 0.0){
-			lowResPlayer->setSpeed(0);
-		}
-		else{
-			lowResPlayer->play();
-			lowResPlayer->setSpeed(1.0);
-		}		
+		timeline.togglePlay();
 	}
 	
     if(key == 'T'){
-        cameraTrack.getCameraTrack().sample(timeline.getCurrentFrame());
+        cameraTrack->getCameraTrack().sample(timeline.getCurrentFrame());
     }
     
     if(key == 'L'){
@@ -740,7 +734,7 @@ void testApp::keyPressed(int key){
     }
     
 	if(key == '\t'){
-		videoTimelineElement.toggleThumbs();
+		videoTrack->toggleThumbs();
 		depthSequence.toggleThumbs();
 	}
     
@@ -797,9 +791,6 @@ void testApp::mouseReleased(int x, int y, int button){
 	rendererDirty = true; //catch all for buttons...
 }
 
-//***************************************************
-///Everything below here is application logic
-//***************************************************
 #pragma mark application logic
 //--------------------------------------------------------------
 void testApp::update(){
@@ -824,7 +815,7 @@ void testApp::update(){
 	renderBatch->enabled = viewComps && (renderQueue.size() > 0);
 
     changeCompButton->enabled = isSceneLoaded;
-    newCompButton->enabled = viewComps || !isSceneLoaded;
+    newCompButton->enabled = (viewComps || !isSceneLoaded) && selectedScene != NULL;
     
 	saveCompButton->enabled = !viewComps && isSceneLoaded; 
     saveCompAsNewButton->enabled = !viewComps && isSceneLoaded;
@@ -843,6 +834,8 @@ void testApp::update(){
 	if(startRenderMode){
         startRenderMode = false;
         
+		timeline.disable();
+		
         fbo1.begin();
         ofClear(0,0,0,0);
         fbo1.end();
@@ -877,19 +870,16 @@ void testApp::update(){
                 saveDirectory.create(true);
             }
             
-            if(hasHiresVideo){
-                hiResPlayer->play();
-                hiResPlayer->setSpeed(0);
-                hiResPlayer->setVolume(0);
-                renderer.setRGBTexture(*hiResPlayer);
-            }        
-            
-            lastRenderFrame = currentRenderFrame-1;
-            numFramesToRender = timeline.getOutFrame() - timeline.getInFrame();
-            numFramesRendered = 0;
-            currentLockCamera = cameraTrack.lockCameraToTrack = true;
-            cameraTrack.setTimelineInOutToTrack();
-            currentRenderFrame = timeline.getInFrame();
+			if(player.hasHighresVideo()){
+				player.useHiresVideo();
+				player.getVideoPlayer()->setVolume(0);
+				renderer.setRGBTexture(player.getVideoPlayer());
+			}
+			
+            cameraTrack->setTimelineInOutToTrack();
+			player.getVideoPlayer()->setFrame(timeline.getInFrame());
+            currentLockCamera = cameraTrack->lockCameraToTrack = true;
+			
         }
 	}
     
@@ -897,8 +887,8 @@ void testApp::update(){
 	
 	//if we don't have good pairings, force pages on timeline + gui
 	if(!alignmentScrubber.ready()){
-		videoTimelineElement.setInFrame(0);
-		videoTimelineElement.setOutFrame(lowResPlayer->getTotalNumFrames());
+		videoTrack->setInFrame(0);
+		videoTrack->setOutFrame(player.getVideoPlayer()->getTotalNumFrames());
         temporalAlignmentMode = true;
         drawPointcloud = false;
         drawMesh = false;
@@ -906,7 +896,7 @@ void testApp::update(){
 		timeline.setCurrentPage("Alignment");
 	}
 	
-	if(currentLockCamera != cameraTrack.lockCameraToTrack){
+	if(currentLockCamera != cameraTrack->lockCameraToTrack){
 		if(!currentLockCamera){
 			cam.targetNode.setPosition(cam.getPosition());
 			cam.targetNode.setOrientation(cam.getOrientationQuat());
@@ -914,33 +904,23 @@ void testApp::update(){
 			cam.rotationY = cam.targetYRot = -cam.getPitch();
 			cam.rotationZ = -cam.getRoll();
 		}
-		cameraTrack.lockCameraToTrack = currentLockCamera;
+		cameraTrack->lockCameraToTrack = currentLockCamera;
 	}
 	
-	if(cameraTrack.lockCameraToTrack){
-		cameraTrack.setTimelineInOutToTrack();
+	if(cameraTrack->lockCameraToTrack){
+		cameraTrack->setTimelineInOutToTrack();
 	}
 	else{
 		timeline.setInOutRange(ofRange(0,1));
 	}
 	
-	cam.applyRotation = !cameraTrack.lockCameraToTrack;
-	cam.applyTranslation = !cameraTrack.lockCameraToTrack;
-    //cam.usemouse = false;
+	cam.applyRotation = !cameraTrack->lockCameraToTrack;
+	cam.applyTranslation = !cameraTrack->lockCameraToTrack;
     
 	if(currentlyRendering){
+		currentRenderFrame = player.getVideoPlayer()->getCurrentFrame();
 		timeline.setCurrentFrame(currentRenderFrame);
-		videoTimelineElement.selectFrame(currentRenderFrame);
-	    if(&renderer.getRGBTexture() == hiResPlayer){
-			hiResPlayer->setFrame(videoTimelineElement.selectFrame(currentRenderFrame));
-			hiResPlayer->update();
-            updateRenderer(*hiResPlayer);		
-        }
-        else {
-			lowResPlayer->setFrame(videoTimelineElement.selectFrame(currentRenderFrame));
-			lowResPlayer->update();
-            updateRenderer(*lowResPlayer);		            
-        }
+		videoTrack->selectFrame(currentRenderFrame);
 		
 //		cout << "would have set hi res frame to " << currentRenderFrame % hiResPlayer->getTotalNumFrames() << endl;
 //		cout << "instead set it to " << hiResPlayer->getCurrentFrame() << endl;
@@ -958,48 +938,53 @@ void testApp::update(){
 		////////
 	}
 	else {
-        lowResPlayer->update();
-	    if(&renderer.getRGBTexture() == hiResPlayer){
-            hiResPlayer->setFrame(lowResPlayer->getCurrentFrame());
-            hiResPlayer->update();        	
-        }
-        
-		if(!temporalAlignmentMode && lowResPlayer->isFrameNew()){
-			updateRenderer(*lowResPlayer);
-		}
-        
-		//cout << "timeline is " << videoTimelineElement.getSelectedFrame() << " and player is " << lowResPlayer->getCurrentFrame() << endl;; 
-		if(temporalAlignmentMode && (currentDepthFrame != depthSequence.getSelectedFrame())){
-			updateRenderer(*lowResPlayer);
+		
+		if(shouldSaveCameraPoint){
+			cameraTrack->getCameraTrack().sample(timeline.getCurrentFrame());
 		}
 		
-		if(sampleCamera){
-			cameraTrack.sample();
+		if(shouldResetCamera){
+			resetCameraPosition();
 		}
-				
+
 		if(captureFramePair && temporalAlignmentMode){
+
 			alignmentScrubber.registerCurrentAlignment();
 			alignmentScrubber.save();
+//			player.getVideoDepthAligment()->loadPairingFile(alignmentScrubber.getXMLFilePath());
             temporalAlignmentMode = false;
 		}
 	}
-		
-	if(shouldSaveCameraPoint){
-		cameraTrack.getCameraTrack().sample(timeline.getCurrentFrame());
+
+	//		if(!temporalAlignmentMode && lowResPlayer->isFrameNew()){
+	//			//TODO: FIX
+	////			updateRenderer(*lowResPlayer);
+	//
+	//		}
+	
+	//cout << "timeline is " << videoTrack->getSelectedFrame() << " and player is " << lowResPlayer->getCurrentFrame() << endl;;
+	//		if(temporalAlignmentMode && (currentDepthFrame != depthSequence.getSelectedFrame())){
+	//			//TODO: FIX
+	//			updateRenderer();
+	//		}
+	
+	//	}
+	bool rendererNeedsUpdate = false;
+	player.update();
+	if(player.isFrameNew()){
+		rendererNeedsUpdate = true;
 	}
 	
-	if(shouldResetCamera){
-        resetCameraPosition();
-	}
-	
-    //renderer.edgeCull = timeline.getKeyframeValue("Edge Snip");
-    renderer.farClip  = powf(timeline.getKeyframeValue("Z Threshold"), 2.0);
-	renderer.meshRotate.x = timeline.getKeyframeValue("X Rotate");
-    renderer.meshRotate.y = timeline.getKeyframeValue("Y Rotate");
-    renderer.meshRotate.z = timeline.getKeyframeValue("Z Rotate");
-    int simplification = int( timeline.getKeyframeValue("Simplify") );
+    //renderer.edgeCull = timeline.getValue("Edge Snip");
+    renderer.farClip  = powf(timeline.getValue("Z Threshold"), 2.0);
+	renderer.meshRotate.x = timeline.getValue("X Rotate");
+    renderer.meshRotate.y = timeline.getValue("Y Rotate");
+    renderer.meshRotate.z = timeline.getValue("Z Rotate");
+    int simplification = int( timeline.getValue("Simplify") );
+
 	if(renderer.getSimplification() != simplification){
     	renderer.setSimplification(simplification);
+		rendererNeedsUpdate = true;
     }
     
 	if(currentXMultiplyShift != renderer.xshift ||
@@ -1023,41 +1008,27 @@ void testApp::update(){
 		currentHoleKernelSize = holeFiller.getKernelSize();
 		holeFiller.setIterations(currentHoleFillIterations);
 		currentHoleFillIterations = holeFiller.getIterations();
-        
-		updateRenderer(*lowResPlayer);
+		
+		rendererNeedsUpdate = true;
 	}
 	
     if(timeline.getUserChangedValue()){
-    	updateRenderer(*lowResPlayer);
+		rendererNeedsUpdate = true;
     }
     
-	if(!temporalAlignmentMode && !currentlyRendering && lowResPlayer->getSpeed() == 0.0 && videoTimelineElement.getSelectedFrame() != timeline.getCurrentFrame()){
-		videoTimelineElement.selectFrame(timeline.getCurrentFrame());
-	}	
+	if(rendererNeedsUpdate){
+		updateRenderer();
+	}
+//	if(!temporalAlignmentMode && !currentlyRendering && lowResPlayer->getSpeed() == 0.0 && videoTrack->getSelectedFrame() != timeline.getCurrentFrame()){
+		//TODO: Fix
+		//videoTrack->selectFrame(timeline.getCurrentFrame());
+//	}
 }
 
 //--------------------------------------------------------------
-void testApp::updateRenderer(ofVideoPlayer& fromPlayer){
-	
-	if (temporalAlignmentMode) {
-        lowResPlayer->setFrame(videoTimelineElement.getSelectedFrame());
-        depthSequence.selectFrame(depthSequence.getSelectedFrame()); //hack to fix compounding hole filling;
-    }
-    else{
-		if(alignmentScrubber.getPairSequence().isSequenceTimebased()){
-			long movieMillis = fromPlayer.getPosition() * fromPlayer.getDuration()*1000;
-			currentDepthFrame = alignmentScrubber.getPairSequence().getDepthFrameForVideoFrame(movieMillis);
-			depthSequence.selectTime(currentDepthFrame);
-		}
-		else {
-			currentDepthFrame = alignmentScrubber.getPairSequence().getDepthFrameForVideoFrame(fromPlayer.getCurrentFrame());
-			depthSequence.selectFrame(currentDepthFrame);
-		}
-	}
+void testApp::updateRenderer(){
 
-	holeFiller.close(depthSequence.currentDepthRaw);
-
-    //renderer.setDepthImage(depthSequence.currentDepthRaw);	
+	holeFiller.close(player.getDepthPixels());
     processDepthFrame();
 	renderer.update();
 	processGeometry();
@@ -1065,8 +1036,9 @@ void testApp::updateRenderer(ofVideoPlayer& fromPlayer){
 	if(!drawPointcloud && !drawWireframe && !drawMesh){
 		drawWireframe = true;
 	}	
-	
-	currentDepthFrame = depthSequence.getSelectedFrame();
+	//used for temporal aligmnet nudging
+	currentDepthFrame = player.getDepthSequence()->getCurrentFrame();
+	currentVideoFrame = player.getVideoPlayer()->getCurrentFrame();
 
     rendererDirty = true;
 }
@@ -1093,10 +1065,14 @@ void testApp::draw(){
             drawGeometry();
             
             colorAlignAssistRect = ofRectangle(fboRectangle.x + fboRectangle.width, fboRectangle.y, fboRectangle.width/3, fboRectangle.height/3);
-            float ratio = colorAlignAssistRect.width / lowResPlayer->getWidth();
-            depthAlignAssistRect = ofRectangle(colorAlignAssistRect.x, colorAlignAssistRect.y+colorAlignAssistRect.height, 640 * ratio, 480 * ratio);            
+            //float ratio = colorAlignAssistRect.width / player.getVideoPlayer()->getWidth();
+			ofRectangle depthRect(0,0,640,480);
+            depthAlignAssistRect = colorAlignAssistRect.scaleIntoMe(depthRect);
+			depthAlignAssistRect.y = colorAlignAssistRect.getMaxY();
+			depthAlignAssistRect.x = colorAlignAssistRect.getX();
+			
 			if(temporalAlignmentMode){
-                lowResPlayer->draw(colorAlignAssistRect);
+                player.getVideoPlayer()->draw(colorAlignAssistRect);
 				depthSequence.currentDepthImage.draw(depthAlignAssistRect);
             }
             else if(drawDOF){
@@ -1107,7 +1083,7 @@ void testApp::draw(){
                 ofFbo& fbo = curbuf == 0 ? fbo1 : fbo2;
 				fbo.getTextureReference().readToPixels(savingImage.getPixelsRef());
 				char filename[512];
-				sprintf(filename, "%s/save_%05d.png", saveFolder.c_str(), currentRenderFrame);
+				sprintf(filename, "%s/save_%05d.png", saveFolder.c_str(), player.getVideoPlayer()->getCurrentFrame());
 				savingImage.saveImage(filename);
 				
 				//cout << "at save time its set to " << hiResPlayer->getCurrentFrame() << endl;
@@ -1122,9 +1098,13 @@ void testApp::draw(){
 				//////
 				
 				//stop when finished
-				currentRenderFrame++;
+//				currentRenderFrame++;
 				if(currentRenderFrame > timeline.getOutFrame()){
 					finishRender();
+				}
+				else{
+					player.getVideoPlayer()->nextFrame();
+					timeline.setCurrentFrame(player.getVideoPlayer()->getCurrentFrame());
 				}
 			}
             ofDrawBitmapString("fps: " + ofToString(ofGetFrameRate()), saveCompButton->x + saveCompButton->width + 10, saveCompButton->y + 10);
@@ -1154,7 +1134,6 @@ void testApp::draw(){
         }
         ofPopStyle();
     }
-
 }
 
 #pragma mark compositions
@@ -1186,95 +1165,36 @@ bool testApp::createNewComposition(){
 
 bool testApp::loadAssetsForScene(SceneButton* sceneButton){
 	
-	if(!playerElementAdded){
-		populateTimelineElements();
-	}
-    
 	ofxRGBDScene& scene = sceneButton->scene;
-	if(!renderer.setup(scene.calibrationFolder)){
-		ofSystemAlertDialog("Load Failed -- Couldn't Load Calibration Directory.");
-		return false;
-	}
-	
-	if(!loadVideoFile(scene.alternativeHiResVideoPath, scene.videoPath)){
-		ofSystemAlertDialog("Load Failed -- Couldn't load video.");
-		return false;
-	}
-	
-	if(!loadDepthSequence(scene.depthFolder)){
-		ofSystemAlertDialog("Load Failed -- Couldn't load depth images.");
+	if(!player.setup(scene)){
+		ofSystemAlertDialog("Load Failed -- Scene invalid");
+		//TODO: handle scene fail better
 		return false;
 	}
 
-    alignmentScrubber.setXMLFileName(scene.pairingsFile);
-	alignmentScrubber.load();
+	alignmentScrubber.setXMLFileName(scene.pairingsFile);
+//	alignmentScrubber.load();
+	renderer.setup(player.getScene().calibrationFolder);
+	renderer.setRGBTexture(player.getVideoPlayer());
+	renderer.setDepthImage(player.getDepthPixels());
+	depthSequence.setSequence(player.getDepthSequence());
+	videoTrack->setPlayer(player.getVideoPlayer());
+	alignmentScrubber.setPairSequence(player.getVideoDepthAligment());
+	
+	timeline.setTimecontrolTrack(videoTrack);
+	timeline.setFrameRate(videoTrack->getPlayer()->getTotalNumFrames()/videoTrack->getPlayer()->getDuration());
+	timeline.setDurationInFrames(videoTrack->getPlayer()->getTotalNumFrames());
+	
+	
     //trick to help if there is no pairing file
     if(!alignmentScrubber.ready()){
         resetCameraPosition();
-        videoTimelineElement.selectFrame(videoTimelineElement.videoThumbs.size()/2);
-        depthSequence.selectFrame(depthSequence.videoThumbs.size()/2);
+		timeline.setPercentComplete(.5);
+        player.getVideoPlayer()->setFrame(timeline.getCurrentFrame());
+        depthSequence.selectTimeInMillis(timeline.getCurrentTimeMillis());
     }
 
     return true;
-}
-
-//--------------------------------------------------------------
-bool testApp::loadDepthSequence(string path){
-	
-	depthSequence.setup();
-	
-//	depthPixelDecodeBuffer = depthSequence.currentDepthRaw.getPixels();
-	renderer.setDepthImage(depthSequence.currentDepthRaw);
-	
-	return depthSequence.loadSequence(path);
-}
-
-//--------------------------------------------------------------
-bool testApp::loadVideoFile(string hiResPath, string lowResPath){
-
-	hasHiresVideo = (hiResPath != "");
-	if(hasHiresVideo){
-		if(hiResPlayer != NULL){
-			delete hiResPlayer;
-		}
-		hiResPlayer = new ofVideoPlayer();
-
-		if(!hiResPlayer->loadMovie(hiResPath)){
-			ofSystemAlertDialog("Load Failed -- Couldn't load hi res video file.");
-			return false;
-		}
-	}
-	
-	//must at least have a low res player
-	if(lowResPlayer != NULL){
-		delete lowResPlayer;
-	}
-	lowResPlayer = new ofVideoPlayer();
-	if(!lowResPlayer->loadMovie(lowResPath)){
-		ofSystemAlertDialog("Load Failed -- Couldn't load low res video file.");
-		return false;		
-	}
-
-	renderer.setRGBTexture(*lowResPlayer);
-	string videoThumbsPath = ofFilePath::removeExt(lowResPath);
-	if(!ofDirectory(videoThumbsPath).exists()){
-		ofDirectory(videoThumbsPath).create(true);
-	}
-    
-	videoTimelineElement.setup();	
-	if(!enableVideoInOut){
-		timeline.setDurationInFrames(lowResPlayer->getTotalNumFrames());
-	}
-	videoTimelineElement.setVideoPlayer(*lowResPlayer, videoThumbsPath);
-	lowResPlayer->play();
-	lowResPlayer->setSpeed(0);
-
-	return true;
-}
-
-//--------------------------------------------------------------
-bool testApp::loadAlignmentMatrices(string path){
-	return renderer.setup(path);
 }
 
 //--------------------------------------------------------------
@@ -1282,6 +1202,16 @@ void testApp::loadNewMediaBin(){
 
 	ofFileDialogResult r = ofSystemLoadDialog("Select Media Bin", true);
 	if(r.bSuccess){
+		
+		isSceneLoaded = false;
+		selectedScene = NULL;
+		selectedComp = NULL;
+		loadedScene = NULL;
+		
+		clearRenderQueue();
+		clearCompositionButtons();
+		
+		viewComps = true;
 		mediaBinFolder = r.getPath();
         mediaBinButton->setLabel(mediaBinFolder);
 		populateScenes();
@@ -1343,13 +1273,9 @@ void testApp::populateCompositionsForScene(){
         return;
     }
     
-    for(int i = comps.size()-1; i >= 0; i--){
-        delete comps[i].toggle;
-        delete comps[i].load;
-    }
-    comps.clear();
-    
-    string compositionsFolder = selectedScene->scene.mediaFolder + pathDelim + "compositions" + pathDelim; 
+	clearCompositionButtons();
+	
+    string compositionsFolder = selectedScene->scene.mediaFolder + pathDelim + "compositions" + pathDelim;
     ofDirectory compositionsDirectory(compositionsFolder);
     if(!compositionsDirectory.exists()){
         compositionsDirectory.create();
@@ -1403,6 +1329,21 @@ void testApp::populateCompositionsForScene(){
 	}
 }
 
+void testApp::clearCompositionButtons(){
+	for(int i = comps.size()-1; i >= 0; i--){
+        delete comps[i].toggle;
+        delete comps[i].load;
+    }
+    comps.clear();
+}
+
+void testApp::clearRenderQueue(){
+	for(int i = renderQueue.size()-1; i >= 0; i--){
+		delete renderQueue[i].remove;
+	}
+	renderQueue.clear();
+}
+
 //--------------------------------------------------------------
 void testApp::loadDefaults(){
     
@@ -1451,7 +1392,7 @@ void testApp::setButtonColors(ofxMSAInteractiveObjectWithDelegate* btn){
 void testApp::saveComposition(){
 	
 	cam.saveCameraPosition();
-	cameraTrack.save();
+	cameraTrack->save();
     
     timeline.save();
     
@@ -1549,7 +1490,7 @@ void testApp::objectDidRelease(ofxMSAInteractiveObject* object, int x, int y, in
         startRenderMode = true;
     }
     else {
-        
+
         for(int i = 0; i < scenes.size(); i++){
             if(scenes[i].button == object){
                 selectedScene = &scenes[i];
@@ -1560,6 +1501,7 @@ void testApp::objectDidRelease(ofxMSAInteractiveObject* object, int x, int y, in
         
         for(int i = 0; i < comps.size(); i++){
             if(comps[i].load == object){
+
                 currentCompShortName = comps[i].load->getLabel();
 				loadComposition(comps[i].compositionFolder+pathDelim);
                 return;
@@ -1599,7 +1541,10 @@ void testApp::objectDidMouseMove(ofxMSAInteractiveObject* object, int x, int y){
 
 //--------------------------------------------------------------
 bool testApp::loadComposition(string compositionDirectory){
-    
+    if(selectedScene == NULL){
+		ofLogError("loadComposition -- Loading with a NULL secene");
+		return false;
+	}
     if(loadedScene != selectedScene){
         isSceneLoaded = loadAssetsForScene(selectedScene);
         loadedScene = selectedScene;
@@ -1611,7 +1556,7 @@ bool testApp::loadComposition(string compositionDirectory){
     //camera stuff
     cam.cameraPositionFile = currentCompositionDirectory + "camera_position.xml";
     string cameraSaveFile = currentCompositionDirectory + "camera.xml";
-	cameraTrack.setXMLFileName(cameraSaveFile);
+	cameraTrack->setXMLFileName(cameraSaveFile);
 
     timeline.setCurrentPage(0);
     accumulatedPerlinOffset = 0;
@@ -1661,12 +1606,10 @@ bool testApp::loadComposition(string compositionDirectory){
     }
     
     alignmentScrubber.setup();
-	alignmentScrubber.videoSequence = &videoTimelineElement;
+	alignmentScrubber.videoSequence = videoTrack;
 	alignmentScrubber.depthSequence = &depthSequence;
     
-//    timeline.reset();
-    timeline.loadElementsFromFolder(currentCompositionDirectory);
-
+	timeline.loadTracksFromFolder(currentCompositionDirectory);
     //fix up pairings file back into the main dir
     alignmentScrubber.setXMLFileName(selectedScene->scene.pairingsFile);
     alignmentScrubber.load();
@@ -1674,9 +1617,9 @@ bool testApp::loadComposition(string compositionDirectory){
         temporalAlignmentMode = false;
     }
     //    cout << "parings file is " << selectedScene->scene.pairingsFile << " ready? " << alignmentScrubber.ready() << endl;
-	cameraTrack.setup();	
-    cameraTrack.load();
-	timeline.setCurrentFrame(cameraTrack.getCameraTrack().getFirstFrame());
+	cameraTrack->setup();
+    cameraTrack->load();
+	timeline.setCurrentFrame(cameraTrack->getCameraTrack().getFirstFrame());
     
     //turn off view comps
 	viewComps = false;
@@ -1741,8 +1684,14 @@ void testApp::finishRender(){
         }
     }
 
+	timeline.enable();
+	
+	player.useLowResVideo();
     //render is done
-	renderer.setRGBTexture(*lowResPlayer);
+	renderer.setRGBTexture(player.getVideoPlayer());
+	videoTrack->setPlayer(player.getVideoPlayer());
+	player.getVideoPlayer()->setFrame(timeline.getInFrame());
+	timeline.setCurrentTimeToInPoint();
     currentLockCamera = false;
 }
 
