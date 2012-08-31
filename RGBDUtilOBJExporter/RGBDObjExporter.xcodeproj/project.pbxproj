@@ -45,30 +45,34 @@
 		E77C754415798B9B0016FA54 /* ofxPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77C753C15798B9B0016FA54 /* ofxPanel.cpp */; };
 		E77C754515798B9B0016FA54 /* ofxSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77C753E15798B9B0016FA54 /* ofxSlider.cpp */; };
 		E77C754615798B9B0016FA54 /* ofxToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77C754015798B9B0016FA54 /* ofxToggle.cpp */; };
+		E77ECB5715EDC07C005A8D48 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E77EC3D715EDC079005A8D48 /* README.md */; };
+		E77ECB5815EDC07C005A8D48 /* ofxTimeline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77EC3D915EDC079005A8D48 /* ofxTimeline.cpp */; };
+		E77ECB5A15EDC07C005A8D48 /* ofxTLBangs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77EC3DD15EDC079005A8D48 /* ofxTLBangs.cpp */; };
+		E77ECB5B15EDC07C005A8D48 /* ofxTLColors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77EC3DF15EDC079005A8D48 /* ofxTLColors.cpp */; };
+		E77ECB5C15EDC07C005A8D48 /* ofxTLCurves.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77EC3E115EDC079005A8D48 /* ofxTLCurves.cpp */; };
+		E77ECB5D15EDC07C005A8D48 /* ofxTLFlags.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77EC3E415EDC079005A8D48 /* ofxTLFlags.cpp */; };
+		E77ECB5E15EDC07C005A8D48 /* ofxTLImageSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77EC3E615EDC079005A8D48 /* ofxTLImageSequence.cpp */; };
+		E77ECB5F15EDC07C005A8D48 /* ofxTLImageSequenceFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77EC3E815EDC079005A8D48 /* ofxTLImageSequenceFrame.cpp */; };
+		E77ECB6015EDC07C005A8D48 /* ofxTLImageTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77EC3EA15EDC079005A8D48 /* ofxTLImageTrack.cpp */; };
+		E77ECB6115EDC07C005A8D48 /* ofxTLInOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77EC3EC15EDC079005A8D48 /* ofxTLInOut.cpp */; };
+		E77ECB6215EDC07C005A8D48 /* ofxTLKeyframes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77EC3EE15EDC079005A8D48 /* ofxTLKeyframes.cpp */; };
+		E77ECB6315EDC07C005A8D48 /* ofxTLPage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77EC3F015EDC079005A8D48 /* ofxTLPage.cpp */; };
+		E77ECB6415EDC07C005A8D48 /* ofxTLPageTabs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77EC3F215EDC079005A8D48 /* ofxTLPageTabs.cpp */; };
+		E77ECB6515EDC07C005A8D48 /* ofxTLSwitches.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77EC3F415EDC079005A8D48 /* ofxTLSwitches.cpp */; };
+		E77ECB6615EDC07C005A8D48 /* ofxTLTicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77EC3F615EDC079005A8D48 /* ofxTLTicker.cpp */; };
+		E77ECB6715EDC07C005A8D48 /* ofxTLTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77EC3F915EDC079005A8D48 /* ofxTLTrack.cpp */; };
+		E77ECB6815EDC07C005A8D48 /* ofxTLTrackHeader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77EC3FB15EDC079005A8D48 /* ofxTLTrackHeader.cpp */; };
+		E77ECB6915EDC07C005A8D48 /* ofxTLVideoThumb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77EC3FE15EDC079005A8D48 /* ofxTLVideoThumb.cpp */; };
+		E77ECB6A15EDC07C005A8D48 /* ofxTLVideoTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77EC40015EDC079005A8D48 /* ofxTLVideoTrack.cpp */; };
+		E77ECB6B15EDC07C005A8D48 /* ofxTLZoomer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77EC40215EDC079005A8D48 /* ofxTLZoomer.cpp */; };
+		E77ECBAA15EDF3EB005A8D48 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = E77ECB9415EDF3EB005A8D48 /* .gitignore */; };
+		E77ECBB115EDF3EB005A8D48 /* glm.c in Sources */ = {isa = PBXBuildFile; fileRef = E77ECBA415EDF3EB005A8D48 /* glm.c */; };
+		E77ECBB215EDF3EB005A8D48 /* Readme.md in Resources */ = {isa = PBXBuildFile; fileRef = E77ECBA615EDF3EB005A8D48 /* Readme.md */; };
+		E77ECBB315EDF3EB005A8D48 /* ofxObjLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77ECBA815EDF3EB005A8D48 /* ofxObjLoader.cpp */; };
 		E78C05DA15E7497F005E5E07 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = E78C05D715E7497F005E5E07 /* .gitignore */; };
 		E790F37215E740370007629A /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E790F37115E740370007629A /* QTKit.framework */; };
 		E790F37415E7403B0007629A /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E790F37315E7403B0007629A /* CoreVideo.framework */; };
 		E790F37615E740410007629A /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E790F37515E740410007629A /* Accelerate.framework */; };
-		E7AF755715EE4DC1003E701D /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E7AF6DD715EE4DBE003E701D /* README.md */; };
-		E7AF755815EE4DC1003E701D /* ofxTimeline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7AF6DD915EE4DBE003E701D /* ofxTimeline.cpp */; };
-		E7AF755A15EE4DC1003E701D /* ofxTLBangs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7AF6DDD15EE4DBE003E701D /* ofxTLBangs.cpp */; };
-		E7AF755B15EE4DC1003E701D /* ofxTLColors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7AF6DDF15EE4DBE003E701D /* ofxTLColors.cpp */; };
-		E7AF755C15EE4DC1003E701D /* ofxTLCurves.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7AF6DE115EE4DBE003E701D /* ofxTLCurves.cpp */; };
-		E7AF755D15EE4DC1003E701D /* ofxTLFlags.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7AF6DE415EE4DBE003E701D /* ofxTLFlags.cpp */; };
-		E7AF755E15EE4DC1003E701D /* ofxTLImageSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7AF6DE615EE4DBE003E701D /* ofxTLImageSequence.cpp */; };
-		E7AF755F15EE4DC1003E701D /* ofxTLImageSequenceFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7AF6DE815EE4DBE003E701D /* ofxTLImageSequenceFrame.cpp */; };
-		E7AF756015EE4DC1003E701D /* ofxTLImageTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7AF6DEA15EE4DBE003E701D /* ofxTLImageTrack.cpp */; };
-		E7AF756115EE4DC1003E701D /* ofxTLInOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7AF6DEC15EE4DBE003E701D /* ofxTLInOut.cpp */; };
-		E7AF756215EE4DC1003E701D /* ofxTLKeyframes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7AF6DEE15EE4DBE003E701D /* ofxTLKeyframes.cpp */; };
-		E7AF756315EE4DC1003E701D /* ofxTLPage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7AF6DF015EE4DBE003E701D /* ofxTLPage.cpp */; };
-		E7AF756415EE4DC1003E701D /* ofxTLPageTabs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7AF6DF215EE4DBE003E701D /* ofxTLPageTabs.cpp */; };
-		E7AF756515EE4DC1003E701D /* ofxTLSwitches.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7AF6DF415EE4DBE003E701D /* ofxTLSwitches.cpp */; };
-		E7AF756615EE4DC1003E701D /* ofxTLTicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7AF6DF615EE4DBE003E701D /* ofxTLTicker.cpp */; };
-		E7AF756715EE4DC1003E701D /* ofxTLTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7AF6DF915EE4DBE003E701D /* ofxTLTrack.cpp */; };
-		E7AF756815EE4DC1003E701D /* ofxTLTrackHeader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7AF6DFB15EE4DBE003E701D /* ofxTLTrackHeader.cpp */; };
-		E7AF756915EE4DC1003E701D /* ofxTLVideoThumb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7AF6DFE15EE4DBE003E701D /* ofxTLVideoThumb.cpp */; };
-		E7AF756A15EE4DC1003E701D /* ofxTLVideoTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7AF6E0015EE4DBE003E701D /* ofxTLVideoTrack.cpp */; };
-		E7AF756B15EE4DC1003E701D /* ofxTLZoomer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7AF6E0215EE4DBE003E701D /* ofxTLZoomer.cpp */; };
 		E7BC1ED615A2316B00FFBD6A /* opencv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7BC1EC815A2316B00FFBD6A /* opencv.a */; };
 		E7BC1ED715A2316B00FFBD6A /* opencv_calib3d.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7BC1EC915A2316B00FFBD6A /* opencv_calib3d.a */; };
 		E7BC1ED815A2316B00FFBD6A /* opencv_contrib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7BC1ECA15A2316B00FFBD6A /* opencv_contrib.a */; };
@@ -151,7 +155,7 @@
 		E45BE9770E8CC7DD009D7055 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
 		E45BE9790E8CC7DD009D7055 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		E45BE97A0E8CC7DD009D7055 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
-		E4B69B5B0A3A1756003C02F2 /* RGBDWebMExporterDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RGBDWebMExporterDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4B69B5B0A3A1756003C02F2 /* RGBDObjExporterDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RGBDObjExporterDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B69E1D0A3A1BDC003C02F2 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = testApp.cpp; path = src/testApp.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1F0A3A1BDC003C02F2 /* testApp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = testApp.h; path = src/testApp.h; sourceTree = SOURCE_ROOT; };
@@ -203,53 +207,59 @@
 		E77C753F15798B9B0016FA54 /* ofxSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSlider.h; sourceTree = "<group>"; };
 		E77C754015798B9B0016FA54 /* ofxToggle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxToggle.cpp; sourceTree = "<group>"; };
 		E77C754115798B9B0016FA54 /* ofxToggle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxToggle.h; sourceTree = "<group>"; };
+		E77EC3D715EDC079005A8D48 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		E77EC3D915EDC079005A8D48 /* ofxTimeline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTimeline.cpp; sourceTree = "<group>"; };
+		E77EC3DA15EDC079005A8D48 /* ofxTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTimeline.h; sourceTree = "<group>"; };
+		E77EC3DD15EDC079005A8D48 /* ofxTLBangs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLBangs.cpp; sourceTree = "<group>"; };
+		E77EC3DE15EDC079005A8D48 /* ofxTLBangs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLBangs.h; sourceTree = "<group>"; };
+		E77EC3DF15EDC079005A8D48 /* ofxTLColors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLColors.cpp; sourceTree = "<group>"; };
+		E77EC3E015EDC079005A8D48 /* ofxTLColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLColors.h; sourceTree = "<group>"; };
+		E77EC3E115EDC079005A8D48 /* ofxTLCurves.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLCurves.cpp; sourceTree = "<group>"; };
+		E77EC3E215EDC079005A8D48 /* ofxTLCurves.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLCurves.h; sourceTree = "<group>"; };
+		E77EC3E315EDC079005A8D48 /* ofxTLEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLEvents.h; sourceTree = "<group>"; };
+		E77EC3E415EDC079005A8D48 /* ofxTLFlags.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLFlags.cpp; sourceTree = "<group>"; };
+		E77EC3E515EDC079005A8D48 /* ofxTLFlags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLFlags.h; sourceTree = "<group>"; };
+		E77EC3E615EDC079005A8D48 /* ofxTLImageSequence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLImageSequence.cpp; sourceTree = "<group>"; };
+		E77EC3E715EDC079005A8D48 /* ofxTLImageSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLImageSequence.h; sourceTree = "<group>"; };
+		E77EC3E815EDC079005A8D48 /* ofxTLImageSequenceFrame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLImageSequenceFrame.cpp; sourceTree = "<group>"; };
+		E77EC3E915EDC079005A8D48 /* ofxTLImageSequenceFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLImageSequenceFrame.h; sourceTree = "<group>"; };
+		E77EC3EA15EDC079005A8D48 /* ofxTLImageTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLImageTrack.cpp; sourceTree = "<group>"; };
+		E77EC3EB15EDC079005A8D48 /* ofxTLImageTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLImageTrack.h; sourceTree = "<group>"; };
+		E77EC3EC15EDC079005A8D48 /* ofxTLInOut.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLInOut.cpp; sourceTree = "<group>"; };
+		E77EC3ED15EDC079005A8D48 /* ofxTLInOut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLInOut.h; sourceTree = "<group>"; };
+		E77EC3EE15EDC079005A8D48 /* ofxTLKeyframes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLKeyframes.cpp; sourceTree = "<group>"; };
+		E77EC3EF15EDC079005A8D48 /* ofxTLKeyframes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLKeyframes.h; sourceTree = "<group>"; };
+		E77EC3F015EDC079005A8D48 /* ofxTLPage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLPage.cpp; sourceTree = "<group>"; };
+		E77EC3F115EDC079005A8D48 /* ofxTLPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLPage.h; sourceTree = "<group>"; };
+		E77EC3F215EDC079005A8D48 /* ofxTLPageTabs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLPageTabs.cpp; sourceTree = "<group>"; };
+		E77EC3F315EDC079005A8D48 /* ofxTLPageTabs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLPageTabs.h; sourceTree = "<group>"; };
+		E77EC3F415EDC079005A8D48 /* ofxTLSwitches.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLSwitches.cpp; sourceTree = "<group>"; };
+		E77EC3F515EDC079005A8D48 /* ofxTLSwitches.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLSwitches.h; sourceTree = "<group>"; };
+		E77EC3F615EDC079005A8D48 /* ofxTLTicker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLTicker.cpp; sourceTree = "<group>"; };
+		E77EC3F715EDC079005A8D48 /* ofxTLTicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLTicker.h; sourceTree = "<group>"; };
+		E77EC3F815EDC079005A8D48 /* ofxTLTimeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLTimeController.h; sourceTree = "<group>"; };
+		E77EC3F915EDC079005A8D48 /* ofxTLTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLTrack.cpp; sourceTree = "<group>"; };
+		E77EC3FA15EDC079005A8D48 /* ofxTLTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLTrack.h; sourceTree = "<group>"; };
+		E77EC3FB15EDC079005A8D48 /* ofxTLTrackHeader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLTrackHeader.cpp; sourceTree = "<group>"; };
+		E77EC3FC15EDC079005A8D48 /* ofxTLTrackHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLTrackHeader.h; sourceTree = "<group>"; };
+		E77EC3FD15EDC079005A8D48 /* ofxTLUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLUtils.h; sourceTree = "<group>"; };
+		E77EC3FE15EDC079005A8D48 /* ofxTLVideoThumb.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLVideoThumb.cpp; sourceTree = "<group>"; };
+		E77EC3FF15EDC079005A8D48 /* ofxTLVideoThumb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLVideoThumb.h; sourceTree = "<group>"; };
+		E77EC40015EDC079005A8D48 /* ofxTLVideoTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLVideoTrack.cpp; sourceTree = "<group>"; };
+		E77EC40115EDC079005A8D48 /* ofxTLVideoTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLVideoTrack.h; sourceTree = "<group>"; };
+		E77EC40215EDC079005A8D48 /* ofxTLZoomer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLZoomer.cpp; sourceTree = "<group>"; };
+		E77EC40315EDC079005A8D48 /* ofxTLZoomer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLZoomer.h; sourceTree = "<group>"; };
+		E77ECB9415EDF3EB005A8D48 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		E77ECBA415EDF3EB005A8D48 /* glm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glm.c; sourceTree = "<group>"; };
+		E77ECBA515EDF3EB005A8D48 /* glm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glm.h; sourceTree = "<group>"; };
+		E77ECBA615EDF3EB005A8D48 /* Readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.md; sourceTree = "<group>"; };
+		E77ECBA815EDF3EB005A8D48 /* ofxObjLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxObjLoader.cpp; sourceTree = "<group>"; };
+		E77ECBA915EDF3EB005A8D48 /* ofxObjLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxObjLoader.h; sourceTree = "<group>"; };
 		E78C05D715E7497F005E5E07 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		E78C05D915E7497F005E5E07 /* ofRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofRange.h; sourceTree = "<group>"; };
 		E790F37115E740370007629A /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = System/Library/Frameworks/QTKit.framework; sourceTree = SDKROOT; };
 		E790F37315E7403B0007629A /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		E790F37515E740410007629A /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
-		E7AF6DD715EE4DBE003E701D /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
-		E7AF6DD915EE4DBE003E701D /* ofxTimeline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTimeline.cpp; sourceTree = "<group>"; };
-		E7AF6DDA15EE4DBE003E701D /* ofxTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTimeline.h; sourceTree = "<group>"; };
-		E7AF6DDD15EE4DBE003E701D /* ofxTLBangs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLBangs.cpp; sourceTree = "<group>"; };
-		E7AF6DDE15EE4DBE003E701D /* ofxTLBangs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLBangs.h; sourceTree = "<group>"; };
-		E7AF6DDF15EE4DBE003E701D /* ofxTLColors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLColors.cpp; sourceTree = "<group>"; };
-		E7AF6DE015EE4DBE003E701D /* ofxTLColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLColors.h; sourceTree = "<group>"; };
-		E7AF6DE115EE4DBE003E701D /* ofxTLCurves.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLCurves.cpp; sourceTree = "<group>"; };
-		E7AF6DE215EE4DBE003E701D /* ofxTLCurves.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLCurves.h; sourceTree = "<group>"; };
-		E7AF6DE315EE4DBE003E701D /* ofxTLEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLEvents.h; sourceTree = "<group>"; };
-		E7AF6DE415EE4DBE003E701D /* ofxTLFlags.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLFlags.cpp; sourceTree = "<group>"; };
-		E7AF6DE515EE4DBE003E701D /* ofxTLFlags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLFlags.h; sourceTree = "<group>"; };
-		E7AF6DE615EE4DBE003E701D /* ofxTLImageSequence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLImageSequence.cpp; sourceTree = "<group>"; };
-		E7AF6DE715EE4DBE003E701D /* ofxTLImageSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLImageSequence.h; sourceTree = "<group>"; };
-		E7AF6DE815EE4DBE003E701D /* ofxTLImageSequenceFrame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLImageSequenceFrame.cpp; sourceTree = "<group>"; };
-		E7AF6DE915EE4DBE003E701D /* ofxTLImageSequenceFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLImageSequenceFrame.h; sourceTree = "<group>"; };
-		E7AF6DEA15EE4DBE003E701D /* ofxTLImageTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLImageTrack.cpp; sourceTree = "<group>"; };
-		E7AF6DEB15EE4DBE003E701D /* ofxTLImageTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLImageTrack.h; sourceTree = "<group>"; };
-		E7AF6DEC15EE4DBE003E701D /* ofxTLInOut.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLInOut.cpp; sourceTree = "<group>"; };
-		E7AF6DED15EE4DBE003E701D /* ofxTLInOut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLInOut.h; sourceTree = "<group>"; };
-		E7AF6DEE15EE4DBE003E701D /* ofxTLKeyframes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLKeyframes.cpp; sourceTree = "<group>"; };
-		E7AF6DEF15EE4DBE003E701D /* ofxTLKeyframes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLKeyframes.h; sourceTree = "<group>"; };
-		E7AF6DF015EE4DBE003E701D /* ofxTLPage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLPage.cpp; sourceTree = "<group>"; };
-		E7AF6DF115EE4DBE003E701D /* ofxTLPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLPage.h; sourceTree = "<group>"; };
-		E7AF6DF215EE4DBE003E701D /* ofxTLPageTabs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLPageTabs.cpp; sourceTree = "<group>"; };
-		E7AF6DF315EE4DBE003E701D /* ofxTLPageTabs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLPageTabs.h; sourceTree = "<group>"; };
-		E7AF6DF415EE4DBE003E701D /* ofxTLSwitches.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLSwitches.cpp; sourceTree = "<group>"; };
-		E7AF6DF515EE4DBE003E701D /* ofxTLSwitches.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLSwitches.h; sourceTree = "<group>"; };
-		E7AF6DF615EE4DBE003E701D /* ofxTLTicker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLTicker.cpp; sourceTree = "<group>"; };
-		E7AF6DF715EE4DBE003E701D /* ofxTLTicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLTicker.h; sourceTree = "<group>"; };
-		E7AF6DF815EE4DBE003E701D /* ofxTLTimeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLTimeController.h; sourceTree = "<group>"; };
-		E7AF6DF915EE4DBE003E701D /* ofxTLTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLTrack.cpp; sourceTree = "<group>"; };
-		E7AF6DFA15EE4DBE003E701D /* ofxTLTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLTrack.h; sourceTree = "<group>"; };
-		E7AF6DFB15EE4DBE003E701D /* ofxTLTrackHeader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLTrackHeader.cpp; sourceTree = "<group>"; };
-		E7AF6DFC15EE4DBE003E701D /* ofxTLTrackHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLTrackHeader.h; sourceTree = "<group>"; };
-		E7AF6DFD15EE4DBE003E701D /* ofxTLUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLUtils.h; sourceTree = "<group>"; };
-		E7AF6DFE15EE4DBE003E701D /* ofxTLVideoThumb.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLVideoThumb.cpp; sourceTree = "<group>"; };
-		E7AF6DFF15EE4DBE003E701D /* ofxTLVideoThumb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLVideoThumb.h; sourceTree = "<group>"; };
-		E7AF6E0015EE4DBE003E701D /* ofxTLVideoTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLVideoTrack.cpp; sourceTree = "<group>"; };
-		E7AF6E0115EE4DBE003E701D /* ofxTLVideoTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLVideoTrack.h; sourceTree = "<group>"; };
-		E7AF6E0215EE4DBE003E701D /* ofxTLZoomer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLZoomer.cpp; sourceTree = "<group>"; };
-		E7AF6E0315EE4DBE003E701D /* ofxTLZoomer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLZoomer.h; sourceTree = "<group>"; };
 		E7BC1E6915A2316B00FFBD6A /* cv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cv.h; sourceTree = "<group>"; };
 		E7BC1E6A15A2316B00FFBD6A /* cv.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = cv.hpp; sourceTree = "<group>"; };
 		E7BC1E6B15A2316B00FFBD6A /* cvaux.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cvaux.h; sourceTree = "<group>"; };
@@ -447,7 +457,8 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
-				E7AF665815EE4DB8003E701D /* ofxTimeline */,
+				E77ECB9315EDF3EB005A8D48 /* ofxObjLoader */,
+				E77EBC5815EDC06A005A8D48 /* ofxTimeline */,
 				E7DC743315E8939E008E6F47 /* ofxMSATimer */,
 				E7DC73D915E89365008E6F47 /* ofxTween */,
 				E7DC647F15E892AE008E6F47 /* ofxTextInputField */,
@@ -520,7 +531,7 @@
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
 				E45BE5980E8CC70C009D7055 /* frameworks */,
-				E4B69B5B0A3A1756003C02F2 /* RGBDWebMExporterDebug.app */,
+				E4B69B5B0A3A1756003C02F2 /* RGBDObjExporterDebug.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -697,6 +708,94 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		E77EBC5815EDC06A005A8D48 /* ofxTimeline */ = {
+			isa = PBXGroup;
+			children = (
+				E77EC3D715EDC079005A8D48 /* README.md */,
+				E77EC3D815EDC079005A8D48 /* src */,
+			);
+			name = ofxTimeline;
+			path = ../../../addons/ofxTimeline;
+			sourceTree = "<group>";
+		};
+		E77EC3D815EDC079005A8D48 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				E77EC3D915EDC079005A8D48 /* ofxTimeline.cpp */,
+				E77EC3DA15EDC079005A8D48 /* ofxTimeline.h */,
+				E77EC3DD15EDC079005A8D48 /* ofxTLBangs.cpp */,
+				E77EC3DE15EDC079005A8D48 /* ofxTLBangs.h */,
+				E77EC3DF15EDC079005A8D48 /* ofxTLColors.cpp */,
+				E77EC3E015EDC079005A8D48 /* ofxTLColors.h */,
+				E77EC3E115EDC079005A8D48 /* ofxTLCurves.cpp */,
+				E77EC3E215EDC079005A8D48 /* ofxTLCurves.h */,
+				E77EC3E315EDC079005A8D48 /* ofxTLEvents.h */,
+				E77EC3E415EDC079005A8D48 /* ofxTLFlags.cpp */,
+				E77EC3E515EDC079005A8D48 /* ofxTLFlags.h */,
+				E77EC3E615EDC079005A8D48 /* ofxTLImageSequence.cpp */,
+				E77EC3E715EDC079005A8D48 /* ofxTLImageSequence.h */,
+				E77EC3E815EDC079005A8D48 /* ofxTLImageSequenceFrame.cpp */,
+				E77EC3E915EDC079005A8D48 /* ofxTLImageSequenceFrame.h */,
+				E77EC3EA15EDC079005A8D48 /* ofxTLImageTrack.cpp */,
+				E77EC3EB15EDC079005A8D48 /* ofxTLImageTrack.h */,
+				E77EC3EC15EDC079005A8D48 /* ofxTLInOut.cpp */,
+				E77EC3ED15EDC079005A8D48 /* ofxTLInOut.h */,
+				E77EC3EE15EDC079005A8D48 /* ofxTLKeyframes.cpp */,
+				E77EC3EF15EDC079005A8D48 /* ofxTLKeyframes.h */,
+				E77EC3F015EDC079005A8D48 /* ofxTLPage.cpp */,
+				E77EC3F115EDC079005A8D48 /* ofxTLPage.h */,
+				E77EC3F215EDC079005A8D48 /* ofxTLPageTabs.cpp */,
+				E77EC3F315EDC079005A8D48 /* ofxTLPageTabs.h */,
+				E77EC3F415EDC079005A8D48 /* ofxTLSwitches.cpp */,
+				E77EC3F515EDC079005A8D48 /* ofxTLSwitches.h */,
+				E77EC3F615EDC079005A8D48 /* ofxTLTicker.cpp */,
+				E77EC3F715EDC079005A8D48 /* ofxTLTicker.h */,
+				E77EC3F815EDC079005A8D48 /* ofxTLTimeController.h */,
+				E77EC3F915EDC079005A8D48 /* ofxTLTrack.cpp */,
+				E77EC3FA15EDC079005A8D48 /* ofxTLTrack.h */,
+				E77EC3FB15EDC079005A8D48 /* ofxTLTrackHeader.cpp */,
+				E77EC3FC15EDC079005A8D48 /* ofxTLTrackHeader.h */,
+				E77EC3FD15EDC079005A8D48 /* ofxTLUtils.h */,
+				E77EC3FE15EDC079005A8D48 /* ofxTLVideoThumb.cpp */,
+				E77EC3FF15EDC079005A8D48 /* ofxTLVideoThumb.h */,
+				E77EC40015EDC079005A8D48 /* ofxTLVideoTrack.cpp */,
+				E77EC40115EDC079005A8D48 /* ofxTLVideoTrack.h */,
+				E77EC40215EDC079005A8D48 /* ofxTLZoomer.cpp */,
+				E77EC40315EDC079005A8D48 /* ofxTLZoomer.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		E77ECB9315EDF3EB005A8D48 /* ofxObjLoader */ = {
+			isa = PBXGroup;
+			children = (
+				E77ECB9415EDF3EB005A8D48 /* .gitignore */,
+				E77ECBA315EDF3EB005A8D48 /* glm */,
+				E77ECBA615EDF3EB005A8D48 /* Readme.md */,
+				E77ECBA715EDF3EB005A8D48 /* src */,
+			);
+			name = ofxObjLoader;
+			path = ../../../addons/ofxObjLoader;
+			sourceTree = "<group>";
+		};
+		E77ECBA315EDF3EB005A8D48 /* glm */ = {
+			isa = PBXGroup;
+			children = (
+				E77ECBA415EDF3EB005A8D48 /* glm.c */,
+				E77ECBA515EDF3EB005A8D48 /* glm.h */,
+			);
+			path = glm;
+			sourceTree = "<group>";
+		};
+		E77ECBA715EDF3EB005A8D48 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				E77ECBA815EDF3EB005A8D48 /* ofxObjLoader.cpp */,
+				E77ECBA915EDF3EB005A8D48 /* ofxObjLoader.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		E78C05D615E7497F005E5E07 /* ofxRange */ = {
 			isa = PBXGroup;
 			children = (
@@ -711,64 +810,6 @@
 			isa = PBXGroup;
 			children = (
 				E78C05D915E7497F005E5E07 /* ofRange.h */,
-			);
-			path = src;
-			sourceTree = "<group>";
-		};
-		E7AF665815EE4DB8003E701D /* ofxTimeline */ = {
-			isa = PBXGroup;
-			children = (
-				E7AF6DD715EE4DBE003E701D /* README.md */,
-				E7AF6DD815EE4DBE003E701D /* src */,
-			);
-			name = ofxTimeline;
-			path = ../../../addons/ofxTimeline;
-			sourceTree = "<group>";
-		};
-		E7AF6DD815EE4DBE003E701D /* src */ = {
-			isa = PBXGroup;
-			children = (
-				E7AF6DD915EE4DBE003E701D /* ofxTimeline.cpp */,
-				E7AF6DDA15EE4DBE003E701D /* ofxTimeline.h */,
-				E7AF6DDD15EE4DBE003E701D /* ofxTLBangs.cpp */,
-				E7AF6DDE15EE4DBE003E701D /* ofxTLBangs.h */,
-				E7AF6DDF15EE4DBE003E701D /* ofxTLColors.cpp */,
-				E7AF6DE015EE4DBE003E701D /* ofxTLColors.h */,
-				E7AF6DE115EE4DBE003E701D /* ofxTLCurves.cpp */,
-				E7AF6DE215EE4DBE003E701D /* ofxTLCurves.h */,
-				E7AF6DE315EE4DBE003E701D /* ofxTLEvents.h */,
-				E7AF6DE415EE4DBE003E701D /* ofxTLFlags.cpp */,
-				E7AF6DE515EE4DBE003E701D /* ofxTLFlags.h */,
-				E7AF6DE615EE4DBE003E701D /* ofxTLImageSequence.cpp */,
-				E7AF6DE715EE4DBE003E701D /* ofxTLImageSequence.h */,
-				E7AF6DE815EE4DBE003E701D /* ofxTLImageSequenceFrame.cpp */,
-				E7AF6DE915EE4DBE003E701D /* ofxTLImageSequenceFrame.h */,
-				E7AF6DEA15EE4DBE003E701D /* ofxTLImageTrack.cpp */,
-				E7AF6DEB15EE4DBE003E701D /* ofxTLImageTrack.h */,
-				E7AF6DEC15EE4DBE003E701D /* ofxTLInOut.cpp */,
-				E7AF6DED15EE4DBE003E701D /* ofxTLInOut.h */,
-				E7AF6DEE15EE4DBE003E701D /* ofxTLKeyframes.cpp */,
-				E7AF6DEF15EE4DBE003E701D /* ofxTLKeyframes.h */,
-				E7AF6DF015EE4DBE003E701D /* ofxTLPage.cpp */,
-				E7AF6DF115EE4DBE003E701D /* ofxTLPage.h */,
-				E7AF6DF215EE4DBE003E701D /* ofxTLPageTabs.cpp */,
-				E7AF6DF315EE4DBE003E701D /* ofxTLPageTabs.h */,
-				E7AF6DF415EE4DBE003E701D /* ofxTLSwitches.cpp */,
-				E7AF6DF515EE4DBE003E701D /* ofxTLSwitches.h */,
-				E7AF6DF615EE4DBE003E701D /* ofxTLTicker.cpp */,
-				E7AF6DF715EE4DBE003E701D /* ofxTLTicker.h */,
-				E7AF6DF815EE4DBE003E701D /* ofxTLTimeController.h */,
-				E7AF6DF915EE4DBE003E701D /* ofxTLTrack.cpp */,
-				E7AF6DFA15EE4DBE003E701D /* ofxTLTrack.h */,
-				E7AF6DFB15EE4DBE003E701D /* ofxTLTrackHeader.cpp */,
-				E7AF6DFC15EE4DBE003E701D /* ofxTLTrackHeader.h */,
-				E7AF6DFD15EE4DBE003E701D /* ofxTLUtils.h */,
-				E7AF6DFE15EE4DBE003E701D /* ofxTLVideoThumb.cpp */,
-				E7AF6DFF15EE4DBE003E701D /* ofxTLVideoThumb.h */,
-				E7AF6E0015EE4DBE003E701D /* ofxTLVideoTrack.cpp */,
-				E7AF6E0115EE4DBE003E701D /* ofxTLVideoTrack.h */,
-				E7AF6E0215EE4DBE003E701D /* ofxTLZoomer.cpp */,
-				E7AF6E0315EE4DBE003E701D /* ofxTLZoomer.h */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -1149,9 +1190,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E4B69B5A0A3A1756003C02F2 /* RGBDWebMExporter */ = {
+		E4B69B5A0A3A1756003C02F2 /* RGBDObjExporter */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "RGBDWebMExporter" */;
+			buildConfigurationList = E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "RGBDObjExporter" */;
 			buildPhases = (
 				E4B69B580A3A1756003C02F2 /* Sources */,
 				E4B69B590A3A1756003C02F2 /* Frameworks */,
@@ -1164,9 +1205,9 @@
 			dependencies = (
 				E4EEB9AC138B136A00A80321 /* PBXTargetDependency */,
 			);
-			name = RGBDWebMExporter;
+			name = RGBDObjExporter;
 			productName = myOFApp;
-			productReference = E4B69B5B0A3A1756003C02F2 /* RGBDWebMExporterDebug.app */;
+			productReference = E4B69B5B0A3A1756003C02F2 /* RGBDObjExporterDebug.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1177,7 +1218,7 @@
 			attributes = {
 				LastUpgradeCheck = 0430;
 			};
-			buildConfigurationList = E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "RGBDWebMExporter" */;
+			buildConfigurationList = E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "RGBDObjExporter" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1198,7 +1239,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				E4B69B5A0A3A1756003C02F2 /* RGBDWebMExporter */,
+				E4B69B5A0A3A1756003C02F2 /* RGBDObjExporter */,
 			);
 		};
 /* End PBXProject section */
@@ -1221,7 +1262,9 @@
 				E73CB54215A22806002C0A49 /* readme.md in Resources */,
 				E78C05DA15E7497F005E5E07 /* .gitignore in Resources */,
 				E7DC741F15E89365008E6F47 /* easing_terms_of_use.html in Resources */,
-				E7AF755715EE4DC1003E701D /* README.md in Resources */,
+				E77ECB5715EDC07C005A8D48 /* README.md in Resources */,
+				E77ECBAA15EDF3EB005A8D48 /* .gitignore in Resources */,
+				E77ECBB215EDF3EB005A8D48 /* Readme.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1292,25 +1335,27 @@
 				E7DC742B15E89365008E6F47 /* ofxEasingSine.cpp in Sources */,
 				E7DC742C15E89365008E6F47 /* ofxTween.cpp in Sources */,
 				E7DC745C15E8939E008E6F47 /* ofxMSATimer.cpp in Sources */,
-				E7AF755815EE4DC1003E701D /* ofxTimeline.cpp in Sources */,
-				E7AF755A15EE4DC1003E701D /* ofxTLBangs.cpp in Sources */,
-				E7AF755B15EE4DC1003E701D /* ofxTLColors.cpp in Sources */,
-				E7AF755C15EE4DC1003E701D /* ofxTLCurves.cpp in Sources */,
-				E7AF755D15EE4DC1003E701D /* ofxTLFlags.cpp in Sources */,
-				E7AF755E15EE4DC1003E701D /* ofxTLImageSequence.cpp in Sources */,
-				E7AF755F15EE4DC1003E701D /* ofxTLImageSequenceFrame.cpp in Sources */,
-				E7AF756015EE4DC1003E701D /* ofxTLImageTrack.cpp in Sources */,
-				E7AF756115EE4DC1003E701D /* ofxTLInOut.cpp in Sources */,
-				E7AF756215EE4DC1003E701D /* ofxTLKeyframes.cpp in Sources */,
-				E7AF756315EE4DC1003E701D /* ofxTLPage.cpp in Sources */,
-				E7AF756415EE4DC1003E701D /* ofxTLPageTabs.cpp in Sources */,
-				E7AF756515EE4DC1003E701D /* ofxTLSwitches.cpp in Sources */,
-				E7AF756615EE4DC1003E701D /* ofxTLTicker.cpp in Sources */,
-				E7AF756715EE4DC1003E701D /* ofxTLTrack.cpp in Sources */,
-				E7AF756815EE4DC1003E701D /* ofxTLTrackHeader.cpp in Sources */,
-				E7AF756915EE4DC1003E701D /* ofxTLVideoThumb.cpp in Sources */,
-				E7AF756A15EE4DC1003E701D /* ofxTLVideoTrack.cpp in Sources */,
-				E7AF756B15EE4DC1003E701D /* ofxTLZoomer.cpp in Sources */,
+				E77ECB5815EDC07C005A8D48 /* ofxTimeline.cpp in Sources */,
+				E77ECB5A15EDC07C005A8D48 /* ofxTLBangs.cpp in Sources */,
+				E77ECB5B15EDC07C005A8D48 /* ofxTLColors.cpp in Sources */,
+				E77ECB5C15EDC07C005A8D48 /* ofxTLCurves.cpp in Sources */,
+				E77ECB5D15EDC07C005A8D48 /* ofxTLFlags.cpp in Sources */,
+				E77ECB5E15EDC07C005A8D48 /* ofxTLImageSequence.cpp in Sources */,
+				E77ECB5F15EDC07C005A8D48 /* ofxTLImageSequenceFrame.cpp in Sources */,
+				E77ECB6015EDC07C005A8D48 /* ofxTLImageTrack.cpp in Sources */,
+				E77ECB6115EDC07C005A8D48 /* ofxTLInOut.cpp in Sources */,
+				E77ECB6215EDC07C005A8D48 /* ofxTLKeyframes.cpp in Sources */,
+				E77ECB6315EDC07C005A8D48 /* ofxTLPage.cpp in Sources */,
+				E77ECB6415EDC07C005A8D48 /* ofxTLPageTabs.cpp in Sources */,
+				E77ECB6515EDC07C005A8D48 /* ofxTLSwitches.cpp in Sources */,
+				E77ECB6615EDC07C005A8D48 /* ofxTLTicker.cpp in Sources */,
+				E77ECB6715EDC07C005A8D48 /* ofxTLTrack.cpp in Sources */,
+				E77ECB6815EDC07C005A8D48 /* ofxTLTrackHeader.cpp in Sources */,
+				E77ECB6915EDC07C005A8D48 /* ofxTLVideoThumb.cpp in Sources */,
+				E77ECB6A15EDC07C005A8D48 /* ofxTLVideoTrack.cpp in Sources */,
+				E77ECB6B15EDC07C005A8D48 /* ofxTLZoomer.cpp in Sources */,
+				E77ECBB115EDF3EB005A8D48 /* glm.c in Sources */,
+				E77ECBB315EDF3EB005A8D48 /* ofxObjLoader.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1486,7 +1531,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/osx\"";
-				PRODUCT_NAME = RGBDWebMExporterDebug;
+				PRODUCT_NAME = RGBDObjExporterDebug;
 				VALID_ARCHS = i386;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1591,7 +1636,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/osx\"";
-				PRODUCT_NAME = RGBDWebMExporter;
+				PRODUCT_NAME = RGBDObjExporter;
 				VALID_ARCHS = i386;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1600,7 +1645,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "RGBDWebMExporter" */ = {
+		E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "RGBDObjExporter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4B69B4E0A3A1720003C02F2 /* Debug */,
@@ -1609,7 +1654,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "RGBDWebMExporter" */ = {
+		E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "RGBDObjExporter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4B69B600A3A1757003C02F2 /* Debug */,

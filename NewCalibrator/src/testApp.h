@@ -4,7 +4,7 @@
 #include "ofxCvCheckerboardPreview.h"
 #include "ofxRGBDRenderer.h"
 #include "ofxGameCamera.h"
-#include "ofxTimeline.h"
+
 #include "ofxFTGLFont.h"
 #include "ofxDepthImageProviderOpenNI.h"
 #include "ofxDepthImageCompressor.h"
@@ -45,6 +45,8 @@ class testApp : public ofBaseApp{
 	Calibration depthCalibrationBase;
 	Calibration depthCalibrationRefined;
 	Calibration rgbCalibration;
+	vector<Point3f> filteredKinectObjectPoints;
+	vector<Point2f> filteredExternalImagePoints;
 
 	ofPtr<ofVideoPlayer> player;
 	ofRectangle rgbImageRectangle;
@@ -60,6 +62,7 @@ class testApp : public ofBaseApp{
 	ofxDepthImageCompressor compressor;
 	ofxDepthImageProviderOpenNI imageProvider;
 	
+	int currentRenderPreviewIndex;
 	int lastFrame;
 	bool depthCalibrationLoaded;
 	bool checkGenerateCorrespondance;

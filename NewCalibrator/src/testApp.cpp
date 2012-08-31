@@ -6,6 +6,7 @@ void testApp::setup(){
 
     depthCalibrationLoaded = false;
     imagenum = 0;
+	currentRenderPreviewIndex = 0;
 	
  	shouldSave = false;
     externalBoardFinder.setup(10,7,3.2);
@@ -231,6 +232,18 @@ void testApp::keyPressed(int key){
 	if(key == 'R'){
 		setupRenderer();
 	}
+	if(showRGBD){
+		if(key == OF_KEY_RIGHT){
+			currentRenderPreviewIndex = (currentRenderPreviewIndex + 1) % alignmentPairs.size();
+			renderer.setDepthImage(alignmentPairs[currentRenderPreviewIndex]->depthPixelsRaw);
+			renderer.setRGBTexture(alignmentPairs[currentRenderPreviewIndex]->colorCheckers);
+		}
+		else if(key == OF_KEY_LEFT){
+			currentRenderPreviewIndex = (currentRenderPreviewIndex*2 - 1) % alignmentPairs.size();
+			renderer.setDepthImage(alignmentPairs[currentRenderPreviewIndex]->depthPixelsRaw);
+			renderer.setRGBTexture(alignmentPairs[currentRenderPreviewIndex]->colorCheckers);
+		}
+	}
 }
 
 //------------------------------------------------------------
@@ -422,7 +435,6 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 			pp = ofVec2f(depthCameraMatrix.at<double>(0,2),depthCameraMatrix.at<double>(1,2));
 			cout << "principle point " << pp << endl;
 			depthCalibrationLoaded = true;
-
 		}
 	}
 }
@@ -481,6 +493,9 @@ void testApp::generateCorrespondance(){
 	kinectImagePoints.clear();
 	externalRGBPoints.clear();
 	objectPoints.clear();
+	filteredKinectObjectPoints.clear();
+	filteredExternalImagePoints.clear();
+
 	int numAlignmentPairsReady = 0;
 	for(int i = 0; i < alignmentPairs.size(); i++){
 		if(alignmentPairs[i]->depthPixelsRaw.isAllocated() &&
@@ -507,7 +522,6 @@ void testApp::generateCorrespondance(){
 				unsigned short z = alignmentPairs[i]->depthPixelsRaw[kinectPoints[j].x+kinectPoints[j].y*640];
 				ofVec3f worldPoint = depthToWorldFromCalibration(kinectPoints[j].x, kinectPoints[j].y, z);
 				new3dPoints.push_back( worldPoint );
-				cout << "World point is " << worldPoint << " for checkerboard image point " << kinectPoints[j].x << " " << kinectPoints[j].y << endl;
 			}
 			kinect3dPoints.push_back(new3dPoints);
 			
@@ -521,12 +535,12 @@ void testApp::generateCorrespondance(){
 		}
 	}
 	
-	vector<Point3f> filteredKinectObjectPoints;
-	vector<Point2f> filteredExternalImagePoints;
 	int numPointsFound = 0;
 	for(int i = 0; i < kinect3dPoints.size(); i++){
 		for(int j = 0; j < kinect3dPoints[i].size(); j++){
-			if(kinect3dPoints[i][j].z != 0){
+			if(kinect3dPoints[i][j].z > 0){
+				cout << "World point is " << kinect3dPoints[i][j] << " for checkerboard image point " << externalRGBPoints[i][j] << endl;
+
 				filteredKinectObjectPoints.push_back( toCv(kinect3dPoints[i][j]) );
 				filteredExternalImagePoints.push_back( externalRGBPoints[i][j] );
 				numPointsFound++;
@@ -535,9 +549,9 @@ void testApp::generateCorrespondance(){
 	}
 	
 	cout << "Found a total of " << numPointsFound << " for correspondance " << endl;
-	vector< vector<Point3f> > cvOjectPoints;
+	vector< vector<Point3f> > cvObjectPoints;
 	vector< vector<Point2f> > cvImagePoints;
-	cvOjectPoints.push_back( filteredKinectObjectPoints );
+	cvObjectPoints.push_back( filteredKinectObjectPoints );
 	cvImagePoints.push_back( filteredExternalImagePoints );
 	
 	Mat cameraMatrix = rgbCalibration.getDistortedIntrinsics().getCameraMatrix();
@@ -549,14 +563,15 @@ void testApp::generateCorrespondance(){
 	cout << "Initial RGB Camera Matrix " << cameraMatrix << endl;
 	cout << "Initial RGB Distortion " << distCoeffs << endl;
 	cout << "Camera image size " << rgbCalibration.getDistortedIntrinsics().getImageSize().width << " " << rgbCalibration.getDistortedIntrinsics().getImageSize().height << endl;
-	int flags = CV_CALIB_FIX_INTRINSIC;
+//	int flags = CV_CALIB_FIX_INTRINSIC;
 //	int flags = CV_CALIB_USE_INTRINSIC_GUESS | CV_CALIB_FIX_INTRINSIC;
-	double rms  = calibrateCamera(cvOjectPoints, cvImagePoints, cv::Size(rgbCalibration.getDistortedIntrinsics().getImageSize()), cameraMatrix, distCoeffs,rotations,translations, flags); //todo fix distortion
-	rotationDepthToRGB = rotations[0];
-	translationDepthToRGB = translations[0];
+	//double rms  = calibrateCamera(cvObjectPoints, cvImagePoints, cv::Size(rgbCalibration.getDistortedIntrinsics().getImageSize()), cameraMatrix, distCoeffs,rotations,translations, flags); //todo fix distortion
+	solvePnPRansac(filteredKinectObjectPoints, filteredExternalImagePoints, cameraMatrix, distCoeffs, rotationDepthToRGB, translationDepthToRGB);
+//	rotationDepthToRGB = rotations[0];
+//	translationDepthToRGB = translations[0];
 	
 	//cvFindExtrinsicCameraParams2(cvOjectPoints[0], cvImagePoints[0], cameraMatrix, distCoeffs,rotations,translations);
-	cout << "Calibrate RMS is " << rms << endl;
+//	cout << "Calibrate RMS is " << rms << endl;
 	cout << "Final camera matrix is " << cameraMatrix << endl;
 	cout << "Final distortion coefficients " << distCoeffs << endl;
 	cout << "RGB->Depth rotation " << rotationDepthToRGB << endl;
