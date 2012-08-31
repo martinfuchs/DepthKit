@@ -322,7 +322,7 @@ void testApp::processGeometry(){
     
     ofVec3f center(0,0,0);
     for(int i = 0; i < renderer.getMesh().getVertices().size(); i++){
-        center += renderer.getMesh().getVertex(i);
+        center += renderer.getMesh().getVertices()[i];
     }
     center /= renderer.getMesh().getVertices().size();
     
