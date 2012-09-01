@@ -1,13 +1,14 @@
 #version 110
 
 uniform vec2 dim;
-uniform vec2 fudge;
+uniform vec2 shift;
+uniform vec2 scale;
 
 //uniform sampler2DRect depthTexture;
 uniform vec2 principalPoint;
-uniform vec2 imageSize;
 uniform vec2 fov;
 uniform float farClip;
+
 
 varying float VZPositionValid0;
 void main(void)
@@ -30,7 +31,8 @@ void main(void)
     texCd.y *= -1.;
     texCd.xy += 1.;
     texCd.xy /= 2.;
-    texCd.xy += fudge;
+	texCd.xy *= scale;
+    texCd.xy += shift;
     
     texCd.xy *= dim;
     gl_TexCoord[0] = texCd;
