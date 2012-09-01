@@ -30,6 +30,7 @@ void testApp::setup(){
 	cam.minimumY = -120;
 	cameraRollSpeed = cam.rollSpeed = 1;
 
+	renderingMesh = false;
 	
     selectedScene = NULL;
     selectedComp = NULL;
@@ -172,6 +173,12 @@ void testApp::setup(){
     gui.add(temporalAlignmentMode.setup("Temporal Alignment", ofxParameter<bool>()));
 	gui.add(captureFramePair.setup("Set Color-Depth Time", ofxParameter<bool>()));
     
+	gui.add(renderTriangulation.setup("render triangulation", ofxParameter<bool>()));
+	gui.add(maxFeatures.setup("max features", ofxParameter<int>(),100, 5000));
+    gui.add(featureQuality.setup("feature quality", ofxParameter<float>(),.0000001, .01));
+    gui.add(minDistance.setup("min distance", ofxParameter<float>(), .0, 200));
+	
+
     gui.loadFromFile("defaultGuiSettings.xml");
     
     loadShaders();
@@ -309,6 +316,8 @@ void testApp::processDepthFrame(){
 }
 
 void testApp::processGeometry(){
+	
+	
     if(!drawGeometryDistortion) return;
 
     float perlinAmp = timeline.getValue("Perlin Amp");
@@ -375,17 +384,19 @@ void testApp::drawGeometry(){
         renderedCameraPos.setOrientation(cam.getOrientationQuat());
         
         ofBlendMode blendMode = OF_BLENDMODE_SCREEN;
-        
-        //new way of doing trails that kills alpha backgrounds.
         fbo1.begin();
-        ofPushStyle();
-        ofEnableAlphaBlending();
-        //float decay = powf(timeline.getValue("Motion Trail Decay"), 2.0);
-        float decay = 1.0;
-        ofSetColor(0, 0, 0, decay*255);
-        ofRect(renderFboRect);
-        ofPopStyle();
-        fbo1.end();
+		ofClear(0,0,0,0);
+		fbo1.end();
+        //new way of doing trails that kills alpha backgrounds.
+//        fbo1.begin();
+//        ofPushStyle();
+//        ofEnableAlphaBlending();
+//        //float decay = powf(timeline.getValue("Motion Trail Decay"), 2.0);
+//        float decay = 1.0;
+//        ofSetColor(0, 0, 0, decay*255);
+//        ofRect(renderFboRect);
+//        ofPopStyle();
+//        fbo1.end();
 
         if(drawMesh && meshAlpha > 0){
             
@@ -395,7 +406,17 @@ void testApp::drawGeometry(){
             glEnable(GL_DEPTH_TEST);
             cam.begin(renderFboRect);
             ofPushStyle();
-            renderer.drawMesh();
+			if(renderTriangulation){
+				ofPushMatrix();
+				ofScale(1,-1, 1);
+				player.getVideoPlayer()->getTextureReference().bind();
+				triangulatedMesh.draw();
+				player.getVideoPlayer()->getTextureReference().unbind();
+				ofPopMatrix();
+			}
+			else{
+	            renderer.drawMesh();
+			}
             ofPopStyle();
             glDisable(GL_DEPTH_TEST);
             
@@ -436,7 +457,12 @@ void testApp::drawGeometry(){
                 dofRange.begin();
                 dofRange.setUniform1f("blackout", 0.);
                 dofRange.end();
-                renderer.drawMesh(dofRange);
+				if(renderTriangulation){
+					triangulatedMesh.draw();
+				}
+				else{
+	                renderer.drawMesh(dofRange);
+				}
                 ofPopMatrix();
             }
             
@@ -448,8 +474,18 @@ void testApp::drawGeometry(){
             float thickness = timeline.getValue("Wireframe Thickness");
             thickness *= thickness;
             ofSetLineWidth(thickness);
-            renderer.drawWireFrame();
-            ofPopStyle();
+			if(renderTriangulation){
+				ofPushMatrix();
+				ofScale(1,-1, 1);
+				player.getVideoPlayer()->getTextureReference().bind();
+				triangulatedMesh.drawWireframe();
+				player.getVideoPlayer()->getTextureReference().unbind();
+				ofPopMatrix();
+			}
+			else{
+            	renderer.drawWireFrame();
+			}
+			ofPopStyle();
             
 //            renderer.drawProjectionDebug();
             glDisable(GL_DEPTH_TEST);
@@ -459,7 +495,7 @@ void testApp::drawGeometry(){
             
             //composite
             fbo1.begin();
-            
+
             ofPushStyle();
             //ofEnableAlphaBlending();
             ofEnableBlendMode(blendMode);
@@ -490,7 +526,12 @@ void testApp::drawGeometry(){
                 dofRange.begin();
                 dofRange.setUniform1f("blackout", 0.);
                 dofRange.end();
-                renderer.drawMesh(dofRange);
+				if(renderTriangulation){
+					triangulatedMesh.draw();
+				}
+				else{
+	                renderer.drawMesh(dofRange);
+				}
                 ofPopMatrix();
             }
             ofEnableAlphaBlending();
@@ -498,7 +539,12 @@ void testApp::drawGeometry(){
             glEnable(GL_POINT_SMOOTH); // makes circular points
             float pointSize = timeline.getValue("Point Size");
             glPointSize(pointSize*pointSize);
-            renderer.drawPointCloud();
+			if(renderTriangulation){
+				triangulatedMesh.draw();
+			}
+			else{
+	            renderer.drawPointCloud();
+			}
             ofPopStyle();
             
             glDisable(GL_DEPTH_TEST);
@@ -543,9 +589,12 @@ void testApp::drawGeometry(){
             dofRange.end();
             
             ofDisableAlphaBlending();
-            renderer.drawMesh(dofRange);
-            //renderer.drawWireFrame(false);
-//            dofRange.end();
+			if(renderTriangulation){
+				triangulatedMesh.draw();
+			}
+			else{
+	            renderer.drawMesh(dofRange);
+			}
             
             glDisable(GL_DEPTH_TEST);
             cam.end();
@@ -664,22 +713,6 @@ void testApp::drawGeometry(){
         
         rendererDirty = false;
 	}
-    
-    /*
-    ofPushStyle();
-    ofSetColor(0);
-    ofRect(fboRectangle);
-    ofPopStyle();
-    
-    fbo1.begin();
-    ofPushStyle();
-    ofClear(255,255,0,255);
-    
-    renderer.drawWireFrame();
-
-    ofPopStyle();
-    fbo1.end();
-    */
     
     ofEnableAlphaBlending();
     fbo1.getTextureReference().draw(fboRectangle);
@@ -874,6 +907,7 @@ void testApp::update(){
 				player.useHiresVideo();
 				player.getVideoPlayer()->setVolume(0);
 				renderer.setRGBTexture(player.getVideoPlayer());
+				meshBuilder.setTexture(*player.getVideoPlayer());
 			}
 			
             cameraTrack->setTimelineInOutToTrack();
@@ -948,27 +982,12 @@ void testApp::update(){
 		}
 
 		if(captureFramePair && temporalAlignmentMode){
-
 			alignmentScrubber.registerCurrentAlignment();
 			alignmentScrubber.save();
-//			player.getVideoDepthAligment()->loadPairingFile(alignmentScrubber.getXMLFilePath());
             temporalAlignmentMode = false;
 		}
 	}
 
-	//		if(!temporalAlignmentMode && lowResPlayer->isFrameNew()){
-	//			//TODO: FIX
-	////			updateRenderer(*lowResPlayer);
-	//
-	//		}
-	
-	//cout << "timeline is " << videoTrack->getSelectedFrame() << " and player is " << lowResPlayer->getCurrentFrame() << endl;;
-	//		if(temporalAlignmentMode && (currentDepthFrame != depthSequence.getSelectedFrame())){
-	//			//TODO: FIX
-	//			updateRenderer();
-	//		}
-	
-	//	}
 	bool rendererNeedsUpdate = false;
 	player.update();
 	if(player.isFrameNew()){
@@ -977,13 +996,21 @@ void testApp::update(){
 	
     //renderer.edgeCull = timeline.getValue("Edge Snip");
     renderer.farClip  = powf(timeline.getValue("Z Threshold"), 2.0);
+	meshBuilder.farClip = powf(timeline.getValue("Z Threshold"), 2.0);
+	
 	renderer.meshRotate.x = timeline.getValue("X Rotate");
     renderer.meshRotate.y = timeline.getValue("Y Rotate");
     renderer.meshRotate.z = timeline.getValue("Z Rotate");
     int simplification = int( timeline.getValue("Simplify") );
 
+	if(renderingMesh != renderTriangulation){
+		renderingMesh = renderTriangulation;
+		rendererNeedsUpdate = true;
+	}
+	
 	if(renderer.getSimplification() != simplification){
     	renderer.setSimplification(simplification);
+		meshBuilder.setSimplification(simplification);
 		rendererNeedsUpdate = true;
     }
     
@@ -1003,11 +1030,17 @@ void testApp::update(){
         renderer.yscale = currentYScale;
 		renderer.mirror = currentMirror;
 		renderer.forceUndistortOff = !undistortImages;
+		
+		meshBuilder.shift.x = currentXMultiplyShift;
+		meshBuilder.shift.y = currentYMultiplyShift;
+        meshBuilder.scale.x = currentXScale;
+        meshBuilder.scale.y = currentYScale;
+		meshBuilder.getHoleFiller().enable = false;
+		meshBuilder.undistortDepthImage = undistortImages;
+		
 		holeFiller.enable = fillHoles;
-		holeFiller.setKernelSize(currentHoleKernelSize);
-		currentHoleKernelSize = holeFiller.getKernelSize();
-		holeFiller.setIterations(currentHoleFillIterations);
-		currentHoleFillIterations = holeFiller.getIterations();
+		currentHoleKernelSize = holeFiller.setKernelSize(currentHoleKernelSize);
+		currentHoleFillIterations = holeFiller.setIterations(currentHoleFillIterations);
 		
 		rendererNeedsUpdate = true;
 	}
@@ -1019,6 +1052,7 @@ void testApp::update(){
 	if(rendererNeedsUpdate){
 		updateRenderer();
 	}
+	
 //	if(!temporalAlignmentMode && !currentlyRendering && lowResPlayer->getSpeed() == 0.0 && videoTrack->getSelectedFrame() != timeline.getCurrentFrame()){
 		//TODO: Fix
 		//videoTrack->selectFrame(timeline.getCurrentFrame());
@@ -1029,13 +1063,18 @@ void testApp::update(){
 void testApp::updateRenderer(){
 
 	holeFiller.close(player.getDepthPixels());
-    processDepthFrame();
-	renderer.update();
+    
+	processDepthFrame();
+	
+	if(renderTriangulation){
+		meshBuilder.update();
+		triangulatedMesh = meshBuilder.getMesh();
+	}
+	else{
+		renderer.update();
+	}
 	processGeometry();
 	
-	if(!drawPointcloud && !drawWireframe && !drawMesh){
-		drawWireframe = true;
-	}	
 	//used for temporal aligmnet nudging
 	currentDepthFrame = player.getDepthSequence()->getCurrentFrame();
 	currentVideoFrame = player.getVideoPlayer()->getCurrentFrame();
@@ -1049,6 +1088,10 @@ void testApp::draw(){
 	if(isSceneLoaded){		
 		if(!viewComps){
             
+			if(!drawPointcloud && !drawWireframe && !drawMesh){
+				drawWireframe = true;
+			}	
+			
 			if(!ofGetMousePressed(0)){
 				timeline.setOffset(ofVec2f(0, ofGetHeight() - timeline.getDrawRect().height));
 			}
@@ -1175,8 +1218,13 @@ bool testApp::loadAssetsForScene(SceneButton* sceneButton){
 	alignmentScrubber.setXMLFileName(scene.pairingsFile);
 //	alignmentScrubber.load();
 	renderer.setup(player.getScene().calibrationFolder);
+	meshBuilder.setup(player.getScene().calibrationFolder);
+	
 	renderer.setRGBTexture(player.getVideoPlayer());
 	renderer.setDepthImage(player.getDepthPixels());
+	meshBuilder.setTexture(*player.getVideoPlayer());
+	meshBuilder.setDepthPixels(player.getDepthPixels());
+	
 	depthSequence.setSequence(player.getDepthSequence());
 	videoTrack->setPlayer(player.getVideoPlayer());
 	alignmentScrubber.setPairSequence(player.getVideoDepthAligment());
@@ -1689,6 +1737,8 @@ void testApp::finishRender(){
 	player.useLowResVideo();
     //render is done
 	renderer.setRGBTexture(player.getVideoPlayer());
+	meshBuilder.setTexture(*player.getVideoPlayer());
+	
 	videoTrack->setPlayer(player.getVideoPlayer());
 	player.getVideoPlayer()->setFrame(timeline.getInFrame());
 	timeline.setCurrentTimeToInPoint();

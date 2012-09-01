@@ -2,8 +2,9 @@
 
 #include "ofMain.h"
 #include "ofxRGBDRenderer.h"
+#include "ofxRGBDMeshBuilder.h"
 #include "ofxRGBDVideoDepthSequence.h"
-#include "ofxDepthImageRecorder.h"
+//#include "ofxDepthImageRecorder.h"
 #include "ofxGameCamera.h"
 #include "ofxTimeline.h"
 #include "ofxTLVideoTrack.h"
@@ -15,6 +16,8 @@
 #include "ofxRGBDScene.h"
 #include "ofxRGBDPlayer.h"
 #include "ofxGui.h"
+#include "ofxDelaunay.h"
+
 
 typedef struct {
 	ofxRGBDScene scene;
@@ -116,8 +119,16 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle temporalAlignmentMode;
     ofxButton captureFramePair;
 
-    bool startRenderMode;
 
+	//Adding triangulation stuff
+	ofxToggle renderTriangulation;
+    ofxIntSlider maxFeatures;
+    ofxFloatSlider featureQuality;
+	ofxFloatSlider minDistance;
+	void updateTriangulatedMesh();
+    bool startRenderMode;
+	bool renderingMesh;
+	
 	//MSA Object delegate
     ofxMSAInteractiveObjectWithDelegate* mediaBinButton;
     ofxMSAInteractiveObjectWithDelegate* changeCompButton;
@@ -166,7 +177,9 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	
 	ofxRGBDPlayer player;
 	ofxRGBDRenderer renderer;
+	ofxRGBDMeshBuilder meshBuilder;
 	ofxTLDepthImageSequence depthSequence;
+	ofMesh triangulatedMesh;
 	ofxTLVideoDepthAlignmentScrubber alignmentScrubber;
 	ofxDepthHoleFiller holeFiller;
 	
@@ -196,8 +209,6 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	//used for temporal aligmnet nudging
 	int currentDepthFrame;
 	int currentVideoFrame;
-//	int numFramesToRender;
-//	int numFramesRendered;
 	bool rendererDirty;
     ofNode renderedCameraPos;
     

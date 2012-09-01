@@ -86,6 +86,10 @@
 		E74806D915EBC02100B4157F /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E74806D815EBC02100B4157F /* Accelerate.framework */; };
 		E74806F515EBC06A00B4157F /* ofxTimecode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74806E815EBC06900B4157F /* ofxTimecode.cpp */; };
 		E748F78615EBBF1A00B4157F /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = E748F78315EBBF1A00B4157F /* .gitignore */; };
+		E750F8EF15F0FF5000B87EA2 /* Delaunay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E750F8E915F0FF5000B87EA2 /* Delaunay.cpp */; };
+		E750F8F015F0FF5000B87EA2 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E750F8EB15F0FF5000B87EA2 /* README.md */; };
+		E750F8F115F0FF5000B87EA2 /* ofxDelaunay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E750F8ED15F0FF5000B87EA2 /* ofxDelaunay.cpp */; };
+		E750F8F415F1021D00B87EA2 /* ofxRGBDMeshBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E750F8F215F1021D00B87EA2 /* ofxRGBDMeshBuilder.cpp */; };
 		E77797981583FB8C0041CEAF /* ofxRGBDScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77797961583FB8C0041CEAF /* ofxRGBDScene.cpp */; };
 		E77C754215798B9B0016FA54 /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77C753715798B9B0016FA54 /* ofxBaseGui.cpp */; };
 		E77C754315798B9B0016FA54 /* ofxButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77C753915798B9B0016FA54 /* ofxButton.cpp */; };
@@ -352,6 +356,13 @@
 		E748FF3015EBBFA200B4157F /* ofxTLVideoTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLVideoTrack.h; sourceTree = "<group>"; };
 		E748FF3115EBBFA200B4157F /* ofxTLZoomer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLZoomer.cpp; sourceTree = "<group>"; };
 		E748FF3215EBBFA200B4157F /* ofxTLZoomer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLZoomer.h; sourceTree = "<group>"; };
+		E750F8E915F0FF5000B87EA2 /* Delaunay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Delaunay.cpp; sourceTree = "<group>"; };
+		E750F8EA15F0FF5000B87EA2 /* Delaunay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Delaunay.h; sourceTree = "<group>"; };
+		E750F8EB15F0FF5000B87EA2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		E750F8ED15F0FF5000B87EA2 /* ofxDelaunay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDelaunay.cpp; sourceTree = "<group>"; };
+		E750F8EE15F0FF5000B87EA2 /* ofxDelaunay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxDelaunay.h; sourceTree = "<group>"; };
+		E750F8F215F1021D00B87EA2 /* ofxRGBDMeshBuilder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDMeshBuilder.cpp; sourceTree = "<group>"; };
+		E750F8F315F1021D00B87EA2 /* ofxRGBDMeshBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDMeshBuilder.h; sourceTree = "<group>"; };
 		E77797961583FB8C0041CEAF /* ofxRGBDScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDScene.cpp; sourceTree = "<group>"; };
 		E77797971583FB8C0041CEAF /* ofxRGBDScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDScene.h; sourceTree = "<group>"; };
 		E77C753515798B9B0016FA54 /* ofOscParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofOscParameter.h; sourceTree = "<group>"; };
@@ -493,6 +504,8 @@
 				E73BE0B114A3B784004FE0E5 /* ofxDepthImageCompressor.cpp */,
 				A6477C79149D679300908B2B /* ofxRGBDRenderer.h */,
 				A6477C78149D679300908B2B /* ofxRGBDRenderer.cpp */,
+				E750F8F315F1021D00B87EA2 /* ofxRGBDMeshBuilder.h */,
+				E750F8F215F1021D00B87EA2 /* ofxRGBDMeshBuilder.cpp */,
 				A60F752D147721FC007E1206 /* ofxRGBDVideoDepthSequence.h */,
 				A60F752E147721FC007E1206 /* ofxRGBDVideoDepthSequence.cpp */,
 				E738E8EC153C734000BDA0F3 /* ofxDepthImageSequence.h */,
@@ -667,6 +680,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				E750F8E615F0FF5000B87EA2 /* ofxDelaunay */,
 				E74806DA15EBC06800B4157F /* ofxTimecode */,
 				E74806A715EBBFEB00B4157F /* ofxMSATimer */,
 				E748F78715EBBF5300B4157F /* ofxTimeline */,
@@ -1133,6 +1147,43 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		E750F8E615F0FF5000B87EA2 /* ofxDelaunay */ = {
+			isa = PBXGroup;
+			children = (
+				E750F8E715F0FF5000B87EA2 /* libs */,
+				E750F8EB15F0FF5000B87EA2 /* README.md */,
+				E750F8EC15F0FF5000B87EA2 /* src */,
+			);
+			name = ofxDelaunay;
+			path = ../../../addons/ofxDelaunay;
+			sourceTree = "<group>";
+		};
+		E750F8E715F0FF5000B87EA2 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				E750F8E815F0FF5000B87EA2 /* Delaunay */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		E750F8E815F0FF5000B87EA2 /* Delaunay */ = {
+			isa = PBXGroup;
+			children = (
+				E750F8E915F0FF5000B87EA2 /* Delaunay.cpp */,
+				E750F8EA15F0FF5000B87EA2 /* Delaunay.h */,
+			);
+			path = Delaunay;
+			sourceTree = "<group>";
+		};
+		E750F8EC15F0FF5000B87EA2 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				E750F8EE15F0FF5000B87EA2 /* ofxDelaunay.h */,
+				E750F8ED15F0FF5000B87EA2 /* ofxDelaunay.cpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		E77C753315798B9B0016FA54 /* ofxGui */ = {
 			isa = PBXGroup;
 			children = (
@@ -1323,6 +1374,7 @@
 				E7EF805414DB5D6B007CD3CA /* RGBD.icns in Resources */,
 				E748F78615EBBF1A00B4157F /* .gitignore in Resources */,
 				E748068615EBBFAB00B4157F /* README.md in Resources */,
+				E750F8F015F0FF5000B87EA2 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1416,6 +1468,9 @@
 				E74806D015EBBFEC00B4157F /* ofxMSATimer.cpp in Sources */,
 				E74806F515EBC06A00B4157F /* ofxTimecode.cpp in Sources */,
 				E71888DE15EBC6BE00F526BA /* ofxRGBDPlayer.cpp in Sources */,
+				E750F8EF15F0FF5000B87EA2 /* Delaunay.cpp in Sources */,
+				E750F8F115F0FF5000B87EA2 /* ofxDelaunay.cpp in Sources */,
+				E750F8F415F1021D00B87EA2 /* ofxRGBDMeshBuilder.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
