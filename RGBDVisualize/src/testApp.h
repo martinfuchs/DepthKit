@@ -125,10 +125,21 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxIntSlider maxFeatures;
     ofxFloatSlider featureQuality;
 	ofxFloatSlider minDistance;
+	ofxFloatSlider maxTriangleEdge;
+	ofxDelaunay triangulate;
+
 	void updateTriangulatedMesh();
-    bool startRenderMode;
+	ofMesh triangulatedMesh;
+	vector<cv::Point2f> featurePoints;
+    vector<ofVec3f> faceNormals;
+    vector<ofVec3f> faceCenters;
+	vector<ofVec3f> innerPoints;
+	vector<ofVec3f> backPoints;
+    vector<ofVec3f> backInnerPoints;
 	bool renderingMesh;
+	//END triangulation stuff
 	
+    bool startRenderMode;
 	//MSA Object delegate
     ofxMSAInteractiveObjectWithDelegate* mediaBinButton;
     ofxMSAInteractiveObjectWithDelegate* changeCompButton;
@@ -179,7 +190,6 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxRGBDRenderer renderer;
 	ofxRGBDMeshBuilder meshBuilder;
 	ofxTLDepthImageSequence depthSequence;
-	ofMesh triangulatedMesh;
 	ofxTLVideoDepthAlignmentScrubber alignmentScrubber;
 	ofxDepthHoleFiller holeFiller;
 	

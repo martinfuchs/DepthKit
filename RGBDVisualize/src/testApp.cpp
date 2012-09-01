@@ -177,7 +177,7 @@ void testApp::setup(){
 	gui.add(maxFeatures.setup("max features", ofxParameter<int>(),100, 5000));
     gui.add(featureQuality.setup("feature quality", ofxParameter<float>(),.0000001, .01));
     gui.add(minDistance.setup("min distance", ofxParameter<float>(), .0, 200));
-	
+ 	gui.add(maxTriangleEdge.setup("max distance", ofxParameter<float>(), 20, 500));
 
     gui.loadFromFile("defaultGuiSettings.xml");
     
@@ -1067,8 +1067,7 @@ void testApp::updateRenderer(){
 	processDepthFrame();
 	
 	if(renderTriangulation){
-		meshBuilder.update();
-		triangulatedMesh = meshBuilder.getMesh();
+		updateTriangulatedMesh();
 	}
 	else{
 		renderer.update();
@@ -1080,6 +1079,113 @@ void testApp::updateRenderer(){
 	currentVideoFrame = player.getVideoPlayer()->getCurrentFrame();
 
     rendererDirty = true;
+}
+
+void testApp::updateTriangulatedMesh(){
+
+	meshBuilder.update();
+
+//	triangulatedMesh = meshBuilder.getMesh();
+	featurePoints.clear();
+    ofImage img;
+    img.setUseTexture(false);
+    img.setFromPixels(player.getVideoPlayer()->getPixelsRef());
+    img.setImageType(OF_IMAGE_GRAYSCALE);
+    goodFeaturesToTrack(toCv(img),
+                        featurePoints,
+                        maxFeatures,
+                        featureQuality,
+                        minDistance);
+    
+    cout << "found " << featurePoints.size() << " features" << endl;
+    
+    //2 triangulated the features
+    triangulate.reset();
+    for(int i = 0; i < featurePoints.size(); i++){
+        triangulate.addPoint(featurePoints[i].x,featurePoints[i].y, 0);
+    }
+    triangulate.triangulate();
+    
+    //3 copy them into a 3d mesh
+    triangulatedMesh.clear();
+    vector<ofVec3f>& trianglePoints = triangulate.triangleMesh.getVertices();
+    vector<ofVec2f>& textureCoords = meshBuilder.getMesh().getTexCoords();
+    vector<bool> validVertIndeces;
+    for(int i = 0; i < trianglePoints.size(); i++){
+        int closestTexCoordIndex  = 0;
+        float closestTexCoordDistance = 1000000;
+        for(int j = 0; j < textureCoords.size(); j++){
+            ofVec2f tri2d(trianglePoints[i].x,trianglePoints[i].y);
+            float texCoordDist = tri2d.distanceSquared(textureCoords[j]);
+            if(texCoordDist < closestTexCoordDistance){
+                closestTexCoordDistance = texCoordDist;
+                closestTexCoordIndex = j;
+            }
+        }
+        ofVec3f vert = meshBuilder.getMesh().getVertex(closestTexCoordIndex);
+        triangulatedMesh.addVertex(vert);
+        triangulatedMesh.addTexCoord(meshBuilder.getMesh().getTexCoord(closestTexCoordIndex));
+        validVertIndeces.push_back(vert.z < meshBuilder.farClip && vert.z > 10);
+    }
+    
+    //copy indices across
+    faceNormals.clear();
+    faceCenters.clear();
+	
+	map<ofIndexType, vector<int> > vertexIndexToFaceIndex;
+    for(int i = 0 ; i < triangulate.triangleMesh.getNumIndices(); i+=3){
+        ofIndexType a,b,c;
+        a = triangulate.triangleMesh.getIndex(i);
+        if(!validVertIndeces[a]) continue;
+        
+        b = triangulate.triangleMesh.getIndex(i+1);
+        if(!validVertIndeces[b]) continue;
+        
+        c = triangulate.triangleMesh.getIndex(i+2);
+        if(!validVertIndeces[c]) continue;
+		
+        //calculate the face normal
+        ofVec3f& va = triangulatedMesh.getVertices()[a];
+        ofVec3f& vb = triangulatedMesh.getVertices()[b];
+        ofVec3f& vc = triangulatedMesh.getVertices()[c];
+		float maxTriangleEdgeSqr = maxTriangleEdge*maxTriangleEdge;
+        if(va.distanceSquared(vb) > maxTriangleEdgeSqr ||
+		   va.distanceSquared(vc) > maxTriangleEdgeSqr ||
+		   vc.distanceSquared(vb) > maxTriangleEdgeSqr )
+		{
+			continue;
+		}
+            
+		
+        triangulatedMesh.addIndex(triangulate.triangleMesh.getIndex(i  ));
+        triangulatedMesh.addIndex(triangulate.triangleMesh.getIndex(i+1));
+        triangulatedMesh.addIndex(triangulate.triangleMesh.getIndex(i+2));
+		
+        //keep track of which faces belong to which vertices
+    	vertexIndexToFaceIndex[a].push_back(faceNormals.size());
+        vertexIndexToFaceIndex[b].push_back(faceNormals.size());
+        vertexIndexToFaceIndex[c].push_back(faceNormals.size());
+        
+        ofVec3f faceNormal = (vb-va).getCrossed(vc-va).normalized();
+        faceNormals.push_back( faceNormal );
+        faceCenters.push_back( (va + vb + vc) / 3.);
+		
+    }
+    
+    //now go through and average the normals into the vertices
+    triangulatedMesh.getNormals().resize(triangulatedMesh.getNumVertices());
+    map<ofIndexType, vector<int> >::iterator it;
+    for(it = vertexIndexToFaceIndex.begin(); it != vertexIndexToFaceIndex.end(); it++) {
+        ofVec3f average(0,0,0);
+		vector<int>& faceNormalIndices = it->second;
+        for(int i = 0 ; i < faceNormalIndices.size(); i++){
+            average += faceNormals[ faceNormalIndices[i] ];
+        }
+        average.normalize();
+        triangulatedMesh.setNormal(it->first, average);
+    }
+	
+	
 }
 
 //--------------------------------------------------------------
