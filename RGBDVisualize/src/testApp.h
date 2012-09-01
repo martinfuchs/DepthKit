@@ -122,12 +122,19 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 
 	//Adding triangulation stuff
 	ofxToggle renderTriangulation;
-    ofxIntSlider maxFeatures;
-    ofxFloatSlider featureQuality;
-	ofxFloatSlider minDistance;
-	ofxFloatSlider maxTriangleEdge;
+//    ofxIntSlider maxFeatures;
+//    ofxFloatSlider featureQuality;
+//	ofxFloatSlider minDistance;
+//	ofxFloatSlider maxTriangleEdge;
 	ofxDelaunay triangulate;
-
+	ofxToggle enableLighting;
+	ofxToggle drawLightPositions;
+	ofxToggle renderObjectFiles;
+	
+	ofLight light1;
+	ofLight light2;
+	ofLight light3;
+	
 	void updateTriangulatedMesh();
 	ofMesh triangulatedMesh;
 	vector<cv::Point2f> featurePoints;
@@ -136,8 +143,15 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	vector<ofVec3f> innerPoints;
 	vector<ofVec3f> backPoints;
     vector<ofVec3f> backInnerPoints;
+	
 	bool renderingMesh;
+	float currentMaxFeatures;
+	float currentFeatureQuality;
+	float currentMinFeatureDistance;
+	float currentMaxEdgeLength;
+	
 	//END triangulation stuff
+	
 	
     bool startRenderMode;
 	//MSA Object delegate
@@ -213,7 +227,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofImage savingImage;
 	string saveFolder;
 	string lastSavedDate;    
-
+	bool hasRunRendererOnce; //hack to populate shaders
 	bool currentlyRendering;
 	int currentRenderFrame;
 	//used for temporal aligmnet nudging

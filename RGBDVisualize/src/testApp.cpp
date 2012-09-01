@@ -1,5 +1,5 @@
 #include "testApp.h"
-
+#include "ofxObjLoader.h"
 
 //--------------------------------------------------------------
 void testApp::setup(){
@@ -31,6 +31,7 @@ void testApp::setup(){
 	cameraRollSpeed = cam.rollSpeed = 1;
 
 	renderingMesh = false;
+	hasRunRendererOnce = false;
 	
     selectedScene = NULL;
     selectedComp = NULL;
@@ -64,7 +65,8 @@ void testApp::setup(){
 	player.updateVideoPlayer = false;
     rendererDirty = true;
     isSceneLoaded = false;
-    
+    renderObjectFiles = false;
+	
     //TODO set through interface
     int fboWidth  = 1920;
     int fboHeight = 1080;
@@ -74,19 +76,11 @@ void testApp::setup(){
 	
 	fboRectangle = ofRectangle(250, 100, fboWidth, fboHeight);
     swapFbo.allocate(fboWidth, fboHeight, GL_RGBA, 4);
-	curbuf = 0;
-    
-    /*
-    fbo1.allocate(fboWidth, fboHeight, GL_RGBA32F_ARB);
-	fbo2.allocate(fboWidth, fboHeight, GL_RGBA32F_ARB);
-    dofBuffer.allocate(fboWidth, fboHeight, GL_RGB32F_ARB, 4);
-    dofBlurBuffer.allocate(fboWidth, fboHeight, GL_RGB32F_ARB);
-    */
-    
-    fbo1.allocate(fboWidth, fboHeight, GL_RGBA);
-	fbo2.allocate(fboWidth, fboHeight, GL_RGBA);
     dofBuffer.allocate(fboWidth, fboHeight, GL_RGB, 4);
     dofBlurBuffer.allocate(fboWidth, fboHeight, GL_RGBA);
+    fbo1.allocate(fboWidth, fboHeight, GL_RGBA);
+	fbo2.allocate(fboWidth, fboHeight, GL_RGBA);
+	curbuf = 0;
     
     fbo1.begin();
     ofClear(0,0,0,0);
@@ -160,12 +154,16 @@ void testApp::setup(){
     gui.add(shouldSaveCameraPoint.setup("Set Camera Point", ofxParameter<bool>()));
     gui.add(currentLockCamera.setup("Lock to Track", ofxParameter<bool>()));
     
+	gui.add(renderTriangulation.setup("render triangulation", ofxParameter<bool>()));
+	gui.add(renderObjectFiles.setup("create obj files", ofxParameter<bool>()));
+	gui.add(enableLighting.setup("enable lighting", ofxParameter<bool>()));
+	gui.add(drawLightPositions.setup("draw light debug", ofxParameter<bool>()));
     gui.add(currentMirror.setup("Mirror", ofxParameter<bool>()));
     gui.add(undistortImages.setup("Undistort", ofxParameter<bool>()));
-    gui.add(currentXMultiplyShift.setup("X Shift", ofxParameter<float>(), -.15, .15));
-    gui.add(currentYMultiplyShift.setup("Y Shift", ofxParameter<float>(), -.15, .15));
-    gui.add(currentXScale.setup("X Scale", ofxParameter<float>(), .90, 1.10));
-    gui.add(currentYScale.setup("Y Scale", ofxParameter<float>(), .90, 1.10));
+//    gui.add(currentXMultiplyShift.setup("X Shift", ofxParameter<float>(), -.15, .15));
+//    gui.add(currentYMultiplyShift.setup("Y Shift", ofxParameter<float>(), -.15, .15));
+//    gui.add(currentXScale.setup("X Scale", ofxParameter<float>(), .90, 1.10));
+//    gui.add(currentYScale.setup("Y Scale", ofxParameter<float>(), .90, 1.10));
 
     gui.add(fillHoles.setup("Fill Holes", ofxParameter<bool>()));
     gui.add(currentHoleKernelSize.setup("Hole Kernel Size", ofxParameter<int>(), 1, 10));
@@ -173,11 +171,6 @@ void testApp::setup(){
     gui.add(temporalAlignmentMode.setup("Temporal Alignment", ofxParameter<bool>()));
 	gui.add(captureFramePair.setup("Set Color-Depth Time", ofxParameter<bool>()));
     
-	gui.add(renderTriangulation.setup("render triangulation", ofxParameter<bool>()));
-	gui.add(maxFeatures.setup("max features", ofxParameter<int>(),100, 5000));
-    gui.add(featureQuality.setup("feature quality", ofxParameter<float>(),.0000001, .01));
-    gui.add(minDistance.setup("min distance", ofxParameter<float>(), .0, 200));
- 	gui.add(maxTriangleEdge.setup("max distance", ofxParameter<float>(), 20, 500));
 
     gui.loadFromFile("defaultGuiSettings.xml");
     
@@ -208,6 +201,8 @@ void testApp::loadShaders(){
     dofBlur.setUniform1i("tex", 0);
     dofBlur.setUniform1i("range", 1);
     dofBlur.end();
+
+
 //    renderer.reloadShader();
 
 }
@@ -224,7 +219,6 @@ void testApp::populateTimelineElements(){
 
     //rendering
     timeline.addPage("Geometry", true);
-//    timeline.addCurves("Motion Trail Decay", currentCompositionDirectory + "motionTrailDecay.xml", ofRange(.05 ,1.0), 1.0 );
     timeline.addCurves("Simplify", currentCompositionDirectory + "simplify.xml", ofRange(1, 8), 2);
 //    timeline.addCurves("Edge Snip", currentCompositionDirectory + "edgeSnip.xml", ofRange(1.0, 6000), 6000 );
     timeline.addCurves("Z Threshold", currentCompositionDirectory + "zThreshold.xml", ofRange(1.0, sqrtf(6000)), sqrtf(6000) );
@@ -238,15 +232,29 @@ void testApp::populateTimelineElements(){
     timeline.addCurves("Wireframe Alpha", currentCompositionDirectory + "wireframeAlpha.xml", ofRange(0,1.0), 1.0 );
     timeline.addCurves("Wireframe Thickness", currentCompositionDirectory + "wireframeThickness.xml", ofRange(1.0,sqrtf(20.0)) );
     timeline.addCurves("Mesh Alpha", currentCompositionDirectory + "meshAlpha.xml", ofRange(0,1.0) );
-    
-//    timeline.addPage("Wireframe", true);
-     
-//    timeline.addPage("Point", true);
-    
+        
     timeline.addPage("Depth of Field", true);
     timeline.addCurves("DOF Distance", currentCompositionDirectory + "DOFDistance.xml", ofRange(0,sqrtf(1500.0)), 10 );
     timeline.addCurves("DOF Range", currentCompositionDirectory + "DOFRange.xml", ofRange(10,sqrtf(1500.0)) );
     timeline.addCurves("DOF Blur", currentCompositionDirectory + "DOFBlur.xml", ofRange(0,5.0) );
+
+	timeline.addPage("Triangulation", true);
+	timeline.addCurves("Max Features", currentCompositionDirectory + "TriangulateMaxFeatures.xml", ofRange(100, 5000));
+    timeline.addCurves("Feature Quality",currentCompositionDirectory + "TriangulateFeatureQuality.xml", ofRange(.000001, .01));
+    timeline.addCurves("Min Feature Distance", currentCompositionDirectory + "TriangulateMinFeatureDistance.xml", ofRange(.0, .02), .01);
+ 	timeline.addCurves("Max Edge Length", currentCompositionDirectory + "TriangulateMaxEdgeLength.xml", ofRange(0, 500), 500);
+
+	timeline.addPage("Lights 1");
+	timeline.addCurves("Light 1 Intensity", currentCompositionDirectory + "Light1Intensity.xml", ofRange(0.0, 1.0));
+	timeline.addCurves("Light 1 X", currentCompositionDirectory + "Light1X.xml", ofRange(-500, 500));
+	timeline.addCurves("Light 1 Y", currentCompositionDirectory + "Light1Y.xml", ofRange(-500, 500));
+	timeline.addCurves("Light 1 Z", currentCompositionDirectory + "Light1Z.xml", ofRange(0, 1000), 500);
+
+	timeline.addPage("Lights 2");
+	timeline.addCurves("Light 2 Intensity", currentCompositionDirectory + "Light2Intensity.xml",ofRange(0,1.0));
+	timeline.addCurves("Light 2 X", currentCompositionDirectory + "Light2X.xml",ofRange(-500, 500), 0);
+	timeline.addCurves("Light 2 Y", currentCompositionDirectory + "Light2X.xml",ofRange(-500, 500), 0);
+	timeline.addCurves("Light 2 Z", currentCompositionDirectory + "Light2X.xml",ofRange(0, 1000), 500);
 
 	/*
     timeline.addPage("Depth Distortion", true);
@@ -261,14 +269,21 @@ void testApp::populateTimelineElements(){
     timeline.addPage("Geometry  Distortion", true);
     timeline.addCurves("Perlin Amp", "PerlinAmp.xml", ofRange(0, 200.0) );
     timeline.addCurves("Perlin Density", "PerlinDensity.xml", ofRange(0, 200.0) );
-    timeline.addCurves("Perlin Speed", "PerlinSpeed.xml", ofRange(0, sqrtf(15.)) );    
+    timeline.addCurves("Perlin Speed", "PerlinSpeed.xml", ofRange(0, sqrtf(15.)) );
     */
 	
-	timeline.addPage("Alignment", true);
+	timeline.addPage("Time Alignment", true);
 	timeline.addTrack("Video", videoTrack);
 	timeline.addTrack("Depth Sequence", &depthSequence);
 	timeline.addTrack("Alignment", &alignmentScrubber);
-    
+	
+	timeline.addPage("Texture Alignment");
+	timeline.addCurves("X Texture Shift", currentCompositionDirectory + "XTextureShift.xml", ofRange(-.15, .15), 0.0 );
+	timeline.addCurves("Y Texture Shift", currentCompositionDirectory + "YTextureShift.xml", ofRange(-.15, .15), 0.0 );
+	timeline.addCurves("X Texture Scale", currentCompositionDirectory + "XTextureScale.xml", ofRange(.95, 1.05), 1.0 );
+	timeline.addCurves("Y Texture Scale", currentCompositionDirectory + "YTextureScale.xml", ofRange(.95, 1.05), 1.0 );
+
+	
 	timeline.setCurrentPage("Rendering");
 
 }
@@ -383,11 +398,32 @@ void testApp::drawGeometry(){
         renderedCameraPos.setPosition(cam.getPosition());
         renderedCameraPos.setOrientation(cam.getOrientationQuat());
         
+//			light3.enable();
+		light1.setPosition(timeline.getValue("Light 1 X"),
+						   timeline.getValue("Light 1 Y"),
+						   timeline.getValue("Light 1 Z"));
+		light2.setPosition(timeline.getValue("Light 2 X"),
+						   timeline.getValue("Light 2 Y"),
+						   timeline.getValue("Light 2 Z"));
+		
+		light1.setAttenuation(1./timeline.getValue("Light 1 Intensity"), .0, 0.);
+		light2.setAttenuation(1./timeline.getValue("Light 2 Intensity"), .0, 0.);
+
+		if(enableLighting){
+			glShadeModel(GL_FLAT);
+			ofSetGlobalAmbientColor(ofColor(0,0,0));
+			ofEnableSeparateSpecularLight();
+			glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+		}
+		else{
+			glShadeModel(GL_SMOOTH);
+		}
         ofBlendMode blendMode = OF_BLENDMODE_SCREEN;
         fbo1.begin();
 		ofClear(0,0,0,0);
 		fbo1.end();
-        //new way of doing trails that kills alpha backgrounds.
+		
+	//new way of doing trails that kills alpha backgrounds.
 //        fbo1.begin();
 //        ofPushStyle();
 //        ofEnableAlphaBlending();
@@ -409,9 +445,26 @@ void testApp::drawGeometry(){
 			if(renderTriangulation){
 				ofPushMatrix();
 				ofScale(1,-1, 1);
+				if(enableLighting){
+					ofEnableLighting();
+					light1.enable();
+					light2.enable();
+				}
 				player.getVideoPlayer()->getTextureReference().bind();
 				triangulatedMesh.draw();
 				player.getVideoPlayer()->getTextureReference().unbind();
+				
+				if(drawLightPositions){
+					ofPushStyle();
+					ofNoFill();
+					ofSetColor(255, 200, 100);
+					ofSphere(light1.getPosition(), 30);
+					ofSetColor(100, 100, 255);
+					ofSphere(light2.getPosition(), 30);
+					ofPopStyle();
+				}
+	
+				ofDisableLighting();
 				ofPopMatrix();
 			}
 			else{
@@ -458,7 +511,12 @@ void testApp::drawGeometry(){
                 dofRange.setUniform1f("blackout", 0.);
                 dofRange.end();
 				if(renderTriangulation){
+					ofPushMatrix();
+					ofScale(1,-1, 1);
+					player.getVideoPlayer()->getTextureReference().bind();
 					triangulatedMesh.draw();
+					player.getVideoPlayer()->getTextureReference().unbind();
+					ofPopMatrix();
 				}
 				else{
 	                renderer.drawMesh(dofRange);
@@ -477,9 +535,15 @@ void testApp::drawGeometry(){
 			if(renderTriangulation){
 				ofPushMatrix();
 				ofScale(1,-1, 1);
+				if(enableLighting){
+					ofEnableLighting();
+					light1.enable();
+					light2.enable();					
+				}
 				player.getVideoPlayer()->getTextureReference().bind();
 				triangulatedMesh.drawWireframe();
 				player.getVideoPlayer()->getTextureReference().unbind();
+				ofDisableLighting();
 				ofPopMatrix();
 			}
 			else{
@@ -527,7 +591,10 @@ void testApp::drawGeometry(){
                 dofRange.setUniform1f("blackout", 0.);
                 dofRange.end();
 				if(renderTriangulation){
+					ofPushMatrix();
+					ofScale(1,-1, 1);
 					triangulatedMesh.draw();
+					ofPopMatrix();
 				}
 				else{
 	                renderer.drawMesh(dofRange);
@@ -540,7 +607,18 @@ void testApp::drawGeometry(){
             float pointSize = timeline.getValue("Point Size");
             glPointSize(pointSize*pointSize);
 			if(renderTriangulation){
-				triangulatedMesh.draw();
+				ofPushMatrix();
+				ofScale(1,-1, 1);
+				if(enableLighting){
+					ofEnableLighting();
+					light1.enable();
+					light2.enable();
+				}
+				player.getVideoPlayer()->getTextureReference().bind();
+				triangulatedMesh.drawVertices();
+				player.getVideoPlayer()->getTextureReference().unbind();
+				ofDisableLighting();
+				ofPopMatrix();
 			}
 			else{
 	            renderer.drawPointCloud();
@@ -582,18 +660,30 @@ void testApp::drawGeometry(){
             cam.begin(renderFboRect);
             glEnable(GL_DEPTH_TEST);
             
-            dofRange.begin();
-            dofRange.setUniform1f("focalDistance", dofFocalDistance);
-            dofRange.setUniform1f("focalRange", dofFocalRange);
-            dofRange.setUniform1f("blackout", 1.);
-            dofRange.end();
             
             ofDisableAlphaBlending();
 			if(renderTriangulation){
+				
+				dofRange.begin();
+				dofRange.setUniform1f("focalDistance", dofFocalDistance);
+				dofRange.setUniform1f("focalRange", dofFocalRange);
+				dofRange.setUniform1f("blackout", 1.);
+				dofRange.setUniform1i("project", 0);
+				ofPushMatrix();
+				ofScale(1,-1, 1);
 				triangulatedMesh.draw();
+				ofPopMatrix();
+				dofRange.end();
 			}
-			else{
+			
+			if(!renderTriangulation || !hasRunRendererOnce){
+				dofRange.begin();
+				dofRange.setUniform1f("focalDistance", dofFocalDistance);
+				dofRange.setUniform1f("focalRange", dofFocalRange);
+				dofRange.setUniform1f("blackout", 1.);
+				dofRange.end();
 	            renderer.drawMesh(dofRange);
+				hasRunRendererOnce = true;
 			}
             
             glDisable(GL_DEPTH_TEST);
@@ -715,8 +805,11 @@ void testApp::drawGeometry(){
 	}
     
     ofEnableAlphaBlending();
+	ofPushStyle();
+	ofSetColor(0,0,0);
+	ofRect(fboRectangle);
+	ofPopStyle();
     fbo1.getTextureReference().draw(fboRectangle);
-      
 }
 
 //************************************************************
@@ -866,7 +959,8 @@ void testApp::update(){
     
 	if(startRenderMode){
         startRenderMode = false;
-        
+        drawLightPositions = false; //force light pos off
+		
 		timeline.disable();
 		
         fbo1.begin();
@@ -995,8 +1089,6 @@ void testApp::update(){
 	}
 	
     //renderer.edgeCull = timeline.getValue("Edge Snip");
-    renderer.farClip  = powf(timeline.getValue("Z Threshold"), 2.0);
-	meshBuilder.farClip = powf(timeline.getValue("Z Threshold"), 2.0);
 	
 	renderer.meshRotate.x = timeline.getValue("X Rotate");
     renderer.meshRotate.y = timeline.getValue("Y Rotate");
@@ -1013,30 +1105,37 @@ void testApp::update(){
 		meshBuilder.setSimplification(simplification);
 		rendererNeedsUpdate = true;
     }
-    
-	if(currentXMultiplyShift != renderer.xshift ||
-	   currentYMultiplyShift != renderer.yshift ||
-       currentXScale != renderer.xscale ||
-       currentYScale != renderer.yscale ||
+
+	float currentFarClip = powf(timeline.getValue("Z Threshold"), 2.0);
+	if(timeline.getValue("X Texture Shift") != renderer.xshift ||
+	   timeline.getValue("Y Texture Shift") != renderer.yshift ||
+       timeline.getValue("X Texture Scale") != renderer.xscale ||
+       timeline.getValue("Y Texture Scale") != renderer.yscale ||
 	   currentMirror != renderer.mirror ||
 	   fillHoles != holeFiller.enable ||
 	   currentHoleKernelSize != holeFiller.getKernelSize() ||
        currentHoleFillIterations != holeFiller.getIterations()||
-       undistortImages == renderer.forceUndistortOff)
-	{		
-		renderer.xshift = currentXMultiplyShift;
-		renderer.yshift = currentYMultiplyShift;
-        renderer.xscale = currentXScale;
-        renderer.yscale = currentYScale;
+       undistortImages == renderer.forceUndistortOff ||
+	   currentFarClip != renderer.farClip)
+	{
+
+		meshBuilder.farClip = powf(timeline.getValue("Z Threshold"), 2.0);
+
+		renderer.xshift = timeline.getValue("X Texture Shift");
+		renderer.yshift = timeline.getValue("Y Texture Shift");
+        renderer.xscale = timeline.getValue("X Texture Scale");
+        renderer.yscale = timeline.getValue("Y Texture Scale");
 		renderer.mirror = currentMirror;
 		renderer.forceUndistortOff = !undistortImages;
+		renderer.farClip = currentFarClip;
 		
-		meshBuilder.shift.x = currentXMultiplyShift;
-		meshBuilder.shift.y = currentYMultiplyShift;
-        meshBuilder.scale.x = currentXScale;
-        meshBuilder.scale.y = currentYScale;
+		meshBuilder.shift.x = timeline.getValue("X Texture Shift");
+		meshBuilder.shift.y = timeline.getValue("Y Texture Shift");
+        meshBuilder.scale.x = timeline.getValue("X Texture Scale");
+        meshBuilder.scale.y = timeline.getValue("Y Texture Scale");
 		meshBuilder.getHoleFiller().enable = false;
 		meshBuilder.undistortDepthImage = undistortImages;
+		meshBuilder.farClip = currentFarClip;
 		
 		holeFiller.enable = fillHoles;
 		currentHoleKernelSize = holeFiller.setKernelSize(currentHoleKernelSize);
@@ -1045,10 +1144,20 @@ void testApp::update(){
 		rendererNeedsUpdate = true;
 	}
 	
+	
     if(timeline.getUserChangedValue()){
-		rendererNeedsUpdate = true;
+//		rendererNeedsUpdate = true;
+		rendererDirty = true;
     }
     
+	if(	currentMaxFeatures != timeline.getValue("Max Features") ||
+	   currentFeatureQuality != timeline.getValue("Feature Quality") ||
+	   currentMinFeatureDistance != timeline.getValue("Min Feature Distance") ||
+	   currentMaxEdgeLength != timeline.getValue("Max Edge Length"))
+	{
+		rendererNeedsUpdate = true;
+	}
+
 	if(rendererNeedsUpdate){
 		updateRenderer();
 	}
@@ -1085,7 +1194,10 @@ void testApp::updateTriangulatedMesh(){
 
 	meshBuilder.update();
 
-//	triangulatedMesh = meshBuilder.getMesh();
+	currentMaxFeatures = timeline.getValue("Max Features");
+	currentFeatureQuality = timeline.getValue("Feature Quality");
+	currentMinFeatureDistance = timeline.getValue("Min Feature Distance");
+	currentMaxEdgeLength = timeline.getValue("Max Edge Length");
 	featurePoints.clear();
     ofImage img;
     img.setUseTexture(false);
@@ -1093,11 +1205,11 @@ void testApp::updateTriangulatedMesh(){
     img.setImageType(OF_IMAGE_GRAYSCALE);
     goodFeaturesToTrack(toCv(img),
                         featurePoints,
-                        maxFeatures,
-                        featureQuality,
-                        minDistance);
+                        timeline.getValue("Max Features"),
+                        timeline.getValue("Feature Quality"),
+                        timeline.getValue("Min Feature Distance") * img.getWidth() );
     
-    cout << "found " << featurePoints.size() << " features" << endl;
+    //cout << "found " << featurePoints.size() << " features" << endl;
     
     //2 triangulated the features
     triangulate.reset();
@@ -1144,19 +1256,19 @@ void testApp::updateTriangulatedMesh(){
         c = triangulate.triangleMesh.getIndex(i+2);
         if(!validVertIndeces[c]) continue;
 		
-        //calculate the face normal
+		//eliminate triangles that are too far away
         ofVec3f& va = triangulatedMesh.getVertices()[a];
         ofVec3f& vb = triangulatedMesh.getVertices()[b];
         ofVec3f& vc = triangulatedMesh.getVertices()[c];
-		float maxTriangleEdgeSqr = maxTriangleEdge*maxTriangleEdge;
+		float maxTriangleEdgeSqr = currentMaxEdgeLength*currentMaxEdgeLength;
         if(va.distanceSquared(vb) > maxTriangleEdgeSqr ||
 		   va.distanceSquared(vc) > maxTriangleEdgeSqr ||
 		   vc.distanceSquared(vb) > maxTriangleEdgeSqr )
 		{
 			continue;
 		}
-            
-		
+            		
+        //calculate the face normal
         triangulatedMesh.addIndex(triangulate.triangleMesh.getIndex(i  ));
         triangulatedMesh.addIndex(triangulate.triangleMesh.getIndex(i+1));
         triangulatedMesh.addIndex(triangulate.triangleMesh.getIndex(i+2));
@@ -1184,8 +1296,6 @@ void testApp::updateTriangulatedMesh(){
         average.normalize();
         triangulatedMesh.setNormal(it->first, average);
     }
-	
-	
 }
 
 //--------------------------------------------------------------
@@ -1220,20 +1330,49 @@ void testApp::draw(){
 			depthAlignAssistRect.y = colorAlignAssistRect.getMaxY();
 			depthAlignAssistRect.x = colorAlignAssistRect.getX();
 			
-			if(temporalAlignmentMode){
+			if(temporalAlignmentMode || renderTriangulation){
                 player.getVideoPlayer()->draw(colorAlignAssistRect);
+			}
+			
+			if(renderTriangulation){
+				ofPushMatrix();
+				ofTranslate(colorAlignAssistRect.x, colorAlignAssistRect.y);
+				ofScale(colorAlignAssistRect.width / player.getVideoPlayer()->getWidth(),
+						colorAlignAssistRect.height / player.getVideoPlayer()->getHeight());
+				
+				ofPushStyle();
+				ofNoFill();
+				ofSetColor(255, 0, 0, 100);
+				triangulate.triangleMesh.drawWireframe();
+				ofPopStyle();
+				ofPopMatrix();
+				colorAlignAssistRect.y += colorAlignAssistRect.height; //offset incase DOF is on
+				
+			}
+			
+			if(temporalAlignmentMode){
 				depthSequence.currentDepthImage.draw(depthAlignAssistRect);
             }
-            else if(drawDOF){
+            
+			if(drawDOF && !temporalAlignmentMode){
 				dofBuffer.getTextureReference().draw(colorAlignAssistRect);
             }
             
 			if(currentlyRendering){
-                ofFbo& fbo = curbuf == 0 ? fbo1 : fbo2;
-				fbo.getTextureReference().readToPixels(savingImage.getPixelsRef());
 				char filename[512];
-				sprintf(filename, "%s/save_%05d.png", saveFolder.c_str(), player.getVideoPlayer()->getCurrentFrame());
-				savingImage.saveImage(filename);
+
+				if(renderObjectFiles && renderTriangulation){
+					sprintf(filename, "%s/save_%05d.obj", saveFolder.c_str(), player.getVideoPlayer()->getCurrentFrame());
+					ofxObjLoader::save(string(filename),triangulatedMesh);
+//					sprintf(filename, "%s/save_%05d.png", saveFolder.c_str(), player.getVideoPlayer()->getCurrentFrame());
+//					saveImage.setFrompixels(videoPlayer->getPixels)
+				}
+				else {
+					ofFbo& fbo = curbuf == 0 ? fbo1 : fbo2;
+					fbo.getTextureReference().readToPixels(savingImage.getPixelsRef());
+					sprintf(filename, "%s/save_%05d.png", saveFolder.c_str(), player.getVideoPlayer()->getCurrentFrame());
+					savingImage.saveImage(filename);
+				}
 				
 				//cout << "at save time its set to " << hiResPlayer->getCurrentFrame() << endl;
 
@@ -1509,7 +1648,10 @@ void testApp::loadDefaults(){
 	drawGeometryDistortion = false;
 	selfOcclude = false;
 	drawDOF = false;
- 
+	renderTriangulation = false;
+	enableLighting = false;
+	renderObjectFiles = false;
+	
     cam.speed = 20;
 	cam.rollSpeed = 0;
 
@@ -1566,7 +1708,9 @@ void testApp::saveComposition(){
     projectsettings.setValue("holeIterations", currentHoleFillIterations);
     
 	projectsettings.setValue("mirror", currentMirror);
-    
+	projectsettings.setValue("renderTriangulation", renderTriangulation);
+	projectsettings.setValue("enableLighting", enableLighting);
+	projectsettings.setValue("renderObjFiles", renderObjectFiles);
 	projectsettings.saveFile();
 
     
@@ -1580,7 +1724,7 @@ void testApp::saveComposition(){
     
     selectedScene->scene.hasXYShift = true;
     
-    cout << "saved shift file of " << loadedScene->scene.xyshiftFile << endl;
+    //cout << "saved shift file of " << loadedScene->scene.xyshiftFile << endl;
     
 	ofxXmlSettings defaults;
     gui.saveToXml(defaults);
@@ -1731,11 +1875,14 @@ bool testApp::loadComposition(string compositionDirectory){
         
         selfOcclude = projectsettings.getValue("selfOcclude",false);
 
-        currentXMultiplyShift = projectsettings.getValue("xmult", 0.);
-        currentYMultiplyShift = projectsettings.getValue("ymult", 0.);
-        currentXScale = projectsettings.getValue("xscale", 1.);
-        currentYScale = projectsettings.getValue("yscale", 1.);
-
+//        currentXMultiplyShift = projectsettings.getValue("xmult", 0.);
+//        currentYMultiplyShift = projectsettings.getValue("ymult", 0.);
+//        currentXScale = projectsettings.getValue("xscale", 1.);
+//        currentYScale = projectsettings.getValue("yscale", 1.);
+		
+		renderTriangulation = projectsettings.getValue("renderTriangulation", false);
+		enableLighting = projectsettings.getValue("enableLighting", false);
+		renderObjectFiles = projectsettings.getValue("renderObjFiles", false);
         fillHoles = projectsettings.getValue("fillholes", false);
         currentHoleKernelSize = projectsettings.getValue("kernelSize", 1);
         currentHoleFillIterations = projectsettings.getValue("holeIterations", 1);

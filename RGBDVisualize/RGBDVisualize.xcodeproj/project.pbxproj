@@ -90,6 +90,9 @@
 		E750F8F015F0FF5000B87EA2 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E750F8EB15F0FF5000B87EA2 /* README.md */; };
 		E750F8F115F0FF5000B87EA2 /* ofxDelaunay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E750F8ED15F0FF5000B87EA2 /* ofxDelaunay.cpp */; };
 		E750F8F415F1021D00B87EA2 /* ofxRGBDMeshBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E750F8F215F1021D00B87EA2 /* ofxRGBDMeshBuilder.cpp */; };
+		E750F92715F228EB00B87EA2 /* glm.c in Sources */ = {isa = PBXBuildFile; fileRef = E750F91315F228E900B87EA2 /* glm.c */; };
+		E750F92815F228EB00B87EA2 /* Readme.md in Resources */ = {isa = PBXBuildFile; fileRef = E750F91515F228E900B87EA2 /* Readme.md */; };
+		E750F92915F228EB00B87EA2 /* ofxObjLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E750F91715F228E900B87EA2 /* ofxObjLoader.cpp */; };
 		E77797981583FB8C0041CEAF /* ofxRGBDScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77797961583FB8C0041CEAF /* ofxRGBDScene.cpp */; };
 		E77C754215798B9B0016FA54 /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77C753715798B9B0016FA54 /* ofxBaseGui.cpp */; };
 		E77C754315798B9B0016FA54 /* ofxButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77C753915798B9B0016FA54 /* ofxButton.cpp */; };
@@ -363,6 +366,11 @@
 		E750F8EE15F0FF5000B87EA2 /* ofxDelaunay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxDelaunay.h; sourceTree = "<group>"; };
 		E750F8F215F1021D00B87EA2 /* ofxRGBDMeshBuilder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDMeshBuilder.cpp; sourceTree = "<group>"; };
 		E750F8F315F1021D00B87EA2 /* ofxRGBDMeshBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDMeshBuilder.h; sourceTree = "<group>"; };
+		E750F91315F228E900B87EA2 /* glm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glm.c; sourceTree = "<group>"; };
+		E750F91415F228E900B87EA2 /* glm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glm.h; sourceTree = "<group>"; };
+		E750F91515F228E900B87EA2 /* Readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.md; sourceTree = "<group>"; };
+		E750F91715F228E900B87EA2 /* ofxObjLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxObjLoader.cpp; sourceTree = "<group>"; };
+		E750F91815F228E900B87EA2 /* ofxObjLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxObjLoader.h; sourceTree = "<group>"; };
 		E77797961583FB8C0041CEAF /* ofxRGBDScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDScene.cpp; sourceTree = "<group>"; };
 		E77797971583FB8C0041CEAF /* ofxRGBDScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDScene.h; sourceTree = "<group>"; };
 		E77C753515798B9B0016FA54 /* ofOscParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofOscParameter.h; sourceTree = "<group>"; };
@@ -680,6 +688,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				E750F90015F228E700B87EA2 /* ofxObjLoader */,
 				E750F8E615F0FF5000B87EA2 /* ofxDelaunay */,
 				E74806DA15EBC06800B4157F /* ofxTimecode */,
 				E74806A715EBBFEB00B4157F /* ofxMSATimer */,
@@ -1184,6 +1193,42 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		E750F8FF15F2286500B87EA2 /* ofxObjLoader */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ofxObjLoader;
+			sourceTree = "<group>";
+		};
+		E750F90015F228E700B87EA2 /* ofxObjLoader */ = {
+			isa = PBXGroup;
+			children = (
+				E750F91215F228E900B87EA2 /* glm */,
+				E750F91515F228E900B87EA2 /* Readme.md */,
+				E750F91615F228E900B87EA2 /* src */,
+			);
+			name = ofxObjLoader;
+			path = ../../../addons/ofxObjLoader;
+			sourceTree = "<group>";
+		};
+		E750F91215F228E900B87EA2 /* glm */ = {
+			isa = PBXGroup;
+			children = (
+				E750F91315F228E900B87EA2 /* glm.c */,
+				E750F91415F228E900B87EA2 /* glm.h */,
+			);
+			path = glm;
+			sourceTree = "<group>";
+		};
+		E750F91615F228E900B87EA2 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				E750F91715F228E900B87EA2 /* ofxObjLoader.cpp */,
+				E750F91815F228E900B87EA2 /* ofxObjLoader.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		E77C753315798B9B0016FA54 /* ofxGui */ = {
 			isa = PBXGroup;
 			children = (
@@ -1216,6 +1261,7 @@
 		E7DF56AC147CA3A800A3A9C7 /* couples */ = {
 			isa = PBXGroup;
 			children = (
+				E750F8FF15F2286500B87EA2 /* ofxObjLoader */,
 				E7DF56AD147CA3A800A3A9C7 /* ofxTimeline */,
 			);
 			path = couples;
@@ -1375,6 +1421,7 @@
 				E748F78615EBBF1A00B4157F /* .gitignore in Resources */,
 				E748068615EBBFAB00B4157F /* README.md in Resources */,
 				E750F8F015F0FF5000B87EA2 /* README.md in Resources */,
+				E750F92815F228EB00B87EA2 /* Readme.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1471,6 +1518,8 @@
 				E750F8EF15F0FF5000B87EA2 /* Delaunay.cpp in Sources */,
 				E750F8F115F0FF5000B87EA2 /* ofxDelaunay.cpp in Sources */,
 				E750F8F415F1021D00B87EA2 /* ofxRGBDMeshBuilder.cpp in Sources */,
+				E750F92715F228EB00B87EA2 /* glm.c in Sources */,
+				E750F92915F228EB00B87EA2 /* ofxObjLoader.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
