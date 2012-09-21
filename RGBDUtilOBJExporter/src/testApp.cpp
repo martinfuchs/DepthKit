@@ -1,12 +1,11 @@
 /**
- * Example - Mesh Builder
- * This example shows how to create a RGBD Mesh on the CPU
- *
+ * Example - OBJ Exporter
+ * This example shows how export textured OBJ meshes from RGBD Data
  *
  * James George 2012 
  * Released under the MIT License
  *
- * The RGBDToolkit has been developed with support from the STUDIO for Creative Inquiry and Eyebeam
+ * The RGBDToolkit has been developed with support from the STUDIO for Creative Inquiry, Eyebeam, and YCAM InterLab
  */
 
 #include "testApp.h"
@@ -112,7 +111,7 @@ bool testApp::loadScene(string takeDirectory){
         //this will compensate if we are using an offline video that is of a different scale
         meshBuilder.setTextureScaleForImage(*player.getVideoPlayer());
         //update the first mesh
-        meshBuilder.updateMesh(player.getDepthPixels());
+        meshBuilder.update(player.getDepthPixels());
 		
 		//setup the timeline
 		videoTrack->setPlayer(player.getVideoPlayer());
@@ -273,38 +272,7 @@ void testApp::draw(){
 
 //--------------------------------------------------------------
 void testApp::updateMesh(){
-	meshBuilder.updateMesh(player.getDepthPixels());
-//	return;
-//	depthEncodingMaxDepth = maxDepth;
-//	ofShortPixels& p = player.getDepthPixels();
-//	ofMesh& m = meshBuilder.getMesh();
-//	int simplify = meshBuilder.getSimplification();
-//	int width = p.getWidth()/simplify;
-//	int height = p.getHeight()/simplify;
-//	ofPixelsRef videoPixels = player.getVideoPlayer()->getPixelsRef();
-//	for(int y = 0; y < height; y++){
-//		for(int x = 0; x < width; x++){
-//			ofVec3f vertex = m.getVertices()[y*width+x];
-//			bool pixelAdded = false;
-//			if(vertex.z != 0 && vertex.z < maxDepth){
-//				ofVec2f textureCoord = m.getTexCoords()[y*width+x];
-//				if(textureCoord.x >= 0 && textureCoord.y >= 0 &&
-//				   textureCoord.x < videoPixels.getWidth() &&
-//				   textureCoord.y < videoPixels.getHeight())
-//				{
-//					webMImage.setColor(x, y, getColorForZDepth(vertex.z));
-//					webMImage.setColor(x+width, y, videoPixels.getColor(textureCoord.x, textureCoord.y));
-//					pixelAdded = true;
-//				}
-//			}
-//			
-//			if(!pixelAdded){
-//				webMImage.setColor(x, y, ofColor(0,0,0));
-//				webMImage.setColor(x+width, y, ofColor(0,0,0));
-//			}
-//		}
-//	}
-//	webMImage.update();	
+	meshBuilder.update(player.getDepthPixels());
 }
 
 

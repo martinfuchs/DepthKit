@@ -8,7 +8,7 @@ void testApp::setup(){
 
 	ofEnableAlphaBlending();
 	ofSetFrameRate(60);
-	ofBackground(255*0);
+	ofBackground(255*.15);
 	
     gui.setImageProvider( new ofxDepthImageProviderFreenect() ); 
 	gui.setup();
