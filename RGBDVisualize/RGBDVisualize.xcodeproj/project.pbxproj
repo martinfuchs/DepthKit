@@ -93,6 +93,8 @@
 		E750F92715F228EB00B87EA2 /* glm.c in Sources */ = {isa = PBXBuildFile; fileRef = E750F91315F228E900B87EA2 /* glm.c */; };
 		E750F92815F228EB00B87EA2 /* Readme.md in Resources */ = {isa = PBXBuildFile; fileRef = E750F91515F228E900B87EA2 /* Readme.md */; };
 		E750F92915F228EB00B87EA2 /* ofxObjLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E750F91715F228E900B87EA2 /* ofxObjLoader.cpp */; };
+		E750F97515F3860700B87EA2 /* ofxHotKeys_impl_mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = E750F97215F3860700B87EA2 /* ofxHotKeys_impl_mac.mm */; };
+		E750F97615F3860700B87EA2 /* ofxHotKeys_impl_win.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E750F97315F3860700B87EA2 /* ofxHotKeys_impl_win.cpp */; };
 		E77797981583FB8C0041CEAF /* ofxRGBDScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77797961583FB8C0041CEAF /* ofxRGBDScene.cpp */; };
 		E77C754215798B9B0016FA54 /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77C753715798B9B0016FA54 /* ofxBaseGui.cpp */; };
 		E77C754315798B9B0016FA54 /* ofxButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77C753915798B9B0016FA54 /* ofxButton.cpp */; };
@@ -114,6 +116,7 @@
 		E7DF5727147CA58A00A3A9C7 /* ofxEasingQuint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DF5713147CA58A00A3A9C7 /* ofxEasingQuint.cpp */; };
 		E7DF5728147CA58A00A3A9C7 /* ofxEasingSine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DF5715147CA58A00A3A9C7 /* ofxEasingSine.cpp */; };
 		E7DF5729147CA58A00A3A9C7 /* ofxTween.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DF5717147CA58A00A3A9C7 /* ofxTween.cpp */; };
+		E7E2D18715F4C5F800CADFC5 /* ofxTLColorTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7E2D18515F4C5F800CADFC5 /* ofxTLColorTrack.cpp */; };
 		E7EF805414DB5D6B007CD3CA /* RGBD.icns in Resources */ = {isa = PBXBuildFile; fileRef = E7EF803414DB5D50007CD3CA /* RGBD.icns */; };
 		E7F4F35814AFF9C200198383 /* ofxMSAInteractiveObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7F4F35514AFF9C200198383 /* ofxMSAInteractiveObject.cpp */; };
 /* End PBXBuildFile section */
@@ -352,7 +355,6 @@
 		E748FF2915EBBFA200B4157F /* ofxTLTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLTrack.h; sourceTree = "<group>"; };
 		E748FF2A15EBBFA200B4157F /* ofxTLTrackHeader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLTrackHeader.cpp; sourceTree = "<group>"; };
 		E748FF2B15EBBFA200B4157F /* ofxTLTrackHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLTrackHeader.h; sourceTree = "<group>"; };
-		E748FF2C15EBBFA200B4157F /* ofxTLUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLUtils.h; sourceTree = "<group>"; };
 		E748FF2D15EBBFA200B4157F /* ofxTLVideoThumb.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLVideoThumb.cpp; sourceTree = "<group>"; };
 		E748FF2E15EBBFA200B4157F /* ofxTLVideoThumb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLVideoThumb.h; sourceTree = "<group>"; };
 		E748FF2F15EBBFA200B4157F /* ofxTLVideoTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLVideoTrack.cpp; sourceTree = "<group>"; };
@@ -371,6 +373,9 @@
 		E750F91515F228E900B87EA2 /* Readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.md; sourceTree = "<group>"; };
 		E750F91715F228E900B87EA2 /* ofxObjLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxObjLoader.cpp; sourceTree = "<group>"; };
 		E750F91815F228E900B87EA2 /* ofxObjLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxObjLoader.h; sourceTree = "<group>"; };
+		E750F97215F3860700B87EA2 /* ofxHotKeys_impl_mac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxHotKeys_impl_mac.mm; sourceTree = "<group>"; };
+		E750F97315F3860700B87EA2 /* ofxHotKeys_impl_win.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxHotKeys_impl_win.cpp; sourceTree = "<group>"; };
+		E750F97415F3860700B87EA2 /* ofxHotKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxHotKeys.h; sourceTree = "<group>"; };
 		E77797961583FB8C0041CEAF /* ofxRGBDScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDScene.cpp; sourceTree = "<group>"; };
 		E77797971583FB8C0041CEAF /* ofxRGBDScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDScene.h; sourceTree = "<group>"; };
 		E77C753515798B9B0016FA54 /* ofOscParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofOscParameter.h; sourceTree = "<group>"; };
@@ -421,6 +426,8 @@
 		E7DF5716147CA58A00A3A9C7 /* ofxEasingSine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxEasingSine.h; sourceTree = "<group>"; };
 		E7DF5717147CA58A00A3A9C7 /* ofxTween.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTween.cpp; sourceTree = "<group>"; };
 		E7DF5718147CA58A00A3A9C7 /* ofxTween.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTween.h; sourceTree = "<group>"; };
+		E7E2D18515F4C5F800CADFC5 /* ofxTLColorTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLColorTrack.cpp; sourceTree = "<group>"; };
+		E7E2D18615F4C5F800CADFC5 /* ofxTLColorTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLColorTrack.h; sourceTree = "<group>"; };
 		E7EF803414DB5D50007CD3CA /* RGBD.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = RGBD.icns; path = bin/data/RGBD.icns; sourceTree = "<group>"; };
 		E7F4F35514AFF9C200198383 /* ofxMSAInteractiveObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMSAInteractiveObject.cpp; sourceTree = "<group>"; };
 		E7F4F35614AFF9C200198383 /* ofxMSAInteractiveObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMSAInteractiveObject.h; sourceTree = "<group>"; };
@@ -1117,6 +1124,8 @@
 				E748FF0D15EBBFA200B4157F /* ofxTLBangs.h */,
 				E748FF0E15EBBFA200B4157F /* ofxTLColors.cpp */,
 				E748FF0F15EBBFA200B4157F /* ofxTLColors.h */,
+				E7E2D18515F4C5F800CADFC5 /* ofxTLColorTrack.cpp */,
+				E7E2D18615F4C5F800CADFC5 /* ofxTLColorTrack.h */,
 				E748FF1015EBBFA200B4157F /* ofxTLCurves.cpp */,
 				E748FF1115EBBFA200B4157F /* ofxTLCurves.h */,
 				E748FF1215EBBFA200B4157F /* ofxTLEvents.h */,
@@ -1145,13 +1154,15 @@
 				E748FF2915EBBFA200B4157F /* ofxTLTrack.h */,
 				E748FF2A15EBBFA200B4157F /* ofxTLTrackHeader.cpp */,
 				E748FF2B15EBBFA200B4157F /* ofxTLTrackHeader.h */,
-				E748FF2C15EBBFA200B4157F /* ofxTLUtils.h */,
 				E748FF2D15EBBFA200B4157F /* ofxTLVideoThumb.cpp */,
 				E748FF2E15EBBFA200B4157F /* ofxTLVideoThumb.h */,
 				E748FF2F15EBBFA200B4157F /* ofxTLVideoTrack.cpp */,
 				E748FF3015EBBFA200B4157F /* ofxTLVideoTrack.h */,
 				E748FF3115EBBFA200B4157F /* ofxTLZoomer.cpp */,
 				E748FF3215EBBFA200B4157F /* ofxTLZoomer.h */,
+				E750F97215F3860700B87EA2 /* ofxHotKeys_impl_mac.mm */,
+				E750F97315F3860700B87EA2 /* ofxHotKeys_impl_win.cpp */,
+				E750F97415F3860700B87EA2 /* ofxHotKeys.h */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -1520,6 +1531,9 @@
 				E750F8F415F1021D00B87EA2 /* ofxRGBDMeshBuilder.cpp in Sources */,
 				E750F92715F228EB00B87EA2 /* glm.c in Sources */,
 				E750F92915F228EB00B87EA2 /* ofxObjLoader.cpp in Sources */,
+				E750F97515F3860700B87EA2 /* ofxHotKeys_impl_mac.mm in Sources */,
+				E750F97615F3860700B87EA2 /* ofxHotKeys_impl_win.cpp in Sources */,
+				E7E2D18715F4C5F800CADFC5 /* ofxTLColorTrack.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

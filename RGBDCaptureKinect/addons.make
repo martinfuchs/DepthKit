@@ -1,0 +1,12 @@
+ofxCv
+ofxGameCamera
+ofxKinect
+ofxMSAInteractiveObject
+ofxMSATimer
+ofxRange
+ofxRGBDepth
+ofxTextInputField
+ofxTimecode
+ofxTimeline
+ofxTween
+ofxXmlSettings

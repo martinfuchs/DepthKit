@@ -93,13 +93,17 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle drawGeometryDistortion;
     ofxToggle selfOcclude;
     ofxToggle drawDOF;
-    
-    ofxButton shouldResetCamera;
+    ofxToggle drawDebug;
+	ofxToggle drawVideoOnion;
+	ofxToggle flipVideoOnion;
+	
+    ofxToggle shouldResetCamera;
+	ofxButton setCameraToRGBPerspective;
     ofxFloatSlider cameraSpeed;
     ofxFloatSlider cameraRollSpeed;
     ofxButton shouldSaveCameraPoint;
     ofxToggle currentLockCamera; 
-    
+	
     ofxButton shouldResetDuration;
     ofxButton setDurationToClipLength;
     ofxToggle enableVideoInOut;
@@ -122,15 +126,11 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 
 	//Adding triangulation stuff
 	ofxToggle renderTriangulation;
-//    ofxIntSlider maxFeatures;
-//    ofxFloatSlider featureQuality;
-//	ofxFloatSlider minDistance;
-//	ofxFloatSlider maxTriangleEdge;
 	ofxDelaunay triangulate;
 	ofxToggle enableLighting;
 	ofxToggle drawLightPositions;
 	ofxToggle renderObjectFiles;
-	
+	ofxToggle startSequenceAt0;
 	ofLight light1;
 	ofLight light2;
 	ofLight light3;

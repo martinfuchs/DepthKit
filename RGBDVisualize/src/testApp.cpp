@@ -23,8 +23,8 @@ void testApp::setup(){
 	cam.usemouse = true;
 	cam.useArrowKeys = false;
 	cam.setFarClip(30000);
-	cam.setScale(1, -1, 1);
-	cam.targetNode.setScale(1,-1,1);
+//	cam.setScale(1, -1, 1);
+//	cam.targetNode.setScale(1,-1,1);
 	cam.loadCameraPosition();
 	cam.maximumY =  120;
 	cam.minimumY = -120;
@@ -42,6 +42,7 @@ void testApp::setup(){
 	videoInPercent = 0.0;
 	videoOutPercent = 1.0;
 	enableVideoInOut = false;
+	startSequenceAt0 = false;
 	
     selfOcclude = false;
     
@@ -68,32 +69,34 @@ void testApp::setup(){
     renderObjectFiles = false;
 	
     //TODO set through interface
-    int fboWidth  = 1920;
-    int fboHeight = 1080;
+    int fboWidth  = 1920*2;
+    int fboHeight = 1080*2;
 	
 	savingImage.setUseTexture(false);
 	savingImage.allocate(fboWidth,fboHeight, OF_IMAGE_COLOR);
 	
+	depthSequence.setAutoUpdate(false);
+	
 	fboRectangle = ofRectangle(250, 100, fboWidth, fboHeight);
-    swapFbo.allocate(fboWidth, fboHeight, GL_RGBA, 4);
-    dofBuffer.allocate(fboWidth, fboHeight, GL_RGB, 4);
-    dofBlurBuffer.allocate(fboWidth, fboHeight, GL_RGBA);
+    swapFbo.allocate(fboWidth, fboHeight, GL_RGBA, 2);
+    dofBuffer.allocate(fboWidth, fboHeight, GL_RGB, 2);
+//    dofBlurBuffer.allocate(fboWidth, fboHeight, GL_RGBA);
     fbo1.allocate(fboWidth, fboHeight, GL_RGBA);
-	fbo2.allocate(fboWidth, fboHeight, GL_RGBA);
+	//fbo2.allocate(fboWidth, fboHeight, GL_RGBA);
 	curbuf = 0;
     
     fbo1.begin();
     ofClear(0,0,0,0);
     fbo1.end();
-    fbo2.begin();
-    ofClear(0,0,0,0);
-    fbo2.end();
+//    fbo2.begin();
+//    ofClear(0,0,0,0);
+//    fbo2.end();
     dofBuffer.begin();
     ofClear(0,0,0,0);
     dofBuffer.end();
-    dofBlurBuffer.begin();
-    ofClear(0,0,0,0);
-    dofBlurBuffer.end();
+//    dofBlurBuffer.begin();
+//    ofClear(0,0,0,0);
+//    dofBlurBuffer.end();
     
     
 	timeline.setup();
@@ -145,17 +148,19 @@ void testApp::setup(){
     gui.add(drawMesh.setup("Draw Mesh",ofxParameter<bool>()));
 //    gui.add(drawDepthDistortion.setup("Depth Distortion", ofxParameter<bool>()));
 //    gui.add(drawGeometryDistortion.setup("Geometry Distortion", ofxParameter<bool>()));
+	
     gui.add(selfOcclude.setup("Self Occlude", ofxParameter<bool>()));
     gui.add(drawDOF.setup("Draw DOF", ofxParameter<bool>()));
-    
     gui.add(shouldResetCamera.setup("Reset Camera", ofxParameter<bool>()));
+    gui.add(drawVideoOnion.setup("Draw Onionskin", ofxParameter<bool>()));
+	gui.add(flipVideoOnion.setup("Flip Onionskin", ofxParameter<bool>()));
+	
     gui.add(cameraSpeed.setup("Camera Speed", ofxParameter<float>(), 0, 40));
     gui.add(cameraRollSpeed.setup("Cam Roll Speed", ofxParameter<float>(), .0, 4));
     gui.add(shouldSaveCameraPoint.setup("Set Camera Point", ofxParameter<bool>()));
     gui.add(currentLockCamera.setup("Lock to Track", ofxParameter<bool>()));
     
 	gui.add(renderTriangulation.setup("render triangulation", ofxParameter<bool>()));
-	gui.add(renderObjectFiles.setup("create obj files", ofxParameter<bool>()));
 	gui.add(enableLighting.setup("enable lighting", ofxParameter<bool>()));
 	gui.add(drawLightPositions.setup("draw light debug", ofxParameter<bool>()));
     gui.add(currentMirror.setup("Mirror", ofxParameter<bool>()));
@@ -168,6 +173,10 @@ void testApp::setup(){
     gui.add(fillHoles.setup("Fill Holes", ofxParameter<bool>()));
     gui.add(currentHoleKernelSize.setup("Hole Kernel Size", ofxParameter<int>(), 1, 10));
     gui.add(currentHoleFillIterations.setup("Hole Fill Iterations", ofxParameter<int>(), 1, 20));
+
+	gui.add(renderObjectFiles.setup("create obj files", ofxParameter<bool>()));
+	gui.add(startSequenceAt0.setup("start export sequence at 0", ofxParameter<bool>()));
+	
     gui.add(temporalAlignmentMode.setup("Temporal Alignment", ofxParameter<bool>()));
 	gui.add(captureFramePair.setup("Set Color-Depth Time", ofxParameter<bool>()));
     
@@ -216,7 +225,8 @@ void testApp::populateTimelineElements(){
 	timeline.addTrack("Camera", cameraTrack);
 	videoTrack = new ofxTLVideoTrack();
 	timeline.addTrack("Video", videoTrack);
-
+	//timeline.addCurves("FOV", currentCompositionDirectory + "fov.xml", ofRange(20, 80));
+	
     //rendering
     timeline.addPage("Geometry", true);
     timeline.addCurves("Simplify", currentCompositionDirectory + "simplify.xml", ofRange(1, 8), 2);
@@ -243,7 +253,8 @@ void testApp::populateTimelineElements(){
     timeline.addCurves("Feature Quality",currentCompositionDirectory + "TriangulateFeatureQuality.xml", ofRange(.000001, .01));
     timeline.addCurves("Min Feature Distance", currentCompositionDirectory + "TriangulateMinFeatureDistance.xml", ofRange(.0, .02), .01);
  	timeline.addCurves("Max Edge Length", currentCompositionDirectory + "TriangulateMaxEdgeLength.xml", ofRange(0, 500), 500);
-
+//	timeline.addCurves("Depth Blur", currentCompositionDirectory + "DepthBlur.xml", ofRange(0, 5));
+	
 	timeline.addPage("Lights 1");
 	timeline.addCurves("Light 1 Intensity", currentCompositionDirectory + "Light1Intensity.xml", ofRange(0.0, 1.0));
 	timeline.addCurves("Light 1 X", currentCompositionDirectory + "Light1X.xml", ofRange(-500, 500));
@@ -291,21 +302,34 @@ void testApp::populateTimelineElements(){
 #pragma mark customization
 //--------------------------------------------------------------
 void testApp::processDepthFrame(){
-	
-    if(!drawDepthDistortion) return;
 
-    if(!player.isLoaded()){
+	if(!player.isLoaded()){
 		return;
 	}
-//    if(!depthSequence.currentDepthRaw.isAllocated()){
-//        return;
-//    }
+//	int blur = timeline.getValue("Depth Blur");
+//	if(renderTriangulation && blur >= 1){
+//        Mat original = toCv(player.getDepthPixels());
+//		Mat filledMask;
+//        Mat blurred;
+//        
+//		//		Mat m_element_m = getStructuringElement(MORPH_RECT, cv::Size(kernelSize, kernelSize));
+//		//      morphologyEx(original, dilated, MORPH_CLOSE, m_element_m, cv::Point(-1,-1), iterations);
+////		ofxCv::blur(original, blur);
+////        
+////        cv::compare(original, 0, filledMask, CMP_EQ);
+////        cv::subtract(original, filledMask, original);
+//		
+//		
+//	}
+
+    if(!drawDepthDistortion) return;
+
 
     float noise = timeline.getValue("Noise");
     float sineSpeed = timeline.getValue("Sine Speed");
     float sineAmp = timeline.getValue("Sine Amplitude");
     float sineFrequency = timeline.getValue("Sine Frequency");
-    int blur = timeline.getValue("Depth Blur");
+    
     
     sineFrequency *= sineFrequency;
     sineSpeed = sineSpeed;
@@ -318,8 +342,6 @@ void testApp::processDepthFrame(){
 			int index = y*640+x;
             
             if(noise > 0){
-                //holeFilledPixels.getPixels()[index] += ofRandom(noise);   
-                //depthSequence.currentDepthRaw.getPixels()[index] += ofRandom(noise);
 				player.getDepthPixels()[index] += ofRandom(noise);
             }
             
@@ -328,6 +350,7 @@ void testApp::processDepthFrame(){
             }			
 		}
 	}    
+
 }
 
 void testApp::processGeometry(){
@@ -410,7 +433,7 @@ void testApp::drawGeometry(){
 		light2.setAttenuation(1./timeline.getValue("Light 2 Intensity"), .0, 0.);
 
 		if(enableLighting){
-			glShadeModel(GL_FLAT);
+//			glShadeModel(GL_FLAT);
 			ofSetGlobalAmbientColor(ofColor(0,0,0));
 			ofEnableSeparateSpecularLight();
 			glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
@@ -445,6 +468,7 @@ void testApp::drawGeometry(){
 			if(renderTriangulation){
 				ofPushMatrix();
 				ofScale(1,-1, 1);
+				//if(currentMirror)ofScale(-1,1, 1);
 				if(enableLighting){
 					ofEnableLighting();
 					light1.enable();
@@ -454,16 +478,6 @@ void testApp::drawGeometry(){
 				triangulatedMesh.draw();
 				player.getVideoPlayer()->getTextureReference().unbind();
 				
-				if(drawLightPositions){
-					ofPushStyle();
-					ofNoFill();
-					ofSetColor(255, 200, 100);
-					ofSphere(light1.getPosition(), 30);
-					ofSetColor(100, 100, 255);
-					ofSphere(light2.getPosition(), 30);
-					ofPopStyle();
-				}
-	
 				ofDisableLighting();
 				ofPopMatrix();
 			}
@@ -471,9 +485,26 @@ void testApp::drawGeometry(){
 	            renderer.drawMesh();
 			}
             ofPopStyle();
-            glDisable(GL_DEPTH_TEST);
             
+			if(!currentLockCamera){
+				cameraTrack->getCameraTrack().draw();
+			}
+            
+			if(drawLightPositions){
+				ofPushStyle();
+				ofNoFill();
+				ofSetColor(255, 200, 100);
+				ofSphere(light1.getPosition()*ofVec3f(1,-1,1), 30);
+				ofSetColor(100, 100, 255);
+				ofSphere(light2.getPosition()*ofVec3f(1,-1,1), 30);
+				ofPopStyle();
+			}
+			
+			glDisable(GL_DEPTH_TEST);
+			
             cam.end();
+			
+            
             
             swapFbo.end();
             
@@ -497,6 +528,17 @@ void testApp::drawGeometry(){
             ofClear(0,0,0,0);
             
             cam.begin(renderFboRect);
+			ofPushMatrix();
+//			ofQuaternion rot, so;
+//			ofVec3f translate;
+//			ofVec3f scale;
+//			renderer.getRGBMatrix().decompose(translate, rot, scale, so);
+//			cout << "translation is " << translate << endl;
+//			cout << "scale is " << scale << endl;
+//			
+//			renderer.getRGBCalibration().getDistortedIntrinsics().loadProjectionMatrix();
+//			ofTranslate(ofVec3f(-1.3669229912801114e+01, 8.4936308063091872e+01,-4.6955761648287741e+01)/scale);
+			
             ofPushStyle();
             
             ofEnableAlphaBlending();
@@ -513,6 +555,7 @@ void testApp::drawGeometry(){
 				if(renderTriangulation){
 					ofPushMatrix();
 					ofScale(1,-1, 1);
+//					//if(currentMirror)ofScale(-1,1, 1);
 					player.getVideoPlayer()->getTextureReference().bind();
 					triangulatedMesh.draw();
 					player.getVideoPlayer()->getTextureReference().unbind();
@@ -535,6 +578,7 @@ void testApp::drawGeometry(){
 			if(renderTriangulation){
 				ofPushMatrix();
 				ofScale(1,-1, 1);
+				//if(currentMirror)ofScale(-1,1, 1);				
 				if(enableLighting){
 					ofEnableLighting();
 					light1.enable();
@@ -549,8 +593,10 @@ void testApp::drawGeometry(){
 			else{
             	renderer.drawWireFrame();
 			}
+						
 			ofPopStyle();
             
+			ofPopMatrix();
 //            renderer.drawProjectionDebug();
             glDisable(GL_DEPTH_TEST);
             cam.end();
@@ -593,6 +639,7 @@ void testApp::drawGeometry(){
 				if(renderTriangulation){
 					ofPushMatrix();
 					ofScale(1,-1, 1);
+					//if(currentMirror)ofScale(-1,1, 1);	
 					triangulatedMesh.draw();
 					ofPopMatrix();
 				}
@@ -609,6 +656,7 @@ void testApp::drawGeometry(){
 			if(renderTriangulation){
 				ofPushMatrix();
 				ofScale(1,-1, 1);
+				//if(currentMirror)ofScale(-1,1, 1);
 				if(enableLighting){
 					ofEnableLighting();
 					light1.enable();
@@ -671,6 +719,7 @@ void testApp::drawGeometry(){
 				dofRange.setUniform1i("project", 0);
 				ofPushMatrix();
 				ofScale(1,-1, 1);
+				//if(currentMirror)ofScale(-1,1, 1);
 				triangulatedMesh.draw();
 				ofPopMatrix();
 				dofRange.end();
@@ -692,7 +741,7 @@ void testApp::drawGeometry(){
             dofBuffer.end();
             
             //composite
-            fbo2.begin();
+            swapFbo.begin();
             ofClear(0.0,0.0,0.0,0.0);
             
             ofPushStyle();
@@ -745,7 +794,7 @@ void testApp::drawGeometry(){
 
             ofPopStyle();
             
-            fbo2.end();     
+            swapFbo.end();     
             
             fbo1.begin();
             ofClear(0.0,0.0,0.0,0.0);
@@ -760,7 +809,7 @@ void testApp::drawGeometry(){
             //our shader uses two textures, the top layer and the alpha
             //we can load two textures into a shader using the multi texture coordinate extensions
             glActiveTexture(GL_TEXTURE0_ARB);
-            fbo2.getTextureReference().bind();
+            swapFbo.getTextureReference().bind();
             
             glActiveTexture(GL_TEXTURE1_ARB);
             dofBuffer.getTextureReference().bind();
@@ -792,7 +841,7 @@ void testApp::drawGeometry(){
             dofBuffer.getTextureReference().unbind();
             
             glActiveTexture(GL_TEXTURE0_ARB);
-            fbo2.getTextureReference().unbind();
+            swapFbo.getTextureReference().unbind();
             
             dofBlur.end();
             
@@ -800,7 +849,34 @@ void testApp::drawGeometry(){
             
             fbo1.end();
         }
-        
+        /*
+		if(drawLightPositions || !currentLockCamera){
+            fbo1.begin();
+            
+            cam.begin(renderFboRect);
+			ofEnableAlphaBlending();
+            glEnable(GL_DEPTH_TEST);
+
+			if(!currentLockCamera){
+				cameraTrack->getCameraTrack().draw();
+			}
+            
+			if(drawLightPositions){
+				ofPushStyle();
+				ofNoFill();
+				ofSetColor(255, 200, 100);
+				ofSphere(light1.getPosition(), 30);
+				ofSetColor(100, 100, 255);
+				ofSphere(light2.getPosition(), 30);
+				ofPopStyle();
+			}
+			
+			cam.end();
+			
+			fbo1.end();
+		}
+		*/
+		
         rendererDirty = false;
 	}
     
@@ -809,7 +885,33 @@ void testApp::drawGeometry(){
 	ofSetColor(0,0,0);
 	ofRect(fboRectangle);
 	ofPopStyle();
-    fbo1.getTextureReference().draw(fboRectangle);
+    //fbo1.getTextureReference().draw(ofRectangle(fboRectangle.x,fboRectangle.y+fboRectangle.height,fboRectangle.width,-fboRectangle.height));
+	fbo1.getTextureReference().draw(fboRectangle);
+	
+	if(drawVideoOnion){
+		ofPushStyle();
+		ofSetColor(255, 100);
+		
+		//player.getVideoPlayer()->draw(ofRectangle(fboRectangle.x,fboRectangle.y+fboRectangle.height,fboRectangle.width,-fboRectangle.height));
+	//	player.getVideoPlayer()->draw(ofRectangle(fboRectangle.x+fboRectangle.width,fboRectangle.y+fboRectangle.height,-fboRectangle.width,-fboRectangle.height));
+		if(!currentMirror){
+			if(flipVideoOnion){
+				player.getVideoPlayer()->draw(ofRectangle(fboRectangle.x+fboRectangle.width,fboRectangle.y+fboRectangle.height,-fboRectangle.width,-fboRectangle.height));
+			}
+			else{
+				player.getVideoPlayer()->draw(ofRectangle(fboRectangle.x+fboRectangle.width,fboRectangle.y,-fboRectangle.width,fboRectangle.height));
+			}
+		}
+		else{
+			if(flipVideoOnion){
+				player.getVideoPlayer()->draw(ofRectangle(fboRectangle.x,fboRectangle.y+fboRectangle.height, fboRectangle.width, -fboRectangle.height));
+			}
+			else{
+				player.getVideoPlayer()->draw(fboRectangle);
+			}
+		}
+		ofPopStyle();
+	}
 }
 
 //************************************************************
@@ -833,6 +935,13 @@ void testApp::keyPressed(int key){
 			finishRender();
 		}
 		return;
+	}
+	
+	if(!temporalAlignmentMode && key == OF_KEY_RIGHT){
+		player.getVideoPlayer()->nextFrame();
+	}
+	if(!temporalAlignmentMode && key == OF_KEY_LEFT){
+		player.getVideoPlayer()->previousFrame();
 	}
 	
 	if(key == ' '){
@@ -966,9 +1075,9 @@ void testApp::update(){
         fbo1.begin();
         ofClear(0,0,0,0);
         fbo1.end();
-        fbo2.begin();
-        ofClear(0,0,0,0);
-        fbo2.end();
+//        fbo2.begin();
+//        ofClear(0,0,0,0);
+//        fbo2.end();
         
 		viewComps = false;
 		saveComposition();
@@ -1009,6 +1118,7 @@ void testApp::update(){
             currentLockCamera = cameraTrack->lockCameraToTrack = true;
 			
         }
+		cout << "starting render mode" << endl;
 	}
     
 	if(!isSceneLoaded) return;
@@ -1021,16 +1131,18 @@ void testApp::update(){
         drawPointcloud = false;
         drawMesh = false;
         drawWireframe = true;
-		timeline.setCurrentPage("Alignment");
+		timeline.setCurrentPage("Time Alignment");
 	}
 	
 	if(currentLockCamera != cameraTrack->lockCameraToTrack){
 		if(!currentLockCamera){
-			cam.targetNode.setPosition(cam.getPosition());
-			cam.targetNode.setOrientation(cam.getOrientationQuat());
-			cam.rotationX = cam.targetXRot = -cam.getHeading();
-			cam.rotationY = cam.targetYRot = -cam.getPitch();
-			cam.rotationZ = -cam.getRoll();
+			cam.setAnglesFromOrientation();
+//			cam.setPosition(
+//			cam.targetNode.setPosition(cam.getPosition());
+//			cam.targetNode.setOrientation(cam.getOrientationQuat());
+//			cam.rotationX = cam.targetXRot = -cam.getHeading();
+//			cam.rotationY = cam.targetYRot = -cam.getPitch();
+//			cam.rotationZ = -cam.getRoll();
 		}
 		cameraTrack->lockCameraToTrack = currentLockCamera;
 	}
@@ -1046,9 +1158,11 @@ void testApp::update(){
 	cam.applyTranslation = !cameraTrack->lockCameraToTrack;
     
 	if(currentlyRendering){
+
 		currentRenderFrame = player.getVideoPlayer()->getCurrentFrame();
+//		cout << "update render setting frame to " << currentRenderFrame << endl;
 		timeline.setCurrentFrame(currentRenderFrame);
-		videoTrack->selectFrame(currentRenderFrame);
+		//videoTrack->selectFrame(currentRenderFrame);
 		
 //		cout << "would have set hi res frame to " << currentRenderFrame % hiResPlayer->getTotalNumFrames() << endl;
 //		cout << "instead set it to " << hiResPlayer->getCurrentFrame() << endl;
@@ -1073,6 +1187,10 @@ void testApp::update(){
 		
 		if(shouldResetCamera){
 			resetCameraPosition();
+//			shouldResetCamera = false;
+		}
+		else{
+			cam.applyRotation = cam.applyTranslation = true;
 		}
 
 		if(captureFramePair && temporalAlignmentMode){
@@ -1080,6 +1198,10 @@ void testApp::update(){
 			alignmentScrubber.save();
             temporalAlignmentMode = false;
 		}
+	}
+
+	if(currentlyRendering){
+		cout << "before rgbdplayer update frame " << player.getVideoPlayer()->getCurrentFrame() << endl;
 	}
 
 	bool rendererNeedsUpdate = false;
@@ -1129,6 +1251,7 @@ void testApp::update(){
 		renderer.forceUndistortOff = !undistortImages;
 		renderer.farClip = currentFarClip;
 		
+		meshBuilder.mirror = currentMirror;
 		meshBuilder.shift.x = timeline.getValue("X Texture Shift");
 		meshBuilder.shift.y = timeline.getValue("Y Texture Shift");
         meshBuilder.scale.x = timeline.getValue("X Texture Scale");
@@ -1158,6 +1281,7 @@ void testApp::update(){
 		rendererNeedsUpdate = true;
 	}
 
+	
 	if(rendererNeedsUpdate){
 		updateRenderer();
 	}
@@ -1171,8 +1295,9 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::updateRenderer(){
 
-	holeFiller.close(player.getDepthPixels());
-    
+	if(currentDepthFrame != player.getDepthSequence()->getCurrentFrame()){
+		holeFiller.close(player.getDepthPixels());
+    }
 	processDepthFrame();
 	
 	if(renderTriangulation){
@@ -1220,6 +1345,8 @@ void testApp::updateTriangulatedMesh(){
     
     //3 copy them into a 3d mesh
     triangulatedMesh.clear();
+	vector<ofVec3f> correlatedVertices;
+	vector<ofVec2f> correlatedTextureCoords;
     vector<ofVec3f>& trianglePoints = triangulate.triangleMesh.getVertices();
     vector<ofVec2f>& textureCoords = meshBuilder.getMesh().getTexCoords();
     vector<bool> validVertIndeces;
@@ -1233,17 +1360,21 @@ void testApp::updateTriangulatedMesh(){
                 closestTexCoordDistance = texCoordDist;
                 closestTexCoordIndex = j;
             }
+			if(closestTexCoordDistance < 5.0){
+				break;
+			}
         }
         ofVec3f vert = meshBuilder.getMesh().getVertex(closestTexCoordIndex);
-        triangulatedMesh.addVertex(vert);
-        triangulatedMesh.addTexCoord(meshBuilder.getMesh().getTexCoord(closestTexCoordIndex));
+        correlatedVertices.push_back(vert);
+        correlatedTextureCoords.push_back(meshBuilder.getMesh().getTexCoord(closestTexCoordIndex));
         validVertIndeces.push_back(vert.z < meshBuilder.farClip && vert.z > 10);
     }
     
     //copy indices across
-    faceNormals.clear();
-    faceCenters.clear();
+//    faceNormals.clear();
+//    faceCenters.clear();
 	
+	ofIndexType index = 0;
 	map<ofIndexType, vector<int> > vertexIndexToFaceIndex;
     for(int i = 0 ; i < triangulate.triangleMesh.getNumIndices(); i+=3){
         ofIndexType a,b,c;
@@ -1257,9 +1388,9 @@ void testApp::updateTriangulatedMesh(){
         if(!validVertIndeces[c]) continue;
 		
 		//eliminate triangles that are too far away
-        ofVec3f& va = triangulatedMesh.getVertices()[a];
-        ofVec3f& vb = triangulatedMesh.getVertices()[b];
-        ofVec3f& vc = triangulatedMesh.getVertices()[c];
+        ofVec3f& va = correlatedVertices[a];
+        ofVec3f& vb = correlatedVertices[b];
+        ofVec3f& vc = correlatedVertices[c];
 		float maxTriangleEdgeSqr = currentMaxEdgeLength*currentMaxEdgeLength;
         if(va.distanceSquared(vb) > maxTriangleEdgeSqr ||
 		   va.distanceSquared(vc) > maxTriangleEdgeSqr ||
@@ -1267,35 +1398,57 @@ void testApp::updateTriangulatedMesh(){
 		{
 			continue;
 		}
-            		
-        //calculate the face normal
-        triangulatedMesh.addIndex(triangulate.triangleMesh.getIndex(i  ));
-        triangulatedMesh.addIndex(triangulate.triangleMesh.getIndex(i+1));
-        triangulatedMesh.addIndex(triangulate.triangleMesh.getIndex(i+2));
+
+		triangulatedMesh.addVertex(va);
+		triangulatedMesh.addVertex(vb);
+		triangulatedMesh.addVertex(vc);
+
+		triangulatedMesh.addTexCoord(correlatedTextureCoords[a]);
+		triangulatedMesh.addTexCoord(correlatedTextureCoords[b]);
+		triangulatedMesh.addTexCoord(correlatedTextureCoords[c]);
+
+        triangulatedMesh.addIndex(index++);
+        triangulatedMesh.addIndex(index++);
+        triangulatedMesh.addIndex(index++);
+		
+//        triangulatedMesh.addIndex(triangulate.triangleMesh.getIndex(i  ));
+//        triangulatedMesh.addIndex(triangulate.triangleMesh.getIndex(i+1));
+//        triangulatedMesh.addIndex(triangulate.triangleMesh.getIndex(i+2));
 		
         //keep track of which faces belong to which vertices
-    	vertexIndexToFaceIndex[a].push_back(faceNormals.size());
-        vertexIndexToFaceIndex[b].push_back(faceNormals.size());
-        vertexIndexToFaceIndex[c].push_back(faceNormals.size());
-        
-        ofVec3f faceNormal = (vb-va).getCrossed(vc-va).normalized();
-        faceNormals.push_back( faceNormal );
-        faceCenters.push_back( (va + vb + vc) / 3.);
+//    	vertexIndexToFaceIndex[a].push_back(faceNormals.size());
+//        vertexIndexToFaceIndex[b].push_back(faceNormals.size());
+//        vertexIndexToFaceIndex[c].push_back(faceNormals.size());
+		ofVec3f faceNormal;
+        if(cam.invertControls){
+			faceNormal = (vc-va).getCrossed(vb-va).normalized();
+		}
+		else{
+	        faceNormal = (vb-va).getCrossed(vc-va).normalized();
+		}
+        //faceNormals.push_back( faceNormal );
+        //faceCenters.push_back( (va + vb + vc) / 3.);
+		
+		triangulatedMesh.addNormal(faceNormal);
+		triangulatedMesh.addNormal(faceNormal);
+		triangulatedMesh.addNormal(faceNormal);
 		
     }
     
-    //now go through and average the normals into the vertices
-    triangulatedMesh.getNormals().resize(triangulatedMesh.getNumVertices());
-    map<ofIndexType, vector<int> >::iterator it;
-    for(it = vertexIndexToFaceIndex.begin(); it != vertexIndexToFaceIndex.end(); it++) {
-        ofVec3f average(0,0,0);
-		vector<int>& faceNormalIndices = it->second;
-        for(int i = 0 ; i < faceNormalIndices.size(); i++){
-            average += faceNormals[ faceNormalIndices[i] ];
-        }
-        average.normalize();
-        triangulatedMesh.setNormal(it->first, average);
-    }
+	//now go through and add a triangle per normal set
+	
+//    //now go through and average the normals into the vertices
+//    triangulatedMesh.getNormals().resize(triangulatedMesh.getNumVertices());
+//    map<ofIndexType, vector<int> >::iterator it;
+//    for(it = vertexIndexToFaceIndex.begin(); it != vertexIndexToFaceIndex.end(); it++) {
+//        ofVec3f average(0,0,0);
+//		vector<int>& faceNormalIndices = it->second;
+//        for(int i = 0 ; i < faceNormalIndices.size(); i++){
+//            average += faceNormals[ faceNormalIndices[i] ];
+//        }
+//        average.normalize();
+//        triangulatedMesh.setNormal(it->first, average);
+//    }
 }
 
 //--------------------------------------------------------------
@@ -1347,11 +1500,10 @@ void testApp::draw(){
 				ofPopStyle();
 				ofPopMatrix();
 				colorAlignAssistRect.y += colorAlignAssistRect.height; //offset incase DOF is on
-				
 			}
 			
 			if(temporalAlignmentMode){
-				depthSequence.currentDepthImage.draw(depthAlignAssistRect);
+				depthSequence.getCurrentDepthImage().draw(depthAlignAssistRect);
             }
             
 			if(drawDOF && !temporalAlignmentMode){
@@ -1360,17 +1512,20 @@ void testApp::draw(){
             
 			if(currentlyRendering){
 				char filename[512];
-
+				int videoFrame = player.getVideoPlayer()->getCurrentFrame();
+				if(startSequenceAt0){
+					videoFrame -= timeline.getInFrame();
+				}
 				if(renderObjectFiles && renderTriangulation){
-					sprintf(filename, "%s/save_%05d.obj", saveFolder.c_str(), player.getVideoPlayer()->getCurrentFrame());
+					sprintf(filename, "%s/save_%05d.obj", saveFolder.c_str(), videoFrame);
 					ofxObjLoader::save(string(filename),triangulatedMesh);
 //					sprintf(filename, "%s/save_%05d.png", saveFolder.c_str(), player.getVideoPlayer()->getCurrentFrame());
 //					saveImage.setFrompixels(videoPlayer->getPixels)
 				}
 				else {
-					ofFbo& fbo = curbuf == 0 ? fbo1 : fbo2;
-					fbo.getTextureReference().readToPixels(savingImage.getPixelsRef());
-					sprintf(filename, "%s/save_%05d.png", saveFolder.c_str(), player.getVideoPlayer()->getCurrentFrame());
+//					ofFbo& fbo = curbuf == 0 ? fbo1 : fbo2;
+					fbo1.getTextureReference().readToPixels(savingImage.getPixelsRef());
+					sprintf(filename, "%s/save_%05d.png", saveFolder.c_str(), videoFrame);
 					savingImage.saveImage(filename);
 				}
 				
@@ -1391,8 +1546,11 @@ void testApp::draw(){
 					finishRender();
 				}
 				else{
+					cout << "advancing video frame from " << player.getVideoPlayer()->getCurrentFrame() << " with timeline time " << timeline.getCurrentFrame();
 					player.getVideoPlayer()->nextFrame();
+					player.getVideoPlayer()->update();
 					timeline.setCurrentFrame(player.getVideoPlayer()->getCurrentFrame());
+					cout << " to " << player.getVideoPlayer()->getCurrentFrame() << endl;
 				}
 			}
             ofDrawBitmapString("fps: " + ofToString(ofGetFrameRate()), saveCompButton->x + saveCompButton->width + 10, saveCompButton->y + 10);
@@ -1464,6 +1622,7 @@ bool testApp::loadAssetsForScene(SceneButton* sceneButton){
 //	alignmentScrubber.load();
 	renderer.setup(player.getScene().calibrationFolder);
 	meshBuilder.setup(player.getScene().calibrationFolder);
+	cam.setFov(renderer.getRGBCalibration().getDistortedIntrinsics().getFov().y);
 	
 	renderer.setRGBTexture(player.getVideoPlayer());
 	renderer.setDepthImage(player.getDepthPixels());
@@ -1651,6 +1810,7 @@ void testApp::loadDefaults(){
 	renderTriangulation = false;
 	enableLighting = false;
 	renderObjectFiles = false;
+	startSequenceAt0 = false;
 	
     cam.speed = 20;
 	cam.rollSpeed = 0;
@@ -1665,11 +1825,19 @@ void testApp::loadDefaults(){
 
 //--------------------------------------------------------------
 void testApp::resetCameraPosition(){
-    cam.targetNode.setPosition(ofVec3f());
-    cam.targetNode.setOrientation(ofQuaternion());
-    cam.targetXRot = -180;
-    cam.targetYRot = 0;
-    cam.rotationZ = 0;    
+	cam.setPosition(0, 0, 0);
+	ofMatrix4x4 yflip,xflip;
+	ofMatrix4x4 transform;
+	yflip.makeScaleMatrix(ofVec3f(1,-1,1));
+	xflip.makeScaleMatrix(ofVec3f(-1,1,1));
+	transform = yflip * renderer.getDepthToRGBTransform().getInverse() * yflip;
+	//			transform = yflip * renderer.getDepthToRGBTransform().getInverse() * yflip;
+	//			transform = xflip * yflip * renderer.getDepthToRGBTransform()  * yflip * xflip;
+	cam.setTransformMatrix(transform);
+	cam.setFov(renderer.getRGBCalibration().getDistortedIntrinsics().getFov().y);
+	cam.setAnglesFromOrientation();
+	cam.invertControls = true;
+	cam.applyRotation = cam.applyTranslation = false;
 }
 
 //--------------------------------------------------------------
@@ -1711,6 +1879,8 @@ void testApp::saveComposition(){
 	projectsettings.setValue("renderTriangulation", renderTriangulation);
 	projectsettings.setValue("enableLighting", enableLighting);
 	projectsettings.setValue("renderObjFiles", renderObjectFiles);
+	projectsettings.setValue("startSequenceAtZero",startSequenceAt0);
+	
 	projectsettings.saveFile();
 
     
@@ -1874,6 +2044,8 @@ bool testApp::loadComposition(string compositionDirectory){
         drawDOF = projectsettings.getValue("drawDOF",true);
         
         selfOcclude = projectsettings.getValue("selfOcclude",false);
+
+		startSequenceAt0 = projectsettings.getValue("startSequenceAtZero",false);
 
 //        currentXMultiplyShift = projectsettings.getValue("xmult", 0.);
 //        currentYMultiplyShift = projectsettings.getValue("ymult", 0.);

@@ -22,15 +22,6 @@
 #include "ofxGui.h"
 #include "ofxTimeline.h"
 
-enum DepthColoring {
-	COLORING_PSYCHEDELIC_SHADES = 0,
-	COLORING_PSYCHEDELIC,
-	COLORING_RAINBOW,
-	COLORING_CYCLIC_RAINBOW,
-	COLORING_BLUES,
-	COLORING_GREY
-};
-
 class testApp : public ofBaseApp{
   public:
     void setup();
@@ -56,10 +47,10 @@ class testApp : public ofBaseApp{
     ofxPanel gui;
     ofxFloatSlider xshift;
     ofxFloatSlider yshift;
-    ofxFloatSlider xscale;
-    ofxFloatSlider yscale;
+//    ofxFloatSlider xscale;
+//    ofxFloatSlider yscale;
 	
-    ofxIntSlider simplify;
+//    ofxIntSlider simplify;
 	ofxIntSlider maxDepth;
 	ofxIntSlider minDepth;
 	ofxToggle previewMinAndMax;
@@ -79,9 +70,7 @@ class testApp : public ofBaseApp{
 	
 	ofImage webMImage;
 	int depthEncodingMaxDepth;
-	DepthColoring depthColor;
 	ofColor getColorForZDepth(unsigned short z);
-	void createRainbowPallet();
 	
 	string renderPath;
 	bool isRendering;
