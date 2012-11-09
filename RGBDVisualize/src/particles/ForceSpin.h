@@ -16,7 +16,7 @@ public:
 	float power;
     
     ForceSpin() {
-        power = .1;
+        power = .0;
     }
     
     void update(){

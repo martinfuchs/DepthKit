@@ -4,7 +4,8 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 	
-	ofSetFrameRate(60);
+	
+	ofSetFrameRate(30);
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
 	ofBackground(22);
@@ -171,12 +172,15 @@ void testApp::setup(){
 	
     gui.add(temporalAlignmentMode.setup("Temporal Alignment", ofxParameter<bool>()));
 	gui.add(captureFramePair.setup("Set Color-Depth Time", ofxParameter<bool>()));
-    
+    gui.add(continuallyUpdateParticles.setup("continually update particles", ofxParameter<bool>()));
 
 	particleRenderer.meshBuilder = &meshBuilder;
 	meshBuilder.cacheValidVertices = true;
 	particleRenderer.setup(30000);
-//	particleRenderer.birthRate = 1.0;
+	
+	for(int i = 0; i < 50000; i++){
+		//ambience
+	}
 	
     gui.loadFromFile("defaultGuiSettings.xml");
     
@@ -245,6 +249,15 @@ void testApp::populateTimelineElements(){
     timeline.addCurves("DOF Range", currentCompositionDirectory + "DOFRange.xml", ofRange(10,sqrtf(1500.0)) );
     timeline.addCurves("DOF Blur", currentCompositionDirectory + "DOFBlur.xml", ofRange(0,5.0) );
 
+	timeline.addPage("Particles");
+	timeline.addCurves("birth rate", ofRange(0, .4));
+	timeline.addCurves("life span", ofRange(0, 300));
+	timeline.addCurves("life span var", ofRange(0, 100));
+	timeline.addCurves("perlin amp", ofRange(0, 10.0));
+	timeline.addCurves("perlin density", ofRange(0, 1000));
+	timeline.addCurves("gravity amp", ofRange(-10.0, 10.0), 0.0);
+	timeline.addCurves("spin force", ofRange(-1.0, 1.0), 0.0);
+	
 //	timeline.addPage("Triangulation", true);
 //	timeline.addCurves("Max Features", currentCompositionDirectory + "TriangulateMaxFeatures.xml", ofRange(100, 5000));
 //    timeline.addCurves("Feature Quality",currentCompositionDirectory + "TriangulateFeatureQuality.xml", ofRange(.000001, .01));
@@ -290,10 +303,8 @@ void testApp::populateTimelineElements(){
 	timeline.addCurves("Y Texture Shift", currentCompositionDirectory + "YTextureShift.xml", ofRange(-.15, .15), 0.0 );
 	timeline.addCurves("X Texture Scale", currentCompositionDirectory + "XTextureScale.xml", ofRange(.95, 1.05), 1.0 );
 	timeline.addCurves("Y Texture Scale", currentCompositionDirectory + "YTextureScale.xml", ofRange(.95, 1.05), 1.0 );
-
 	
 	timeline.setCurrentPage("Rendering");
-
 }
 
 #pragma mark customization
@@ -411,7 +422,8 @@ void testApp::drawGeometry(){
     }
     
     rendererDirty |= (renderedCameraPos.getPosition() != cam.getPosition() || 
-                      renderedCameraPos.getOrientationQuat() != cam.getOrientationQuat() );
+                      renderedCameraPos.getOrientationQuat() != cam.getOrientationQuat() ) ||
+						continuallyUpdateParticles;
 
     if(rendererDirty){
 
@@ -724,6 +736,17 @@ void testApp::drawGeometry(){
 		
 		cam.begin(renderFboRect);
 		glEnable(GL_DEPTH_TEST);
+		ofPushMatrix();
+		ofSetColor(0, 0, 0, 0);
+		ofTranslate(camTranslateVec);
+		dofRange.begin();
+		dofRange.setUniform1f("blackout", 0.);
+		dofRange.end();
+		dofRange.begin();
+		meshBuilder.draw();
+		dofRange.end();
+		ofPopMatrix();
+		
 		particleRenderer.draw();
 		glDisable(GL_DEPTH_TEST);
 		cam.end();
@@ -1120,8 +1143,10 @@ void testApp::update(){
     cam.rollSpeed = cameraRollSpeed;
     
 	if(startRenderMode){
+		
         startRenderMode = false;
         drawLightPositions = false; //force light pos off
+		continuallyUpdateParticles = false;
 		
 		//timeline.disable();
 		
@@ -1343,6 +1368,10 @@ void testApp::update(){
 		updateRenderer();
 	}
 	
+	if(continuallyUpdateParticles){
+		updateParticleSystem();
+	}
+	
 //	if(!temporalAlignmentMode && !currentlyRendering && lowResPlayer->getSpeed() == 0.0 && videoTrack->getSelectedFrame() != timeline.getCurrentFrame()){
 		//TODO: Fix
 		//videoTrack->selectFrame(timeline.getCurrentFrame());
@@ -1363,7 +1392,11 @@ void testApp::updateRenderer(){
 	else{
 //		renderer.update();
 		meshBuilder.update();
-		particleRenderer.update();
+		meshBuilder.updateCenter();
+		
+		if(!continuallyUpdateParticles){
+			updateParticleSystem();
+		}
 	}
 	processGeometry();
 	
@@ -1372,6 +1405,18 @@ void testApp::updateRenderer(){
 	currentVideoFrame = player.getVideoPlayer()->getCurrentFrame();
 
     rendererDirty = true;
+}
+
+void testApp::updateParticleSystem(){
+	particleRenderer.perlinForce->amplitude = timeline.getValue("perlin amp");
+	particleRenderer.perlinForce->density = timeline.getValue("perlin density");
+	particleRenderer.gravityForce->gravity = timeline.getValue("gravity amp");
+	particleRenderer.birthRate = timeline.getValue("birth rate");
+	particleRenderer.lifeSpan = timeline.getValue("life span");
+	particleRenderer.lifeSpanVariance = timeline.getValue("life span var");
+	particleRenderer.spinForce->center = meshBuilder.center;
+	particleRenderer.spinForce->power = timeline.getValue("spin force");
+	particleRenderer.update();	
 }
 
 void testApp::updateTriangulatedMesh(){

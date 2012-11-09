@@ -131,10 +131,12 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxToggle drawLightPositions;
 	ofxToggle renderObjectFiles;
 	ofxToggle startSequenceAt0;
+	ofxToggle continuallyUpdateParticles;
 	ofLight light1;
 	ofLight light2;
 	ofLight light3;
 	
+	void updateParticleSystem();
 	void updateTriangulatedMesh();
 	ofMesh triangulatedMesh;
 	vector<cv::Point2f> featurePoints;
@@ -237,7 +239,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofNode renderedCameraPos;
     
 	string pathDelim;
-	ofVboMsh ambientParticles;
+	ofVboMesh ambientParticles;
 	
 	ParticleRenderer particleRenderer;
 };
