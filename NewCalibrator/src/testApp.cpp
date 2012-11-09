@@ -9,9 +9,9 @@ void testApp::setup(){
 	currentRenderPreviewIndex = 0;
 	
  	shouldSave = false;
-    externalBoardFinder.setup(10,7,3.2);
-    kinectBoardFinder.setup(10,7,3.2);
-	alignmentExternalFinder.setup(10,7,3.2);
+    externalBoardFinder.setup(10,7,3.05);
+    kinectBoardFinder.setup(10,7,3.05);
+	alignmentExternalFinder.setup(10,7,3.05);
 	
     modifiedImage.allocate(640,480,OF_IMAGE_GRAYSCALE);
     
@@ -204,7 +204,7 @@ void testApp::draw(){
 	ofSetColor(255,100,100);
 	ofRect(generateRect);
 	ofSetColor(255,255,255);
-	helperFont.drawString("Generate Correspondance", generateRect.x+20, generateRect.y+40);
+	helperFont.drawString("Generate Correspondence", generateRect.x+20, generateRect.y+40);
 	ofPopStyle();
 	
 	ofPushStyle();
@@ -237,11 +237,13 @@ void testApp::keyPressed(int key){
 			currentRenderPreviewIndex = (currentRenderPreviewIndex + 1) % alignmentPairs.size();
 			renderer.setDepthImage(alignmentPairs[currentRenderPreviewIndex]->depthPixelsRaw);
 			renderer.setRGBTexture(alignmentPairs[currentRenderPreviewIndex]->colorCheckers);
+			renderer.update();
 		}
 		else if(key == OF_KEY_LEFT){
-			currentRenderPreviewIndex = (currentRenderPreviewIndex*2 - 1) % alignmentPairs.size();
+			currentRenderPreviewIndex = (currentRenderPreviewIndex+alignmentPairs.size() - 1) % alignmentPairs.size();
 			renderer.setDepthImage(alignmentPairs[currentRenderPreviewIndex]->depthPixelsRaw);
 			renderer.setRGBTexture(alignmentPairs[currentRenderPreviewIndex]->colorCheckers);
+			renderer.update();
 		}
 	}
 }
@@ -449,6 +451,7 @@ void testApp::refineDepthCalibration(){
 	for(int y = 0; y < height; y++){
 		for(int x = 0; x < width; x++){
 			ofVec3f objectPoint = imageProvider.getWorldCoordinateAt(x, y);
+//			cout << "object point is " << objectPoint << endl;
 			if(objectPoint.z != 0){
 				depthObjectCollection.push_back(Point3f(objectPoint.x,objectPoint.y,objectPoint.z));
 				depthImageCollection.push_back(Point2f(x,y));
@@ -462,10 +465,10 @@ void testApp::refineDepthCalibration(){
 	depthObjectPoints.push_back(depthObjectCollection);
 	depthImagePoints.push_back(depthImageCollection);
 	
-
 	vector<Mat> depthRotations, depthTranslations; //DUMMY extrinsics
 	Mat depthCameraMatrix = depthCalibrationBase.getDistortedIntrinsics().getCameraMatrix();
 	Mat depthDistCoeffs = depthCalibrationBase.getDistCoeffs();
+	cout << "added depth object points " << depthObjectPoints.size() << " and depth image points " << depthImagePoints.size() << endl;
 	cout << "base matrix is " << depthCameraMatrix << " base distortion is " << depthDistCoeffs << endl;
 	calibrateCamera(depthObjectPoints, depthImagePoints, cv::Size(width,height), depthCameraMatrix, depthDistCoeffs, depthRotations, depthTranslations, CV_CALIB_USE_INTRINSIC_GUESS);
 	

@@ -72,37 +72,6 @@
 		E713D94915E4AD96002E38A4 /* ofxEasingSine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D92D15E4AD96002E38A4 /* ofxEasingSine.cpp */; };
 		E713D94A15E4AD96002E38A4 /* ofxTween.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D92F15E4AD96002E38A4 /* ofxTween.cpp */; };
 		E713D97115E4ADBB002E38A4 /* ofxMSATimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D96715E4ADBB002E38A4 /* ofxMSATimer.cpp */; };
-		E713D9F015E4B544002E38A4 /* FTBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D98D15E4B544002E38A4 /* FTBuffer.cpp */; };
-		E713D9F115E4B544002E38A4 /* FTCharmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D98E15E4B544002E38A4 /* FTCharmap.cpp */; };
-		E713D9F215E4B544002E38A4 /* FTContour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D99115E4B544002E38A4 /* FTContour.cpp */; };
-		E713D9F315E4B544002E38A4 /* FTFace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D99315E4B544002E38A4 /* FTFace.cpp */; };
-		E713D9F415E4B544002E38A4 /* FTBitmapFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D99615E4B544002E38A4 /* FTBitmapFont.cpp */; };
-		E713D9F515E4B544002E38A4 /* FTBufferFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D99815E4B544002E38A4 /* FTBufferFont.cpp */; };
-		E713D9F615E4B544002E38A4 /* FTExtrudeFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D99A15E4B544002E38A4 /* FTExtrudeFont.cpp */; };
-		E713D9F715E4B544002E38A4 /* FTFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D99C15E4B544002E38A4 /* FTFont.cpp */; };
-		E713D9F815E4B544002E38A4 /* FTFontGlue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D99D15E4B544002E38A4 /* FTFontGlue.cpp */; };
-		E713D9F915E4B544002E38A4 /* FTOutlineFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D99F15E4B544002E38A4 /* FTOutlineFont.cpp */; };
-		E713D9FA15E4B544002E38A4 /* FTPixmapFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D9A115E4B544002E38A4 /* FTPixmapFont.cpp */; };
-		E713D9FB15E4B544002E38A4 /* FTPolygonFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D9A315E4B544002E38A4 /* FTPolygonFont.cpp */; };
-		E713D9FC15E4B544002E38A4 /* FTTextureFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D9A515E4B544002E38A4 /* FTTextureFont.cpp */; };
-		E713D9FD15E4B544002E38A4 /* FTBitmapGlyph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D9BF15E4B544002E38A4 /* FTBitmapGlyph.cpp */; };
-		E713D9FE15E4B544002E38A4 /* FTBufferGlyph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D9C115E4B544002E38A4 /* FTBufferGlyph.cpp */; };
-		E713D9FF15E4B544002E38A4 /* FTExtrudeGlyph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D9C315E4B544002E38A4 /* FTExtrudeGlyph.cpp */; };
-		E713DA0015E4B544002E38A4 /* FTGlyph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D9C515E4B544002E38A4 /* FTGlyph.cpp */; };
-		E713DA0115E4B544002E38A4 /* FTGlyphGlue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D9C615E4B544002E38A4 /* FTGlyphGlue.cpp */; };
-		E713DA0215E4B544002E38A4 /* FTOutlineGlyph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D9C815E4B544002E38A4 /* FTOutlineGlyph.cpp */; };
-		E713DA0315E4B544002E38A4 /* FTPixmapGlyph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D9CA15E4B544002E38A4 /* FTPixmapGlyph.cpp */; };
-		E713DA0415E4B544002E38A4 /* FTPolygonGlyph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D9CC15E4B544002E38A4 /* FTPolygonGlyph.cpp */; };
-		E713DA0515E4B544002E38A4 /* FTTextureGlyph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D9CE15E4B544002E38A4 /* FTTextureGlyph.cpp */; };
-		E713DA0615E4B544002E38A4 /* FTGlyphContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D9D015E4B544002E38A4 /* FTGlyphContainer.cpp */; };
-		E713DA0715E4B544002E38A4 /* FTLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D9D415E4B544002E38A4 /* FTLayout.cpp */; };
-		E713DA0815E4B544002E38A4 /* FTLayoutGlue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D9D515E4B544002E38A4 /* FTLayoutGlue.cpp */; };
-		E713DA0915E4B544002E38A4 /* FTSimpleLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D9D715E4B544002E38A4 /* FTSimpleLayout.cpp */; };
-		E713DA0A15E4B544002E38A4 /* FTLibrary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D9D915E4B544002E38A4 /* FTLibrary.cpp */; };
-		E713DA0B15E4B544002E38A4 /* FTPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D9DC15E4B544002E38A4 /* FTPoint.cpp */; };
-		E713DA0C15E4B544002E38A4 /* FTSize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D9DD15E4B544002E38A4 /* FTSize.cpp */; };
-		E713DA0D15E4B544002E38A4 /* FTVectoriser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D9E115E4B544002E38A4 /* FTVectoriser.cpp */; };
-		E713DA0E15E4B544002E38A4 /* ofxFTGLFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713D9E715E4B544002E38A4 /* ofxFTGLFont.cpp */; };
 		E713DA2615E4DE12002E38A4 /* ofxDepthImageProviderOpenNI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713DA2415E4DE12002E38A4 /* ofxDepthImageProviderOpenNI.cpp */; };
 		E713DA2915E4DE26002E38A4 /* ofxDepthImageProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713DA2715E4DE26002E38A4 /* ofxDepthImageProvider.cpp */; };
 		E713DA2C15E4EE91002E38A4 /* ofxDepthImageCompressor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E713DA2A15E4EE91002E38A4 /* ofxDepthImageCompressor.cpp */; };
@@ -121,6 +90,15 @@
 		E75A4E6B15E0F9C300B24C46 /* opencv_ml.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E75A4DEE15E0F9C200B24C46 /* opencv_ml.a */; };
 		E75A4E6C15E0F9C300B24C46 /* opencv_objdetect.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E75A4DEF15E0F9C200B24C46 /* opencv_objdetect.a */; };
 		E75A4E6D15E0F9C300B24C46 /* opencv_video.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E75A4DF015E0F9C200B24C46 /* opencv_video.a */; };
+		E786A2121648915F006FD003 /* ofxDepthImageProviderFreenect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E786A2101648915F006FD003 /* ofxDepthImageProviderFreenect.cpp */; };
+		E786A28F164891AE006FD003 /* cameras.c in Sources */ = {isa = PBXBuildFile; fileRef = E786A232164891AE006FD003 /* cameras.c */; };
+		E786A290164891AE006FD003 /* core.c in Sources */ = {isa = PBXBuildFile; fileRef = E786A235164891AE006FD003 /* core.c */; };
+		E786A291164891AE006FD003 /* freenect.lib in Frameworks */ = {isa = PBXBuildFile; fileRef = E786A23B164891AE006FD003 /* freenect.lib */; };
+		E786A292164891AE006FD003 /* registration.c in Sources */ = {isa = PBXBuildFile; fileRef = E786A241164891AE006FD003 /* registration.c */; };
+		E786A293164891AE006FD003 /* tilt.c in Sources */ = {isa = PBXBuildFile; fileRef = E786A243164891AE006FD003 /* tilt.c */; };
+		E786A294164891AE006FD003 /* usb_libusb10.c in Sources */ = {isa = PBXBuildFile; fileRef = E786A244164891AE006FD003 /* usb_libusb10.c */; };
+		E786A295164891AE006FD003 /* usb-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E786A24C164891AE006FD003 /* usb-1.0.a */; };
+		E786A296164891AE006FD003 /* ofxKinect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E786A285164891AE006FD003 /* ofxKinect.cpp */; };
 		E7DF63D115E352F0003D7804 /* ofxRGBDRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DF63CF15E352F0003D7804 /* ofxRGBDRenderer.cpp */; };
 		E7DF63EF15E35FA1003D7804 /* ofxGameCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DF63E615E35FA1003D7804 /* ofxGameCamera.cpp */; };
 		E7DF63FC15E35FCC003D7804 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DF63F515E35FCC003D7804 /* tinyxml.cpp */; };
@@ -462,94 +440,6 @@
 		E713D93015E4AD96002E38A4 /* ofxTween.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTween.h; sourceTree = "<group>"; };
 		E713D96715E4ADBB002E38A4 /* ofxMSATimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMSATimer.cpp; sourceTree = "<group>"; };
 		E713D96815E4ADBB002E38A4 /* ofxMSATimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMSATimer.h; sourceTree = "<group>"; };
-		E713D98C15E4B544002E38A4 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
-		E713D98D15E4B544002E38A4 /* FTBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTBuffer.cpp; sourceTree = "<group>"; };
-		E713D98E15E4B544002E38A4 /* FTCharmap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTCharmap.cpp; sourceTree = "<group>"; };
-		E713D98F15E4B544002E38A4 /* FTCharmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTCharmap.h; sourceTree = "<group>"; };
-		E713D99015E4B544002E38A4 /* FTCharToGlyphIndexMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTCharToGlyphIndexMap.h; sourceTree = "<group>"; };
-		E713D99115E4B544002E38A4 /* FTContour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTContour.cpp; sourceTree = "<group>"; };
-		E713D99215E4B544002E38A4 /* FTContour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTContour.h; sourceTree = "<group>"; };
-		E713D99315E4B544002E38A4 /* FTFace.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTFace.cpp; sourceTree = "<group>"; };
-		E713D99415E4B544002E38A4 /* FTFace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFace.h; sourceTree = "<group>"; };
-		E713D99615E4B544002E38A4 /* FTBitmapFont.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTBitmapFont.cpp; sourceTree = "<group>"; };
-		E713D99715E4B544002E38A4 /* FTBitmapFontImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTBitmapFontImpl.h; sourceTree = "<group>"; };
-		E713D99815E4B544002E38A4 /* FTBufferFont.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTBufferFont.cpp; sourceTree = "<group>"; };
-		E713D99915E4B544002E38A4 /* FTBufferFontImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTBufferFontImpl.h; sourceTree = "<group>"; };
-		E713D99A15E4B544002E38A4 /* FTExtrudeFont.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTExtrudeFont.cpp; sourceTree = "<group>"; };
-		E713D99B15E4B544002E38A4 /* FTExtrudeFontImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTExtrudeFontImpl.h; sourceTree = "<group>"; };
-		E713D99C15E4B544002E38A4 /* FTFont.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTFont.cpp; sourceTree = "<group>"; };
-		E713D99D15E4B544002E38A4 /* FTFontGlue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTFontGlue.cpp; sourceTree = "<group>"; };
-		E713D99E15E4B544002E38A4 /* FTFontImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFontImpl.h; sourceTree = "<group>"; };
-		E713D99F15E4B544002E38A4 /* FTOutlineFont.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTOutlineFont.cpp; sourceTree = "<group>"; };
-		E713D9A015E4B544002E38A4 /* FTOutlineFontImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTOutlineFontImpl.h; sourceTree = "<group>"; };
-		E713D9A115E4B544002E38A4 /* FTPixmapFont.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTPixmapFont.cpp; sourceTree = "<group>"; };
-		E713D9A215E4B544002E38A4 /* FTPixmapFontImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTPixmapFontImpl.h; sourceTree = "<group>"; };
-		E713D9A315E4B544002E38A4 /* FTPolygonFont.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTPolygonFont.cpp; sourceTree = "<group>"; };
-		E713D9A415E4B544002E38A4 /* FTPolygonFontImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTPolygonFontImpl.h; sourceTree = "<group>"; };
-		E713D9A515E4B544002E38A4 /* FTTextureFont.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTTextureFont.cpp; sourceTree = "<group>"; };
-		E713D9A615E4B544002E38A4 /* FTTextureFontImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTTextureFontImpl.h; sourceTree = "<group>"; };
-		E713D9A815E4B544002E38A4 /* FTBBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTBBox.h; sourceTree = "<group>"; };
-		E713D9A915E4B544002E38A4 /* FTBitmapGlyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTBitmapGlyph.h; sourceTree = "<group>"; };
-		E713D9AA15E4B544002E38A4 /* FTBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTBuffer.h; sourceTree = "<group>"; };
-		E713D9AB15E4B544002E38A4 /* FTBufferFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTBufferFont.h; sourceTree = "<group>"; };
-		E713D9AC15E4B544002E38A4 /* FTBufferGlyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTBufferGlyph.h; sourceTree = "<group>"; };
-		E713D9AD15E4B544002E38A4 /* FTExtrdGlyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTExtrdGlyph.h; sourceTree = "<group>"; };
-		E713D9AE15E4B544002E38A4 /* FTFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTFont.h; sourceTree = "<group>"; };
-		E713D9AF15E4B544002E38A4 /* ftgl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftgl.h; sourceTree = "<group>"; };
-		E713D9B015E4B544002E38A4 /* FTGLBitmapFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTGLBitmapFont.h; sourceTree = "<group>"; };
-		E713D9B115E4B544002E38A4 /* FTGLExtrdFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTGLExtrdFont.h; sourceTree = "<group>"; };
-		E713D9B215E4B544002E38A4 /* FTGLOutlineFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTGLOutlineFont.h; sourceTree = "<group>"; };
-		E713D9B315E4B544002E38A4 /* FTGLPixmapFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTGLPixmapFont.h; sourceTree = "<group>"; };
-		E713D9B415E4B544002E38A4 /* FTGLPolygonFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTGLPolygonFont.h; sourceTree = "<group>"; };
-		E713D9B515E4B544002E38A4 /* FTGLTextureFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTGLTextureFont.h; sourceTree = "<group>"; };
-		E713D9B615E4B544002E38A4 /* FTGlyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTGlyph.h; sourceTree = "<group>"; };
-		E713D9B715E4B544002E38A4 /* FTLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTLayout.h; sourceTree = "<group>"; };
-		E713D9B815E4B544002E38A4 /* FTOutlineGlyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTOutlineGlyph.h; sourceTree = "<group>"; };
-		E713D9B915E4B544002E38A4 /* FTPixmapGlyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTPixmapGlyph.h; sourceTree = "<group>"; };
-		E713D9BA15E4B544002E38A4 /* FTPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTPoint.h; sourceTree = "<group>"; };
-		E713D9BB15E4B544002E38A4 /* FTPolyGlyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTPolyGlyph.h; sourceTree = "<group>"; };
-		E713D9BC15E4B544002E38A4 /* FTSimpleLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTSimpleLayout.h; sourceTree = "<group>"; };
-		E713D9BD15E4B544002E38A4 /* FTTextureGlyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTTextureGlyph.h; sourceTree = "<group>"; };
-		E713D9BF15E4B544002E38A4 /* FTBitmapGlyph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTBitmapGlyph.cpp; sourceTree = "<group>"; };
-		E713D9C015E4B544002E38A4 /* FTBitmapGlyphImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTBitmapGlyphImpl.h; sourceTree = "<group>"; };
-		E713D9C115E4B544002E38A4 /* FTBufferGlyph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTBufferGlyph.cpp; sourceTree = "<group>"; };
-		E713D9C215E4B544002E38A4 /* FTBufferGlyphImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTBufferGlyphImpl.h; sourceTree = "<group>"; };
-		E713D9C315E4B544002E38A4 /* FTExtrudeGlyph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTExtrudeGlyph.cpp; sourceTree = "<group>"; };
-		E713D9C415E4B544002E38A4 /* FTExtrudeGlyphImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTExtrudeGlyphImpl.h; sourceTree = "<group>"; };
-		E713D9C515E4B544002E38A4 /* FTGlyph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTGlyph.cpp; sourceTree = "<group>"; };
-		E713D9C615E4B544002E38A4 /* FTGlyphGlue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTGlyphGlue.cpp; sourceTree = "<group>"; };
-		E713D9C715E4B544002E38A4 /* FTGlyphImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTGlyphImpl.h; sourceTree = "<group>"; };
-		E713D9C815E4B544002E38A4 /* FTOutlineGlyph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTOutlineGlyph.cpp; sourceTree = "<group>"; };
-		E713D9C915E4B544002E38A4 /* FTOutlineGlyphImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTOutlineGlyphImpl.h; sourceTree = "<group>"; };
-		E713D9CA15E4B544002E38A4 /* FTPixmapGlyph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTPixmapGlyph.cpp; sourceTree = "<group>"; };
-		E713D9CB15E4B544002E38A4 /* FTPixmapGlyphImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTPixmapGlyphImpl.h; sourceTree = "<group>"; };
-		E713D9CC15E4B544002E38A4 /* FTPolygonGlyph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTPolygonGlyph.cpp; sourceTree = "<group>"; };
-		E713D9CD15E4B544002E38A4 /* FTPolygonGlyphImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTPolygonGlyphImpl.h; sourceTree = "<group>"; };
-		E713D9CE15E4B544002E38A4 /* FTTextureGlyph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTTextureGlyph.cpp; sourceTree = "<group>"; };
-		E713D9CF15E4B544002E38A4 /* FTTextureGlyphImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTTextureGlyphImpl.h; sourceTree = "<group>"; };
-		E713D9D015E4B544002E38A4 /* FTGlyphContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTGlyphContainer.cpp; sourceTree = "<group>"; };
-		E713D9D115E4B544002E38A4 /* FTGlyphContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTGlyphContainer.h; sourceTree = "<group>"; };
-		E713D9D215E4B544002E38A4 /* FTInternals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTInternals.h; sourceTree = "<group>"; };
-		E713D9D415E4B544002E38A4 /* FTLayout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTLayout.cpp; sourceTree = "<group>"; };
-		E713D9D515E4B544002E38A4 /* FTLayoutGlue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTLayoutGlue.cpp; sourceTree = "<group>"; };
-		E713D9D615E4B544002E38A4 /* FTLayoutImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTLayoutImpl.h; sourceTree = "<group>"; };
-		E713D9D715E4B544002E38A4 /* FTSimpleLayout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTSimpleLayout.cpp; sourceTree = "<group>"; };
-		E713D9D815E4B544002E38A4 /* FTSimpleLayoutImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTSimpleLayoutImpl.h; sourceTree = "<group>"; };
-		E713D9D915E4B544002E38A4 /* FTLibrary.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTLibrary.cpp; sourceTree = "<group>"; };
-		E713D9DA15E4B544002E38A4 /* FTLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTLibrary.h; sourceTree = "<group>"; };
-		E713D9DB15E4B544002E38A4 /* FTList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTList.h; sourceTree = "<group>"; };
-		E713D9DC15E4B544002E38A4 /* FTPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTPoint.cpp; sourceTree = "<group>"; };
-		E713D9DD15E4B544002E38A4 /* FTSize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTSize.cpp; sourceTree = "<group>"; };
-		E713D9DE15E4B544002E38A4 /* FTSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTSize.h; sourceTree = "<group>"; };
-		E713D9DF15E4B544002E38A4 /* FTUnicode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTUnicode.h; sourceTree = "<group>"; };
-		E713D9E015E4B544002E38A4 /* FTVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTVector.h; sourceTree = "<group>"; };
-		E713D9E115E4B544002E38A4 /* FTVectoriser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTVectoriser.cpp; sourceTree = "<group>"; };
-		E713D9E215E4B544002E38A4 /* FTVectoriser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTVectoriser.h; sourceTree = "<group>"; };
-		E713D9E315E4B544002E38A4 /* Makefile.am */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
-		E713D9E415E4B544002E38A4 /* Makefile.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.in; sourceTree = "<group>"; };
-		E713D9E515E4B544002E38A4 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
-		E713D9E715E4B544002E38A4 /* ofxFTGLFont.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxFTGLFont.cpp; sourceTree = "<group>"; };
-		E713D9E815E4B544002E38A4 /* ofxFTGLFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxFTGLFont.h; sourceTree = "<group>"; };
 		E713DA2415E4DE12002E38A4 /* ofxDepthImageProviderOpenNI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDepthImageProviderOpenNI.cpp; sourceTree = "<group>"; };
 		E713DA2515E4DE12002E38A4 /* ofxDepthImageProviderOpenNI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxDepthImageProviderOpenNI.h; sourceTree = "<group>"; };
 		E713DA2715E4DE26002E38A4 /* ofxDepthImageProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDepthImageProvider.cpp; sourceTree = "<group>"; };
@@ -654,6 +544,32 @@
 		E75A4DEE15E0F9C200B24C46 /* opencv_ml.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = opencv_ml.a; sourceTree = "<group>"; };
 		E75A4DEF15E0F9C200B24C46 /* opencv_objdetect.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = opencv_objdetect.a; sourceTree = "<group>"; };
 		E75A4DF015E0F9C200B24C46 /* opencv_video.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = opencv_video.a; sourceTree = "<group>"; };
+		E786A2101648915F006FD003 /* ofxDepthImageProviderFreenect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDepthImageProviderFreenect.cpp; sourceTree = "<group>"; };
+		E786A2111648915F006FD003 /* ofxDepthImageProviderFreenect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxDepthImageProviderFreenect.h; sourceTree = "<group>"; };
+		E786A231164891AE006FD003 /* APACHE20 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = APACHE20; sourceTree = "<group>"; };
+		E786A232164891AE006FD003 /* cameras.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cameras.c; sourceTree = "<group>"; };
+		E786A233164891AE006FD003 /* cameras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cameras.h; sourceTree = "<group>"; };
+		E786A234164891AE006FD003 /* CONTRIB */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CONTRIB; sourceTree = "<group>"; };
+		E786A235164891AE006FD003 /* core.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = core.c; sourceTree = "<group>"; };
+		E786A236164891AE006FD003 /* freenect_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = freenect_internal.h; sourceTree = "<group>"; };
+		E786A237164891AE006FD003 /* GPL2 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GPL2; sourceTree = "<group>"; };
+		E786A23A164891AE006FD003 /* freenect.dll */ = {isa = PBXFileReference; lastKnownFileType = file; path = freenect.dll; sourceTree = "<group>"; };
+		E786A23B164891AE006FD003 /* freenect.lib */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = freenect.lib; sourceTree = "<group>"; };
+		E786A23C164891AE006FD003 /* libfreenect-registration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "libfreenect-registration.h"; sourceTree = "<group>"; };
+		E786A23D164891AE006FD003 /* libfreenect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libfreenect.h; sourceTree = "<group>"; };
+		E786A23E164891AE006FD003 /* libfreenect.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = libfreenect.hpp; sourceTree = "<group>"; };
+		E786A23F164891AE006FD003 /* libfreenect.pc.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = libfreenect.pc.in; sourceTree = "<group>"; };
+		E786A240164891AE006FD003 /* loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = loader.h; sourceTree = "<group>"; };
+		E786A241164891AE006FD003 /* registration.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = registration.c; sourceTree = "<group>"; };
+		E786A242164891AE006FD003 /* registration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = registration.h; sourceTree = "<group>"; };
+		E786A243164891AE006FD003 /* tilt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tilt.c; sourceTree = "<group>"; };
+		E786A244164891AE006FD003 /* usb_libusb10.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = usb_libusb10.c; sourceTree = "<group>"; };
+		E786A245164891AE006FD003 /* usb_libusb10.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = usb_libusb10.h; sourceTree = "<group>"; };
+		E786A24A164891AE006FD003 /* libusb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libusb.h; sourceTree = "<group>"; };
+		E786A24C164891AE006FD003 /* usb-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "usb-1.0.a"; sourceTree = "<group>"; };
+		E786A284164891AE006FD003 /* ofxBase3DVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxBase3DVideo.h; sourceTree = "<group>"; };
+		E786A285164891AE006FD003 /* ofxKinect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxKinect.cpp; sourceTree = "<group>"; };
+		E786A286164891AE006FD003 /* ofxKinect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxKinect.h; sourceTree = "<group>"; };
 		E7DF63CF15E352F0003D7804 /* ofxRGBDRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDRenderer.cpp; sourceTree = "<group>"; };
 		E7DF63D015E352F0003D7804 /* ofxRGBDRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDRenderer.h; sourceTree = "<group>"; };
 		E7DF63E615E35FA1003D7804 /* ofxGameCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxGameCamera.cpp; sourceTree = "<group>"; };
@@ -726,6 +642,8 @@
 				E713CFFF15E4AA53002E38A4 /* libXnVHandGenerator_1_5_2.dylib in Frameworks */,
 				E713D00015E4AA53002E38A4 /* libXnVNITE.jni.dylib in Frameworks */,
 				E713D00115E4AA53002E38A4 /* libXnVNite_1_5_2.dylib in Frameworks */,
+				E786A291164891AE006FD003 /* freenect.lib in Frameworks */,
+				E786A295164891AE006FD003 /* usb-1.0.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -793,7 +711,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
-				E713D97A15E4B544002E38A4 /* ofxFTGL */,
+				E786A213164891AE006FD003 /* ofxKinect */,
 				E713D95115E4ADBB002E38A4 /* ofxMSATimer */,
 				E713D8FE15E4AD96002E38A4 /* ofxTween */,
 				E713D8E315E4AD83002E38A4 /* ofxTimecode */,
@@ -1365,166 +1283,6 @@
 			path = src;
 			sourceTree = "<group>";
 		};
-		E713D97A15E4B544002E38A4 /* ofxFTGL */ = {
-			isa = PBXGroup;
-			children = (
-				E713D98915E4B544002E38A4 /* libs */,
-				E713D9E515E4B544002E38A4 /* README */,
-				E713D9E615E4B544002E38A4 /* src */,
-			);
-			name = ofxFTGL;
-			path = ../../../addons/ofxFTGL;
-			sourceTree = "<group>";
-		};
-		E713D98915E4B544002E38A4 /* libs */ = {
-			isa = PBXGroup;
-			children = (
-				E713D98A15E4B544002E38A4 /* FTGL */,
-			);
-			path = libs;
-			sourceTree = "<group>";
-		};
-		E713D98A15E4B544002E38A4 /* FTGL */ = {
-			isa = PBXGroup;
-			children = (
-				E713D98B15E4B544002E38A4 /* src */,
-			);
-			path = FTGL;
-			sourceTree = "<group>";
-		};
-		E713D98B15E4B544002E38A4 /* src */ = {
-			isa = PBXGroup;
-			children = (
-				E713D98C15E4B544002E38A4 /* config.h */,
-				E713D98D15E4B544002E38A4 /* FTBuffer.cpp */,
-				E713D98E15E4B544002E38A4 /* FTCharmap.cpp */,
-				E713D98F15E4B544002E38A4 /* FTCharmap.h */,
-				E713D99015E4B544002E38A4 /* FTCharToGlyphIndexMap.h */,
-				E713D99115E4B544002E38A4 /* FTContour.cpp */,
-				E713D99215E4B544002E38A4 /* FTContour.h */,
-				E713D99315E4B544002E38A4 /* FTFace.cpp */,
-				E713D99415E4B544002E38A4 /* FTFace.h */,
-				E713D99515E4B544002E38A4 /* FTFont */,
-				E713D9A715E4B544002E38A4 /* FTGL */,
-				E713D9BE15E4B544002E38A4 /* FTGlyph */,
-				E713D9D015E4B544002E38A4 /* FTGlyphContainer.cpp */,
-				E713D9D115E4B544002E38A4 /* FTGlyphContainer.h */,
-				E713D9D215E4B544002E38A4 /* FTInternals.h */,
-				E713D9D315E4B544002E38A4 /* FTLayout */,
-				E713D9D915E4B544002E38A4 /* FTLibrary.cpp */,
-				E713D9DA15E4B544002E38A4 /* FTLibrary.h */,
-				E713D9DB15E4B544002E38A4 /* FTList.h */,
-				E713D9DC15E4B544002E38A4 /* FTPoint.cpp */,
-				E713D9DD15E4B544002E38A4 /* FTSize.cpp */,
-				E713D9DE15E4B544002E38A4 /* FTSize.h */,
-				E713D9DF15E4B544002E38A4 /* FTUnicode.h */,
-				E713D9E015E4B544002E38A4 /* FTVector.h */,
-				E713D9E115E4B544002E38A4 /* FTVectoriser.cpp */,
-				E713D9E215E4B544002E38A4 /* FTVectoriser.h */,
-				E713D9E315E4B544002E38A4 /* Makefile.am */,
-				E713D9E415E4B544002E38A4 /* Makefile.in */,
-			);
-			path = src;
-			sourceTree = "<group>";
-		};
-		E713D99515E4B544002E38A4 /* FTFont */ = {
-			isa = PBXGroup;
-			children = (
-				E713D99615E4B544002E38A4 /* FTBitmapFont.cpp */,
-				E713D99715E4B544002E38A4 /* FTBitmapFontImpl.h */,
-				E713D99815E4B544002E38A4 /* FTBufferFont.cpp */,
-				E713D99915E4B544002E38A4 /* FTBufferFontImpl.h */,
-				E713D99A15E4B544002E38A4 /* FTExtrudeFont.cpp */,
-				E713D99B15E4B544002E38A4 /* FTExtrudeFontImpl.h */,
-				E713D99C15E4B544002E38A4 /* FTFont.cpp */,
-				E713D99D15E4B544002E38A4 /* FTFontGlue.cpp */,
-				E713D99E15E4B544002E38A4 /* FTFontImpl.h */,
-				E713D99F15E4B544002E38A4 /* FTOutlineFont.cpp */,
-				E713D9A015E4B544002E38A4 /* FTOutlineFontImpl.h */,
-				E713D9A115E4B544002E38A4 /* FTPixmapFont.cpp */,
-				E713D9A215E4B544002E38A4 /* FTPixmapFontImpl.h */,
-				E713D9A315E4B544002E38A4 /* FTPolygonFont.cpp */,
-				E713D9A415E4B544002E38A4 /* FTPolygonFontImpl.h */,
-				E713D9A515E4B544002E38A4 /* FTTextureFont.cpp */,
-				E713D9A615E4B544002E38A4 /* FTTextureFontImpl.h */,
-			);
-			path = FTFont;
-			sourceTree = "<group>";
-		};
-		E713D9A715E4B544002E38A4 /* FTGL */ = {
-			isa = PBXGroup;
-			children = (
-				E713D9A815E4B544002E38A4 /* FTBBox.h */,
-				E713D9A915E4B544002E38A4 /* FTBitmapGlyph.h */,
-				E713D9AA15E4B544002E38A4 /* FTBuffer.h */,
-				E713D9AB15E4B544002E38A4 /* FTBufferFont.h */,
-				E713D9AC15E4B544002E38A4 /* FTBufferGlyph.h */,
-				E713D9AD15E4B544002E38A4 /* FTExtrdGlyph.h */,
-				E713D9AE15E4B544002E38A4 /* FTFont.h */,
-				E713D9AF15E4B544002E38A4 /* ftgl.h */,
-				E713D9B015E4B544002E38A4 /* FTGLBitmapFont.h */,
-				E713D9B115E4B544002E38A4 /* FTGLExtrdFont.h */,
-				E713D9B215E4B544002E38A4 /* FTGLOutlineFont.h */,
-				E713D9B315E4B544002E38A4 /* FTGLPixmapFont.h */,
-				E713D9B415E4B544002E38A4 /* FTGLPolygonFont.h */,
-				E713D9B515E4B544002E38A4 /* FTGLTextureFont.h */,
-				E713D9B615E4B544002E38A4 /* FTGlyph.h */,
-				E713D9B715E4B544002E38A4 /* FTLayout.h */,
-				E713D9B815E4B544002E38A4 /* FTOutlineGlyph.h */,
-				E713D9B915E4B544002E38A4 /* FTPixmapGlyph.h */,
-				E713D9BA15E4B544002E38A4 /* FTPoint.h */,
-				E713D9BB15E4B544002E38A4 /* FTPolyGlyph.h */,
-				E713D9BC15E4B544002E38A4 /* FTSimpleLayout.h */,
-				E713D9BD15E4B544002E38A4 /* FTTextureGlyph.h */,
-			);
-			path = FTGL;
-			sourceTree = "<group>";
-		};
-		E713D9BE15E4B544002E38A4 /* FTGlyph */ = {
-			isa = PBXGroup;
-			children = (
-				E713D9BF15E4B544002E38A4 /* FTBitmapGlyph.cpp */,
-				E713D9C015E4B544002E38A4 /* FTBitmapGlyphImpl.h */,
-				E713D9C115E4B544002E38A4 /* FTBufferGlyph.cpp */,
-				E713D9C215E4B544002E38A4 /* FTBufferGlyphImpl.h */,
-				E713D9C315E4B544002E38A4 /* FTExtrudeGlyph.cpp */,
-				E713D9C415E4B544002E38A4 /* FTExtrudeGlyphImpl.h */,
-				E713D9C515E4B544002E38A4 /* FTGlyph.cpp */,
-				E713D9C615E4B544002E38A4 /* FTGlyphGlue.cpp */,
-				E713D9C715E4B544002E38A4 /* FTGlyphImpl.h */,
-				E713D9C815E4B544002E38A4 /* FTOutlineGlyph.cpp */,
-				E713D9C915E4B544002E38A4 /* FTOutlineGlyphImpl.h */,
-				E713D9CA15E4B544002E38A4 /* FTPixmapGlyph.cpp */,
-				E713D9CB15E4B544002E38A4 /* FTPixmapGlyphImpl.h */,
-				E713D9CC15E4B544002E38A4 /* FTPolygonGlyph.cpp */,
-				E713D9CD15E4B544002E38A4 /* FTPolygonGlyphImpl.h */,
-				E713D9CE15E4B544002E38A4 /* FTTextureGlyph.cpp */,
-				E713D9CF15E4B544002E38A4 /* FTTextureGlyphImpl.h */,
-			);
-			path = FTGlyph;
-			sourceTree = "<group>";
-		};
-		E713D9D315E4B544002E38A4 /* FTLayout */ = {
-			isa = PBXGroup;
-			children = (
-				E713D9D415E4B544002E38A4 /* FTLayout.cpp */,
-				E713D9D515E4B544002E38A4 /* FTLayoutGlue.cpp */,
-				E713D9D615E4B544002E38A4 /* FTLayoutImpl.h */,
-				E713D9D715E4B544002E38A4 /* FTSimpleLayout.cpp */,
-				E713D9D815E4B544002E38A4 /* FTSimpleLayoutImpl.h */,
-			);
-			path = FTLayout;
-			sourceTree = "<group>";
-		};
-		E713D9E615E4B544002E38A4 /* src */ = {
-			isa = PBXGroup;
-			children = (
-				E713D9E715E4B544002E38A4 /* ofxFTGLFont.cpp */,
-				E713D9E815E4B544002E38A4 /* ofxFTGLFont.h */,
-			);
-			path = src;
-			sourceTree = "<group>";
-		};
 		E713DA2315E4DE12002E38A4 /* ofxOpenNI */ = {
 			isa = PBXGroup;
 			children = (
@@ -1538,6 +1296,7 @@
 		E71DD6C915E11B3D008A89C2 /* ofxRGBDepth */ = {
 			isa = PBXGroup;
 			children = (
+				E786A20F1648915F006FD003 /* ofxKinect */,
 				E713DA2315E4DE12002E38A4 /* ofxOpenNI */,
 				E71DD6FE15E11B3D008A89C2 /* src */,
 			);
@@ -1816,6 +1575,128 @@
 			path = osx;
 			sourceTree = "<group>";
 		};
+		E786A20F1648915F006FD003 /* ofxKinect */ = {
+			isa = PBXGroup;
+			children = (
+				E786A2101648915F006FD003 /* ofxDepthImageProviderFreenect.cpp */,
+				E786A2111648915F006FD003 /* ofxDepthImageProviderFreenect.h */,
+			);
+			name = ofxKinect;
+			path = couples/ofxKinect;
+			sourceTree = "<group>";
+		};
+		E786A213164891AE006FD003 /* ofxKinect */ = {
+			isa = PBXGroup;
+			children = (
+				E786A22F164891AE006FD003 /* libs */,
+				E786A283164891AE006FD003 /* src */,
+			);
+			name = ofxKinect;
+			path = ../../../addons/ofxKinect;
+			sourceTree = "<group>";
+		};
+		E786A22F164891AE006FD003 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				E786A230164891AE006FD003 /* libfreenect */,
+				E786A246164891AE006FD003 /* libusb */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		E786A230164891AE006FD003 /* libfreenect */ = {
+			isa = PBXGroup;
+			children = (
+				E786A231164891AE006FD003 /* APACHE20 */,
+				E786A232164891AE006FD003 /* cameras.c */,
+				E786A233164891AE006FD003 /* cameras.h */,
+				E786A234164891AE006FD003 /* CONTRIB */,
+				E786A235164891AE006FD003 /* core.c */,
+				E786A236164891AE006FD003 /* freenect_internal.h */,
+				E786A237164891AE006FD003 /* GPL2 */,
+				E786A238164891AE006FD003 /* lib */,
+				E786A23C164891AE006FD003 /* libfreenect-registration.h */,
+				E786A23D164891AE006FD003 /* libfreenect.h */,
+				E786A23E164891AE006FD003 /* libfreenect.hpp */,
+				E786A23F164891AE006FD003 /* libfreenect.pc.in */,
+				E786A240164891AE006FD003 /* loader.h */,
+				E786A241164891AE006FD003 /* registration.c */,
+				E786A242164891AE006FD003 /* registration.h */,
+				E786A243164891AE006FD003 /* tilt.c */,
+				E786A244164891AE006FD003 /* usb_libusb10.c */,
+				E786A245164891AE006FD003 /* usb_libusb10.h */,
+			);
+			path = libfreenect;
+			sourceTree = "<group>";
+		};
+		E786A238164891AE006FD003 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				E786A239164891AE006FD003 /* vs2010 */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		E786A239164891AE006FD003 /* vs2010 */ = {
+			isa = PBXGroup;
+			children = (
+				E786A23A164891AE006FD003 /* freenect.dll */,
+				E786A23B164891AE006FD003 /* freenect.lib */,
+			);
+			path = vs2010;
+			sourceTree = "<group>";
+		};
+		E786A246164891AE006FD003 /* libusb */ = {
+			isa = PBXGroup;
+			children = (
+				E786A247164891AE006FD003 /* osx */,
+			);
+			path = libusb;
+			sourceTree = "<group>";
+		};
+		E786A247164891AE006FD003 /* osx */ = {
+			isa = PBXGroup;
+			children = (
+				E786A248164891AE006FD003 /* include */,
+				E786A24B164891AE006FD003 /* libs */,
+			);
+			path = osx;
+			sourceTree = "<group>";
+		};
+		E786A248164891AE006FD003 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				E786A249164891AE006FD003 /* libusb-1.0 */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		E786A249164891AE006FD003 /* libusb-1.0 */ = {
+			isa = PBXGroup;
+			children = (
+				E786A24A164891AE006FD003 /* libusb.h */,
+			);
+			path = "libusb-1.0";
+			sourceTree = "<group>";
+		};
+		E786A24B164891AE006FD003 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				E786A24C164891AE006FD003 /* usb-1.0.a */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		E786A283164891AE006FD003 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				E786A284164891AE006FD003 /* ofxBase3DVideo.h */,
+				E786A285164891AE006FD003 /* ofxKinect.cpp */,
+				E786A286164891AE006FD003 /* ofxKinect.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		E7DF63D215E35FA0003D7804 /* ofxGameCamera */ = {
 			isa = PBXGroup;
 			children = (
@@ -2009,40 +1890,16 @@
 				E713D94915E4AD96002E38A4 /* ofxEasingSine.cpp in Sources */,
 				E713D94A15E4AD96002E38A4 /* ofxTween.cpp in Sources */,
 				E713D97115E4ADBB002E38A4 /* ofxMSATimer.cpp in Sources */,
-				E713D9F015E4B544002E38A4 /* FTBuffer.cpp in Sources */,
-				E713D9F115E4B544002E38A4 /* FTCharmap.cpp in Sources */,
-				E713D9F215E4B544002E38A4 /* FTContour.cpp in Sources */,
-				E713D9F315E4B544002E38A4 /* FTFace.cpp in Sources */,
-				E713D9F415E4B544002E38A4 /* FTBitmapFont.cpp in Sources */,
-				E713D9F515E4B544002E38A4 /* FTBufferFont.cpp in Sources */,
-				E713D9F615E4B544002E38A4 /* FTExtrudeFont.cpp in Sources */,
-				E713D9F715E4B544002E38A4 /* FTFont.cpp in Sources */,
-				E713D9F815E4B544002E38A4 /* FTFontGlue.cpp in Sources */,
-				E713D9F915E4B544002E38A4 /* FTOutlineFont.cpp in Sources */,
-				E713D9FA15E4B544002E38A4 /* FTPixmapFont.cpp in Sources */,
-				E713D9FB15E4B544002E38A4 /* FTPolygonFont.cpp in Sources */,
-				E713D9FC15E4B544002E38A4 /* FTTextureFont.cpp in Sources */,
-				E713D9FD15E4B544002E38A4 /* FTBitmapGlyph.cpp in Sources */,
-				E713D9FE15E4B544002E38A4 /* FTBufferGlyph.cpp in Sources */,
-				E713D9FF15E4B544002E38A4 /* FTExtrudeGlyph.cpp in Sources */,
-				E713DA0015E4B544002E38A4 /* FTGlyph.cpp in Sources */,
-				E713DA0115E4B544002E38A4 /* FTGlyphGlue.cpp in Sources */,
-				E713DA0215E4B544002E38A4 /* FTOutlineGlyph.cpp in Sources */,
-				E713DA0315E4B544002E38A4 /* FTPixmapGlyph.cpp in Sources */,
-				E713DA0415E4B544002E38A4 /* FTPolygonGlyph.cpp in Sources */,
-				E713DA0515E4B544002E38A4 /* FTTextureGlyph.cpp in Sources */,
-				E713DA0615E4B544002E38A4 /* FTGlyphContainer.cpp in Sources */,
-				E713DA0715E4B544002E38A4 /* FTLayout.cpp in Sources */,
-				E713DA0815E4B544002E38A4 /* FTLayoutGlue.cpp in Sources */,
-				E713DA0915E4B544002E38A4 /* FTSimpleLayout.cpp in Sources */,
-				E713DA0A15E4B544002E38A4 /* FTLibrary.cpp in Sources */,
-				E713DA0B15E4B544002E38A4 /* FTPoint.cpp in Sources */,
-				E713DA0C15E4B544002E38A4 /* FTSize.cpp in Sources */,
-				E713DA0D15E4B544002E38A4 /* FTVectoriser.cpp in Sources */,
-				E713DA0E15E4B544002E38A4 /* ofxFTGLFont.cpp in Sources */,
 				E713DA2615E4DE12002E38A4 /* ofxDepthImageProviderOpenNI.cpp in Sources */,
 				E713DA2915E4DE26002E38A4 /* ofxDepthImageProvider.cpp in Sources */,
 				E713DA2C15E4EE91002E38A4 /* ofxDepthImageCompressor.cpp in Sources */,
+				E786A2121648915F006FD003 /* ofxDepthImageProviderFreenect.cpp in Sources */,
+				E786A28F164891AE006FD003 /* cameras.c in Sources */,
+				E786A290164891AE006FD003 /* core.c in Sources */,
+				E786A292164891AE006FD003 /* registration.c in Sources */,
+				E786A293164891AE006FD003 /* tilt.c in Sources */,
+				E786A294164891AE006FD003 /* usb_libusb10.c in Sources */,
+				E786A296164891AE006FD003 /* ofxKinect.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2106,7 +1963,7 @@
 					"$(HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_17)",
 					"$(HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_18)",
 					"../../../addons/ofxOpenCv/libs/opencv/include/**",
-					"../../../addons/ofxFTGL/libs/**",
+					"../../../addons/ofxKinect/libs/**",
 				);
 				ONLY_ACTIVE_ARCH_PRE_XCODE_3_1 = "$(NATIVE_ARCH)";
 				OTHER_CPLUSPLUSFLAGS = (
@@ -2172,7 +2029,7 @@
 					"$(HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_17)",
 					"$(HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_18)",
 					"../../../addons/ofxOpenCv/libs/opencv/include/**",
-					"../../../addons/ofxFTGL/libs/**",
+					"../../../addons/ofxKinect/libs/**",
 				);
 				ONLY_ACTIVE_ARCH_PRE_XCODE_3_1 = "$(NATIVE_ARCH)";
 				OTHER_CPLUSPLUSFLAGS = (
@@ -2287,6 +2144,8 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_17)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_18)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_19)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_20)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_21)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/android/armeabi\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_10 = "\"$(SRCROOT)/../../../addons/ofxOpenNI/win/copy_to_data_openni_path/lib\"";
@@ -2300,6 +2159,8 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_18 = "\"$(SRCROOT)/../../../addons/ofxTimeline/libs/vorbis/lib/linux\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_19 = "\"$(SRCROOT)/../../../addons/ofxTimeline/libs/vorbis/lib/linux64\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/android/armeabi-v7a\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_20 = "\"$(SRCROOT)/../../../addons/ofxKinect/libs/libfreenect/lib/vs2010\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_21 = "\"$(SRCROOT)/../../../addons/ofxKinect/libs/libusb/osx/libs\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/ios\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/linux\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/linux64\"";
@@ -2412,6 +2273,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_17)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_18)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_19)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_20)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/android/armeabi\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_10 = "\"$(SRCROOT)/../../../addons/ofxOpenNI/win/copy_to_data_openni_path/lib\"";
@@ -2425,6 +2287,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_18 = "\"$(SRCROOT)/../../../addons/ofxTimeline/libs/vorbis/lib/linux\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_19 = "\"$(SRCROOT)/../../../addons/ofxTimeline/libs/vorbis/lib/linux64\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/android/armeabi-v7a\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_20 = "\"$(SRCROOT)/../../../addons/ofxKinect/libs/libusb/osx/libs\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/ios\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/linux\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/linux64\"";

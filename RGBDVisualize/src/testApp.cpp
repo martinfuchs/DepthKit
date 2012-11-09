@@ -68,9 +68,10 @@ void testApp::setup(){
     isSceneLoaded = false;
     renderObjectFiles = false;
 	
+	
     //TODO set through interface
-    int fboWidth  = 1920*2;
-    int fboHeight = 1080*2;
+    int fboWidth  = 1920;
+    int fboHeight = 1080;
 	
 	savingImage.setUseTexture(false);
 	savingImage.allocate(fboWidth,fboHeight, OF_IMAGE_COLOR);
@@ -78,11 +79,9 @@ void testApp::setup(){
 	depthSequence.setAutoUpdate(false);
 	
 	fboRectangle = ofRectangle(250, 100, fboWidth, fboHeight);
-    swapFbo.allocate(fboWidth, fboHeight, GL_RGBA, 2);
-    dofBuffer.allocate(fboWidth, fboHeight, GL_RGB, 2);
-//    dofBlurBuffer.allocate(fboWidth, fboHeight, GL_RGBA);
-    fbo1.allocate(fboWidth, fboHeight, GL_RGBA);
-	//fbo2.allocate(fboWidth, fboHeight, GL_RGBA);
+    swapFbo.allocate(fboWidth, fboHeight, GL_RGB, 4);
+    dofBuffer.allocate(fboWidth, fboHeight, GL_RGB, 4);
+    fbo1.allocate(fboWidth, fboHeight, GL_RGB);
 	curbuf = 0;
     
     fbo1.begin();
@@ -420,6 +419,7 @@ void testApp::drawGeometry(){
 
         renderedCameraPos.setPosition(cam.getPosition());
         renderedCameraPos.setOrientation(cam.getOrientationQuat());
+		
         
 //			light3.enable();
 		light1.setPosition(timeline.getValue("Light 1 X"),
@@ -487,7 +487,8 @@ void testApp::drawGeometry(){
             ofPopStyle();
             
 			if(!currentLockCamera){
-				cameraTrack->getCameraTrack().draw();
+				//cameraTrack->getCameraTrack().draw();
+				cameraTrack->draw3d();
 			}
             
 			if(drawLightPositions){
@@ -930,6 +931,7 @@ void testApp::keyPressed(int key){
     	pauseRender = !pauseRender;
     }
     
+	
 	if(currentlyRendering){
 		if(key == ' '){
 			finishRender();
@@ -949,7 +951,8 @@ void testApp::keyPressed(int key){
 	}
 	
     if(key == 'T'){
-        cameraTrack->getCameraTrack().sample(timeline.getCurrentFrame());
+//        cameraTrack->getCameraTrack().sample(timeline.getCurrentFrame());
+		cameraTrack->addKeyframe();
     }
     
     if(key == 'L'){
@@ -1070,14 +1073,11 @@ void testApp::update(){
         startRenderMode = false;
         drawLightPositions = false; //force light pos off
 		
-		timeline.disable();
+		//timeline.disable();
 		
         fbo1.begin();
         ofClear(0,0,0,0);
         fbo1.end();
-//        fbo2.begin();
-//        ofClear(0,0,0,0);
-//        fbo2.end();
         
 		viewComps = false;
 		saveComposition();
@@ -1087,7 +1087,8 @@ void testApp::update(){
             if(!renderQueue[i].completed){
                 selectedScene = renderQueue[i].sceneButton;
                 currentCompShortName = renderQueue[i].compShortName;
-                loadComposition(renderQueue[i].compositionFolder + "/");
+				cout << "RENDER: loading comp " << renderQueue[i].compositionFolder << endl;
+                loadComposition(renderQueue[i].compositionFolder + pathDelim);
                 foundCompToRender = true;
                 renderQueue[i].completed = true;
                 break;
@@ -1114,11 +1115,14 @@ void testApp::update(){
 			}
 			
             cameraTrack->setTimelineInOutToTrack();
-			player.getVideoPlayer()->setFrame(timeline.getInFrame());
+			//currentRenderFrame = timeline.getInFrame();
+			//player.getVideoPlayer()->setFrame(timeline.getInFrame());
+			player.getVideoPlayer()->setPosition(timeline.getPercentComplete());
+			player.getVideoPlayer()->update();
             currentLockCamera = cameraTrack->lockCameraToTrack = true;
 			
         }
-		cout << "starting render mode" << endl;
+		cout << "starting render mode and current render frame is " << currentRenderFrame << endl;
 	}
     
 	if(!isSceneLoaded) return;
@@ -1161,7 +1165,8 @@ void testApp::update(){
 
 		currentRenderFrame = player.getVideoPlayer()->getCurrentFrame();
 //		cout << "update render setting frame to " << currentRenderFrame << endl;
-		timeline.setCurrentFrame(currentRenderFrame);
+		//timeline.setCurrentFrame(currentRenderFrame);
+		timeline.setPercentComplete(player.getVideoPlayer()->getPosition());
 		//videoTrack->selectFrame(currentRenderFrame);
 		
 //		cout << "would have set hi res frame to " << currentRenderFrame % hiResPlayer->getTotalNumFrames() << endl;
@@ -1182,7 +1187,8 @@ void testApp::update(){
 	else {
 		
 		if(shouldSaveCameraPoint){
-			cameraTrack->getCameraTrack().sample(timeline.getCurrentFrame());
+			//cameraTrack->getCameraTrack().sample(timeline.getCurrentFrame());
+			cameraTrack->addKeyframe();
 		}
 		
 		if(shouldResetCamera){
@@ -1200,9 +1206,9 @@ void testApp::update(){
 		}
 	}
 
-	if(currentlyRendering){
-		cout << "before rgbdplayer update frame " << player.getVideoPlayer()->getCurrentFrame() << endl;
-	}
+//	if(currentlyRendering){
+//		cout << "before rgbdplayer update frame " << player.getVideoPlayer()->getCurrentFrame() << endl;
+//	}
 
 	bool rendererNeedsUpdate = false;
 	player.update();
@@ -1479,7 +1485,7 @@ void testApp::draw(){
             colorAlignAssistRect = ofRectangle(fboRectangle.x + fboRectangle.width, fboRectangle.y, fboRectangle.width/3, fboRectangle.height/3);
             //float ratio = colorAlignAssistRect.width / player.getVideoPlayer()->getWidth();
 			ofRectangle depthRect(0,0,640,480);
-            depthAlignAssistRect = colorAlignAssistRect.scaleIntoMe(depthRect);
+            //colorAlignAssistRect.scaleTo(depthRect);
 			depthAlignAssistRect.y = colorAlignAssistRect.getMaxY();
 			depthAlignAssistRect.x = colorAlignAssistRect.getX();
 			
@@ -1546,11 +1552,13 @@ void testApp::draw(){
 					finishRender();
 				}
 				else{
-					cout << "advancing video frame from " << player.getVideoPlayer()->getCurrentFrame() << " with timeline time " << timeline.getCurrentFrame();
+//					cout << "advancing video frame from " << player.getVideoPlayer()->getCurrentFrame() << " with timeline time " << timeline.getCurrentFrame() << " current render frame: " << currentRenderFrame << endl;
 					player.getVideoPlayer()->nextFrame();
+					//player.getVideoPlayer()->setFrame(currentRenderFrame++);
 					player.getVideoPlayer()->update();
-					timeline.setCurrentFrame(player.getVideoPlayer()->getCurrentFrame());
-					cout << " to " << player.getVideoPlayer()->getCurrentFrame() << endl;
+					//timeline.setCurrentFrame(player.getVideoPlayer()->getCurrentFrame());
+					timeline.setPercentComplete(player.getVideoPlayer()->getPosition());
+//					cout << " to " << player.getVideoPlayer()->getCurrentFrame() << endl;
 				}
 			}
             ofDrawBitmapString("fps: " + ofToString(ofGetFrameRate()), saveCompButton->x + saveCompButton->width + 10, saveCompButton->y + 10);
@@ -1634,7 +1642,7 @@ bool testApp::loadAssetsForScene(SceneButton* sceneButton){
 	alignmentScrubber.setPairSequence(player.getVideoDepthAligment());
 	
 	timeline.setTimecontrolTrack(videoTrack);
-	timeline.setFrameRate(videoTrack->getPlayer()->getTotalNumFrames()/videoTrack->getPlayer()->getDuration());
+	timeline.setFrameRate(1.0*videoTrack->getPlayer()->getTotalNumFrames()/videoTrack->getPlayer()->getDuration());
 	timeline.setDurationInFrames(videoTrack->getPlayer()->getTotalNumFrames());
 	
 	
@@ -1688,7 +1696,7 @@ void testApp::populateScenes(){
         delete scenes[i].button;            
     }
     scenes.clear();
-    
+
 	for(int i = 0; i < mediaFolders; i++){
 		
         SceneButton sceneButton;
@@ -1711,7 +1719,8 @@ void testApp::populateScenes(){
         }        
         scenes.push_back( sceneButton );
 	}
-    
+	maxSceneX = compx+250;
+
     if(scenes.size() == 0){
         ofSystemAlertDialog(mediaBinFolder + " hs no valid scenes! Make sure to select the folder containing all of the scenes.");
         mediaBinButton->setLabel("Load MediaBin");
@@ -1733,7 +1742,7 @@ void testApp::populateCompositionsForScene(){
         compositionsDirectory.create();
     }
 
-    int compx = 250;
+    int compx = maxSceneX;
 	int compy = selectedScene->button->y;
     newCompButton->setPosAndSize(compx, compy, 325, 25);
     
@@ -1855,6 +1864,10 @@ void testApp::setButtonColors(ofxMSAInteractiveObjectWithDelegate* btn){
 //--------------------------------------------------------------
 void testApp::saveComposition(){
 	
+	if(loadedScene == NULL){
+		return;
+	}
+	
 	cam.saveCameraPosition();
 	cameraTrack->save();
     
@@ -1883,7 +1896,7 @@ void testApp::saveComposition(){
 	
 	projectsettings.saveFile();
 
-    
+
 	ofxXmlSettings xyshift;
     xyshift.loadFile(loadedScene->scene.xyshiftFile);
 	xyshift.setValue("xshift", currentXMultiplyShift);
@@ -2092,7 +2105,8 @@ bool testApp::loadComposition(string compositionDirectory){
     //    cout << "parings file is " << selectedScene->scene.pairingsFile << " ready? " << alignmentScrubber.ready() << endl;
 	cameraTrack->setup();
     cameraTrack->load();
-	timeline.setCurrentFrame(cameraTrack->getCameraTrack().getFirstFrame());
+	//timeline.setCurrentFrame(cameraTrack->getCameraTrack().getFirstFrame());
+	timeline.setCurrentTimeMillis(cameraTrack->getEarliestTime());
     
     //turn off view comps
 	viewComps = false;
@@ -2138,7 +2152,8 @@ void testApp::populateRenderQueue(){
         renderQueue[i].remove->setup();
         renderQueue[i].remove->setDelegate(this);
         renderQueue[i].remove->setPosAndSize(posx, posy, 225, 25);
-        renderQueue[i].remove->setLabel("[x] " + selectedScene->scene.name + " : " + renderQueue[i].compShortName );
+		vector<string> pathElements = ofSplitString(renderQueue[i].compositionFolder,pathDelim);
+        renderQueue[i].remove->setLabel("[x] " + pathElements[pathElements.size()-3] + " : " + renderQueue[i].compShortName );
         setButtonColors(renderQueue[i].remove);
         renderQueue[i].completed = false;
         

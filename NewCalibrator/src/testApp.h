@@ -5,8 +5,9 @@
 #include "ofxRGBDRenderer.h"
 #include "ofxGameCamera.h"
 
-#include "ofxFTGLFont.h"
-#include "ofxDepthImageProviderOpenNI.h"
+//#include "ofxFTGLFont.h"
+//#include "ofxDepthImageProviderOpenNI.h"
+#include "ofxDepthImageProviderFreenect.h"
 #include "ofxDepthImageCompressor.h"
 
 typedef struct{
@@ -41,7 +42,7 @@ class testApp : public ofBaseApp{
 	void generateCorrespondance();
 	void setupRenderer();
 	
-	ofxFTGLFont helperFont;
+	ofTrueTypeFont helperFont;
 	Calibration depthCalibrationBase;
 	Calibration depthCalibrationRefined;
 	Calibration rgbCalibration;
@@ -60,7 +61,8 @@ class testApp : public ofBaseApp{
 	ofRectangle calibrationPreviewRect;
 	
 	ofxDepthImageCompressor compressor;
-	ofxDepthImageProviderOpenNI imageProvider;
+	//ofxDepthImageProviderOpenNI imageProvider;
+	ofxDepthImageProviderFreenect imageProvider;
 	
 	int currentRenderPreviewIndex;
 	int lastFrame;

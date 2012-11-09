@@ -18,7 +18,6 @@
 #include "ofxGui.h"
 #include "ofxDelaunay.h"
 
-
 typedef struct {
 	ofxRGBDScene scene;
     ofxMSAInteractiveObjectWithDelegate* button;
@@ -149,7 +148,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	float currentFeatureQuality;
 	float currentMinFeatureDistance;
 	float currentMaxEdgeLength;
-	
+	float maxSceneX;
 	//END triangulation stuff
 	
 	
@@ -237,5 +236,5 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofNode renderedCameraPos;
     
 	string pathDelim;
-    
+	    
 };
