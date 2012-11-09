@@ -68,13 +68,12 @@ void testApp::setup(){
     isSceneLoaded = false;
     renderObjectFiles = false;
 	
-	
     //TODO set through interface
     int fboWidth  = 1920;
     int fboHeight = 1080;
 	
 	savingImage.setUseTexture(false);
-	savingImage.allocate(fboWidth,fboHeight, OF_IMAGE_COLOR);
+	savingImage.allocate(fboWidth,fboHeight,OF_IMAGE_COLOR);
 	
 	depthSequence.setAutoUpdate(false);
 	
@@ -87,15 +86,9 @@ void testApp::setup(){
     fbo1.begin();
     ofClear(0,0,0,0);
     fbo1.end();
-//    fbo2.begin();
-//    ofClear(0,0,0,0);
-//    fbo2.end();
     dofBuffer.begin();
     ofClear(0,0,0,0);
     dofBuffer.end();
-//    dofBlurBuffer.begin();
-//    ofClear(0,0,0,0);
-//    dofBlurBuffer.end();
     
     
 	timeline.setup();
@@ -180,6 +173,11 @@ void testApp::setup(){
 	gui.add(captureFramePair.setup("Set Color-Depth Time", ofxParameter<bool>()));
     
 
+	particleRenderer.meshBuilder = &meshBuilder;
+	meshBuilder.cacheValidVertices = true;
+	particleRenderer.setup(30000);
+//	particleRenderer.birthRate = 1.0;
+	
     gui.loadFromFile("defaultGuiSettings.xml");
     
     loadShaders();
@@ -247,24 +245,24 @@ void testApp::populateTimelineElements(){
     timeline.addCurves("DOF Range", currentCompositionDirectory + "DOFRange.xml", ofRange(10,sqrtf(1500.0)) );
     timeline.addCurves("DOF Blur", currentCompositionDirectory + "DOFBlur.xml", ofRange(0,5.0) );
 
-	timeline.addPage("Triangulation", true);
-	timeline.addCurves("Max Features", currentCompositionDirectory + "TriangulateMaxFeatures.xml", ofRange(100, 5000));
-    timeline.addCurves("Feature Quality",currentCompositionDirectory + "TriangulateFeatureQuality.xml", ofRange(.000001, .01));
-    timeline.addCurves("Min Feature Distance", currentCompositionDirectory + "TriangulateMinFeatureDistance.xml", ofRange(.0, .02), .01);
- 	timeline.addCurves("Max Edge Length", currentCompositionDirectory + "TriangulateMaxEdgeLength.xml", ofRange(0, 500), 500);
+//	timeline.addPage("Triangulation", true);
+//	timeline.addCurves("Max Features", currentCompositionDirectory + "TriangulateMaxFeatures.xml", ofRange(100, 5000));
+//    timeline.addCurves("Feature Quality",currentCompositionDirectory + "TriangulateFeatureQuality.xml", ofRange(.000001, .01));
+//    timeline.addCurves("Min Feature Distance", currentCompositionDirectory + "TriangulateMinFeatureDistance.xml", ofRange(.0, .02), .01);
+// 	timeline.addCurves("Max Edge Length", currentCompositionDirectory + "TriangulateMaxEdgeLength.xml", ofRange(0, 500), 500);
 //	timeline.addCurves("Depth Blur", currentCompositionDirectory + "DepthBlur.xml", ofRange(0, 5));
 	
-	timeline.addPage("Lights 1");
-	timeline.addCurves("Light 1 Intensity", currentCompositionDirectory + "Light1Intensity.xml", ofRange(0.0, 1.0));
-	timeline.addCurves("Light 1 X", currentCompositionDirectory + "Light1X.xml", ofRange(-500, 500));
-	timeline.addCurves("Light 1 Y", currentCompositionDirectory + "Light1Y.xml", ofRange(-500, 500));
-	timeline.addCurves("Light 1 Z", currentCompositionDirectory + "Light1Z.xml", ofRange(0, 1000), 500);
-
-	timeline.addPage("Lights 2");
-	timeline.addCurves("Light 2 Intensity", currentCompositionDirectory + "Light2Intensity.xml",ofRange(0,1.0));
-	timeline.addCurves("Light 2 X", currentCompositionDirectory + "Light2X.xml",ofRange(-500, 500), 0);
-	timeline.addCurves("Light 2 Y", currentCompositionDirectory + "Light2X.xml",ofRange(-500, 500), 0);
-	timeline.addCurves("Light 2 Z", currentCompositionDirectory + "Light2X.xml",ofRange(0, 1000), 500);
+//	timeline.addPage("Lights 1");
+//	timeline.addCurves("Light 1 Intensity", currentCompositionDirectory + "Light1Intensity.xml", ofRange(0.0, 1.0));
+//	timeline.addCurves("Light 1 X", currentCompositionDirectory + "Light1X.xml", ofRange(-500, 500));
+//	timeline.addCurves("Light 1 Y", currentCompositionDirectory + "Light1Y.xml", ofRange(-500, 500));
+//	timeline.addCurves("Light 1 Z", currentCompositionDirectory + "Light1Z.xml", ofRange(0, 1000), 500);
+//
+//	timeline.addPage("Lights 2");
+//	timeline.addCurves("Light 2 Intensity", currentCompositionDirectory + "Light2Intensity.xml",ofRange(0,1.0));
+//	timeline.addCurves("Light 2 X", currentCompositionDirectory + "Light2X.xml",ofRange(-500, 500), 0);
+//	timeline.addCurves("Light 2 Y", currentCompositionDirectory + "Light2X.xml",ofRange(-500, 500), 0);
+//	timeline.addCurves("Light 2 Z", currentCompositionDirectory + "Light2X.xml",ofRange(0, 1000), 500);
 
 	/*
     timeline.addPage("Depth Distortion", true);
@@ -420,17 +418,17 @@ void testApp::drawGeometry(){
         renderedCameraPos.setPosition(cam.getPosition());
         renderedCameraPos.setOrientation(cam.getOrientationQuat());
 		
-        
-//			light3.enable();
-		light1.setPosition(timeline.getValue("Light 1 X"),
-						   timeline.getValue("Light 1 Y"),
-						   timeline.getValue("Light 1 Z"));
-		light2.setPosition(timeline.getValue("Light 2 X"),
-						   timeline.getValue("Light 2 Y"),
-						   timeline.getValue("Light 2 Z"));
-		
-		light1.setAttenuation(1./timeline.getValue("Light 1 Intensity"), .0, 0.);
-		light2.setAttenuation(1./timeline.getValue("Light 2 Intensity"), .0, 0.);
+	
+		//LIGHTING DISABLE
+//		light1.setPosition(timeline.getValue("Light 1 X"),
+//						   timeline.getValue("Light 1 Y"),
+//						   timeline.getValue("Light 1 Z"));
+//		light2.setPosition(timeline.getValue("Light 2 X"),
+//						   timeline.getValue("Light 2 Y"),
+//						   timeline.getValue("Light 2 Z"));
+//		
+//		light1.setAttenuation(1./timeline.getValue("Light 1 Intensity"), .0, 0.);
+//		light2.setAttenuation(1./timeline.getValue("Light 2 Intensity"), .0, 0.);
 
 		if(enableLighting){
 //			glShadeModel(GL_FLAT);
@@ -482,7 +480,13 @@ void testApp::drawGeometry(){
 				ofPopMatrix();
 			}
 			else{
-	            renderer.drawMesh();
+//	            renderer.drawMesh();
+				player.getVideoPlayer()->getTextureReference().bind();
+				ofPushMatrix();
+				ofScale(1,-1, 1);
+				meshBuilder.getMesh().draw();
+				ofPopMatrix();
+				player.getVideoPlayer()->getTextureReference().unbind();
 			}
             ofPopStyle();
             
@@ -563,7 +567,13 @@ void testApp::drawGeometry(){
 					ofPopMatrix();
 				}
 				else{
-	                renderer.drawMesh(dofRange);
+	                //renderer.drawMesh(dofRange);
+					dofRange.begin();
+					ofPushMatrix();
+					ofScale(1,-1, 1);
+					meshBuilder.getMesh().draw();
+					ofPopMatrix();
+					dofRange.end();
 				}
                 ofPopMatrix();
             }
@@ -592,7 +602,14 @@ void testApp::drawGeometry(){
 				ofPopMatrix();
 			}
 			else{
-            	renderer.drawWireFrame();
+            	//renderer.drawWireFrame();
+				player.getVideoPlayer()->getTextureReference().bind();
+				ofPushMatrix();
+				ofScale(1,-1, 1);
+				meshBuilder.getMesh().drawWireframe();
+				ofPopMatrix();
+				player.getVideoPlayer()->getTextureReference().unbind();
+
 			}
 						
 			ofPopStyle();
@@ -645,7 +662,10 @@ void testApp::drawGeometry(){
 					ofPopMatrix();
 				}
 				else{
-	                renderer.drawMesh(dofRange);
+//	                renderer.drawMesh(dofRange);
+					dofRange.begin();
+					meshBuilder.draw();
+					dofRange.end();
 				}
                 ofPopMatrix();
             }
@@ -670,7 +690,13 @@ void testApp::drawGeometry(){
 				ofPopMatrix();
 			}
 			else{
-	            renderer.drawPointCloud();
+	            //renderer.drawPointCloud();
+				player.getVideoPlayer()->getTextureReference().bind();
+				ofPushMatrix();
+				ofScale(1,-1, 1);
+				meshBuilder.getMesh().drawVertices();
+				ofPopMatrix();
+				player.getVideoPlayer()->getTextureReference().unbind();
 			}
             ofPopStyle();
             
@@ -692,6 +718,30 @@ void testApp::drawGeometry(){
             fbo1.end();
         }
 
+		//draw particles
+		swapFbo.begin();
+		ofClear(0,0,0,0);
+		
+		cam.begin(renderFboRect);
+		glEnable(GL_DEPTH_TEST);
+		particleRenderer.draw();
+		glDisable(GL_DEPTH_TEST);
+		cam.end();
+		
+		swapFbo.end();
+		
+		fbo1.begin();
+		
+		ofPushStyle();
+		//ofEnableAlphaBlending();
+		ofEnableBlendMode(blendMode);
+		ofSetColor(255);
+		swapFbo.getTextureReference().draw(renderFboRect);
+		ofPopStyle();
+		
+		fbo1.end();
+		//end particles
+		
         if(drawDOF){
             //render DOF
             float dofFocalDistance = timeline.getValue("DOF Distance");
@@ -1278,14 +1328,15 @@ void testApp::update(){
 //		rendererNeedsUpdate = true;
 		rendererDirty = true;
     }
-    
-	if(	currentMaxFeatures != timeline.getValue("Max Features") ||
-	   currentFeatureQuality != timeline.getValue("Feature Quality") ||
-	   currentMinFeatureDistance != timeline.getValue("Min Feature Distance") ||
-	   currentMaxEdgeLength != timeline.getValue("Max Edge Length"))
-	{
-		rendererNeedsUpdate = true;
-	}
+
+    //TRIANGULATION CANCEL
+//	if(	currentMaxFeatures != timeline.getValue("Max Features") ||
+//	   currentFeatureQuality != timeline.getValue("Feature Quality") ||
+//	   currentMinFeatureDistance != timeline.getValue("Min Feature Distance") ||
+//	   currentMaxEdgeLength != timeline.getValue("Max Edge Length"))
+//	{
+//		rendererNeedsUpdate = true;
+//	}
 
 	
 	if(rendererNeedsUpdate){
@@ -1307,10 +1358,12 @@ void testApp::updateRenderer(){
 	processDepthFrame();
 	
 	if(renderTriangulation){
-		updateTriangulatedMesh();
+//		updateTriangulatedMesh();
 	}
 	else{
-		renderer.update();
+//		renderer.update();
+		meshBuilder.update();
+		particleRenderer.update();
 	}
 	processGeometry();
 	

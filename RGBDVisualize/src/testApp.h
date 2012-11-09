@@ -17,6 +17,7 @@
 #include "ofxRGBDPlayer.h"
 #include "ofxGui.h"
 #include "ofxDelaunay.h"
+#include "ParticleRenderer.h"
 
 typedef struct {
 	ofxRGBDScene scene;
@@ -236,5 +237,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofNode renderedCameraPos;
     
 	string pathDelim;
-	    
+	ofVboMsh ambientParticles;
+	
+	ParticleRenderer particleRenderer;
 };
