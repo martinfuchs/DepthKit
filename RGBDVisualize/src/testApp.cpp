@@ -9,7 +9,8 @@ void testApp::setup(){
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
 	ofBackground(22);
-
+	ofxTimeline::removeCocoaMenusFromGlut("RGBDVisualize");
+	
 #ifdef TARGET_WIN32
 	pathDelim = "\\";
 #else
@@ -93,6 +94,7 @@ void testApp::setup(){
     
     
 	timeline.setup();
+	timeline.setMinimalHeaders(true);
 	timeline.getColors().load("defaultColors.xml");
 	timeline.setOffset(ofVec2f(0, ofGetHeight() - 200));
 	timeline.setPageName("Main");
@@ -250,6 +252,7 @@ void testApp::populateTimelineElements(){
     timeline.addCurves("DOF Blur", currentCompositionDirectory + "DOFBlur.xml", ofRange(0,5.0) );
 
 	timeline.addPage("Particles");
+	timeline.addCurves("Particle Alpha");
 	timeline.addCurves("birth rate", ofRange(0, .4));
 	timeline.addCurves("life span", ofRange(0, 300));
 	timeline.addCurves("life span var", ofRange(0, 100));
@@ -400,6 +403,7 @@ void testApp::drawGeometry(){
     float pointAlpha = timeline.getValue("Point Alpha");
     float wireAlpha = timeline.getValue("Wireframe Alpha");
     float meshAlpha = timeline.getValue("Mesh Alpha");
+	float particleAlpha = timeline.getValue("Particle Alpha");
 	
     if(!alignmentScrubber.ready()){
         pointAlpha = 0;
@@ -733,20 +737,17 @@ void testApp::drawGeometry(){
 		//draw particles
 		swapFbo.begin();
 		ofClear(0,0,0,0);
-		
+		ofEnableAlphaBlending();
 		cam.begin(renderFboRect);
 		glEnable(GL_DEPTH_TEST);
-		ofPushMatrix();
 		ofSetColor(0, 0, 0, 0);
-		ofTranslate(camTranslateVec);
+
 		dofRange.begin();
 		dofRange.setUniform1f("blackout", 0.);
-		dofRange.end();
-		dofRange.begin();
 		meshBuilder.draw();
 		dofRange.end();
-		ofPopMatrix();
 		
+		ofSetColor(255);
 		particleRenderer.draw();
 		glDisable(GL_DEPTH_TEST);
 		cam.end();
@@ -758,7 +759,7 @@ void testApp::drawGeometry(){
 		ofPushStyle();
 		//ofEnableAlphaBlending();
 		ofEnableBlendMode(blendMode);
-		ofSetColor(255);
+		ofSetColor(particleAlpha*255);
 		swapFbo.getTextureReference().draw(renderFboRect);
 		ofPopStyle();
 		
@@ -1820,7 +1821,7 @@ void testApp::populateScenes(){
 	maxSceneX = compx+250;
 
     if(scenes.size() == 0){
-        ofSystemAlertDialog(mediaBinFolder + " hs no valid scenes! Make sure to select the folder containing all of the scenes.");
+        ofSystemAlertDialog(mediaBinFolder + " has no valid scenes! Make sure to select the folder containing all of the scenes.");
         mediaBinButton->setLabel("Load MediaBin");
     }
 }

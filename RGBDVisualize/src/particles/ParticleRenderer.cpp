@@ -23,7 +23,7 @@ void ParticleRenderer::setup(int maxParticles){
 	spinForce = new ForceSpin();
 	gravityForce = new ForceGravity();
 	
-	for(int i = 0; i < 10000; i++){
+	for(int i = 0; i < 30000; i++){
 		ParticleGenerator g;
 		g.addForce(perlinForce);
 		g.addForce(spinForce);
@@ -43,7 +43,6 @@ void ParticleRenderer::setup(int maxParticles){
 }
 
 void ParticleRenderer::update(){
-	perlinForce->amplitude = .2;
 //	return;
 	if(meshBuilder == NULL){
 		return;
@@ -84,6 +83,7 @@ void ParticleRenderer::update(){
 			g.lifespan  = lifeSpan;
 			g.lifespanVariance = lifeSpanVariance;
 			g.position =  meshBuilder->getMesh().getVertices()[meshBuilder->validVertIndices[i]];
+			g.texcoord = meshBuilder->getMesh().getTexCoords()[meshBuilder->validVertIndices[i]];
 //			g.position = pos;
 			g.remainingParticles = particlesPerEmitter;
 		}
@@ -123,7 +123,7 @@ void ParticleRenderer::draw(){
 	}
 	else{
 		//glPointSize(masterTimeline.getValue("Min Point Size"));
-		glPointSize(1);
+		glPointSize(2);
 	}
 	
 	//		if(useColors && colorPalette.isAllocated()){
@@ -145,8 +145,9 @@ void ParticleRenderer::draw(){
 	//		glPointSize(4);
 	
 	//		cout << "Drawing " << mesh.getNumVertices() << " Particles " << endl;
+	meshBuilder->currentTexture->getTextureReference().bind();
 	mesh.drawVertices();
-	
+	meshBuilder->currentTexture->getTextureReference().unbind();
 	//		if(useColors && colorPalette.isAllocated()){
 	//			colorPalette.unbind();
 	//		}
@@ -188,6 +189,7 @@ void ParticleRenderer::copyVertsToMesh(){
 //				cout << "flicker max is " << emitters[i].particles[v].flickerMax << endl;
 //			}
 			meshColors[meshIndex] = ofFloatColor(emitters[i].particles[v].color,color);
+			meshTexCoords[meshIndex] = emitters[i].particles[v].texcoord;
 			//            if(useColors){
 			//                meshTexCoords[meshIndex] = emitters[i].particles[v].texcoord;
 			//            }

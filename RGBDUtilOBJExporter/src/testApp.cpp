@@ -136,7 +136,9 @@ void testApp::update(){
     ofRectangle wholeRect = ofRectangle(timeline.getBottomLeft(), ofGetWidth(), ofGetHeight() - timeline.getDrawRect().height - 9*20);
 	if(player.isLoaded()){
 		ofRectangle videoRect = ofRectangle(0,0, player.getVideoPlayer()->getWidth(), player.getVideoPlayer()->getHeight());
-		previewRect = wholeRect.scaleIntoMe(videoRect);
+//		previewRect = wholeRect.scaleIntoMe(videoRect);
+		previewRect = videoRect;
+		previewRect.scaleTo(wholeRect);
 		previewRect.x = gui.getWidth();
 		gui.setPosition(timeline.getBottomLeft());
 		smallVideoPreviewRect = ofRectangle(0,previewRect.getMaxY(), 16*20,9*20);
@@ -198,7 +200,7 @@ void testApp::update(){
 		
 		//save the image to file and update to the next frame
 		char filename[1024];
-		sprintf(filename, "%s/frame_%05d",renderPath.c_str(),videoFrameToRender);
+		sprintf(filename, "%s/frame.%05d",renderPath.c_str(),videoFrameToRender);
 		string pngFileName = string(filename) + ".png";
 		ofImage img;
 		img.setUseTexture(false);
@@ -215,8 +217,8 @@ void testApp::update(){
 			if(meshBuilder.getMesh().getVertex(i).z > 0 && meshBuilder.getMesh().getVertex(i).z <= maxDepth){
 				reindex[i] = vertsAdded++;
 				ofVec2f texCoord;
-				texCoord.x = ofClamp(meshBuilder.getMesh().getTexCoord(i).x /img.getWidth(),0,1.0);
-				texCoord.y = ofClamp(meshBuilder.getMesh().getTexCoord(i).y /img.getHeight(),0,1.0);
+				texCoord.x = 1-ofClamp(meshBuilder.getMesh().getTexCoord(i).x /img.getWidth(),0,1.0);
+				texCoord.y = 1-ofClamp(meshBuilder.getMesh().getTexCoord(i).y /img.getHeight(),0,1.0);
 				toSave.addTexCoord(texCoord);
 				toSave.addVertex(meshBuilder.getMesh().getVertex(i) * objScale);
 			}
