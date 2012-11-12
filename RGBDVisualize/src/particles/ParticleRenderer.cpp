@@ -69,7 +69,7 @@ void ParticleRenderer::update(){
 		particlesPerEmitter = (maxAllowedParticles - totalParticles) / meshBuilder->validVertIndices.size();
 	}
 	
-//	cout << " total particles " << totalParticles <<  " valid verts " << meshBuilder->validVertIndices.size() << " particles per emitter " << particlesPerEmitter << " max particles " << maxAllowedParticles << endl;
+	cout << " total particles " << totalParticles <<  " valid verts " << meshBuilder->validVertIndices.size() << " particles per emitter " << particlesPerEmitter << " max particles " << maxAllowedParticles << endl;
 	
 	//cout << "particles per emitter " << particlesPerEmitter << " max allowd particles " << maxAllowedParticles << endl;
 	//for(int i = 0; i < meshBuilder.getMesh().getVertices().size(); i++){
@@ -101,7 +101,7 @@ void ParticleRenderer::draw(){
 //	meshBuilder.draw();
 	//render dots
 	ofPushStyle();
-	glPushMatrix();
+//	glPushMatrix();
 	glPushAttrib(GL_ENABLE_BIT);
 	
 	//kinect->getNode().transformGL();
@@ -146,7 +146,7 @@ void ParticleRenderer::draw(){
 	
 	//		cout << "Drawing " << mesh.getNumVertices() << " Particles " << endl;
 	meshBuilder->currentTexture->getTextureReference().bind();
-	mesh.drawVertices();
+
 	meshBuilder->currentTexture->getTextureReference().unbind();
 	//		if(useColors && colorPalette.isAllocated()){
 	//			colorPalette.unbind();

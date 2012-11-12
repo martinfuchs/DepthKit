@@ -131,7 +131,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxToggle drawLightPositions;
 	ofxToggle renderObjectFiles;
 	ofxToggle startSequenceAt0;
-	ofxToggle renderParticles;
+	ofxToggle drawParticles;
 	ofxToggle continuallyUpdateParticles;
 	ofxToggle drawScanlines;
 
@@ -139,8 +139,9 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	int currentScanlineMinAlpha;
 	float currentScanlineOpacity;
 	float currentScanlineThickness;
-	int currentScanlineXStep;
-	int currentScanlineYStep;
+	float currentScanlineXStep;
+	float currentScanlineYStep;
+	float currentScanlineQuiver;
 	
 	ofLight light1;
 	ofLight light2;

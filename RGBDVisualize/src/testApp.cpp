@@ -148,7 +148,7 @@ void testApp::setup(){
 	
     gui.add(selfOcclude.setup("Self Occlude", ofxParameter<bool>()));
     gui.add(drawDOF.setup("Draw DOF", ofxParameter<bool>()));
-	gui.add(renderParticles.setup("Draw Particles", ofxParameter<bool>()));
+	gui.add(drawParticles.setup("Draw Particles", ofxParameter<bool>()));
 	
 	gui.add(continuallyUpdateParticles.setup("continually update particles", ofxParameter<bool>()));
 	
@@ -186,11 +186,11 @@ void testApp::setup(){
 
 	particleRenderer.meshBuilder = &meshBuilder;
 	meshBuilder.cacheValidVertices = true;
-	particleRenderer.setup(30000);
+	particleRenderer.setup(100000);
 	
-	for(int i = 0; i < 50000; i++){
+//	for(int i = 0; i < 50000; i++){
 		//ambience
-	}
+//	}
 	
     gui.loadFromFile("defaultGuiSettings.xml");
     
@@ -275,9 +275,10 @@ void testApp::populateTimelineElements(){
 	timeline.addCurves("scanline opacity", ofRange(0, 1.0));
 	timeline.addCurves("scanline thickness", ofRange(0, 4), 1);
 	timeline.addCurves("scanline x step", ofRange(1, 10));
-	timeline.addCurves("scanline y step", ofRange(1, 10));
+	timeline.addCurves("scanline y step", ofRange(.25, 10));
 	timeline.addCurves("scan max threshold", ofRange(0, 255), 255);
 	timeline.addCurves("scan min threshold", ofRange(0, 255), 0);
+	timeline.addCurves("scan quiver", ofRange(0, 1.0), 0);
 	
 //	timeline.addPage("Triangulation", true);
 //	timeline.addCurves("Max Features", currentCompositionDirectory + "TriangulateMaxFeatures.xml", ofRange(100, 5000));
@@ -534,6 +535,10 @@ void testApp::drawGeometry(){
             float pointSize = timeline.getValue("Point Size");
             glPointSize(pointSize*pointSize);			
 			meshBuilder.getMesh().drawVertices();
+		}
+		
+		if(drawParticles){
+			particleRenderer.mesh.drawVertices();
 		}
 		
 		ofPopStyle();
@@ -1398,6 +1403,7 @@ void testApp::update(){
 	   currentScanlineMaxAlpha != timeline.getValue("scan max threshold") ||
 	   currentScanlineMinAlpha != timeline.getValue("scan min threshold") ||
 	   currentScanlineOpacity != timeline.getValue("scanline opacity") ||
+	   currentScanlineQuiver != timeline.getValue("scan quiver") ||
 	   currentScanlineXStep != timeline.getValue("scanline x step") ||
 	   currentScanlineYStep != timeline.getValue("scanline y step"))
 	{
@@ -1426,7 +1432,7 @@ void testApp::update(){
 		currentScanlineOpacity = timeline.getValue("scanline opacity");
 		currentScanlineXStep = timeline.getValue("scanline x step");
 		currentScanlineYStep = timeline.getValue("scanline y step");
-		
+		currentScanlineQuiver = timeline.getValue("scan quiver");
 		holeFiller.enable = fillHoles;
 		currentHoleKernelSize = holeFiller.setKernelSize(currentHoleKernelSize);
 		currentHoleFillIterations = holeFiller.setIterations(currentHoleFillIterations);
@@ -1498,7 +1504,7 @@ void testApp::updateRenderer(){
 
 void testApp::updateParticleSystem(){
 	
-	if(!renderParticles){
+	if(!drawParticles){
 		return;
 	}
 	
@@ -1658,24 +1664,24 @@ void testApp::updateScanlineMesh(){
 //	currentScanlineYStep = timeline.getValue("scanline y step");
 	float curFrame = player.getVideoPlayer()->getCurrentFrame();
 	vector<ofVec3f> sampleVerts;
-	for(int y = 0; y < player.getDepthPixels().getHeight(); y+=currentScanlineYStep){
-		for(int x = 0; x < player.getDepthPixels().getWidth(); x+=currentScanlineXStep){
+	int curRow = 0;
+	for(float y = 0; y < player.getDepthPixels().getHeight(); y+=currentScanlineYStep){
+		for(float x = 0; x < player.getDepthPixels().getWidth(); x+=currentScanlineXStep){
 			int xPos = x;
-			if(y%2 == 1){
+			if(curRow%2 == 1){
 				xPos = player.getDepthPixels().getWidth()-x-1;
 			}
 			float yPos = y;
-//			if(x%2 == 0){
-//				yPos = y;
-//			}
 			ofVec3f pos = meshBuilder.getWorldPoint(xPos,yPos);
 
 			if(pos.z > 0){
-				scanlineMesh.addVertex(pos + ofVec3f(0,0, -ofNoise(1.0*xPos/(mouseY+1),
-																  1.0*yPos/(mouseY+1),
-																  curFrame/(mouseY+1)) * mouseX ));
+				scanlineMesh.addVertex(pos);
+//				scanlineMesh.addVertex(pos + ofVec3f(0,0, -ofNoise(1.0*xPos/(mouseY+1),
+//																  1.0*yPos/(mouseY+1),
+//																  curFrame/(mouseY+1)) * mouseX ));
 			}
 		}
+		curRow++;
 	}
 	
 	//generate all tex coords
@@ -2129,6 +2135,7 @@ void testApp::saveComposition(){
     projectsettings.setValue("selfOcclude",selfOcclude);
 	projectsettings.setValue("drawDOF",drawDOF);
 	projectsettings.setValue("drawScanlines",drawScanlines);
+	projectsettings.setValue("drawParticles",drawParticles);
 	
 	projectsettings.setValue("cameraSpeed", cam.speed);
 	projectsettings.setValue("cameraRollSpeed", cam.rollSpeed);
@@ -2307,7 +2314,8 @@ bool testApp::loadComposition(string compositionDirectory){
         
         selfOcclude = projectsettings.getValue("selfOcclude",false);
 		drawScanlines = projectsettings.getValue("drawScanlines",false);
-
+		drawParticles = projectsettings.getValue("drawParticles", false);
+		
 		startSequenceAt0 = projectsettings.getValue("startSequenceAtZero",false);
 
 //        currentXMultiplyShift = projectsettings.getValue("xmult", 0.);
