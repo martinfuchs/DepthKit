@@ -131,7 +131,17 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxToggle drawLightPositions;
 	ofxToggle renderObjectFiles;
 	ofxToggle startSequenceAt0;
+	ofxToggle renderParticles;
 	ofxToggle continuallyUpdateParticles;
+	ofxToggle drawScanlines;
+
+	int currentScanlineMaxAlpha;
+	int currentScanlineMinAlpha;
+	float currentScanlineOpacity;
+	float currentScanlineThickness;
+	int currentScanlineXStep;
+	int currentScanlineYStep;
+	
 	ofLight light1;
 	ofLight light2;
 	ofLight light3;

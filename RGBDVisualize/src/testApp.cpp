@@ -141,29 +141,38 @@ void testApp::setup(){
     gui.add(drawPointcloud.setup("Draw Pointcloud",ofxParameter<bool>()));
     gui.add(drawWireframe.setup("Draw Wireframe",ofxParameter<bool>()));
     gui.add(drawMesh.setup("Draw Mesh",ofxParameter<bool>()));
+	gui.add(drawScanlines.setup("Draw Scanlines", ofxParameter<bool>()));
+	
 //    gui.add(drawDepthDistortion.setup("Depth Distortion", ofxParameter<bool>()));
 //    gui.add(drawGeometryDistortion.setup("Geometry Distortion", ofxParameter<bool>()));
 	
     gui.add(selfOcclude.setup("Self Occlude", ofxParameter<bool>()));
     gui.add(drawDOF.setup("Draw DOF", ofxParameter<bool>()));
+	gui.add(renderParticles.setup("Draw Particles", ofxParameter<bool>()));
+	
+	gui.add(continuallyUpdateParticles.setup("continually update particles", ofxParameter<bool>()));
+	
+	
     gui.add(shouldResetCamera.setup("Reset Camera", ofxParameter<bool>()));
-    gui.add(drawVideoOnion.setup("Draw Onionskin", ofxParameter<bool>()));
-	gui.add(flipVideoOnion.setup("Flip Onionskin", ofxParameter<bool>()));
+//    gui.add(drawVideoOnion.setup("Draw Onionskin", ofxParameter<bool>()));
+//	gui.add(flipVideoOnion.setup("Flip Onionskin", ofxParameter<bool>()));
 	
     gui.add(cameraSpeed.setup("Camera Speed", ofxParameter<float>(), 0, 40));
     gui.add(cameraRollSpeed.setup("Cam Roll Speed", ofxParameter<float>(), .0, 4));
     gui.add(shouldSaveCameraPoint.setup("Set Camera Point", ofxParameter<bool>()));
     gui.add(currentLockCamera.setup("Lock to Track", ofxParameter<bool>()));
     
-	gui.add(renderTriangulation.setup("render triangulation", ofxParameter<bool>()));
-	gui.add(enableLighting.setup("enable lighting", ofxParameter<bool>()));
+//	gui.add(renderTriangulation.setup("render triangulation", ofxParameter<bool>()));
+//	gui.add(enableLighting.setup("enable lighting", ofxParameter<bool>()));
 	gui.add(drawLightPositions.setup("draw light debug", ofxParameter<bool>()));
     gui.add(currentMirror.setup("Mirror", ofxParameter<bool>()));
-    gui.add(undistortImages.setup("Undistort", ofxParameter<bool>()));
+//    gui.add(undistortImages.setup("Undistort", ofxParameter<bool>()));
 //    gui.add(currentXMultiplyShift.setup("X Shift", ofxParameter<float>(), -.15, .15));
 //    gui.add(currentYMultiplyShift.setup("Y Shift", ofxParameter<float>(), -.15, .15));
 //    gui.add(currentXScale.setup("X Scale", ofxParameter<float>(), .90, 1.10));
 //    gui.add(currentYScale.setup("Y Scale", ofxParameter<float>(), .90, 1.10));
+
+
 
     gui.add(fillHoles.setup("Fill Holes", ofxParameter<bool>()));
     gui.add(currentHoleKernelSize.setup("Hole Kernel Size", ofxParameter<int>(), 1, 10));
@@ -174,7 +183,6 @@ void testApp::setup(){
 	
     gui.add(temporalAlignmentMode.setup("Temporal Alignment", ofxParameter<bool>()));
 	gui.add(captureFramePair.setup("Set Color-Depth Time", ofxParameter<bool>()));
-    gui.add(continuallyUpdateParticles.setup("continually update particles", ofxParameter<bool>()));
 
 	particleRenderer.meshBuilder = &meshBuilder;
 	meshBuilder.cacheValidVertices = true;
@@ -265,10 +273,11 @@ void testApp::populateTimelineElements(){
 	
 	timeline.addPage("Scanlines");
 	timeline.addCurves("scanline opacity", ofRange(0, 1.0));
+	timeline.addCurves("scanline thickness", ofRange(0, 4), 1);
 	timeline.addCurves("scanline x step", ofRange(1, 10));
 	timeline.addCurves("scanline y step", ofRange(1, 10));
-	timeline.addCurves("scan min threshold", ofRange(0, 255), 0);
 	timeline.addCurves("scan max threshold", ofRange(0, 255), 255);
+	timeline.addCurves("scan min threshold", ofRange(0, 255), 0);
 	
 //	timeline.addPage("Triangulation", true);
 //	timeline.addCurves("Max Features", currentCompositionDirectory + "TriangulateMaxFeatures.xml", ofRange(100, 5000));
@@ -466,11 +475,6 @@ void testApp::drawGeometry(){
 		}
 		
         ofBlendMode blendMode = OF_BLENDMODE_SCREEN;
-//        fbo1.begin();
-//		ofClear(0,0,0,0);
-//		fbo1.end();
-		
-		
 		//BEGIN NEW STYLE
 		fbo1.begin();
 		ofClear(0,0,0,0);
@@ -481,26 +485,40 @@ void testApp::drawGeometry(){
 		glEnable(GL_POINT_SMOOTH);
 		
 		cam.begin(renderFboRect);
-		ofEnableBlendMode(blendMode);
 		player.getVideoPlayer()->getTextureReference().bind();
 		
 		ofPushMatrix();
 		ofPushStyle();
 		ofScale(-1,-1, 1);
+		ofEnableAlphaBlending();
 		
 		if(selfOcclude){
 			ofTranslate(0, 0, 1);
 			ofSetColor(0);
+			dofRange.begin();
+			dofRange.setUniform1f("blackout", 0.);
 			meshBuilder.getMesh().draw();
+			dofRange.end();			
 			ofTranslate(0, 0, -1);
 		}
 		
-		if(drawMesh && meshAlpha > 0){
+		if(drawMesh){
 			ofTranslate(0,0,-.5);
 			ofSetColor(255*meshAlpha);
 			meshBuilder.getMesh().draw();
 		}
 		
+		if(drawScanlines){
+			ofTranslate(0,0,-3);
+			float scanlineThickness = timeline.getValue("scanline thickness");
+			ofSetLineWidth(scanlineThickness);
+			ofEnableBlendMode(OF_BLENDMODE_SUBTRACT);
+			scanlineMesh.setMode(OF_PRIMITIVE_LINE_STRIP);
+			scanlineMesh.draw();
+		}
+		
+		ofEnableBlendMode(blendMode);
+
 		if(drawWireframe && wireAlpha > 0){
 			ofTranslate(0,0,-.5);
 			ofSetColor(255*wireAlpha);
@@ -508,8 +526,8 @@ void testApp::drawGeometry(){
             thickness *= thickness;
 			ofSetLineWidth(thickness);
 			meshBuilder.getMesh().drawWireframe();
-				
 		}
+		
 		if(drawPointcloud && pointAlpha > 0){
 			ofTranslate(0,0,-.5);
 			ofSetColor(255*pointAlpha);
@@ -1357,17 +1375,31 @@ void testApp::update(){
 		rendererNeedsUpdate = true;
     }
 
+//	float lineAlpha = timeline.getValue("scanline opacity");
+//	int xStep = timeline.getValue("scanline x step");
+//	int yStep = timeline.getValue("scanline y step");
+//	float minAlpha = timeline.getValue("scan min threshold");
+//	float maxAlpha = timeline.getValue("scan max threshold");
+
 	float currentFarClip = powf(timeline.getValue("Z Threshold"), 2.0);
 	if(timeline.getValue("X Texture Shift") != renderer.xshift ||
 	   timeline.getValue("Y Texture Shift") != renderer.yshift ||
        timeline.getValue("X Texture Scale") != renderer.xscale ||
        timeline.getValue("Y Texture Scale") != renderer.yscale ||
+	   
 	   currentMirror != renderer.mirror ||
+	   
 	   fillHoles != holeFiller.enable ||
 	   currentHoleKernelSize != holeFiller.getKernelSize() ||
        currentHoleFillIterations != holeFiller.getIterations()||
        undistortImages == renderer.forceUndistortOff ||
-	   currentFarClip != renderer.farClip)
+	   currentFarClip != renderer.farClip ||
+	   
+	   currentScanlineMaxAlpha != timeline.getValue("scan max threshold") ||
+	   currentScanlineMinAlpha != timeline.getValue("scan min threshold") ||
+	   currentScanlineOpacity != timeline.getValue("scanline opacity") ||
+	   currentScanlineXStep != timeline.getValue("scanline x step") ||
+	   currentScanlineYStep != timeline.getValue("scanline y step"))
 	{
 
 		meshBuilder.farClip = powf(timeline.getValue("Z Threshold"), 2.0);
@@ -1388,6 +1420,12 @@ void testApp::update(){
 		meshBuilder.getHoleFiller().enable = false;
 		meshBuilder.undistortDepthImage = undistortImages;
 		meshBuilder.farClip = currentFarClip;
+		
+		currentScanlineMaxAlpha = timeline.getValue("scan max threshold");
+		currentScanlineMinAlpha = timeline.getValue("scan min threshold");
+		currentScanlineOpacity = timeline.getValue("scanline opacity");
+		currentScanlineXStep = timeline.getValue("scanline x step");
+		currentScanlineYStep = timeline.getValue("scanline y step");
 		
 		holeFiller.enable = fillHoles;
 		currentHoleKernelSize = holeFiller.setKernelSize(currentHoleKernelSize);
@@ -1445,7 +1483,9 @@ void testApp::updateRenderer(){
 		if(!continuallyUpdateParticles){
 			updateParticleSystem();
 		}
-		updateScanlineMesh();
+		if(drawScanlines){
+			updateScanlineMesh();
+		}
 	}
 	processGeometry();
 	
@@ -1458,7 +1498,9 @@ void testApp::updateRenderer(){
 
 void testApp::updateParticleSystem(){
 	
-	return;
+	if(!renderParticles){
+		return;
+	}
 	
 	particleRenderer.perlinForce->amplitude = timeline.getValue("perlin amp");
 	particleRenderer.perlinForce->density = timeline.getValue("perlin density");
@@ -1609,15 +1651,15 @@ void testApp::updateTriangulatedMesh(){
 
 void testApp::updateScanlineMesh(){
 	scanlineMesh.clear();	
-	int xStep = timeline.getValue("scanline x step");
-	int yStep = timeline.getValue("scanline y step");
-	float lineAlpha = timeline.getValue("scanline opacity");
-	float minAlpha = timeline.getValue("scan min threshold");
-	float maxAlpha = timeline.getValue("scan max threshold");
-	
+//	currentScanlineMaxAlpha = timeline.getValue("scan max threshold");
+//	currentScanlineMinAlpha = timeline.getValue("scan min threshold");
+//	currentScanlineOpacity = timeline.getValue("scanline opacity");
+//	currentScanlineXStep = timeline.getValue("scanline x step");
+//	currentScanlineYStep = timeline.getValue("scanline y step");
+	float curFrame = player.getVideoPlayer()->getCurrentFrame();
 	vector<ofVec3f> sampleVerts;
-	for(int y = 0; y < player.getDepthPixels().getHeight(); y+=yStep){
-		for(int x = 0; x < player.getDepthPixels().getWidth(); x+=xStep){
+	for(int y = 0; y < player.getDepthPixels().getHeight(); y+=currentScanlineYStep){
+		for(int x = 0; x < player.getDepthPixels().getWidth(); x+=currentScanlineXStep){
 			int xPos = x;
 			if(y%2 == 1){
 				xPos = player.getDepthPixels().getWidth()-x-1;
@@ -1627,8 +1669,11 @@ void testApp::updateScanlineMesh(){
 //				yPos = y;
 //			}
 			ofVec3f pos = meshBuilder.getWorldPoint(xPos,yPos);
+
 			if(pos.z > 0){
-				scanlineMesh.addVertex(pos);
+				scanlineMesh.addVertex(pos + ofVec3f(0,0, -ofNoise(1.0*xPos/(mouseY+1),
+																  1.0*yPos/(mouseY+1),
+																  curFrame/(mouseY+1)) * mouseX ));
 			}
 		}
 	}
@@ -1642,11 +1687,15 @@ void testApp::updateScanlineMesh(){
 			//float sensitivity = ofMap( abs( (vertToLine[i] % 8) - 4 + 1) / 4., 0, 1.0, 0, 1.0 );
 			ofVec2f& texCoord = scanlineMesh.getTexCoords()[i];
 			ofColor imageColor = player.getVideoPlayer()->getPixelsRef().getColor(texCoord.x,texCoord.y);
-			ofColor alpha = player.getVideoPlayer()->getPixelsRef().getColor(texCoord.x+player.getVideoPlayer()->getWidth()/2,texCoord.y);
+			//ofColor alpha = player.getVideoPlayer()->getPixelsRef().getColor(texCoord.x+player.getVideoPlayer()->getWidth()/2,texCoord.y);
+			ofColor alpha = player.getVideoPlayer()->getPixelsRef().getColor(texCoord.x,texCoord.y);
 			
-			float brightness = ofMap(alpha.r, minAlpha, maxAlpha, 1.0, 0.0, true);
+			float brightness = 0;
+			if(currentScanlineMinAlpha != currentScanlineMaxAlpha){
+				brightness = ofMap(alpha.r, currentScanlineMinAlpha, currentScanlineMaxAlpha, 1.0, 0.0, true);
+			}
 			//ofFloatColor wireframeColor = imageColor*brightnessAttenuate;
-			ofFloatColor wireframeColor = ofFloatColor(lineAlpha);
+			ofFloatColor wireframeColor = ofFloatColor(currentScanlineOpacity);
 			wireframeColor.a = brightness;
 			scanlineMesh.addColor(wireframeColor);
 		}
@@ -2075,11 +2124,12 @@ void testApp::saveComposition(){
 	projectsettings.setValue("drawPointcloud", drawPointcloud);
 	projectsettings.setValue("drawWireframe", drawWireframe);
 	projectsettings.setValue("drawMesh", drawMesh);
-    projectsettings.setValue("drawDepthDistortion", drawDepthDistortion);
-	projectsettings.setValue("drawGeometryDistortion", drawGeometryDistortion);
+//    projectsettings.setValue("drawDepthDistortion", drawDepthDistortion);
+//	projectsettings.setValue("drawGeometryDistortion", drawGeometryDistortion);
     projectsettings.setValue("selfOcclude",selfOcclude);
 	projectsettings.setValue("drawDOF",drawDOF);
-
+	projectsettings.setValue("drawScanlines",drawScanlines);
+	
 	projectsettings.setValue("cameraSpeed", cam.speed);
 	projectsettings.setValue("cameraRollSpeed", cam.rollSpeed);
 	
@@ -2256,6 +2306,7 @@ bool testApp::loadComposition(string compositionDirectory){
         drawDOF = projectsettings.getValue("drawDOF",true);
         
         selfOcclude = projectsettings.getValue("selfOcclude",false);
+		drawScanlines = projectsettings.getValue("drawScanlines",false);
 
 		startSequenceAt0 = projectsettings.getValue("startSequenceAtZero",false);
 
