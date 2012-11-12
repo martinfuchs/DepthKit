@@ -19,6 +19,7 @@ class ParticleRenderer {
 	float maxX;
 	
 	ofVboMesh mesh;
+
 	ofShader pointCloudDOF;
 	int totalParticles;
 	int maxAllowedParticles;
@@ -30,7 +31,7 @@ class ParticleRenderer {
 
 	ofFloatColor primaryColor;
 	ofFloatColor secondaryColor;
-	
+	float fade;
 	//global emmitter properties
 	float birthRate;
 	float lifeSpan;

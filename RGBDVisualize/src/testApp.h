@@ -123,7 +123,6 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle temporalAlignmentMode;
     ofxButton captureFramePair;
 
-
 	//Adding triangulation stuff
 	ofxToggle renderTriangulation;
 	ofxDelaunay triangulate;
@@ -134,7 +133,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxToggle drawParticles;
 	ofxToggle continuallyUpdateParticles;
 	ofxToggle drawScanlines;
-
+	ofxToggle wireframeLuminosity;
+	
 	int currentScanlineMaxAlpha;
 	int currentScanlineMinAlpha;
 	float currentScanlineOpacity;
@@ -142,6 +142,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	float currentScanlineXStep;
 	float currentScanlineYStep;
 	float currentScanlineQuiver;
+	float luminosityChannel;
 	
 	ofLight light1;
 	ofLight light2;
@@ -150,6 +151,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	void updateScanlineMesh();
 	void updateParticleSystem();
 	void updateTriangulatedMesh();
+	void updatePerlinLuminosity();
 	ofMesh triangulatedMesh;
 	ofMesh scanlineMesh;
 	

@@ -4,13 +4,14 @@
 ParticleRenderer::ParticleRenderer(){
 	birthRate = .2;
 	lifeSpan = 2;
-	lifeSpanVariance = 5;
+	lifeSpanVariance = 0;
 	meshBuilder = NULL;
 	minX = 0;
 	maxX = 100;
 	primaryColor = secondaryColor = ofFloatColor(1.0,1.0,1.0,1.0);
 	bottomClip = 0;
 	maxFlicker = 1.0;
+	fade = 1.0;
 }
 
 void ParticleRenderer::setup(int maxParticles){
@@ -69,7 +70,7 @@ void ParticleRenderer::update(){
 		particlesPerEmitter = (maxAllowedParticles - totalParticles) / meshBuilder->validVertIndices.size();
 	}
 	
-	cout << " total particles " << totalParticles <<  " valid verts " << meshBuilder->validVertIndices.size() << " particles per emitter " << particlesPerEmitter << " max particles " << maxAllowedParticles << endl;
+//	cout << " total particles " << totalParticles <<  " valid verts " << meshBuilder->validVertIndices.size() << " particles per emitter " << particlesPerEmitter << " max particles " << maxAllowedParticles << endl;
 	
 	//cout << "particles per emitter " << particlesPerEmitter << " max allowd particles " << maxAllowedParticles << endl;
 	//for(int i = 0; i < meshBuilder.getMesh().getVertices().size(); i++){
@@ -182,13 +183,14 @@ void ParticleRenderer::copyVertsToMesh(){
 //			float flicker = (sin(emitters[i].particles[v].flickerPeriod*ofGetElapsedTimef()+emitters[i].particles[v].flickerPeriod)*.5+.5);
 			//flicker *= emitters[i].particles[v].flickerMax;
 			//flicker = 1-flicker;
-			float color = ofMap(emitters[i].particles[v].energy / emitters[i].particles[v].initialEnergy, .4, 0, 1.0, 0,true);
+			float color = ofMap(emitters[i].particles[v].energy / emitters[i].particles[v].initialEnergy, .4, 0, fade, 0,true);
 //			float color = emitters[i].particles[v].flickerMax;
 //			float color = flicker;
 //			if (emitters[i].particles[v].flickerMax > 0) {
 //				cout << "flicker max is " << emitters[i].particles[v].flickerMax << endl;
 //			}
-			meshColors[meshIndex] = ofFloatColor(emitters[i].particles[v].color,color);
+			//meshColors[meshIndex] = ofFloatColor(emitters[i].particles[v].color,color);
+			meshColors[meshIndex] = ofFloatColor(color);
 			meshTexCoords[meshIndex] = emitters[i].particles[v].texcoord;
 			//            if(useColors){
 			//                meshTexCoords[meshIndex] = emitters[i].particles[v].texcoord;

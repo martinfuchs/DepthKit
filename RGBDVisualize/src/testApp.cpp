@@ -32,6 +32,8 @@ void testApp::setup(){
 	cam.minimumY = -120;
 	cameraRollSpeed = cam.rollSpeed = 1;
 
+	luminosityChannel = 0;
+	
 	renderingMesh = false;
 	hasRunRendererOnce = false;
 	
@@ -149,8 +151,8 @@ void testApp::setup(){
     gui.add(selfOcclude.setup("Self Occlude", ofxParameter<bool>()));
     gui.add(drawDOF.setup("Draw DOF", ofxParameter<bool>()));
 	gui.add(drawParticles.setup("Draw Particles", ofxParameter<bool>()));
-	
-	gui.add(continuallyUpdateParticles.setup("continually update particles", ofxParameter<bool>()));
+	gui.add(wireframeLuminosity.setup("Draw WireLumen", ofxParameter<bool>()));
+	gui.add(continuallyUpdateParticles.setup("always update particles", ofxParameter<bool>()));
 	
 	
     gui.add(shouldResetCamera.setup("Reset Camera", ofxParameter<bool>()));
@@ -164,15 +166,13 @@ void testApp::setup(){
     
 //	gui.add(renderTriangulation.setup("render triangulation", ofxParameter<bool>()));
 //	gui.add(enableLighting.setup("enable lighting", ofxParameter<bool>()));
-	gui.add(drawLightPositions.setup("draw light debug", ofxParameter<bool>()));
+//	gui.add(drawLightPositions.setup("draw light debug", ofxParameter<bool>()));
     gui.add(currentMirror.setup("Mirror", ofxParameter<bool>()));
 //    gui.add(undistortImages.setup("Undistort", ofxParameter<bool>()));
 //    gui.add(currentXMultiplyShift.setup("X Shift", ofxParameter<float>(), -.15, .15));
 //    gui.add(currentYMultiplyShift.setup("Y Shift", ofxParameter<float>(), -.15, .15));
 //    gui.add(currentXScale.setup("X Scale", ofxParameter<float>(), .90, 1.10));
 //    gui.add(currentYScale.setup("Y Scale", ofxParameter<float>(), .90, 1.10));
-
-
 
     gui.add(fillHoles.setup("Fill Holes", ofxParameter<bool>()));
     gui.add(currentHoleKernelSize.setup("Hole Kernel Size", ofxParameter<int>(), 1, 10));
@@ -186,6 +186,8 @@ void testApp::setup(){
 
 	particleRenderer.meshBuilder = &meshBuilder;
 	meshBuilder.cacheValidVertices = true;
+	meshBuilder.addColors = true;
+	
 	particleRenderer.setup(100000);
 	
 //	for(int i = 0; i < 50000; i++){
@@ -236,7 +238,6 @@ void testApp::populateTimelineElements(){
 	timeline.addTrack("Camera", cameraTrack);
 	videoTrack = new ofxTLVideoTrack();
 	timeline.addTrack("Video", videoTrack);
-	//timeline.addCurves("FOV", currentCompositionDirectory + "fov.xml", ofRange(20, 80));
 	
     //rendering
     timeline.addPage("Geometry", true);
@@ -260,16 +261,20 @@ void testApp::populateTimelineElements(){
     timeline.addCurves("DOF Blur", currentCompositionDirectory + "DOFBlur.xml", ofRange(0,5.0) );
 
 	timeline.addPage("Particles");
-	timeline.addCurves("Particle Alpha");
+	timeline.addCurves("particle fade", ofRange(0, 1.0));
+	timeline.addCurves("particle size", ofRange(0, 5));
 	timeline.addCurves("birth rate", ofRange(0, .4));
 	timeline.addCurves("life span", ofRange(0, 300));
-	timeline.addCurves("life span var", ofRange(0, 100));
+	timeline.addCurves("life span var", ofRange(0, 1.0));
 	
 	timeline.addPage("Particle Forces");
-	timeline.addCurves("perlin amp", ofRange(0, 10.0));
+	timeline.addCurves("perlin amp", ofRange(0, 1));
+	timeline.addCurves("perlin speed", ofRange(0,10));
 	timeline.addCurves("perlin density", ofRange(0, 1000));
-	timeline.addCurves("gravity amp", ofRange(-10.0, 10.0), 0.0);
-	timeline.addCurves("spin force", ofRange(-1.0, 1.0), 0.0);
+	timeline.addCurves("gravity amp", ofRange(-.5, .5), 0.0);
+	timeline.addCurves("spin force", ofRange(-.5, .5), 0.0);
+	timeline.addCurves("explode force", ofRange(0, 20), 0.0);
+	timeline.addCurves("explode var", ofRange(0, 1.));
 	
 	timeline.addPage("Scanlines");
 	timeline.addCurves("scanline opacity", ofRange(0, 1.0));
@@ -279,6 +284,14 @@ void testApp::populateTimelineElements(){
 	timeline.addCurves("scan max threshold", ofRange(0, 255), 255);
 	timeline.addCurves("scan min threshold", ofRange(0, 255), 0);
 	timeline.addCurves("scan quiver", ofRange(0, 1.0), 0);
+	
+    timeline.addPage("Wireframe Flicker");
+    timeline.addCurves("Wireframe Perlin Density", "wireframePerlinDensity.xml", ofRange(10, 3000.0), 0.0);
+    timeline.addCurves("Wireframe Perlin Speed", "wireframePerlinSpeed.xml", ofRange(0, .2), 0.0);
+	timeline.addCurves("Wireframe Lumin Min", "wireframeLuminMin.xml", ofRange(0, .5), 0.0);
+	timeline.addCurves("Wireframe Lumin Mid", "wireframeLuminMid.xml", ofRange(0, 1.0), .5);
+    timeline.addCurves("Wireframe Lumin Contrast", "wireframeLuminContrast.xml", ofRange(0, 10.0), 1.0);
+    timeline.addCurves("Wireframe Lumin Exponent", "wireframeLuminExponent.xml", ofRange(1.0, 5.0), 0.0);
 	
 //	timeline.addPage("Triangulation", true);
 //	timeline.addCurves("Max Features", currentCompositionDirectory + "TriangulateMaxFeatures.xml", ofRange(100, 5000));
@@ -422,7 +435,7 @@ void testApp::drawGeometry(){
     float pointAlpha = timeline.getValue("Point Alpha");
     float wireAlpha = timeline.getValue("Wireframe Alpha");
     float meshAlpha = timeline.getValue("Mesh Alpha");
-	float particleAlpha = timeline.getValue("Particle Alpha");
+
 	
     if(!alignmentScrubber.ready()){
         pointAlpha = 0;
@@ -492,21 +505,23 @@ void testApp::drawGeometry(){
 		ofPushStyle();
 		ofScale(-1,-1, 1);
 		ofEnableAlphaBlending();
-		
+
+		bool usedDepth = false;
 		if(selfOcclude){
 			ofTranslate(0, 0, 1);
-			ofSetColor(0);
 			dofRange.begin();
 			dofRange.setUniform1f("blackout", 0.);
 			meshBuilder.getMesh().draw();
 			dofRange.end();			
 			ofTranslate(0, 0, -1);
+			usedDepth = true;
 		}
 		
-		if(drawMesh){
-			ofTranslate(0,0,-.5);
+		ofTranslate(0,0,-.5);
+		if(drawMesh && meshAlpha > 0){
 			ofSetColor(255*meshAlpha);
 			meshBuilder.getMesh().draw();
+			usedDepth = true;
 		}
 		
 		if(drawScanlines){
@@ -529,21 +544,41 @@ void testApp::drawGeometry(){
 			meshBuilder.getMesh().drawWireframe();
 		}
 		
+		if(!usedDepth){
+			glDisable(GL_DEPTH_TEST);
+		}
+		
 		if(drawPointcloud && pointAlpha > 0){
 			ofTranslate(0,0,-.5);
 			ofSetColor(255*pointAlpha);
+			if(wireframeLuminosity){
+				meshBuilder.getMesh().disableColors();
+			}
             float pointSize = timeline.getValue("Point Size");
-            glPointSize(pointSize*pointSize);			
-			meshBuilder.getMesh().drawVertices();
+            glPointSize(pointSize*pointSize);
+			
+			meshBuilder.getMesh().setMode(OF_PRIMITIVE_POINTS);
+			meshBuilder.getMesh().draw();
+			meshBuilder.getMesh().setMode(OF_PRIMITIVE_TRIANGLES);
+
+			//meshBuilder.getMesh().drawVertices();
+			if(wireframeLuminosity){
+				meshBuilder.getMesh().enableColors();
+			}
+			
 		}
-		
+
 		if(drawParticles){
+			float particleAlpha = timeline.getValue("particle fade");
+//			cout << "particle fade " << particleAlpha << endl;
+//			ofSetColor(255*particleAlpha);
+//			ofSetColor(0);
+			glPointSize(timeline.getValue("particle size"));
 			particleRenderer.mesh.drawVertices();
 		}
 		
 		ofPopStyle();
 		ofPopMatrix();
-		player.getVideoPlayer()->getTextureReference().unbind();
 		
 		glDisable(GL_DEPTH_TEST);
 		
@@ -1461,6 +1496,7 @@ void testApp::update(){
 	}
 	
 	if(continuallyUpdateParticles){
+		updatePerlinLuminosity();
 		updateParticleSystem();
 	}
 	
@@ -1483,12 +1519,18 @@ void testApp::updateRenderer(){
 	}
 	else{
 //		renderer.update();
+
 		meshBuilder.update();
 		meshBuilder.updateCenter();
 		
+		
 		if(!continuallyUpdateParticles){
 			updateParticleSystem();
+			if(wireframeLuminosity){
+				updatePerlinLuminosity();
+			}
 		}
+		
 		if(drawScanlines){
 			updateScanlineMesh();
 		}
@@ -1507,8 +1549,9 @@ void testApp::updateParticleSystem(){
 	if(!drawParticles){
 		return;
 	}
-	
+	particleRenderer.fade = timeline.getValue("particle fade");
 	particleRenderer.perlinForce->amplitude = timeline.getValue("perlin amp");
+	particleRenderer.perlinForce->speed = timeline.getValue("perlin speed");
 	particleRenderer.perlinForce->density = timeline.getValue("perlin density");
 	particleRenderer.gravityForce->gravity = timeline.getValue("gravity amp");
 	particleRenderer.birthRate = timeline.getValue("birth rate");
@@ -1516,6 +1559,8 @@ void testApp::updateParticleSystem(){
 	particleRenderer.lifeSpanVariance = timeline.getValue("life span var");
 	particleRenderer.spinForce->center = meshBuilder.center;
 	particleRenderer.spinForce->power = timeline.getValue("spin force");
+	particleRenderer.spinForce->explodePower = timeline.getValue("explode force");
+	particleRenderer.spinForce->explodeVar = timeline.getValue("explode var");
 	particleRenderer.update();	
 }
 
@@ -1712,9 +1757,45 @@ void testApp::updateScanlineMesh(){
 }
 
 //--------------------------------------------------------------
-void testApp::draw(){	
+void testApp::updatePerlinLuminosity(){
+	float wireframeAlpha = timeline.getValue("Wireframe Alpha");
+	float luminSpeed    = timeline.getValue("Wireframe Perlin Speed");
+	float luminDensity  = timeline.getValue("Wireframe Perlin Density");
+	float luminContrast = timeline.getValue("Wireframe Lumin Contrast");
+	float luminExponent = timeline.getValue("Wireframe Lumin Exponent");
+	float luminMin = timeline.getValue("Wireframe Lumin Min");
+	float luminMid = 1-timeline.getValue("Wireframe Lumin Mid");
+	
+	luminosityChannel += luminSpeed;
+	vector<ofFloatColor>& colors = meshBuilder.getMesh().getColors();
+	vector<ofVec3f>& verts = renderer.getMesh().getVertices();
+	float color = 0;
+	int added = 0;
+	for(int i = 0; i < meshBuilder.validVertIndices.size(); i++){
+		
+		ofVec3f& vert = verts[ meshBuilder.validVertIndices[i] ];
+		float alpha = ofNoise(vert.x/luminDensity+luminosityChannel,
+							  vert.y/luminDensity+luminosityChannel,
+							  vert.z/luminDensity+luminosityChannel);
+//		alpha = (alpha - luminMid) * luminContrast + luminMid;
+		alpha = ofClamp((alpha - luminMid) * luminContrast + luminMid, 0, 1.0);
+		//alpha = ofClamp(1 - powf(alpha, luminExponent), 0, 1.0);
+		alpha = ofClamp(powf(alpha, luminExponent), luminMin, 1.0);
+		alpha *= wireframeAlpha;
+		if(meshBuilder.validVertIndices[i] < colors.size()){
+			color += alpha;
+			added++;
+			colors[ meshBuilder.validVertIndices[i] ] = ofFloatColor(alpha);
+		}
+	}
+	
+//	cout << "added " << added << " luminosity colors with an average of " << (color/added) << endl;
+}
+
+//--------------------------------------------------------------
+void testApp::draw(){
     
-	if(isSceneLoaded){		
+	if(isSceneLoaded){
 		if(!viewComps){
             
 			if(!drawPointcloud && !drawWireframe && !drawMesh){

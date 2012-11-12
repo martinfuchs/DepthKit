@@ -34,7 +34,7 @@ class ParticleGenerator {
 		if(numToBear > 1.0 && remainingParticles > 0){
 			Particle p;
 			p.birthTime = ofGetElapsedTimef();
-			p.energy = p.initialEnergy = lifespan + ofRandom(-lifespanVariance/2, lifespanVariance/2);
+			p.energy = p.initialEnergy = lifespan + ofRandom(lifespan*lifespanVariance);
 			p.origin = p.position = position;
 			p.velocity = direction;
 			p.texcoord = texcoord;
