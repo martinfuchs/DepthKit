@@ -136,9 +136,12 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofLight light2;
 	ofLight light3;
 	
+	void updateScanlineMesh();
 	void updateParticleSystem();
 	void updateTriangulatedMesh();
 	ofMesh triangulatedMesh;
+	ofMesh scanlineMesh;
+	
 	vector<cv::Point2f> featurePoints;
     vector<ofVec3f> faceNormals;
     vector<ofVec3f> faceCenters;

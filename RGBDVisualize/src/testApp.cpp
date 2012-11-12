@@ -243,7 +243,7 @@ void testApp::populateTimelineElements(){
     timeline.addCurves("Point Alpha", currentCompositionDirectory + "pointAlpha.xml", ofRange(0,1.0) );
     timeline.addCurves("Point Size", currentCompositionDirectory + "pointSize.xml", ofRange(1.0, sqrtf(20.0) ) );	
     timeline.addCurves("Wireframe Alpha", currentCompositionDirectory + "wireframeAlpha.xml", ofRange(0,1.0), 1.0 );
-    timeline.addCurves("Wireframe Thickness", currentCompositionDirectory + "wireframeThickness.xml", ofRange(1.0,sqrtf(20.0)) );
+    timeline.addCurves("Wireframe Thickness", currentCompositionDirectory + "wireframeThickness.xml", ofRange(0.0,sqrtf(20.0)) );
     timeline.addCurves("Mesh Alpha", currentCompositionDirectory + "meshAlpha.xml", ofRange(0,1.0) );
         
     timeline.addPage("Depth of Field", true);
@@ -256,10 +256,19 @@ void testApp::populateTimelineElements(){
 	timeline.addCurves("birth rate", ofRange(0, .4));
 	timeline.addCurves("life span", ofRange(0, 300));
 	timeline.addCurves("life span var", ofRange(0, 100));
+	
+	timeline.addPage("Particle Forces");
 	timeline.addCurves("perlin amp", ofRange(0, 10.0));
 	timeline.addCurves("perlin density", ofRange(0, 1000));
 	timeline.addCurves("gravity amp", ofRange(-10.0, 10.0), 0.0);
 	timeline.addCurves("spin force", ofRange(-1.0, 1.0), 0.0);
+	
+	timeline.addPage("Scanlines");
+	timeline.addCurves("scanline opacity", ofRange(0, 1.0));
+	timeline.addCurves("scanline x step", ofRange(1, 10));
+	timeline.addCurves("scanline y step", ofRange(1, 10));
+	timeline.addCurves("scan min threshold", ofRange(0, 255), 0);
+	timeline.addCurves("scan max threshold", ofRange(0, 255), 255);
 	
 //	timeline.addPage("Triangulation", true);
 //	timeline.addCurves("Max Features", currentCompositionDirectory + "TriangulateMaxFeatures.xml", ofRange(100, 5000));
@@ -399,7 +408,7 @@ void testApp::processGeometry(){
 }
 
 void testApp::drawGeometry(){
-
+	
     float pointAlpha = timeline.getValue("Point Alpha");
     float wireAlpha = timeline.getValue("Wireframe Alpha");
     float meshAlpha = timeline.getValue("Mesh Alpha");
@@ -455,22 +464,71 @@ void testApp::drawGeometry(){
 		else{
 			glShadeModel(GL_SMOOTH);
 		}
-        ofBlendMode blendMode = OF_BLENDMODE_SCREEN;
-        fbo1.begin();
-		ofClear(0,0,0,0);
-		fbo1.end();
 		
-	//new way of doing trails that kills alpha backgrounds.
+        ofBlendMode blendMode = OF_BLENDMODE_SCREEN;
 //        fbo1.begin();
-//        ofPushStyle();
-//        ofEnableAlphaBlending();
-//        //float decay = powf(timeline.getValue("Motion Trail Decay"), 2.0);
-//        float decay = 1.0;
-//        ofSetColor(0, 0, 0, decay*255);
-//        ofRect(renderFboRect);
-//        ofPopStyle();
-//        fbo1.end();
-
+//		ofClear(0,0,0,0);
+//		fbo1.end();
+		
+		
+		//BEGIN NEW STYLE
+		fbo1.begin();
+		ofClear(0,0,0,0);
+		
+		
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_LINE_SMOOTH);
+		glEnable(GL_POINT_SMOOTH);
+		
+		cam.begin(renderFboRect);
+		ofEnableBlendMode(blendMode);
+		player.getVideoPlayer()->getTextureReference().bind();
+		
+		ofPushMatrix();
+		ofPushStyle();
+		ofScale(-1,-1, 1);
+		
+		if(selfOcclude){
+			ofTranslate(0, 0, 1);
+			ofSetColor(0);
+			meshBuilder.getMesh().draw();
+			ofTranslate(0, 0, -1);
+		}
+		
+		if(drawMesh && meshAlpha > 0){
+			ofTranslate(0,0,-.5);
+			ofSetColor(255*meshAlpha);
+			meshBuilder.getMesh().draw();
+		}
+		
+		if(drawWireframe && wireAlpha > 0){
+			ofTranslate(0,0,-.5);
+			ofSetColor(255*wireAlpha);
+            float thickness = timeline.getValue("Wireframe Thickness");
+            thickness *= thickness;
+			ofSetLineWidth(thickness);
+			meshBuilder.getMesh().drawWireframe();
+				
+		}
+		if(drawPointcloud && pointAlpha > 0){
+			ofTranslate(0,0,-.5);
+			ofSetColor(255*pointAlpha);
+            float pointSize = timeline.getValue("Point Size");
+            glPointSize(pointSize*pointSize);			
+			meshBuilder.getMesh().drawVertices();
+		}
+		
+		ofPopStyle();
+		ofPopMatrix();
+		player.getVideoPlayer()->getTextureReference().unbind();
+		
+		glDisable(GL_DEPTH_TEST);
+		
+		cam.end();
+		fbo1.end();
+		//END NEW STYLE
+		
+		/*
         if(drawMesh && meshAlpha > 0){
             
             swapFbo.begin();
@@ -544,7 +602,7 @@ void testApp::drawGeometry(){
         }
         
         if(drawWireframe && wireAlpha > 0){
-                
+            
             swapFbo.begin();
             ofClear(0,0,0,0);
             
@@ -734,25 +792,12 @@ void testApp::drawGeometry(){
             fbo1.end();
         }
 
-		//draw particles
-		swapFbo.begin();
-		ofClear(0,0,0,0);
-		ofEnableAlphaBlending();
-		cam.begin(renderFboRect);
-		glEnable(GL_DEPTH_TEST);
-		ofSetColor(0, 0, 0, 0);
-
-		dofRange.begin();
-		dofRange.setUniform1f("blackout", 0.);
-		meshBuilder.draw();
-		dofRange.end();
+	*/
 		
+		/*
+		//draw particles
 		ofSetColor(255);
 		particleRenderer.draw();
-		glDisable(GL_DEPTH_TEST);
-		cam.end();
-		
-		swapFbo.end();
 		
 		fbo1.begin();
 		
@@ -765,6 +810,7 @@ void testApp::drawGeometry(){
 		
 		fbo1.end();
 		//end particles
+		*/
 		
         if(drawDOF){
             //render DOF
@@ -924,6 +970,7 @@ void testApp::drawGeometry(){
             
             fbo1.end();
         }
+		
         /*
 		if(drawLightPositions || !currentLockCamera){
             fbo1.begin();
@@ -1398,6 +1445,7 @@ void testApp::updateRenderer(){
 		if(!continuallyUpdateParticles){
 			updateParticleSystem();
 		}
+		updateScanlineMesh();
 	}
 	processGeometry();
 	
@@ -1409,6 +1457,9 @@ void testApp::updateRenderer(){
 }
 
 void testApp::updateParticleSystem(){
+	
+	return;
+	
 	particleRenderer.perlinForce->amplitude = timeline.getValue("perlin amp");
 	particleRenderer.perlinForce->density = timeline.getValue("perlin density");
 	particleRenderer.gravityForce->gravity = timeline.getValue("gravity amp");
@@ -1554,6 +1605,55 @@ void testApp::updateTriangulatedMesh(){
 //        average.normalize();
 //        triangulatedMesh.setNormal(it->first, average);
 //    }
+}
+
+void testApp::updateScanlineMesh(){
+	scanlineMesh.clear();	
+	int xStep = timeline.getValue("scanline x step");
+	int yStep = timeline.getValue("scanline y step");
+	float lineAlpha = timeline.getValue("scanline opacity");
+	float minAlpha = timeline.getValue("scan min threshold");
+	float maxAlpha = timeline.getValue("scan max threshold");
+	
+	vector<ofVec3f> sampleVerts;
+	for(int y = 0; y < player.getDepthPixels().getHeight(); y+=yStep){
+		for(int x = 0; x < player.getDepthPixels().getWidth(); x+=xStep){
+			int xPos = x;
+			if(y%2 == 1){
+				xPos = player.getDepthPixels().getWidth()-x-1;
+			}
+			float yPos = y;
+//			if(x%2 == 0){
+//				yPos = y;
+//			}
+			ofVec3f pos = meshBuilder.getWorldPoint(xPos,yPos);
+			if(pos.z > 0){
+				scanlineMesh.addVertex(pos);
+			}
+		}
+	}
+	
+	//generate all tex coords
+	meshBuilder.generateTextureCoordinates(scanlineMesh.getVertices(), scanlineMesh.getTexCoords());
+	
+	for(int i = 0; i < scanlineMesh.getVertices().size(); i++){
+		ofVec3f& pos = scanlineMesh.getVertices()[i];
+		if(pos.z < meshBuilder.farClip){
+			//float sensitivity = ofMap( abs( (vertToLine[i] % 8) - 4 + 1) / 4., 0, 1.0, 0, 1.0 );
+			ofVec2f& texCoord = scanlineMesh.getTexCoords()[i];
+			ofColor imageColor = player.getVideoPlayer()->getPixelsRef().getColor(texCoord.x,texCoord.y);
+			ofColor alpha = player.getVideoPlayer()->getPixelsRef().getColor(texCoord.x+player.getVideoPlayer()->getWidth()/2,texCoord.y);
+			
+			float brightness = ofMap(alpha.r, minAlpha, maxAlpha, 1.0, 0.0, true);
+			//ofFloatColor wireframeColor = imageColor*brightnessAttenuate;
+			ofFloatColor wireframeColor = ofFloatColor(lineAlpha);
+			wireframeColor.a = brightness;
+			scanlineMesh.addColor(wireframeColor);
+		}
+		else {
+			scanlineMesh.addColor(ofFloatColor(0.0));
+		}
+	}
 }
 
 //--------------------------------------------------------------
