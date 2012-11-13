@@ -280,7 +280,7 @@ void testApp::populateTimelineElements(){
 	timeline.addCurves("scanline opacity", ofRange(0, 1.0));
 	timeline.addCurves("scanline thickness", ofRange(0, 4), 1);
 	timeline.addCurves("scanline x step", ofRange(1, 10));
-	timeline.addCurves("scanline y step", ofRange(.25, 10));
+	timeline.addCurves("scanline y step", ofRange(.25, 10), 2);
 	timeline.addCurves("scan max threshold", ofRange(0, 255), 255);
 	timeline.addCurves("scan min threshold", ofRange(0, 255), 0);
 	timeline.addCurves("scan quiver", ofRange(0, 1.0), 0);
@@ -439,8 +439,8 @@ void testApp::drawGeometry(){
 	
     if(!alignmentScrubber.ready()){
         pointAlpha = 0;
-        wireAlpha = 1.0;
-        meshAlpha = 0.0;    
+        wireAlpha = .0;
+        meshAlpha = 1.0;
     }
     
     //helps eliminate zfight by translating the mesh occluder slightly back from the camera
@@ -501,9 +501,18 @@ void testApp::drawGeometry(){
 		cam.begin(renderFboRect);
 		player.getVideoPlayer()->getTextureReference().bind();
 		
+		if(!wireframeLuminosity){
+			meshBuilder.getMesh().disableColors();
+		}
+		
 		ofPushMatrix();
 		ofPushStyle();
-		ofScale(-1,-1, 1);
+		if(currentMirror){
+			ofScale(-1,-1, 1);
+		}
+		else{
+			ofScale( 1,-1, 1);
+		}
 		ofEnableAlphaBlending();
 
 		bool usedDepth = false;
@@ -2217,7 +2226,7 @@ void testApp::saveComposition(){
 	projectsettings.setValue("drawDOF",drawDOF);
 	projectsettings.setValue("drawScanlines",drawScanlines);
 	projectsettings.setValue("drawParticles",drawParticles);
-	
+	projectsettings.setValue("wireframeLuminosity",wireframeLuminosity);
 	projectsettings.setValue("cameraSpeed", cam.speed);
 	projectsettings.setValue("cameraRollSpeed", cam.rollSpeed);
 	
@@ -2396,7 +2405,7 @@ bool testApp::loadComposition(string compositionDirectory){
         selfOcclude = projectsettings.getValue("selfOcclude",false);
 		drawScanlines = projectsettings.getValue("drawScanlines",false);
 		drawParticles = projectsettings.getValue("drawParticles", false);
-		
+		wireframeLuminosity = projectsettings.getValue("wireframeLuminosity",false);
 		startSequenceAt0 = projectsettings.getValue("startSequenceAtZero",false);
 
 //        currentXMultiplyShift = projectsettings.getValue("xmult", 0.);
