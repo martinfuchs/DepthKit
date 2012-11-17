@@ -29,13 +29,19 @@ class ParticleRenderer {
     ForceGravity* gravityForce;
 	ForceSpin* spinForce;
 
+	ofVec3f globalGeneratorOffset;
+	
 	ofFloatColor primaryColor;
 	ofFloatColor secondaryColor;
+	
 	float fade;
 	//global emmitter properties
 	float birthRate;
 	float lifeSpan;
 	float lifeSpanVariance;
+
+	float minPointSize;
+	float maxPointSize;
 
 	float bottomClip;
 	float maxFlicker; //betweeen 0 and one then based on particle
@@ -49,5 +55,5 @@ class ParticleRenderer {
 	void setAudioData(vector<float>& fft, int minBin, int maxBin);
 	
 	void copyVertsToMesh();
-	
+	void sampleTextureColors( ofPixels& pixels );
 };

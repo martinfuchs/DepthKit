@@ -23,6 +23,7 @@ class ParticleGenerator {
         freeze = false;
 		currentAudioBin = 0;
 		audioData = NULL;
+		globalOffset = ofVec3f(0,0,0);
     }
     
     void update(){
@@ -35,7 +36,7 @@ class ParticleGenerator {
 			Particle p;
 			p.birthTime = ofGetElapsedTimef();
 			p.energy = p.initialEnergy = lifespan + ofRandom(lifespan*lifespanVariance);
-			p.origin = p.position = position;
+			p.origin = p.position = position + globalOffset;
 			p.velocity = direction;
 			p.texcoord = texcoord;
 			if(primaryColor != NULL && secondaryColor != NULL){
@@ -101,6 +102,7 @@ class ParticleGenerator {
         forces.push_back(force);
     }
     
+	ofVec3f globalOffset;
 	ofFloatColor* primaryColor;
 	ofFloatColor* secondaryColor;
 	vector<float>* audioData;

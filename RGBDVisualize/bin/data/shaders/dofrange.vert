@@ -16,14 +16,16 @@ varying float VZPositionValid0;
 void main(void)
 {
 
-	VZPositionValid0 = (gl_Vertex.z < farClip && gl_Vertex.z > 200.) ? 1.0 : 0.0;
+	
 	if(project == 1){
 		vec4 pos = vec4((gl_Vertex.x - principalPoint.x) * gl_Vertex.z / fov.x,
 						(gl_Vertex.y - principalPoint.y) * gl_Vertex.z / fov.y, gl_Vertex.z, 1.0);
 	    gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * pos;
+		VZPositionValid0 = (gl_Vertex.z < farClip && gl_Vertex.z > 200.) ? 1.0 : 0.0;
 	}
     else{
 		gl_Position = ftransform();
+		VZPositionValid0 = 1.0;
 	}
     
     VInFocus0 = min(abs(gl_Position.z - focalDistance) / focalRange, 1.0);

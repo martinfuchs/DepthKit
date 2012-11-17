@@ -12,6 +12,9 @@ ParticleRenderer::ParticleRenderer(){
 	bottomClip = 0;
 	maxFlicker = 1.0;
 	fade = 1.0;
+	globalGeneratorOffset = ofVec3f(0,0,0);
+	minPointSize = 1.0;
+	maxPointSize = 1.0;
 }
 
 void ParticleRenderer::setup(int maxParticles){
@@ -38,6 +41,7 @@ void ParticleRenderer::setup(int maxParticles){
 		mesh.addVertex(ofVec3f(0,0,0));
 		mesh.addColor(ofFloatColor(1.0,1.0,1.0,1.0));
 		mesh.addTexCoord(ofVec2f(0.0,0.0));
+		mesh.addNormal(ofVec3f(0,0,0));
 	}
 	
 	maxAllowedParticles = maxParticles;
@@ -61,6 +65,7 @@ void ParticleRenderer::update(){
 //	}
 	
 	for(int i = 0; i < emitters.size(); i++){
+		emitters[i].globalOffset = globalGeneratorOffset;
 		emitters[i].birthRate = 0;
 		emitters[i].freeze = false;
 		totalParticles += emitters[i].particles.size();
@@ -85,7 +90,6 @@ void ParticleRenderer::update(){
 			g.lifespanVariance = lifeSpanVariance;
 			g.position =  meshBuilder->getMesh().getVertices()[meshBuilder->validVertIndices[i]];
 			g.texcoord = meshBuilder->getMesh().getTexCoords()[meshBuilder->validVertIndices[i]];
-//			g.position = pos;
 			g.remainingParticles = particlesPerEmitter;
 		}
 	}
@@ -164,6 +168,17 @@ void ParticleRenderer::draw(){
 	ofPopStyle();
 }
 
+void ParticleRenderer::sampleTextureColors(ofPixels& pixels){
+	for(int i = 0; i < emitters.size(); i++){
+		for(int v = 0; v < emitters[i].particles.size(); v++){
+			emitters[i].particles[v].color = pixels.getColor(ofClamp(emitters[i].particles[v].texcoord.x,0,pixels.getWidth() -1),
+															 ofClamp(emitters[i].particles[v].texcoord.y,0,pixels.getHeight()-1));
+			emitters[i].particles[v].useColor = true;
+			
+		}
+	}
+}
+
 void ParticleRenderer::setAudioData(vector<float>& fft, int minBin, int maxBin){
 	for(int i = 0; i < emitters.size(); i++){
 		emitters[i].audioData = &fft;
@@ -177,31 +192,34 @@ void ParticleRenderer::copyVertsToMesh(){
 	vector<ofVec3f>& meshVertices = mesh.getVertices();
 	vector<ofFloatColor>& meshColors = mesh.getColors();
 	vector<ofVec2f>& meshTexCoords = mesh.getTexCoords();
+	vector<ofVec3f>& meshNormals = mesh.getNormals();
 	for(int i = 0; i < emitters.size(); i++){
 		for(int v = 0; v < emitters[i].particles.size(); v++){
 			meshVertices[meshIndex] = emitters[i].particles[v].position;
-//			float flicker = (sin(emitters[i].particles[v].flickerPeriod*ofGetElapsedTimef()+emitters[i].particles[v].flickerPeriod)*.5+.5);
-			//flicker *= emitters[i].particles[v].flickerMax;
-			//flicker = 1-flicker;
 			float color = ofMap(emitters[i].particles[v].energy / emitters[i].particles[v].initialEnergy, .4, 0, fade, 0,true);
-//			float color = emitters[i].particles[v].flickerMax;
-//			float color = flicker;
-//			if (emitters[i].particles[v].flickerMax > 0) {
-//				cout << "flicker max is " << emitters[i].particles[v].flickerMax << endl;
-//			}
-			//meshColors[meshIndex] = ofFloatColor(emitters[i].particles[v].color,color);
-			meshColors[meshIndex] = ofFloatColor(color);
+			if(emitters[i].particles[v].useColor){
+				meshColors[meshIndex] = emitters[i].particles[v].color;
+				meshColors[meshIndex].a = color;
+				meshNormals[meshIndex].x = 1.0; // signifiy to use colors
+			}
+			else {
+				meshColors[meshIndex] = ofFloatColor(color);
+				meshNormals[meshIndex].x = 0.0; // signifiy to use texture
+			}
+			if(minPointSize == maxPointSize){
+				meshNormals[meshIndex].y = minPointSize;
+			}
+			else{
+				meshNormals[meshIndex].y = ofMap(color, 0, 1.0, maxPointSize, minPointSize);
+			}
 			meshTexCoords[meshIndex] = emitters[i].particles[v].texcoord;
-			//            if(useColors){
-			//                meshTexCoords[meshIndex] = emitters[i].particles[v].texcoord;
-			//            }
 			meshIndex++;
 			if(meshIndex == meshVertices.size()){
-				//                ofLogError("exceeded max particles");
+				//ofLogError("exceeded max particles");
 				return;
 			}
 		}
 	}
-	//	cout << "mesh index reached " << meshIndex << endl;
+	
 	memset(&(meshColors[meshIndex].r), 0, sizeof(ofFloatColor)*(meshColors.size()-meshIndex));
 }

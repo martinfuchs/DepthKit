@@ -3,8 +3,9 @@
 
 varying float VInFocus0;
 //hack for self-occlude
-uniform float blackout;
 varying float VZPositionValid0;
+uniform float blackout;
+
 void main()
 {
 	if(VZPositionValid0 < 0.999){ 

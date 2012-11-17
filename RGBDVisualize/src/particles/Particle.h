@@ -24,6 +24,7 @@ class Particle {
 		flickerPeriod = 0;
 		flickerPhase = 0;
 		flickerMax = 0;
+		useColor = false;
     }
     
     void update(){
@@ -36,8 +37,8 @@ class Particle {
         energyPercent = energy/initialEnergy;
     }
     
-	ofColor color;
-	
+	ofFloatColor color;
+	bool useColor;
     ofVec3f connectorPoint;
     float connectorEnergy;
     bool hasType;

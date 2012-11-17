@@ -12,7 +12,7 @@ class ForcePerlin : public Force {
     ForcePerlin() {
         amplitude = 0;
         density = 300;
-        speed = 10;
+        speed = 0;
         currentOffset = 0;
     }
     

@@ -150,8 +150,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	
 	void updateScanlineMesh();
 	void updateParticleSystem();
-	void updateTriangulatedMesh();
 	void updatePerlinLuminosity();
+	void updateTriangulatedMesh();
 	ofMesh triangulatedMesh;
 	ofMesh scanlineMesh;
 	
