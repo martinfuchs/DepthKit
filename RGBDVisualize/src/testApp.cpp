@@ -557,12 +557,29 @@ void testApp::drawGeometry(){
 		ofEnableBlendMode(blendMode);
 
 		if(drawWireframe && wireAlpha > 0){
+			
+			if(selfOcclude){
+				/*
+				glPushAttrib(GL_ALL_ATTRIB_BITS);
+				glEnable(GL_CULL_FACE);
+				if(currentMirror){
+					glCullFace(GL_BACK);
+				}
+				else{
+					glCullFace(GL_FRONT);
+				}
+				*/	
+			}
+
 			ofTranslate(0,0,-.5);
 			ofSetColor(255*wireAlpha);
             float thickness = timeline.getValue("Wireframe Thickness");
             thickness *= thickness;
 			ofSetLineWidth(thickness);
 			meshBuilder.getMesh().drawWireframe();
+			if(selfOcclude){
+				glPopAttrib();
+			}
 		}
 		
 		
@@ -1281,7 +1298,7 @@ void testApp::update(){
     cam.rollSpeed = cameraRollSpeed;
     
 	if(startRenderMode){
-		
+		luminosityChannel = 0;
         startRenderMode = false;
         drawLightPositions = false; //force light pos off
 		continuallyUpdateParticles = false;
@@ -1345,10 +1362,10 @@ void testApp::update(){
 		videoTrack->setInFrame(0);
 		videoTrack->setOutFrame(player.getVideoPlayer()->getTotalNumFrames());
         temporalAlignmentMode = true;
-        drawPointcloud = false;
-        drawMesh = false;
-        drawWireframe = true;
-		timeline.setCurrentPage("Time Alignment");
+        //drawPointcloud = false;
+        //drawMesh = false;
+        //drawWireframe = true;
+		//timeline.setCurrentPage("Time Alignment");
 	}
 	
 	if(currentLockCamera != cameraTrack->lockCameraToTrack){
@@ -1512,7 +1529,11 @@ void testApp::update(){
 //		rendererNeedsUpdate = true;
 		rendererDirty = true;
     }
-
+	
+	if(temporalAlignmentMode && currentDepthFrame != player.getDepthSequence()->getCurrentFrame()){
+		rendererNeedsUpdate = true;
+	}
+	
     //TRIANGULATION CANCEL
 //	if(	currentMaxFeatures != timeline.getValue("Max Features") ||
 //	   currentFeatureQuality != timeline.getValue("Feature Quality") ||
@@ -1837,7 +1858,7 @@ void testApp::draw(){
 		if(!viewComps){
             
 			if(!drawPointcloud && !drawWireframe && !drawMesh){
-				drawWireframe = true;
+				drawMesh = true;
 			}	
 			
 			if(!ofGetMousePressed(0)){
@@ -1934,7 +1955,7 @@ void testApp::draw(){
 //					cout << " to " << player.getVideoPlayer()->getCurrentFrame() << endl;
 				}
 			}
-            ofDrawBitmapString("fps: " + ofToString(ofGetFrameRate()), saveCompButton->x + saveCompButton->width + 10, saveCompButton->y + 10);
+            //ofDrawBitmapString("fps: " + ofToString(ofGetFrameRate()), saveCompButton->x + saveCompButton->width + 10, saveCompButton->y + 10);
 			if(!currentlyRendering){
 				gui.draw();
             }
