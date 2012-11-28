@@ -16,8 +16,8 @@
 #include "ofxRGBDScene.h"
 #include "ofxRGBDPlayer.h"
 #include "ofxGui.h"
-#include "ofxDelaunay.h"
-#include "ParticleRenderer.h"
+//#include "ofxDelaunay.h"
+//#include "ParticleRenderer.h"
 
 typedef struct {
 	ofxRGBDScene scene;
@@ -57,8 +57,6 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	void gotMessage(ofMessage msg);
  	
 	void updateRenderer();
-	void processDepthFrame();
-	void processGeometry();
 	void drawGeometry();
 	
 	bool createNewComposition();
@@ -94,11 +92,9 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle selfOcclude;
     ofxToggle drawDOF;
     ofxToggle drawDebug;
-	ofxToggle drawVideoOnion;
-	ofxToggle flipVideoOnion;
 	
-    ofxToggle shouldResetCamera;
-	ofxButton setCameraToRGBPerspective;
+    ofxButton shouldResetCamera;
+//	ofxButton setCameraToRGBPerspective;
     ofxFloatSlider cameraSpeed;
     ofxFloatSlider cameraRollSpeed;
     ofxButton shouldSaveCameraPoint;
@@ -124,52 +120,51 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxButton captureFramePair;
 
 	//Adding triangulation stuff
-	ofxToggle renderTriangulation;
-	ofxDelaunay triangulate;
-	ofxToggle enableLighting;
-	ofxToggle drawLightPositions;
-	ofxToggle renderObjectFiles;
-	ofxToggle startSequenceAt0;
-	ofxToggle drawParticles;
-	ofxToggle continuallyUpdateParticles;
-	ofxToggle drawScanlines;
-	ofxToggle wireframeLuminosity;
+//	ofxToggle renderTriangulation;
+//	ofxDelaunay triangulate;
+//	ofxToggle enableLighting;
+//	ofxToggle drawLightPositions;
+//	ofxToggle renderObjectFiles;
+//	ofxToggle startSequenceAt0;
+//	ofxToggle drawParticles;
+//	ofxToggle continuallyUpdateParticles;
+//	ofxToggle drawScanlines;
+//	ofxToggle wireframeLuminosity;
 	
-	int currentScanlineMaxAlpha;
-	int currentScanlineMinAlpha;
-	float currentScanlineOpacity;
-	float currentScanlineThickness;
-	float currentScanlineXStep;
-	float currentScanlineYStep;
-	float currentScanlineQuiver;
-	float luminosityChannel;
+//	int currentScanlineMaxAlpha;
+//	int currentScanlineMinAlpha;
+//	float currentScanlineOpacity;
+//	float currentScanlineThickness;
+//	float currentScanlineXStep;
+//	float currentScanlineYStep;
+//	float currentScanlineQuiver;
+//	float luminosityChannel;
 	
-	ofLight light1;
-	ofLight light2;
-	ofLight light3;
+//	ofLight light1;
+//	ofLight light2;
+//	ofLight light3;
 	
-	void updateScanlineMesh();
-	void updateParticleSystem();
-	void updatePerlinLuminosity();
-	void updateTriangulatedMesh();
-	ofMesh triangulatedMesh;
-	ofMesh scanlineMesh;
+//	void updateScanlineMesh();
+//	void updateParticleSystem();
+//	void updatePerlinLuminosity();
+//	void updateTriangulatedMesh();
+//	ofMesh triangulatedMesh;
+//	ofMesh scanlineMesh;
 	
-	vector<cv::Point2f> featurePoints;
-    vector<ofVec3f> faceNormals;
-    vector<ofVec3f> faceCenters;
-	vector<ofVec3f> innerPoints;
-	vector<ofVec3f> backPoints;
-    vector<ofVec3f> backInnerPoints;
+//	vector<cv::Point2f> featurePoints;
+//    vector<ofVec3f> faceNormals;
+//    vector<ofVec3f> faceCenters;
+//	vector<ofVec3f> innerPoints;
+//	vector<ofVec3f> backPoints;
+//    vector<ofVec3f> backInnerPoints;
 	
-	bool renderingMesh;
-	float currentMaxFeatures;
-	float currentFeatureQuality;
-	float currentMinFeatureDistance;
-	float currentMaxEdgeLength;
-	float maxSceneX;
+//	bool renderingMesh;
+//	float currentMaxFeatures;
+//	float currentFeatureQuality;
+//	float currentMinFeatureDistance;
+//	float currentMaxEdgeLength;
+
 	//END triangulation stuff
-	
 	
     bool startRenderMode;
 	//MSA Object delegate
@@ -185,7 +180,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     vector<SceneButton> scenes;
     vector<CompButton> comps;
     vector<RenderButton> renderQueue;
-    
+    float maxSceneX;
+	
 	SceneButton* selectedScene;
     CompButton* selectedComp;
     SceneButton* loadedScene;
@@ -220,7 +216,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	
 	ofxRGBDPlayer player;
 	ofxRGBDRenderer renderer;
-	ofxRGBDMeshBuilder meshBuilder;
+//	ofxRGBDMeshBuilder meshBuilder;
 	ofxTLDepthImageSequence depthSequence;
 	ofxTLVideoDepthAlignmentScrubber alignmentScrubber;
 	ofxDepthHoleFiller holeFiller;
@@ -257,5 +253,4 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	string pathDelim;
 	ofVboMesh ambientParticles;
 	
-	ParticleRenderer particleRenderer;
 };
