@@ -2188,6 +2188,7 @@
 				HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_7 = "../../../addons/ofxKinect/libs/libusb/win/inf/xbox\\ nui\\ camera";
 				HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_8 = "../../../addons/ofxKinect/libs/libusb/win/inf/xbox\\ nui\\ camera/amd64";
 				HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_9 = "../../../addons/ofxKinect/libs/libusb/win/inf/xbox\\ nui\\ camera/ia64";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-D__MACOSX_CORE__",
 					"-lpthread",
@@ -2314,6 +2315,7 @@
 				HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_7 = "../../../addons/ofxKinect/libs/libusb/win/inf/xbox\\ nui\\ camera";
 				HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_8 = "../../../addons/ofxKinect/libs/libusb/win/inf/xbox\\ nui\\ camera/amd64";
 				HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_9 = "../../../addons/ofxKinect/libs/libusb/win/inf/xbox\\ nui\\ camera/ia64";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-D__MACOSX_CORE__",
 					"-lpthread",

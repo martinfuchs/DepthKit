@@ -8,7 +8,7 @@ void testApp::setup(){
 
 	ofEnableAlphaBlending();
 	ofSetFrameRate(30);
-	ofBackground(255*0);
+	ofBackground(0);
 	
     captureGui.setImageProvider( new ofxDepthImageProviderOpenNI() );
     captureGui.setup();

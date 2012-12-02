@@ -5,7 +5,7 @@
 void testApp::setup(){
 	
 	
-	ofSetFrameRate(30);
+	ofSetFrameRate(60);
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
 	ofBackground(22);
@@ -22,12 +22,13 @@ void testApp::setup(){
     cam.setup();
 	cameraSpeed = cam.speed = 20;
 	cam.autosavePosition = true;
+	cam.loadCameraPosition();
 	cam.usemouse = true;
 	cam.useArrowKeys = false;
 	cam.setFarClip(30000);
 //	cam.setScale(1, -1, 1);
 //	cam.targetNode.setScale(1,-1,1);
-	cam.loadCameraPosition();
+
 	cam.maximumY =  120;
 	cam.minimumY = -120;
 	cameraRollSpeed = cam.rollSpeed = 1;
@@ -70,7 +71,6 @@ void testApp::setup(){
 	player.updateVideoPlayer = false;
     rendererDirty = true;
     isSceneLoaded = false;
-//    renderObjectFiles = false;
 	
     //TODO set through interface
     int fboWidth  = 1920;
@@ -138,7 +138,7 @@ void testApp::setup(){
     setButtonColors(renderBatch);
 
 	gui.setup("Settings", "defaultGuiSettings.xml");
-    gui.add(pauseRender.setup("Pause Render", ofxParameter<bool>()));
+//    gui.add(pauseRender.setup("Pause Render", ofxParameter<bool>()));
     gui.add(drawPointcloud.setup("Draw Pointcloud",ofxParameter<bool>()));
     gui.add(drawWireframe.setup("Draw Wireframe",ofxParameter<bool>()));
     gui.add(drawMesh.setup("Draw Mesh",ofxParameter<bool>()));
@@ -192,6 +192,7 @@ void testApp::setup(){
 //	for(int i = 0; i < 50000; i++){
 		//ambience
 //	}
+
 	
     gui.loadFromFile("defaultGuiSettings.xml");
     
@@ -253,9 +254,9 @@ void testApp::populateTimelineElements(){
     timeline.addPage("Rendering", true);
     timeline.addCurves("Point Alpha", currentCompositionDirectory + "pointAlpha.xml", ofRange(0,1.0) );
     timeline.addCurves("Point Size", currentCompositionDirectory + "pointSize.xml", ofRange(1.0, sqrtf(20.0) ) );	
-    timeline.addCurves("Wireframe Alpha", currentCompositionDirectory + "wireframeAlpha.xml", ofRange(0,1.0), 1.0 );
+    timeline.addCurves("Wireframe Alpha", currentCompositionDirectory + "wireframeAlpha.xml", ofRange(0,1.0), 0.0 );
     timeline.addCurves("Wireframe Thickness", currentCompositionDirectory + "wireframeThickness.xml", ofRange(0.0,sqrtf(20.0)) );
-    timeline.addCurves("Mesh Alpha", currentCompositionDirectory + "meshAlpha.xml", ofRange(0,1.0) );
+    timeline.addCurves("Mesh Alpha", currentCompositionDirectory + "meshAlpha.xml", ofRange(0,1.0), 1.0 );
         
     timeline.addPage("Depth of Field", true);
     timeline.addCurves("DOF Distance", currentCompositionDirectory + "DOFDistance.xml", ofRange(0,sqrtf(1500.0)), 10 );
@@ -285,12 +286,17 @@ void testApp::drawGeometry(){
     float wireAlpha = timeline.getValue("Wireframe Alpha");
     float meshAlpha = timeline.getValue("Mesh Alpha");
 
-    if(!alignmentScrubber.ready()){
+    //if(!alignmentScrubber.ready()){
+	if(!alignmentScrubber.ready()){
         pointAlpha = 0;
         wireAlpha = .0;
         meshAlpha = 1.0;
     }
-    
+	
+	if(!drawPointcloud && !drawWireframe && !drawMesh){
+		drawMesh = true;
+	}
+
     //helps eliminate zfight by translating the mesh occluder slightly back from the camera
     ofVec3f camTranslateVec = cam.getLookAtDir();    
     ofRectangle renderFboRect = ofRectangle(0, 0, fbo1.getWidth(), fbo1.getHeight());
@@ -327,12 +333,12 @@ void testApp::drawGeometry(){
 		
 		ofPushMatrix();
 		ofPushStyle();
-		if(currentMirror){
-			ofScale(-1,-1, 1);
-		}
-		else{
-			ofScale( 1,-1, 1);
-		}
+//		if(currentMirror){
+//			ofScale(-1,1, 1);
+//		}
+//		else{
+//			ofScale(1,1, 1);
+//		}
 		ofEnableAlphaBlending();
 
 		bool usedDepth = false;
@@ -443,7 +449,7 @@ void testApp::drawGeometry(){
             
             
             ofDisableAlphaBlending();
-			if(!hasRunRendererOnce){
+//			if(!hasRunRendererOnce){
 
 
 				dofRange.begin();
@@ -452,20 +458,20 @@ void testApp::drawGeometry(){
 				dofRange.setUniform1f("blackout", 1.);
 				dofRange.setUniform1i("project", 0);
 				ofPushMatrix();
-				if(currentMirror){
-					ofScale(-1,-1, 1);
-				}
-				else{
-					ofScale( 1,-1, 1);
-				}
+//				if(currentMirror){
+//					ofScale(-1,-1, 1);
+//				}
+//				else{
+//					ofScale( 1,-1, 1);
+//				}
 				
-	            renderer.getMesh().drawFaces();
-				
+	            //renderer.getMesh().drawFaces();
+				renderer.drawMesh(dofRange);
 				ofPopMatrix();
 				dofRange.end();
 				
 				hasRunRendererOnce = true;
-			}
+//			}
             
             glDisable(GL_DEPTH_TEST);
             cam.end();
@@ -617,12 +623,14 @@ void testApp::keyPressed(int key){
 		}
 		return;
 	}
-	
-	if(!temporalAlignmentMode && key == OF_KEY_RIGHT){
-		player.getVideoPlayer()->nextFrame();
-	}
-	if(!temporalAlignmentMode && key == OF_KEY_LEFT){
-		player.getVideoPlayer()->previousFrame();
+
+	if(fboRectangle.inside(mouseX, mouseY) && !videoTrack->hasFocus()){
+		if(key == OF_KEY_RIGHT){
+			player.getVideoPlayer()->nextFrame();
+		}
+		if(key == OF_KEY_LEFT){
+			player.getVideoPlayer()->previousFrame();
+		}
 	}
 	
 	if(key == ' '){
@@ -813,10 +821,10 @@ void testApp::update(){
 		videoTrack->setInFrame(0);
 		videoTrack->setOutFrame(player.getVideoPlayer()->getTotalNumFrames());
         temporalAlignmentMode = true;
+		drawMesh = true;
         //drawPointcloud = false;
         //drawMesh = false;
         //drawWireframe = true;
-		//timeline.setCurrentPage("Time Alignment");
 	}
 	
 	if(currentLockCamera != cameraTrack->lockCameraToTrack){
@@ -981,7 +989,9 @@ void testApp::update(){
 		rendererDirty = true;
     }
 	
-	if(temporalAlignmentMode && currentDepthFrame != player.getDepthSequence()->getCurrentFrame()){
+	if(temporalAlignmentMode &&
+	   (currentDepthFrame != player.getDepthSequence()->getCurrentFrame() ||
+		currentVideoFrame != videoTrack->getPlayer()->getCurrentFrame())){
 		rendererNeedsUpdate = true;
 	}
 	
@@ -1049,341 +1059,56 @@ void testApp::updateRenderer(){
     rendererDirty = true;
 }
 
-/*
-void testApp::updateParticleSystem(){
-	
-	if(!drawParticles){
-		return;
-	}
-	particleRenderer.fade = timeline.getValue("particle fade");
-	particleRenderer.perlinForce->amplitude = timeline.getValue("perlin amp");
-	particleRenderer.perlinForce->speed = timeline.getValue("perlin speed");
-	particleRenderer.perlinForce->density = timeline.getValue("perlin density");
-	particleRenderer.gravityForce->gravity = timeline.getValue("gravity amp");
-	particleRenderer.birthRate = timeline.getValue("birth rate");
-	particleRenderer.lifeSpan = timeline.getValue("life span");
-	particleRenderer.lifeSpanVariance = timeline.getValue("life span var");
-	particleRenderer.spinForce->center = meshBuilder.center;
-	particleRenderer.spinForce->power = timeline.getValue("spin force");
-	particleRenderer.spinForce->explodePower = timeline.getValue("explode force");
-	particleRenderer.spinForce->explodeVar = timeline.getValue("explode var");
-	particleRenderer.update();	
-}
-*/
-
-/*
-void testApp::updateTriangulatedMesh(){
-
-	meshBuilder.update();
-
-	currentMaxFeatures = timeline.getValue("Max Features");
-	currentFeatureQuality = timeline.getValue("Feature Quality");
-	currentMinFeatureDistance = timeline.getValue("Min Feature Distance");
-	currentMaxEdgeLength = timeline.getValue("Max Edge Length");
-	featurePoints.clear();
-    ofImage img;
-    img.setUseTexture(false);
-    img.setFromPixels(player.getVideoPlayer()->getPixelsRef());
-    img.setImageType(OF_IMAGE_GRAYSCALE);
-    goodFeaturesToTrack(toCv(img),
-                        featurePoints,
-                        timeline.getValue("Max Features"),
-                        timeline.getValue("Feature Quality"),
-                        timeline.getValue("Min Feature Distance") * img.getWidth() );
-    
-    //cout << "found " << featurePoints.size() << " features" << endl;
-    
-    //2 triangulated the features
-    triangulate.reset();
-    for(int i = 0; i < featurePoints.size(); i++){
-        triangulate.addPoint(featurePoints[i].x,featurePoints[i].y, 0);
-    }
-    triangulate.triangulate();
-    
-    //3 copy them into a 3d mesh
-    triangulatedMesh.clear();
-	vector<ofVec3f> correlatedVertices;
-	vector<ofVec2f> correlatedTextureCoords;
-    vector<ofVec3f>& trianglePoints = triangulate.triangleMesh.getVertices();
-    vector<ofVec2f>& textureCoords = meshBuilder.getMesh().getTexCoords();
-    vector<bool> validVertIndeces;
-    for(int i = 0; i < trianglePoints.size(); i++){
-        int closestTexCoordIndex  = 0;
-        float closestTexCoordDistance = 1000000;
-        for(int j = 0; j < textureCoords.size(); j++){
-            ofVec2f tri2d(trianglePoints[i].x,trianglePoints[i].y);
-            float texCoordDist = tri2d.distanceSquared(textureCoords[j]);
-            if(texCoordDist < closestTexCoordDistance){
-                closestTexCoordDistance = texCoordDist;
-                closestTexCoordIndex = j;
-            }
-			if(closestTexCoordDistance < 5.0){
-				break;
-			}
-        }
-        ofVec3f vert = meshBuilder.getMesh().getVertex(closestTexCoordIndex);
-        correlatedVertices.push_back(vert);
-        correlatedTextureCoords.push_back(meshBuilder.getMesh().getTexCoord(closestTexCoordIndex));
-        validVertIndeces.push_back(vert.z < meshBuilder.farClip && vert.z > 10);
-    }
-    
-    //copy indices across
-//    faceNormals.clear();
-//    faceCenters.clear();
-	
-	ofIndexType index = 0;
-	map<ofIndexType, vector<int> > vertexIndexToFaceIndex;
-    for(int i = 0 ; i < triangulate.triangleMesh.getNumIndices(); i+=3){
-        ofIndexType a,b,c;
-        a = triangulate.triangleMesh.getIndex(i);
-        if(!validVertIndeces[a]) continue;
-        
-        b = triangulate.triangleMesh.getIndex(i+1);
-        if(!validVertIndeces[b]) continue;
-        
-        c = triangulate.triangleMesh.getIndex(i+2);
-        if(!validVertIndeces[c]) continue;
-		
-		//eliminate triangles that are too far away
-        ofVec3f& va = correlatedVertices[a];
-        ofVec3f& vb = correlatedVertices[b];
-        ofVec3f& vc = correlatedVertices[c];
-		float maxTriangleEdgeSqr = currentMaxEdgeLength*currentMaxEdgeLength;
-        if(va.distanceSquared(vb) > maxTriangleEdgeSqr ||
-		   va.distanceSquared(vc) > maxTriangleEdgeSqr ||
-		   vc.distanceSquared(vb) > maxTriangleEdgeSqr )
-		{
-			continue;
-		}
-
-		triangulatedMesh.addVertex(va);
-		triangulatedMesh.addVertex(vb);
-		triangulatedMesh.addVertex(vc);
-
-		triangulatedMesh.addTexCoord(correlatedTextureCoords[a]);
-		triangulatedMesh.addTexCoord(correlatedTextureCoords[b]);
-		triangulatedMesh.addTexCoord(correlatedTextureCoords[c]);
-
-        triangulatedMesh.addIndex(index++);
-        triangulatedMesh.addIndex(index++);
-        triangulatedMesh.addIndex(index++);
-		
-//        triangulatedMesh.addIndex(triangulate.triangleMesh.getIndex(i  ));
-//        triangulatedMesh.addIndex(triangulate.triangleMesh.getIndex(i+1));
-//        triangulatedMesh.addIndex(triangulate.triangleMesh.getIndex(i+2));
-		
-        //keep track of which faces belong to which vertices
-//    	vertexIndexToFaceIndex[a].push_back(faceNormals.size());
-//        vertexIndexToFaceIndex[b].push_back(faceNormals.size());
-//        vertexIndexToFaceIndex[c].push_back(faceNormals.size());
-		ofVec3f faceNormal;
-        if(cam.invertControls){
-			faceNormal = (vc-va).getCrossed(vb-va).normalized();
-		}
-		else{
-	        faceNormal = (vb-va).getCrossed(vc-va).normalized();
-		}
-        //faceNormals.push_back( faceNormal );
-        //faceCenters.push_back( (va + vb + vc) / 3.);
-		
-		triangulatedMesh.addNormal(faceNormal);
-		triangulatedMesh.addNormal(faceNormal);
-		triangulatedMesh.addNormal(faceNormal);
-		
-    }
-    
-	//now go through and add a triangle per normal set
-	
-//    //now go through and average the normals into the vertices
-//    triangulatedMesh.getNormals().resize(triangulatedMesh.getNumVertices());
-//    map<ofIndexType, vector<int> >::iterator it;
-//    for(it = vertexIndexToFaceIndex.begin(); it != vertexIndexToFaceIndex.end(); it++) {
-//        ofVec3f average(0,0,0);
-//		vector<int>& faceNormalIndices = it->second;
-//        for(int i = 0 ; i < faceNormalIndices.size(); i++){
-//            average += faceNormals[ faceNormalIndices[i] ];
-//        }
-//        average.normalize();
-//        triangulatedMesh.setNormal(it->first, average);
-//    }
-}
-
-void testApp::updateScanlineMesh(){
-	scanlineMesh.clear();	
-//	currentScanlineMaxAlpha = timeline.getValue("scan max threshold");
-//	currentScanlineMinAlpha = timeline.getValue("scan min threshold");
-//	currentScanlineOpacity = timeline.getValue("scanline opacity");
-//	currentScanlineXStep = timeline.getValue("scanline x step");
-//	currentScanlineYStep = timeline.getValue("scanline y step");
-	float curFrame = player.getVideoPlayer()->getCurrentFrame();
-	vector<ofVec3f> sampleVerts;
-	int curRow = 0;
-	for(float y = 0; y < player.getDepthPixels().getHeight(); y+=currentScanlineYStep){
-		for(float x = 0; x < player.getDepthPixels().getWidth(); x+=currentScanlineXStep){
-			int xPos = x;
-			if(curRow%2 == 1){
-				xPos = player.getDepthPixels().getWidth()-x-1;
-			}
-			float yPos = y;
-			ofVec3f pos = meshBuilder.getWorldPoint(xPos,yPos);
-
-			if(pos.z > 0){
-				scanlineMesh.addVertex(pos);
-//				scanlineMesh.addVertex(pos + ofVec3f(0,0, -ofNoise(1.0*xPos/(mouseY+1),
-//																  1.0*yPos/(mouseY+1),
-//																  curFrame/(mouseY+1)) * mouseX ));
-			}
-		}
-		curRow++;
-	}
-	
-	//generate all tex coords
-	meshBuilder.generateTextureCoordinates(scanlineMesh.getVertices(), scanlineMesh.getTexCoords());
-	if(!player.getVideoPlayer()->isLoaded()){
-		return;
-	}
-	for(int i = 0; i < scanlineMesh.getVertices().size(); i++){
-		ofVec3f& pos = scanlineMesh.getVertices()[i];
-		if(pos.z < meshBuilder.farClip){
-			//float sensitivity = ofMap( abs( (vertToLine[i] % 8) - 4 + 1) / 4., 0, 1.0, 0, 1.0 );
-
-			ofVec2f texCoord = ofVec2f(ofClamp(scanlineMesh.getTexCoords()[i].x, 0, player.getVideoPlayer()->getWidth()-1),
-							   ofClamp(scanlineMesh.getTexCoords()[i].y, 0, player.getVideoPlayer()->getHeight())-1);
-			ofColor imageColor = player.getVideoPlayer()->getPixelsRef().getColor(texCoord.x,texCoord.y);
-			//ofColor alpha = player.getVideoPlayer()->getPixelsRef().getColor(texCoord.x+player.getVideoPlayer()->getWidth()/2,texCoord.y);
-			//ofColor alpha = player.getVideoPlayer()->getPixelsRef().getColor(texCoord.x,texCoord.y);
-			ofColor alpha = imageColor;
-			
-			float brightness = 0;
-			if(currentScanlineMinAlpha != currentScanlineMaxAlpha){
-				brightness = ofMap(alpha.r, currentScanlineMinAlpha, currentScanlineMaxAlpha, 1.0, 0.0, true);
-			}
-			//ofFloatColor wireframeColor = imageColor*brightnessAttenuate;
-			ofFloatColor wireframeColor = ofFloatColor(currentScanlineOpacity);
-			wireframeColor.a = brightness * currentScanlineOpacity;
-			scanlineMesh.addColor(wireframeColor);
-		}
-		else {
-			scanlineMesh.addColor(ofFloatColor(0.0));
-		}
-	}
-}
-*/
-
-/*
-//--------------------------------------------------------------
-void testApp::updatePerlinLuminosity(){
-	float wireframeAlpha = timeline.getValue("Wireframe Alpha");
-	float luminSpeed    = timeline.getValue("Wireframe Perlin Speed");
-	float luminDensity  = timeline.getValue("Wireframe Perlin Density");
-	float luminContrast = timeline.getValue("Wireframe Lumin Contrast");
-	float luminExponent = timeline.getValue("Wireframe Lumin Exponent");
-	float luminMin = timeline.getValue("Wireframe Lumin Min");
-	float luminMid = 1-timeline.getValue("Wireframe Lumin Mid");
-	
-	luminosityChannel += luminSpeed;
-	vector<ofFloatColor>& colors = meshBuilder.getMesh().getColors();
-	vector<ofVec3f>& verts = meshBuilder.getMesh().getVertices();
-	float color = 0;
-	int added = 0;
-	for(int i = 0; i < meshBuilder.validVertIndices.size(); i++){
-		
-		ofVec3f& vert = verts[ meshBuilder.validVertIndices[i] ];
-		float alpha = ofNoise(vert.x/luminDensity+luminosityChannel,
-							  vert.y/luminDensity+luminosityChannel,
-							  vert.z/luminDensity+luminosityChannel);
-//		alpha = (alpha - luminMid) * luminContrast + luminMid;
-		alpha = ofClamp((alpha - luminMid) * luminContrast + luminMid, 0, 1.0);
-		//alpha = ofClamp(1 - powf(alpha, luminExponent), 0, 1.0);
-		alpha = ofClamp(powf(alpha, luminExponent), luminMin, 1.0);
-		alpha *= wireframeAlpha;
-		if(meshBuilder.validVertIndices[i] < colors.size()){
-			color += alpha;
-			added++;
-			colors[ meshBuilder.validVertIndices[i] ] = ofFloatColor(alpha);
-		}
-	}
-	
-	//cout << "added " << added << " luminosity colors with an average of " << (color/added) << endl;
-}
-*/
-
 //--------------------------------------------------------------
 void testApp::draw(){
     
 	if(isSceneLoaded){
 		if(!viewComps){
             
-			if(!drawPointcloud && !drawWireframe && !drawMesh){
-				drawMesh = true;
-			}	
-			
 			if(!ofGetMousePressed(0)){
 				timeline.setOffset(ofVec2f(0, ofGetHeight() - timeline.getDrawRect().height));
 			}
             
-			fboRectangle.height = (timeline.getDrawRect().y - fboRectangle.y - 20);
-			fboRectangle.width = 16.0/9.0*fboRectangle.height;
+			ofRectangle fboRenderArea = ofRectangle(0,0,ofGetWidth()-220-300, timeline.getDrawRect().y - 50);
+			ofRectangle naturalVideoRect = ofRectangle(0,0,fbo1.getWidth(),fbo1.getHeight());
+			fboRectangle = naturalVideoRect;
+			fboRectangle.scaleTo(fboRenderArea);
+			fboRectangle.x = 220;
+			fboRectangle.y = 50;
 			
-            float aspect = 1.0*fbo1.getWidth()/fbo1.getHeight();
-            fboRectangle.x = 220;
-            fboRectangle.y = 50;
-            fboRectangle.height = (timeline.getDrawRect().y - fboRectangle.y - 20);
-            fboRectangle.width = aspect*fboRectangle.height;
-            
-            drawGeometry();
-            
-            colorAlignAssistRect = ofRectangle(fboRectangle.x + fboRectangle.width, fboRectangle.y, fboRectangle.width/3, fboRectangle.height/3);
-            //float ratio = colorAlignAssistRect.width / player.getVideoPlayer()->getWidth();
-			ofRectangle depthRect(0,0,640,480);
-            //colorAlignAssistRect.scaleTo(depthRect);
+			ofRectangle colorAssistRenderArea = ofRectangle(0,0,ofGetWidth() - fboRectangle.getMaxX(),timeline.getDrawRect().y - 50);
+			colorAlignAssistRect = naturalVideoRect;
+			colorAlignAssistRect.scaleTo(colorAssistRenderArea);
+			colorAlignAssistRect.x = fboRectangle.getMaxX();
+			colorAlignAssistRect.y = fboRectangle.getMinY();
+			colorAssistRenderArea.height -= colorAlignAssistRect.height;
+			
+			depthAlignAssistRect =  ofRectangle(0,0,640,480);
+            depthAlignAssistRect.scaleTo(colorAssistRenderArea);
 			depthAlignAssistRect.y = colorAlignAssistRect.getMaxY();
 			depthAlignAssistRect.x = colorAlignAssistRect.getX();
-			
+						
+            drawGeometry();
+            
 			if(temporalAlignmentMode){
                 player.getVideoPlayer()->draw(colorAlignAssistRect);
-			}
-			
-//			if(renderTriangulation){
-//				ofPushMatrix();
-//				ofTranslate(colorAlignAssistRect.x, colorAlignAssistRect.y);
-//				ofScale(colorAlignAssistRect.width / player.getVideoPlayer()->getWidth(),
-//						colorAlignAssistRect.height / player.getVideoPlayer()->getHeight());
-//				
-//				ofPushStyle();
-//				ofNoFill();
-//				ofSetColor(255, 0, 0, 100);
-//				triangulate.triangleMesh.drawWireframe();
-//				ofPopStyle();
-//				ofPopMatrix();
-//				colorAlignAssistRect.y += colorAlignAssistRect.height; //offset incase DOF is on
-//			}
-			
-			if(temporalAlignmentMode){
 				depthSequence.getCurrentDepthImage().draw(depthAlignAssistRect);
-            }
+			}
             
 			if(drawDOF && !temporalAlignmentMode){
-				dofBuffer.getTextureReference().draw(colorAlignAssistRect);
+				dofBuffer.getTextureReference().draw(ofRectangle(colorAlignAssistRect.x,
+																 colorAlignAssistRect.getMaxY(),
+																 colorAlignAssistRect.width,
+																 -colorAlignAssistRect.height));
             }
             
 			if(currentlyRendering){
 				char filename[512];
 				int videoFrame = player.getVideoPlayer()->getCurrentFrame();
-//				if(startSequenceAt0){
-//					videoFrame -= timeline.getInFrame();
-//				}
-//				if(renderObjectFiles && renderTriangulation){
-//					sprintf(filename, "%s/save_%05d.obj", saveFolder.c_str(), videoFrame);
-////					ofxObjLoader::save(string(filename),triangulatedMesh);
-//					sprintf(filename, "%s/save_%05d.png", saveFolder.c_str(), player.getVideoPlayer()->getCurrentFrame());
-//					saveImage.setFrompixels(videoPlayer->getPixels)
-//				}
-//				else {
-//					ofFbo& fbo = curbuf == 0 ? fbo1 : fbo2;
-					fbo1.getTextureReference().readToPixels(savingImage.getPixelsRef());
-					sprintf(filename, "%s/save_%05d.png", saveFolder.c_str(), videoFrame);
-					savingImage.saveImage(filename);
+				fbo1.getTextureReference().readToPixels(savingImage.getPixelsRef());
+				sprintf(filename, "%s/save_%05d.png", saveFolder.c_str(), videoFrame);
+				savingImage.mirror(true, false);
+				savingImage.saveImage(filename);
 //				}
 				
 				//cout << "at save time its set to " << hiResPlayer->getCurrentFrame() << endl;
@@ -1457,8 +1182,14 @@ bool testApp::createNewComposition(){
 	}	
 	compBin.listDir();
 	
-	int compNumber = compBin.numFiles()+1;
-    currentCompShortName = "comp" + ofToString(compNumber) + "/";
+	currentCompShortName = ofSystemTextBoxDialog("New Composition Name");
+	ofStringReplace(currentCompShortName, pathDelim, "_");
+	if(currentCompShortName == ""){
+		int compNumber = compBin.numFiles()+1;
+		currentCompShortName = "comp" + ofToString(compNumber);
+	}
+	currentCompShortName += pathDelim;
+
 	currentCompositionDirectory = ofToDataPath( selectedScene->scene.mediaFolder + "/compositions/" + currentCompShortName);
 	ofDirectory compDirectory( currentCompositionDirectory );
     
@@ -1661,8 +1392,8 @@ void testApp::loadDefaults(){
     
     pauseRender = false;
 	drawPointcloud = false;
-	drawWireframe = true;
-	drawMesh = false;
+	drawWireframe = false;
+	drawMesh = true;
     drawDepthDistortion = false;
 	drawGeometryDistortion = false;
 	selfOcclude = false;
@@ -1687,6 +1418,9 @@ void testApp::loadDefaults(){
 void testApp::resetCameraPosition(){
 	cam.setPosition(0, 0, 0);
 	cam.setOrientation(ofQuaternion());
+	cam.rotate(180, ofVec3f(0,1,0));
+	cam.setAnglesFromOrientation();
+	
 	/*
 	cam.setPosition(0, 0, 0);
 	ofMatrix4x4 yflip,xflip;
@@ -1961,6 +1695,10 @@ bool testApp::loadComposition(string compositionDirectory){
     if(alignmentScrubber.ready()){ //failsafe to not leave the temopral alignment mode on
         temporalAlignmentMode = false;
     }
+	else{
+		timeline.setCurrentPage("Time Alignment");
+	}
+
     //    cout << "parings file is " << selectedScene->scene.pairingsFile << " ready? " << alignmentScrubber.ready() << endl;
 	cameraTrack->setup();
     cameraTrack->load();
