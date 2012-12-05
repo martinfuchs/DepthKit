@@ -9,15 +9,17 @@ uniform vec2 principalPoint;
 uniform vec2 fov;
 uniform float farClip;
 uniform float edgeClip;
+uniform float xsimplify;
+uniform float ysimplify;
 
 uniform int useTexture;
 varying float VZPositionValid0;
 void main(void)
 {
     
-    float depth = texture2DRect(depthTex, gl_Vertex.xy + vec2(.5, .5)).r * 65535.;
-    float right = texture2DRect(depthTex, gl_Vertex.xy + vec2(1.5,0)).r * 65535.;
-    float down  = texture2DRect(depthTex, gl_Vertex.xy + vec2(0,1.5)).r * 65535.;
+    float depth = texture2DRect(depthTex, gl_Vertex.xy + vec2(0, 0)).r * 65535.;
+    float right = texture2DRect(depthTex, gl_Vertex.xy + vec2(xsimplify,0)).r * 65535.;
+    float down  = texture2DRect(depthTex, gl_Vertex.xy + vec2(0,ysimplify)).r * 65535.;
     
     VZPositionValid0 = (
                         abs(down - depth) < edgeClip &&
@@ -29,7 +31,7 @@ void main(void)
                         ) ? 1.0 : 0.0;
     
 	vec4 pos = vec4((gl_Vertex.x - principalPoint.x) * depth / fov.x,
-	(gl_Vertex.y - principalPoint.y) * depth / fov.y, depth, 1.0);
+                    (gl_Vertex.y - principalPoint.y) * depth / fov.y, depth, 1.0);
     
     //projective texture on the
     gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * pos;

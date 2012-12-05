@@ -95,8 +95,6 @@
 		E79F58331625C6C9002B2B34 /* ofxTLCameraTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E79F58311625C6C9002B2B34 /* ofxTLCameraTrack.cpp */; };
 		E7A0BA7A166EB7BE00764549 /* dofrange2.frag in Sources */ = {isa = PBXBuildFile; fileRef = E7A0BA78166EB7BE00764549 /* dofrange2.frag */; };
 		E7A0BA7B166EB7BE00764549 /* dofrange2.vert in Sources */ = {isa = PBXBuildFile; fileRef = E7A0BA79166EB7BE00764549 /* dofrange2.vert */; };
-		E7A0BA7E166EBFBA00764549 /* drawdepth.frag in Sources */ = {isa = PBXBuildFile; fileRef = E7A0BA7C166EBFBA00764549 /* drawdepth.frag */; };
-		E7A0BA7F166EBFBA00764549 /* drawdepth.vert in Sources */ = {isa = PBXBuildFile; fileRef = E7A0BA7D166EBFBA00764549 /* drawdepth.vert */; };
 		E7CC5397164D5F7300084827 /* ofxRemoveCocoaMenu.mm in Sources */ = {isa = PBXBuildFile; fileRef = E7CC5396164D5F7300084827 /* ofxRemoveCocoaMenu.mm */; };
 		E7DF56B2147CA3A800A3A9C7 /* ofxTLDepthImageSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DF56AE147CA3A800A3A9C7 /* ofxTLDepthImageSequence.cpp */; };
 		E7DF56B3147CA3A800A3A9C7 /* ofxTLVideoDepthAlignmentScrubber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DF56B0147CA3A800A3A9C7 /* ofxTLVideoDepthAlignmentScrubber.cpp */; };
@@ -378,8 +376,6 @@
 		E79F58321625C6C9002B2B34 /* ofxTLCameraTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLCameraTrack.h; sourceTree = "<group>"; };
 		E7A0BA78166EB7BE00764549 /* dofrange2.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = dofrange2.frag; sourceTree = "<group>"; };
 		E7A0BA79166EB7BE00764549 /* dofrange2.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = dofrange2.vert; sourceTree = "<group>"; };
-		E7A0BA7C166EBFBA00764549 /* drawdepth.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = drawdepth.frag; sourceTree = "<group>"; };
-		E7A0BA7D166EBFBA00764549 /* drawdepth.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = drawdepth.vert; sourceTree = "<group>"; };
 		E7CC5395164D5F7300084827 /* ofxRemoveCocoaMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRemoveCocoaMenu.h; sourceTree = "<group>"; };
 		E7CC5396164D5F7300084827 /* ofxRemoveCocoaMenu.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxRemoveCocoaMenu.mm; sourceTree = "<group>"; };
 		E7DF56AE147CA3A800A3A9C7 /* ofxTLDepthImageSequence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLDepthImageSequence.cpp; sourceTree = "<group>"; };
@@ -639,8 +635,6 @@
 				E7A0BA79166EB7BE00764549 /* dofrange2.vert */,
 				E7F96F0E153E8D0F005841A9 /* unproject.vert */,
 				E7F96F0D153E8D0F005841A9 /* unproject.frag */,
-				E7A0BA7C166EBFBA00764549 /* drawdepth.frag */,
-				E7A0BA7D166EBFBA00764549 /* drawdepth.vert */,
 			);
 			path = shaders;
 			sourceTree = "<group>";
@@ -1415,8 +1409,6 @@
 				E7CC5397164D5F7300084827 /* ofxRemoveCocoaMenu.mm in Sources */,
 				E7A0BA7A166EB7BE00764549 /* dofrange2.frag in Sources */,
 				E7A0BA7B166EB7BE00764549 /* dofrange2.vert in Sources */,
-				E7A0BA7E166EBFBA00764549 /* drawdepth.frag in Sources */,
-				E7A0BA7F166EBFBA00764549 /* drawdepth.vert in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

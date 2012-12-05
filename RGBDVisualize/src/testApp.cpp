@@ -82,19 +82,19 @@ void testApp::setup(){
 	depthSequence.setAutoUpdate(false);
 	
 	fboRectangle = ofRectangle(250, 100, fboWidth, fboHeight);
-    ofFbo::Settings swapSettings;
-    swapSettings.width = fboWidth;
-    swapSettings.height = fboHeight;
-    swapSettings.internalformat = GL_RGB;
-    swapSettings.numSamples = 0;
-    swapSettings.useDepth = true;
-    swapSettings.useStencil = true;
-    swapSettings.depthStencilAsTexture = true;
-    swapSettings.textureTarget	= ofGetUsingArbTex() ? GL_TEXTURE_RECTANGLE_ARB : GL_TEXTURE_2D;
+    ofFbo::Settings dofBuffersSettings;
+    dofBuffersSettings.width = fboWidth;
+    dofBuffersSettings.height = fboHeight;
+    dofBuffersSettings.internalformat = GL_RGB;
+    dofBuffersSettings.numSamples = 0;
+    dofBuffersSettings.useDepth = true;
+    dofBuffersSettings.useStencil = true;
+    dofBuffersSettings.depthStencilAsTexture = true;
+    dofBuffersSettings.textureTarget = ofGetUsingArbTex() ? GL_TEXTURE_RECTANGLE_ARB : GL_TEXTURE_2D;
     
-    //swapFbo.allocate(fboWidth, fboHeight, GL_RGBA, 4);
-    swapFbo.allocate(swapSettings);
-    dofBuffer.allocate(fboWidth, fboHeight, GL_RGB);
+    //swapFbo.allocate(swapSettings);
+    dofBuffer.allocate(dofBuffersSettings);
+    swapFbo.allocate(fboWidth, fboHeight, GL_RGB);
     fbo1.allocate(fboWidth, fboHeight, GL_RGBA, 4);
 	curbuf = 0;
     
@@ -399,14 +399,14 @@ void testApp::drawGeometry(){
         if(drawDOF){
             
             //render DOF
-            swapFbo.begin();
+            dofBuffer.begin();
             ofClear(0,0,0,0);
             cam.begin(renderFboRect);
             glEnable(GL_DEPTH_TEST);
             renderer.drawMesh();
             glDisable(GL_DEPTH_TEST);
             cam.end();
-            swapFbo.end();
+            dofBuffer.end();
             
             float dofFocalDistance = timeline.getValue("DOF Distance");
             dofFocalDistance*=dofFocalDistance;
@@ -414,7 +414,7 @@ void testApp::drawGeometry(){
             dofFocalRange*=dofFocalRange;
             float dofBlurAmount = timeline.getValue("DOF Blur");
             
-
+/*
             //DRAW THE DOF B&W BUFFER
             dofBuffer.begin();
             ofClear(255,255,255,255);
@@ -445,7 +445,8 @@ void testApp::drawGeometry(){
 //            cam.end();
             
             dofBuffer.end();
-
+*/
+            
             
             //composite
             swapFbo.begin();
@@ -464,9 +465,12 @@ void testApp::drawGeometry(){
             fbo1.getTextureReference().bind();
             
             glActiveTexture(GL_TEXTURE1_ARB);
-            dofBuffer.getTextureReference().bind();
+            dofBuffer.getDepthTexture().bind();
             
             dofBlur.setUniform2f("sampleOffset", dofBlurAmount, 0);
+            dofBlur.setUniform1f("focalDistance", dofFocalDistance);
+            dofBlur.setUniform1f("focalRange", dofFocalRange);
+            
             //draw a quad the size of the frame
             glBegin(GL_QUADS);
             
@@ -491,7 +495,7 @@ void testApp::drawGeometry(){
             
             //deactive and clean up
             glActiveTexture(GL_TEXTURE1_ARB);
-            dofBuffer.getTextureReference().unbind();
+            dofBuffer.getDepthTexture().unbind();
             
             glActiveTexture(GL_TEXTURE0_ARB);
             fbo1.getTextureReference().unbind();
@@ -518,7 +522,7 @@ void testApp::drawGeometry(){
             swapFbo.getTextureReference().bind();
             
             glActiveTexture(GL_TEXTURE1_ARB);
-            dofBuffer.getTextureReference().bind();
+            dofBuffer.getDepthTexture().bind();
                     
             dofBlur.setUniform2f("sampleOffset", 0, dofBlurAmount);
             glBegin(GL_QUADS);
@@ -544,7 +548,7 @@ void testApp::drawGeometry(){
             
             //deactive and clean up
             glActiveTexture(GL_TEXTURE1_ARB);
-            dofBuffer.getTextureReference().unbind();
+            dofBuffer.getDepthTexture().unbind();
             
             glActiveTexture(GL_TEXTURE0_ARB);
             swapFbo.getTextureReference().unbind();
@@ -1064,10 +1068,19 @@ void testApp::draw(){
 			}
             
 			if(drawDOF && !temporalAlignmentMode){
-				dofBuffer.getTextureReference().draw(ofRectangle(colorAlignAssistRect.x,
+                dofRange.begin();
+                float dofFocalDistance = timeline.getValue("DOF Distance");
+                dofFocalDistance*=dofFocalDistance;
+                float dofFocalRange = timeline.getValue("DOF Range");
+                dofFocalRange*=dofFocalRange;
+                dofRange.setUniform1f("focalDistance", dofFocalDistance);
+                dofRange.setUniform1f("focalRange", dofFocalRange);
+				dofBuffer.getDepthTexture().draw(ofRectangle(colorAlignAssistRect.x,
 																 colorAlignAssistRect.getMaxY(),
 																 colorAlignAssistRect.width,
 																 -colorAlignAssistRect.height));
+                dofRange.end();
+                
             }
             
 			if(currentlyRendering){

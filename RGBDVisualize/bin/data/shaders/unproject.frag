@@ -7,7 +7,7 @@ varying float VZPositionValid0;
 
 void main()
 {
-    if(VZPositionValid0 < 0.999){
+    if(VZPositionValid0 < 0.9999999){
     	discard;
     }
     

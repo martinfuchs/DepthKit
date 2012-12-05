@@ -4,8 +4,22 @@
 uniform sampler2DRect tex;
 uniform sampler2DRect range;
 uniform vec2 sampleOffset;
+uniform float focalDistance;
+uniform float focalRange;
 
 float weights[21];
+
+float LinearizeDepth(float zoverw){
+    float n = 1.0; // camera z near
+    float f = 20000.0; // camera z far
+    return (2.0 * n) / (f + n - zoverw * (f - n));
+}
+
+float FocalValue(vec2 pos){
+    float depth = LinearizeDepth( texture2DRect(range, pos).r ) * 20000.;
+    return min( abs(depth  - focalDistance) / focalRange, 1.0);
+}
+
 void main()
 {
 	weights[0] = 0.0091679276560113852;
@@ -31,17 +45,19 @@ void main()
 	weights[20] = 0.00916792765601138;
 
 	vec3 sum = vec3(0.0, 0.0, 0.0);
-    vec4 rangeTexel = texture2DRect(range, gl_TexCoord[1].st);
-    vec2 blurOffset = sampleOffset * rangeTexel.r;
+//    vec4 rangeTexel = texture2DRect(range, gl_TexCoord[1].st);
+    float rangeTexel = FocalValue( gl_TexCoord[1].st);
+    vec2 blurOffset = sampleOffset * rangeTexel;
 	vec2 baseOffset = -10.0 * blurOffset;
 	vec2 offset = vec2( 0.0, 0.0 );
-	
+ 
 	for( int s = 0; s < 21; ++s ) {
-        vec4 texel = texture2DRect( tex, gl_TexCoord[0].st + baseOffset + offset ) * (1. - abs( texture2DRect( range, gl_TexCoord[1].st + baseOffset + offset) - rangeTexel.r) );
+        vec4 texel = texture2DRect( tex, gl_TexCoord[0].st + baseOffset + offset ) * (1. - abs( FocalValue(gl_TexCoord[1].st + baseOffset + offset)  - rangeTexel) );
         sum += texel.rgb * weights[s];
 		offset += blurOffset;
 	}
     
 	gl_FragColor.rgb = sum * gl_Color.rgb;// * rangeTexel.g; //attenuate for fog
     gl_FragColor.a = gl_Color.a;
+    
 }
