@@ -15,7 +15,6 @@ varying float VInFocus0;
 varying float VZPositionValid0;
 void main(void)
 {
-
 	
 	if(project == 1){
 		vec4 pos = vec4((gl_Vertex.x - principalPoint.x) * gl_Vertex.z / fov.x,

@@ -37,7 +37,7 @@ void main()
 	vec2 offset = vec2( 0.0, 0.0 );
 	
 	for( int s = 0; s < 21; ++s ) {
-        vec4 texel = texture2DRect( tex, gl_TexCoord[0].st + baseOffset + offset );
+        vec4 texel = texture2DRect( tex, gl_TexCoord[0].st + baseOffset + offset ) * (1. - abs( texture2DRect( range, gl_TexCoord[1].st + baseOffset + offset) - rangeTexel.r) );
         sum += texel.rgb * weights[s];
 		offset += blurOffset;
 	}

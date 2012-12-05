@@ -82,9 +82,20 @@ void testApp::setup(){
 	depthSequence.setAutoUpdate(false);
 	
 	fboRectangle = ofRectangle(250, 100, fboWidth, fboHeight);
-    swapFbo.allocate(fboWidth, fboHeight, GL_RGBA, 4);
-    dofBuffer.allocate(fboWidth, fboHeight, GL_RGB, 4);
-    fbo1.allocate(fboWidth, fboHeight, GL_RGBA);
+    ofFbo::Settings swapSettings;
+    swapSettings.width = fboWidth;
+    swapSettings.height = fboHeight;
+    swapSettings.internalformat = GL_RGB;
+    swapSettings.numSamples = 0;
+    swapSettings.useDepth = true;
+    swapSettings.useStencil = true;
+    swapSettings.depthStencilAsTexture = true;
+    swapSettings.textureTarget	= ofGetUsingArbTex() ? GL_TEXTURE_RECTANGLE_ARB : GL_TEXTURE_2D;
+    
+    //swapFbo.allocate(fboWidth, fboHeight, GL_RGBA, 4);
+    swapFbo.allocate(swapSettings);
+    dofBuffer.allocate(fboWidth, fboHeight, GL_RGB);
+    fbo1.allocate(fboWidth, fboHeight, GL_RGBA, 4);
 	curbuf = 0;
     
     fbo1.begin();
@@ -217,7 +228,7 @@ void testApp::setup(){
 }
 
 void testApp::loadShaders(){
-    dofRange.load("shaders/dofrange");
+    dofRange.load("shaders/dofrange2");
 	cout << "LOADING DOF BLUR" << endl;
     dofBlur.load("shaders/dofblur");
 	cout << "LOADING DOF BLURANGE" << endl;
@@ -227,7 +238,7 @@ void testApp::loadShaders(){
     dofBlur.setUniform1i("range", 1);
     dofBlur.end();
 
-//    renderer.reloadShader();
+    renderer.reloadShader();
 
 }
 
@@ -244,8 +255,9 @@ void testApp::populateTimelineElements(){
 	
     //rendering
     timeline.addPage("Geometry", true);
-    timeline.addCurves("Simplify", currentCompositionDirectory + "simplify.xml", ofRange(1, 8), 2);
-//    timeline.addCurves("Edge Snip", currentCompositionDirectory + "edgeSnip.xml", ofRange(1.0, 6000), 6000 );
+    timeline.addCurves("Simplify X", currentCompositionDirectory + "simplifyx.xml", ofRange(1, 8), 2);
+    timeline.addCurves("Simplify Y", currentCompositionDirectory + "simplifyy.xml", ofRange(1, 8), 2);
+    timeline.addCurves("Edge Clip", currentCompositionDirectory + "edgeClip.xml", ofRange(1.0, 1000), 1000 );
     timeline.addCurves("Z Threshold", currentCompositionDirectory + "zThreshold.xml", ofRange(1.0, sqrtf(6000)), sqrtf(6000) );
 	timeline.addCurves("X Rotate", currentCompositionDirectory + "meshXRot.xml", ofRange(-360,360), 0.);
     timeline.addCurves("Y Rotate", currentCompositionDirectory + "meshYRot.xml", ofRange(-360,360), 0.);
@@ -328,28 +340,18 @@ void testApp::drawGeometry(){
 		glEnable(GL_POINT_SMOOTH);
 		
 		cam.begin(renderFboRect);
-//		player.getVideoPlayer()->getTextureReference().bind();
-		
 		
 		ofPushMatrix();
 		ofPushStyle();
-//		if(currentMirror){
-//			ofScale(-1,1, 1);
-//		}
-//		else{
-//			ofScale(1,1, 1);
-//		}
 		ofEnableAlphaBlending();
 
 		bool usedDepth = false;
 		if(selfOcclude){
 			ofTranslate(0, 0, 1);
-			dofRange.begin();
-			dofRange.setUniform1f("blackout", 0.);
-			dofRange.setUniform1i("project", 0);
-			renderer.drawMesh(dofRange);
-//			renderer.getMesh().draw();
-			dofRange.end();			
+            renderer.useTexture = false;
+			renderer.drawMesh();
+            renderer.useTexture = true;
+            
 			ofTranslate(0, 0, -1);
 			usedDepth = true;
 		}
@@ -357,19 +359,9 @@ void testApp::drawGeometry(){
 		ofTranslate(0,0,-.5);
 		if(drawMesh && meshAlpha > 0){
 			ofSetColor(255*meshAlpha);
-			//renderer.getMesh().draw();
 			renderer.drawMesh();
 			usedDepth = true;
 		}
-		
-//		if(drawScanlines){
-//			ofTranslate(0,0,-3);
-//			float scanlineThickness = timeline.getValue("scanline thickness");
-//			ofSetLineWidth(scanlineThickness);
-//			ofEnableBlendMode(OF_BLENDMODE_SUBTRACT);
-//			scanlineMesh.setMode(OF_PRIMITIVE_LINE_STRIP);
-//			scanlineMesh.draw();
-//		}
 
 		if(!usedDepth){
 			glDisable(GL_DEPTH_TEST);
@@ -378,29 +370,13 @@ void testApp::drawGeometry(){
 		ofEnableBlendMode(blendMode);
 
 		if(drawWireframe && wireAlpha > 0){
-			
-			if(selfOcclude){
-
-				ofTranslate(0, 0, 1);
-				dofRange.begin();
-				dofRange.setUniform1f("blackout", 0.);
-				dofRange.setUniform1i("project", 0);
-				renderer.drawMesh(dofRange);
-				//			renderer.getMesh().draw();
-				dofRange.end();
-				ofTranslate(0, 0, -1);
-				usedDepth = true;				
-			}
-
 			ofTranslate(0,0,-.5);
 			ofSetColor(255*wireAlpha);
             float thickness = timeline.getValue("Wireframe Thickness");
             thickness *= thickness;
 			ofSetLineWidth(thickness);
-//			renderer.getMesh().drawWireframe();
 			renderer.drawWireFrame();
 		}
-		
 		
 		if(drawPointcloud && pointAlpha > 0){
 			ofTranslate(0,0,-.5);
@@ -410,16 +386,6 @@ void testApp::drawGeometry(){
 			renderer.drawPointCloud();
 			
 		}
-		
-//
-//		if(drawParticles){
-//			float particleAlpha = timeline.getValue("particle fade");
-////			cout << "particle fade " << particleAlpha << endl;
-////			ofSetColor(255*particleAlpha);
-////			ofSetColor(0);
-//			glPointSize(timeline.getValue("particle size"));
-//			particleRenderer.mesh.drawVertices();
-//		}
 		
 		ofPopStyle();
 		ofPopMatrix();
@@ -431,52 +397,55 @@ void testApp::drawGeometry(){
 		//END NEW STYLE
 
         if(drawDOF){
+            
             //render DOF
+            swapFbo.begin();
+            ofClear(0,0,0,0);
+            cam.begin(renderFboRect);
+            glEnable(GL_DEPTH_TEST);
+            renderer.drawMesh();
+            glDisable(GL_DEPTH_TEST);
+            cam.end();
+            swapFbo.end();
+            
             float dofFocalDistance = timeline.getValue("DOF Distance");
             dofFocalDistance*=dofFocalDistance;
             float dofFocalRange = timeline.getValue("DOF Range");
             dofFocalRange*=dofFocalRange;
             float dofBlurAmount = timeline.getValue("DOF Blur");
-//            float fogNear = timeline.getValue("Fog Near");
-//            float fogRange = timeline.getValue("Fog Range");
             
+
             //DRAW THE DOF B&W BUFFER
             dofBuffer.begin();
             ofClear(255,255,255,255);
             
-            cam.begin(renderFboRect);
-            glEnable(GL_DEPTH_TEST);
-            
+            //cam.begin(renderFboRect);
+//            glEnable(GL_DEPTH_TEST);
             
             ofDisableAlphaBlending();
-//			if(!hasRunRendererOnce){
 
-
-				dofRange.begin();
-				dofRange.setUniform1f("focalDistance", dofFocalDistance);
-				dofRange.setUniform1f("focalRange", dofFocalRange);
-				dofRange.setUniform1f("blackout", 1.);
-				dofRange.setUniform1i("project", 0);
-				ofPushMatrix();
-//				if(currentMirror){
-//					ofScale(-1,-1, 1);
-//				}
-//				else{
-//					ofScale( 1,-1, 1);
-//				}
-				
-	            //renderer.getMesh().drawFaces();
-				renderer.drawMesh(dofRange);
-				ofPopMatrix();
-				dofRange.end();
-				
-				hasRunRendererOnce = true;
-//			}
+            dofRange.begin();
+            dofRange.setUniform1f("focalDistance", dofFocalDistance);
+            dofRange.setUniform1f("focalRange", dofFocalRange);
+//            dofRange.setUniform1f("blackout", 1.);
+//            dofRange.setUniform1i("project", 0);
+            //dofRange.setUniformTexture("depthTex", swapFbo.getDepthTexture(), 0);
+            dofRange.setUniform1i("depthTex", 0);
             
-            glDisable(GL_DEPTH_TEST);
-            cam.end();
+            ofPushMatrix();
+            
+            swapFbo.getDepthTexture().draw(0,0);
+            //renderer.getMesh().drawFaces();
+            //renderer.drawMesh();
+//            renderer.getMesh().draw();
+            ofPopMatrix();
+            dofRange.end();
+            
+//            glDisable(GL_DEPTH_TEST);
+//            cam.end();
             
             dofBuffer.end();
+
             
             //composite
             swapFbo.begin();
@@ -653,7 +622,7 @@ void testApp::keyPressed(int key){
 	if(key == 'o'){
 		timeline.setCurrentTimeToOutPoint();
 	}
-	
+
     if(key == 'S'){
         loadShaders();
     }
@@ -799,7 +768,7 @@ void testApp::update(){
 			if(player.hasHighresVideo()){
 				player.useHiresVideo();
 				player.getVideoPlayer()->setVolume(0);
-				renderer.setRGBTexture(player.getVideoPlayer());
+				renderer.setRGBTexture(*player.getVideoPlayer());
 //				meshBuilder.setTexture(*player.getVideoPlayer());
 			}
 			
@@ -905,19 +874,18 @@ void testApp::update(){
 		rendererNeedsUpdate = true;
 	}
 	
-    //renderer.edgeCull = timeline.getValue("Edge Snip");
-	
+    renderer.edgeClip = timeline.getValue("Edge Clip");
 	renderer.meshRotate.x = timeline.getValue("X Rotate");
     renderer.meshRotate.y = timeline.getValue("Y Rotate");
     renderer.meshRotate.z = timeline.getValue("Z Rotate");
-    int simplification = int( timeline.getValue("Simplify") );
+    ofVec2f simplification = ofVec2f( timeline.getValue("Simplify X"), timeline.getValue("Simplify Y") );
 
 //	if(renderingMesh != renderTriangulation){
 //		renderingMesh = renderTriangulation;
 //		rendererNeedsUpdate = true;
 //	}
 	
-	if(renderer.getSimplification() != simplification){
+	if(renderer.getSimplification().x != simplification.x || renderer.getSimplification().y != simplification.y){
     	renderer.setSimplification(simplification);
 //		meshBuilder.setSimplification(simplification);
 		rendererNeedsUpdate = true;
@@ -1214,7 +1182,7 @@ bool testApp::loadAssetsForScene(SceneButton* sceneButton){
 //	meshBuilder.setup(player.getScene().calibrationFolder);
 	cam.setFov(renderer.getRGBCalibration().getDistortedIntrinsics().getFov().y);
 	
-	renderer.setRGBTexture(player.getVideoPlayer());
+	renderer.setRGBTexture(*player.getVideoPlayer());
 	renderer.setDepthImage(player.getDepthPixels());
 //	meshBuilder.setTexture(*player.getVideoPlayer());
 //	meshBuilder.setDepthPixels(player.getDepthPixels());
@@ -1773,7 +1741,7 @@ void testApp::finishRender(){
 	
 	player.useLowResVideo();
     //render is done
-	renderer.setRGBTexture(player.getVideoPlayer());
+	renderer.setRGBTexture(*player.getVideoPlayer());
 //	meshBuilder.setTexture(*player.getVideoPlayer());
 	
 	videoTrack->setPlayer(player.getVideoPlayer());

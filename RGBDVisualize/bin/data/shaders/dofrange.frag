@@ -2,7 +2,6 @@
 #extension GL_ARB_texture_rectangle : enable
 
 varying float VInFocus0;
-//hack for self-occlude
 varying float VZPositionValid0;
 uniform float blackout;
 
