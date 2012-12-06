@@ -1,20 +1,34 @@
 #!/bin/bash
 
+# Dependencies for RGBDToolkit
+
 #make sure you are in the RGBDToolkit project when you run this script
+
 cd ../../addons
-git clone https://github.com/obviousjim/ofxCameraTrack
-git clone https://github.com/Flightphase/ofxGameCamera
-git clone https://github.com/Flightphase/ofxRange
-git clone https://github.com/Flightphase/ofxTimeline
-git clone https://github.com/Flightphase/ofxTween
-git clone https://github.com/Flightphase/ofxMSAInteractiveObject
-git clone https://github.com/Flightphase/ofxTextInputField
-git clone https://github.com/Flightphase/ofxSimpleGuiToo
-git clone https://github.com/obviousjim/ofxRGBDepth
-git clone https://github.com/obviousjim/ofxCv
-git clone https://github.com/obviousjim/ofxKinect
-git clone https://github.com/obviousjim/ofxOpenNI
-git clone https://github.com/obviousjim/ofxMSATimer
+
+#passing no arguments means read only
+if [ -z $1 ]; then
+    PREFIX="git clone https://github.com/"
+	echo "Cloning read-only"
+else
+    PREFIX="git clone git@github.com:"
+	echo "Cloning writable"
+fi
+
+
+${PREFIX}Flightphase/ofxGameCamera
+${PREFIX}Flightphase/ofxRange
+${PREFIX}Flightphase/ofxTween
+${PREFIX}Flightphase/ofxMSAInteractiveObject
+${PREFIX}Flightphase/ofxTextInputField
+${PREFIX}Flightphase/ofxSimpleGuiToo
+${PREFIX}obviousjim/ofxRGBDepth
+${PREFIX}obviousjim/ofxCv
+${PREFIX}obviousjim/ofxKinect
+${PREFIX}obviousjim/ofxOpenNI
+${PREFIX}obviousjim/ofxMSATimer
+${PREFIX}YCAM/ofxTimecode
+${PREFIX}YCAM/ofxTimeline
 
 cd ofxCv/
 git checkout opencv-2.3
