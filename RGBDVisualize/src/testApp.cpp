@@ -414,40 +414,6 @@ void testApp::drawGeometry(){
             dofFocalRange*=dofFocalRange;
             float dofBlurAmount = timeline.getValue("DOF Blur");
             
-/*
-            //DRAW THE DOF B&W BUFFER
-            dofBuffer.begin();
-            ofClear(255,255,255,255);
-            
-            //cam.begin(renderFboRect);
-//            glEnable(GL_DEPTH_TEST);
-            
-            ofDisableAlphaBlending();
-
-            dofRange.begin();
-            dofRange.setUniform1f("focalDistance", dofFocalDistance);
-            dofRange.setUniform1f("focalRange", dofFocalRange);
-//            dofRange.setUniform1f("blackout", 1.);
-//            dofRange.setUniform1i("project", 0);
-            //dofRange.setUniformTexture("depthTex", swapFbo.getDepthTexture(), 0);
-            dofRange.setUniform1i("depthTex", 0);
-            
-            ofPushMatrix();
-            
-            swapFbo.getDepthTexture().draw(0,0);
-            //renderer.getMesh().drawFaces();
-            //renderer.drawMesh();
-//            renderer.getMesh().draw();
-            ofPopMatrix();
-            dofRange.end();
-            
-//            glDisable(GL_DEPTH_TEST);
-//            cam.end();
-            
-            dofBuffer.end();
-*/
-            
-            
             //composite
             swapFbo.begin();
             ofClear(0.0,0.0,0.0,0.0);
@@ -480,7 +446,7 @@ void testApp::drawGeometry(){
             glVertex2f(0, 0);
             
             glMultiTexCoord2d(GL_TEXTURE0_ARB, renderFboRect.width, 0);
-            glMultiTexCoord2d(GL_TEXTURE1_ARB, renderFboRect.width, 0);		
+            glMultiTexCoord2d(GL_TEXTURE1_ARB, renderFboRect.width, 0);
             glVertex2f(renderFboRect.width, 0);
             
             glMultiTexCoord2d(GL_TEXTURE0_ARB, renderFboRect.width, renderFboRect.height);
@@ -488,7 +454,7 @@ void testApp::drawGeometry(){
             glVertex2f(renderFboRect.width, renderFboRect.height);
             
             glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, renderFboRect.height);
-            glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, renderFboRect.height);		
+            glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, renderFboRect.height);
             glVertex2f(0, renderFboRect.height);
             
             glEnd();
@@ -533,7 +499,7 @@ void testApp::drawGeometry(){
             glVertex2f(0, 0);
             
             glMultiTexCoord2d(GL_TEXTURE0_ARB, renderFboRect.width, 0);
-            glMultiTexCoord2d(GL_TEXTURE1_ARB, renderFboRect.width, 0);		
+            glMultiTexCoord2d(GL_TEXTURE1_ARB, renderFboRect.width, 0);
             glVertex2f(renderFboRect.width, 0);
             
             glMultiTexCoord2d(GL_TEXTURE0_ARB, renderFboRect.width, renderFboRect.height);
@@ -541,7 +507,7 @@ void testApp::drawGeometry(){
             glVertex2f(renderFboRect.width, renderFboRect.height);
             
             glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, renderFboRect.height);
-            glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, renderFboRect.height);		
+            glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, renderFboRect.height);
             glVertex2f(0, renderFboRect.height);
             
             glEnd();
@@ -663,6 +629,10 @@ void testApp::keyPressed(int key){
     else if(key == '7'){
 	    timeline.setCurrentPage(8);
     }
+    
+    if(key == 'J'){
+        cameraTrack->jumpToTarget();
+    }
 }
 
 //--------------------------------------------------------------
@@ -730,12 +700,7 @@ void testApp::update(){
     cam.rollSpeed = cameraRollSpeed;
     
 	if(startRenderMode){
-//		luminosityChannel = 0;
         startRenderMode = false;
-//        drawLightPositions = false; //force light pos off
-//		continuallyUpdateParticles = false;
-		
-		//timeline.disable();
 		
         fbo1.begin();
         ofClear(0,0,0,0);
@@ -777,11 +742,13 @@ void testApp::update(){
 			}
 			
             cameraTrack->setTimelineInOutToTrack();
-			//currentRenderFrame = timeline.getInFrame();
-			//player.getVideoPlayer()->setFrame(timeline.getInFrame());
+
 			player.getVideoPlayer()->setPosition(timeline.getPercentComplete());
 			player.getVideoPlayer()->update();
+            timeline.setPercentComplete(player.getVideoPlayer()->getPosition());
             currentLockCamera = cameraTrack->lockCameraToTrack = true;
+            cameraTrack->jumpToTarget();
+
 			
         }
 		cout << "starting render mode and current render frame is " << currentRenderFrame << endl;
@@ -803,7 +770,6 @@ void testApp::update(){
 	if(currentLockCamera != cameraTrack->lockCameraToTrack){
 		if(!currentLockCamera){
 			cam.setAnglesFromOrientation();
-//			cam.setPosition(
 //			cam.targetNode.setPosition(cam.getPosition());
 //			cam.targetNode.setOrientation(cam.getOrientationQuat());
 //			cam.rotationX = cam.targetXRot = -cam.getHeading();
@@ -849,28 +815,26 @@ void testApp::update(){
 	else {
 		
 		if(shouldSaveCameraPoint){
-			//cameraTrack->getCameraTrack().sample(timeline.getCurrentFrame());
 			cameraTrack->addKeyframe();
 		}
 		
 		if(shouldResetCamera){
 			resetCameraPosition();
-//			shouldResetCamera = false;
 		}
 		else{
 			cam.applyRotation = cam.applyTranslation = true;
 		}
 
 		if(captureFramePair && temporalAlignmentMode){
+            if(alignmentScrubber.getPairs().size() == 1){
+                ofSystemAlertDialog("You have just set a second Color/Depth pair. Most of the time you just need one. If you are having alignment troubles, make sure to delete the existing pair first before setting a second one. You can delete the pairs in the Time Alignment tab by selecting them and hitting 'delete' key.");
+            }
 			alignmentScrubber.registerCurrentAlignment();
 			alignmentScrubber.save();
             temporalAlignmentMode = false;
 		}
 	}
 
-//	if(currentlyRendering){
-//		cout << "before rgbdplayer update frame " << player.getVideoPlayer()->getCurrentFrame() << endl;
-//	}
 
 	bool rendererNeedsUpdate = false;
 	player.update();
