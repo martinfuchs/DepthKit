@@ -4,7 +4,6 @@
 #include "ofxRGBDRenderer.h"
 #include "ofxRGBDMeshBuilder.h"
 #include "ofxRGBDVideoDepthSequence.h"
-//#include "ofxDepthImageRecorder.h"
 #include "ofxGameCamera.h"
 #include "ofxTimeline.h"
 #include "ofxTLVideoTrack.h"
@@ -16,8 +15,7 @@
 #include "ofxRGBDScene.h"
 #include "ofxRGBDPlayer.h"
 #include "ofxGui.h"
-//#include "ofxDelaunay.h"
-//#include "ParticleRenderer.h"
+//#include "ofxUI.h"
 
 typedef struct {
 	ofxRGBDScene scene;
@@ -46,7 +44,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	void update();
 	void draw();
 
-	void keyPressed  (int key);
+	void keyPressed(int key);
 	void keyReleased(int key);
 	void mouseMoved(int x, int y );
 	void mouseDragged(int x, int y, int button);
@@ -81,9 +79,11 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	bool loadComposition(string compositionDirectory);
 	bool loadAssetsForScene(SceneButton* scene);
     void resetCameraPosition();
-    	
+    void checkReallocateFrameBuffers();
+    void allocateFrameBuffers();
+    
     ofxPanel gui;
-    ofxToggle pauseRender;
+    
     ofxToggle drawPointcloud;
     ofxToggle drawWireframe;
     ofxToggle drawMesh;
@@ -92,9 +92,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle selfOcclude;
     ofxToggle drawDOF;
     ofxToggle drawDebug;
-	
+    
     ofxButton shouldResetCamera;
-//	ofxButton setCameraToRGBPerspective;
     ofxFloatSlider cameraSpeed;
     ofxFloatSlider cameraRollSpeed;
     ofxButton shouldSaveCameraPoint;
@@ -107,11 +106,13 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxFloatSlider videoOutPercent;
     
     ofxToggle currentMirror;
-	ofxFloatSlider currentXMultiplyShift;
-    ofxFloatSlider currentYMultiplyShift;
-    ofxFloatSlider currentXScale;
-    ofxFloatSlider currentYScale;
-
+    ofxToggle lockTo720p;
+    ofxToggle lockTo1080p;
+//    ofxToggle customSize;
+    ofxIntSlider customWidth;
+    ofxIntSlider customHeight;
+    ofxButton setCurrentSize;
+    
     ofxToggle undistortImages;
     ofxToggle fillHoles;
     ofxIntSlider currentHoleKernelSize;
@@ -119,53 +120,6 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle temporalAlignmentMode;
     ofxButton captureFramePair;
 
-	//Adding triangulation stuff
-//	ofxToggle renderTriangulation;
-//	ofxDelaunay triangulate;
-//	ofxToggle enableLighting;
-//	ofxToggle drawLightPositions;
-//	ofxToggle renderObjectFiles;
-//	ofxToggle startSequenceAt0;
-//	ofxToggle drawParticles;
-//	ofxToggle continuallyUpdateParticles;
-//	ofxToggle drawScanlines;
-//	ofxToggle wireframeLuminosity;
-	
-//	int currentScanlineMaxAlpha;
-//	int currentScanlineMinAlpha;
-//	float currentScanlineOpacity;
-//	float currentScanlineThickness;
-//	float currentScanlineXStep;
-//	float currentScanlineYStep;
-//	float currentScanlineQuiver;
-//	float luminosityChannel;
-	
-//	ofLight light1;
-//	ofLight light2;
-//	ofLight light3;
-	
-//	void updateScanlineMesh();
-//	void updateParticleSystem();
-//	void updatePerlinLuminosity();
-//	void updateTriangulatedMesh();
-//	ofMesh triangulatedMesh;
-//	ofMesh scanlineMesh;
-	
-//	vector<cv::Point2f> featurePoints;
-//    vector<ofVec3f> faceNormals;
-//    vector<ofVec3f> faceCenters;
-//	vector<ofVec3f> innerPoints;
-//	vector<ofVec3f> backPoints;
-//    vector<ofVec3f> backInnerPoints;
-	
-//	bool renderingMesh;
-//	float currentMaxFeatures;
-//	float currentFeatureQuality;
-//	float currentMinFeatureDistance;
-//	float currentMaxEdgeLength;
-
-	//END triangulation stuff
-	
     bool startRenderMode;
 	//MSA Object delegate
     ofxMSAInteractiveObjectWithDelegate* mediaBinButton;
@@ -216,11 +170,10 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	
 	ofxRGBDPlayer player;
 	ofxRGBDRenderer renderer;
-//	ofxRGBDMeshBuilder meshBuilder;
 	ofxTLDepthImageSequence depthSequence;
 	ofxTLVideoDepthAlignmentScrubber alignmentScrubber;
 	ofxDepthHoleFiller holeFiller;
-	
+
 	ofRectangle fboRectangle;    
     ofRectangle depthAlignAssistRect;
     ofRectangle colorAlignAssistRect;
@@ -231,12 +184,9 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofShader dofRange;
     ofShader dofBlur;
 
-    ofFbo swapFbo; //used for temp drawing
 	ofFbo fbo1;
-    ofFbo fbo2;
-    ofFbo dofBuffer;
-    ofFbo dofBlurBuffer;
-    int curbuf;
+    ofFbo swapFbo; //used for temp drawing
+    ofFbo dofBuffer; //used to get a solid depth texture
 
 	ofImage savingImage;
 	string saveFolder;

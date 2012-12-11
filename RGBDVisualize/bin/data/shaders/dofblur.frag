@@ -9,19 +9,25 @@ uniform float focalRange;
 
 float weights[21];
 
+
+//converts depth value to normalized, linear, between near and far plane
 float LinearizeDepth(float zoverw){
+    //todo: take near and far as uniforms
     float n = 1.0; // camera z near
     float f = 20000.0; // camera z far
     return (2.0 * n) / (f + n - zoverw * (f - n));
 }
 
-float FocalValue(vec2 pos){
+//translate a Depth texel into a focal value based on our
+float FocalValue(vec2 pos)
+{
     float depth = LinearizeDepth( texture2DRect(range, pos).r ) * 20000.;
     return min( abs(depth  - focalDistance) / focalRange, 1.0);
 }
 
 void main()
 {
+    //Gaussian Kernel
 	weights[0] = 0.0091679276560113852;
 	weights[1] = 0.014053461291849008;
 	weights[2] = 0.020595286319257878;
@@ -45,19 +51,22 @@ void main()
 	weights[20] = 0.00916792765601138;
 
 	vec3 sum = vec3(0.0, 0.0, 0.0);
-//    vec4 rangeTexel = texture2DRect(range, gl_TexCoord[1].st);
     float rangeTexel = FocalValue( gl_TexCoord[1].st);
     vec2 blurOffset = sampleOffset * rangeTexel;
 	vec2 baseOffset = -10.0 * blurOffset;
 	vec2 offset = vec2( 0.0, 0.0 );
- 
-	for( int s = 0; s < 21; ++s ) {
+//    int samples = (fast == 1) ? 11 : 21;
+    int samples = 21;
+    //iterato through a number of samples
+	for( int s = 0; s < samples; ++s ) {
+        //sample the surrounding pixels and blend them into the total with the gaussian weight
+        //if fast is off, we weight the blur amount by the focal difference from the center point
+        //which helps make in focus items 'pop' and avoid color bleeding between focal depths
         vec4 texel = texture2DRect( tex, gl_TexCoord[0].st + baseOffset + offset ) * (1. - abs( FocalValue(gl_TexCoord[1].st + baseOffset + offset)  - rangeTexel) );
         sum += texel.rgb * weights[s];
 		offset += blurOffset;
 	}
     
-	gl_FragColor.rgb = sum * gl_Color.rgb;// * rangeTexel.g; //attenuate for fog
+	gl_FragColor.rgb = sum * gl_Color.rgb;
     gl_FragColor.a = gl_Color.a;
-    
 }

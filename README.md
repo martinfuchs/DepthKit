@@ -30,30 +30,32 @@ https://vimeo.com/album/1977644
 DOWNLOAD THE EXAMPLE MEDIA BIN AT: http://www.rgbdtoolkit.com/ExampleMediaBin.zip
 *********************************************************************************
 
+For an HTML formatted tutorial and video walkthroughs jump over to the website: http://rgbdtoolkit.com/tutorials.html
 
 http://www.rgbdtoolkit.com + http://rgbd.tumblr.com/
-Check out the documentation at: https://vimeo.com/39505902
 
-Current Version is RGBD PreRelease v. 0031 for Mac OS X and Windows Released on July 15th 2012
+RGBDToolkit is reRelease v. 004 for Mac OS X Released on December 7th 2012
 
+The original manual was graciously written by the wonderful and talented video artist i.m klif (http://vimeo.com/32631165) during our Resonate workshop in Belgrade, Serbia on March 16th 2012. Subsequent versions edited by James George.
 
-This manual was graciously written by the wonderful and talented video installation artist i.m klif (http://vimeo.com/32631165) during our Resonate workshop in Belgrade, Serbia on March 16th 2012 and edited by James George on March 24th 2012.
+RGBDToolkit is a labor of love by
+James George, developer http://www.jamesgeorge.org 
+Alexander Porter, experimental photographer http://www.alexanderporter.com
+Jonathan Minard, documentarian http://www.deepspeedmedia.com
 
-RGBDToolkit is a labor of love by James George http://www.jamesgeorge.org
-
-Collaborators Alexander Porter and Jonathan Minard
-
-Development has been provoked, inspired and assisted by Kyle McDonald and Elliot Woods
+Development has been inspired and assisted by Kyle McDonald http://www.kylemcdonald.com and Elliot Woods http://www.kimchiandchips.com
 
 Supported by:
 
-The Frank-Ratchye Studio for Creative Inquiry http://studioforcreativeinquiry.org/
+The Frank-Ratchye STUDIO for Creative Inquiry http://studioforcreativeinquiry.org/
 
 Eyebeam Art+Technology center http://eyebeam.org
 
 YCAM InterLab http://www.ycam.jp/en/interlab/
 
-Very special thanks to the Resonate Festival, Eyeo Festival, and Art && Code.
+NYY Interactive Telecommunications Program
+
+Very special thanks to the Resonate Festival, Eyeo Festival, and Art && Code conference.
 
 =======
 
@@ -61,7 +63,7 @@ Very special thanks to the Resonate Festival, Eyeo Festival, and Art && Code.
 
 The RGBDToolkit is compatible with the Microsoft XBOX Kinect and the Asus Xtion series. (http://www.newegg.com/Product/Product.aspx?Item=N82E16826785030)
 
-To use the Asus Xtion sensor you must install the drivers. The easiest way is to use the sensecast installer package: http://sensecast.com/files/Sensecast.and.Libs.Installer.v.0.02.dmg
+To use the Asus Xtion sensor you must install the OpenNI drivers. The easiest way is to use the sensecast installer package: http://sensecast.com/files/Sensecast.and.Libs.Installer.v.0.02.dmg
 
 Or you can compile and install from source here: https://github.com/PrimeSense/Sensor
 
@@ -167,7 +169,7 @@ Once you've copied the movies into the media bin you can begin creating composit
 - Select the MediaBin directory (the same folder that you selected in the Capture application) by clicking the button at the top
 - You should see a list of the scenes you shot. Select one and then click 'Create new Composition with this Scene'
 - Assuming it's the first time loading this scene we need to create a temporal alignment between the two. You'll be glad you clapped while shooting!
-- On the timeline on the bottom you should see two rows of thumbnails. Scrub through them both by clicking on the thumnbails. YOu'll see the 3d wireframe changing as well as the preview thumbnails to the right.
+- On the timeline on the bottom you should see two rows of thumbnails. Scrub through them both by clicking on the thumb nails. You'll see the 3d wireframe changing as well as the preview thumbnails to the right.
 - You can use the arrow keys until you find the clap in both Depth and Color. The depth and color should roughly line up. This takes a bit of practice and perceptive training to start to distinguish the depth from the color image.
 - Once you got it right, press "Set Color-Depth Time"
 	- scrub through the timeline by clicking on the bar with the yellow tickers. You should see the footage playing back in 3d with matched temporal and depth alignment
