@@ -4,10 +4,11 @@
 uniform sampler2DRect colorTex;
 uniform int useTexture;
 varying float VZPositionValid0;
+varying float intDistance;
 
 void main()
 {
-    if(VZPositionValid0 < 0.9999999){
+    if(VZPositionValid0 < 0.9999){
     	discard;
     }
     
@@ -18,6 +19,10 @@ void main()
     else{
         gl_FragColor = vec4(0);
     }
+    
+    //gl_FragColor = vec4(intDistance, 1.0, 1.0-intDistance, 1.0);
+    //gl_FragColor.a = 1.0;
+    
     //gl_FragColor = vec4(VZPositionValid0, col.g, col.b, 1.0);
     //gl_FragColor = vec4(depthSample, depthSample, depthSample,1.0);
 }

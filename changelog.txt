@@ -18,16 +18,13 @@
 	         \__\/    \  \::/       \  \::/        \__\/        \  \:\         \__\/         \__\/
 	                   \__\/         \__\/                       \__\/ 
 
-	===============================
-	**** CHANGELOG
-	===============================
+===============================
+**** CHANGELOG
+===============================
 
 Known Issues:
-- No more support for "edge cull" in shader
-- Geometry and Depth distortion parameters are bit tweaky and slow sometimes
 - When selecting a media bin folder in the Capture app, you'll need to restart for it to reload the calibration
 - Rendering compositions with no camera track will cause weird behavior
-- Simplify level 3 has some weird tearing in the mesh
 - No way to change the render resolution from 1920x1080
 
 =======

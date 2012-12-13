@@ -14,29 +14,33 @@ uniform float ysimplify;
 
 uniform int useTexture;
 varying float VZPositionValid0;
+varying float intDistance;
 void main(void)
 {
     
-    float depth = texture2DRect(depthTex, gl_Vertex.xy + vec2(0, 0)).r * 65535.;
-    float right = texture2DRect(depthTex, gl_Vertex.xy + vec2(xsimplify,0)).r * 65535.;
-    float down  = texture2DRect(depthTex, gl_Vertex.xy + vec2(0,ysimplify)).r * 65535.;
+    vec2 texCoordPixAligned = floor(gl_Vertex.xy) + vec2(.5,.5);
+    
+    float depth = texture2DRect(depthTex, texCoordPixAligned).r * 65535.;
+    float right = texture2DRect(depthTex, texCoordPixAligned + vec2(xsimplify,0.0)).r * 65535.;
+    float down  = texture2DRect(depthTex, texCoordPixAligned + vec2(0.0,ysimplify)).r * 65535.;
     
     VZPositionValid0 = (
                         abs(down - depth) < edgeClip &&
                         abs(right - depth) < edgeClip &&
                         depth < farClip &&
-                        right > 40. &&
-                        depth > 40. &&
-                        down > 40. 
+                        depth > 20. &&
+                        right > 20. &&
+                        down > 20.
                         ) ? 1.0 : 0.0;
     
 	vec4 pos = vec4((gl_Vertex.x - principalPoint.x) * depth / fov.x,
                     (gl_Vertex.y - principalPoint.y) * depth / fov.y, depth, 1.0);
     
+    intDistance = (texCoordPixAligned.y - floor(texCoordPixAligned.y))*100.0;
     //projective texture on the
     gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * pos;
     gl_FrontColor = gl_Color;
-    
+
     if(useTexture == 1){
 
         mat4 tTex = gl_TextureMatrix[0];
