@@ -15,7 +15,7 @@
 #include "ofxRGBDScene.h"
 #include "ofxRGBDPlayer.h"
 #include "ofxGui.h"
-//#include "ofxUI.h"
+#include "ofxObjLoader.h"
 
 typedef struct {
 	ofxRGBDScene scene;
@@ -87,11 +87,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle drawPointcloud;
     ofxToggle drawWireframe;
     ofxToggle drawMesh;
-    ofxToggle drawDepthDistortion;
-    ofxToggle drawGeometryDistortion;
     ofxToggle selfOcclude;
     ofxToggle drawDOF;
-    ofxToggle drawDebug;
     
     ofxButton shouldResetCamera;
     ofxFloatSlider cameraSpeed;
@@ -99,26 +96,22 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxButton shouldSaveCameraPoint;
     ofxToggle currentLockCamera; 
 	
-    ofxButton shouldResetDuration;
-    ofxButton setDurationToClipLength;
-    ofxToggle enableVideoInOut;
-    ofxFloatSlider videoInPercent;
-    ofxFloatSlider videoOutPercent;
-    
     ofxToggle currentMirror;
     ofxToggle lockTo720p;
     ofxToggle lockTo1080p;
-//    ofxToggle customSize;
     ofxIntSlider customWidth;
     ofxIntSlider customHeight;
     ofxButton setCurrentSize;
-    
-    ofxToggle undistortImages;
+
     ofxToggle fillHoles;
     ofxIntSlider currentHoleKernelSize;
     ofxIntSlider currentHoleFillIterations;
     ofxToggle temporalAlignmentMode;
     ofxButton captureFramePair;
+
+    ofxToggle renderObjectFiles;
+    ofxToggle startSequenceAt0;
+    bool currentRenderObjectFiles;
 
     bool startRenderMode;
 	//MSA Object delegate
@@ -170,6 +163,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	
 	ofxRGBDPlayer player;
 	ofxRGBDRenderer renderer;
+    ofxRGBDMeshBuilder meshBuilder;
+    
 	ofxTLDepthImageSequence depthSequence;
 	ofxTLVideoDepthAlignmentScrubber alignmentScrubber;
 	ofxDepthHoleFiller holeFiller;
@@ -178,9 +173,6 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofRectangle depthAlignAssistRect;
     ofRectangle colorAlignAssistRect;
 
-	ofShader DOFCloud;
-    ofShader alphaFadeShader;
-    ofShader gaussianBlur;
     ofShader dofRange;
     ofShader dofBlur;
 
@@ -191,16 +183,15 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofImage savingImage;
 	string saveFolder;
 	string lastSavedDate;    
-	bool hasRunRendererOnce; //hack to populate shaders
+
 	bool currentlyRendering;
 	int currentRenderFrame;
+    
 	//used for temporal aligmnet nudging
 	int currentDepthFrame;
 	int currentVideoFrame;
 	bool rendererDirty;
     ofNode renderedCameraPos;
     
-	string pathDelim;
-	ofVboMesh ambientParticles;
-	
+	string pathDelim;	
 };

@@ -34,30 +34,21 @@ void testApp::setup(){
 	cam.maximumY =  120;
 	cam.minimumY = -120;
 	cameraRollSpeed = cam.rollSpeed = 1;
-
-	hasRunRendererOnce = false;
 	
     selectedScene = NULL;
     selectedComp = NULL;
     loadedScene = NULL;
 
     currentMirror = false;
-	
-	videoInPercent = 0.0;
-	videoOutPercent = 1.0;
-	enableVideoInOut = false;
-//	startSequenceAt0 = false;
-	
+    renderObjectFiles = false;
+	startSequenceAt0 = false;
+    currentRenderObjectFiles = false;
     selfOcclude = false;
     
 	startRenderMode = false;
 	currentlyRendering = false;
 
 	viewComps = false;
-
-    drawDepthDistortion = true;
-	drawGeometryDistortion = true;
-	
 	temporalAlignmentMode = false;
 
 	fillHoles = false;
@@ -67,37 +58,6 @@ void testApp::setup(){
 	player.updateVideoPlayer = false;
     rendererDirty = true;
     isSceneLoaded = false;
-    
-//    int fboWidth  = 1920;
-//    int fboHeight = 1080;
-	
-//	savingImage.setUseTexture(false);
-//	savingImage.allocate(fboWidth,fboHeight,OF_IMAGE_COLOR);
-//	
-//	depthSequence.setAutoUpdate(false);
-//	
-//	fboRectangle = ofRectangle(250, 100, fboWidth, fboHeight);
-//    ofFbo::Settings dofBuffersSettings;
-//    dofBuffersSettings.width = fboWidth;
-//    dofBuffersSettings.height = fboHeight;
-//    dofBuffersSettings.internalformat = GL_RGB;
-//    dofBuffersSettings.numSamples = 0;
-//    dofBuffersSettings.useDepth = true;
-//    dofBuffersSettings.useStencil = true;
-//    dofBuffersSettings.depthStencilAsTexture = true;
-//    dofBuffersSettings.textureTarget = ofGetUsingArbTex() ? GL_TEXTURE_RECTANGLE_ARB : GL_TEXTURE_2D;
-//    
-//    dofBuffer.allocate(dofBuffersSettings);
-//    swapFbo.allocate(fboWidth, fboHeight, GL_RGB);
-//    fbo1.allocate(fboWidth, fboHeight, GL_RGBA, 4);
-//    
-//    fbo1.begin();
-//    ofClear(0,0,0,0);
-//    fbo1.end();
-//    dofBuffer.begin();
-//    ofClear(0,0,0,0);
-//    dofBuffer.end();
-    
     
 	timeline.setup();
 	timeline.setMinimalHeaders(true);
@@ -157,7 +117,6 @@ void testApp::setup(){
 	
     gui.add(shouldResetCamera.setup("Reset Camera", ofxParameter<bool>()));
 	
-//    gui.add( customSize.setup("custom size", ofxParameter<bool>()));
     gui.add( customWidth.setup("frame width", ofxParameter<int>(), 320, 1920*2));
     gui.add( customHeight.setup("frame height", ofxParameter<int>(), 240, 1080*2));
     gui.add( setCurrentSize.setup("set size"));
@@ -175,12 +134,12 @@ void testApp::setup(){
     gui.add(currentHoleKernelSize.setup("Hole Kernel Size", ofxParameter<int>(), 1, 10));
     gui.add(currentHoleFillIterations.setup("Hole Fill Iterations", ofxParameter<int>(), 1, 20));
 
-//	gui.add(renderObjectFiles.setup("create obj files", ofxParameter<bool>()));
-//	gui.add(startSequenceAt0.setup("start export sequence at 0", ofxParameter<bool>()));
 	
     gui.add(temporalAlignmentMode.setup("Temporal Alignment", ofxParameter<bool>()));
 	gui.add(captureFramePair.setup("Set Color-Depth Time", ofxParameter<bool>()));
 
+	gui.add(renderObjectFiles.setup("create obj files", ofxParameter<bool>()));
+	gui.add(startSequenceAt0.setup("start export sequence at 0", ofxParameter<bool>()));
 	
     gui.loadFromFile("defaultGuiSettings.xml");
     
@@ -191,8 +150,9 @@ void testApp::setup(){
     
 	currentLockCamera = false;
 	cameraTrack->lockCameraToTrack = false;
+    meshBuilder.cacheValidVertices = true;
     
-    accumulatedPerlinOffset = 0;    
+    accumulatedPerlinOffset = 0;
 
     ofxXmlSettings defaultBin;
     if(defaultBin.loadFile("defaultBin.xml")){
@@ -235,7 +195,7 @@ void testApp::populateTimelineElements(){
     timeline.addPage("Geometry", true);
     timeline.addCurves("Simplify X", currentCompositionDirectory + "simplifyx.xml", ofRange(1, 8), 2);
     timeline.addCurves("Simplify Y", currentCompositionDirectory + "simplifyy.xml", ofRange(1, 8), 2);
-    timeline.addCurves("Edge Clip", currentCompositionDirectory + "edgeClip.xml", ofRange(1.0, 1000), 1000 );
+    timeline.addCurves("Edge Clip", currentCompositionDirectory + "edgeClip.xml", ofRange(1.0, 2000), 2000 );
     timeline.addCurves("Z Threshold", currentCompositionDirectory + "zThreshold.xml", ofRange(1.0, sqrtf(6000)), sqrtf(6000) );
 	timeline.addCurves("X Rotate", currentCompositionDirectory + "meshXRot.xml", ofRange(-360,360), 0.);
     timeline.addCurves("Y Rotate", currentCompositionDirectory + "meshYRot.xml", ofRange(-360,360), 0.);
@@ -253,7 +213,6 @@ void testApp::populateTimelineElements(){
     timeline.addCurves("DOF Range", currentCompositionDirectory + "DOFRange.xml", ofRange(10,sqrtf(1500.0)) );
     timeline.addCurves("DOF Blur", currentCompositionDirectory + "DOFBlur.xml", ofRange(0,5.0) );
 
-	
 	timeline.addPage("Time Alignment", true);
 	timeline.addTrack("Video", videoTrack);
 	timeline.addTrack("Depth Sequence", &depthSequence);
@@ -267,8 +226,6 @@ void testApp::populateTimelineElements(){
 	
 	timeline.setCurrentPage("Rendering");
 }
-
-
 
 void testApp::drawGeometry(){
 	
@@ -326,7 +283,12 @@ void testApp::drawGeometry(){
 		ofTranslate(0,0,-.5);
 		if(drawMesh && meshAlpha > 0){
 			ofSetColor(255*meshAlpha);
-			renderer.drawMesh();
+            if(renderObjectFiles){
+                meshBuilder.draw();
+            }
+            else{
+                renderer.drawMesh();
+            }
 			usedDepth = true;
 		}
 
@@ -501,8 +463,6 @@ void testApp::drawGeometry(){
 	ofRect(fboRectangle);
 	ofPopStyle();
     fbo1.getTextureReference().draw(ofRectangle(fboRectangle.x,fboRectangle.y+fboRectangle.height,fboRectangle.width,-fboRectangle.height));
-	//fbo1.getTextureReference().draw(fboRectangle);
-	
 }
 
 //************************************************************
@@ -540,7 +500,6 @@ void testApp::keyPressed(int key){
 	}
 	
     if(key == 'T'){
-//        cameraTrack->getCameraTrack().sample(timeline.getCurrentFrame());
 		cameraTrack->addKeyframe();
     }
     
@@ -662,7 +621,6 @@ void testApp::update(){
     cam.speed = cameraSpeed;
     cam.rollSpeed = cameraRollSpeed;
     
-    
 	if(startRenderMode){
         startRenderMode = false;
 		
@@ -702,7 +660,7 @@ void testApp::update(){
 				player.useHiresVideo();
 				player.getVideoPlayer()->setVolume(0);
 				renderer.setRGBTexture(*player.getVideoPlayer());
-//				meshBuilder.setTexture(*player.getVideoPlayer());
+				meshBuilder.setTexture(*player.getVideoPlayer());
 			}
 			
             cameraTrack->setTimelineInOutToTrack();
@@ -712,10 +670,7 @@ void testApp::update(){
             timeline.setPercentComplete(player.getVideoPlayer()->getPosition());
             currentLockCamera = cameraTrack->lockCameraToTrack = true;
             cameraTrack->jumpToTarget();
-
-			
         }
-		cout << "starting render mode and current render frame is " << currentRenderFrame << endl;
 	}
     
 	if(!isSceneLoaded) return;
@@ -801,7 +756,7 @@ void testApp::update(){
 		rendererNeedsUpdate = true;
 	}
 	
-    renderer.edgeClip = timeline.getValue("Edge Clip");
+
 	renderer.meshRotate.x = timeline.getValue("X Rotate");
     renderer.meshRotate.y = timeline.getValue("Y Rotate");
     renderer.meshRotate.z = timeline.getValue("Z Rotate");
@@ -809,22 +764,25 @@ void testApp::update(){
 	
 	if(renderer.getSimplification().x != simplification.x || renderer.getSimplification().y != simplification.y){
     	renderer.setSimplification(simplification);
+        meshBuilder.setSimplification(simplification);
 		rendererNeedsUpdate = true;
     }
 
+    if(currentRenderObjectFiles != renderObjectFiles){
+        rendererNeedsUpdate = true;
+        currentRenderObjectFiles = renderObjectFiles;
+    }
 
 	float currentFarClip = powf(timeline.getValue("Z Threshold"), 2.0);
 	if(timeline.getValue("X Texture Shift") != renderer.xshift ||
 	   timeline.getValue("Y Texture Shift") != renderer.yshift ||
        timeline.getValue("X Texture Scale") != renderer.xscale ||
        timeline.getValue("Y Texture Scale") != renderer.yscale ||
-	   
+	   timeline.getValue("Edge Clip") != renderer.edgeClip ||
 	   currentMirror != renderer.mirror ||
-	   
 	   fillHoles != holeFiller.enable ||
 	   currentHoleKernelSize != holeFiller.getKernelSize() ||
        currentHoleFillIterations != holeFiller.getIterations()||
-       undistortImages == renderer.forceUndistortOff ||
 	   currentFarClip != renderer.farClip )
 	{
 		renderer.xshift = timeline.getValue("X Texture Shift");
@@ -832,9 +790,18 @@ void testApp::update(){
         renderer.xscale = timeline.getValue("X Texture Scale");
         renderer.yscale = timeline.getValue("Y Texture Scale");
 		renderer.mirror = currentMirror;
-		renderer.forceUndistortOff = !undistortImages;
 		renderer.farClip = currentFarClip;
-		
+        renderer.edgeClip = timeline.getValue("Edge Clip");
+        
+        meshBuilder.mirror = currentMirror;
+		meshBuilder.shift.x = timeline.getValue("X Texture Shift");
+		meshBuilder.shift.y = timeline.getValue("Y Texture Shift");
+        meshBuilder.scale.x = timeline.getValue("X Texture Scale");
+        meshBuilder.scale.y = timeline.getValue("Y Texture Scale");
+		meshBuilder.getHoleFiller().enable = false;
+		meshBuilder.farClip = currentFarClip;
+        meshBuilder.edgeClip = renderer.edgeClip;
+        
 		holeFiller.enable = fillHoles;
 		currentHoleKernelSize = holeFiller.setKernelSize(currentHoleKernelSize);
 		currentHoleFillIterations = holeFiller.setIterations(currentHoleFillIterations);
@@ -844,7 +811,6 @@ void testApp::update(){
 	
 	
     if(timeline.getUserChangedValue()){
-//		rendererNeedsUpdate = true;
 		rendererDirty = true;
     }
 	
@@ -857,7 +823,6 @@ void testApp::update(){
 	if(rendererNeedsUpdate){
 		updateRenderer();
 	}
-	
 }
 
 //--------------------------------------------------------------
@@ -867,7 +832,12 @@ void testApp::updateRenderer(){
 		holeFiller.close(player.getDepthPixels());
     }
     
-    renderer.update();
+    if(renderObjectFiles){
+        meshBuilder.update();
+    }
+    else{
+        renderer.update();
+    }
 	
 	cameraTrack->setDampening(powf(timeline.getValue("Camera Dampen"),2.));
 	//used for temporal aligmnet nudging
@@ -896,7 +866,6 @@ void testApp::checkReallocateFrameBuffers(){
     
     lockTo720p  = fbo1.getWidth() == 1280 && fbo1.getHeight() == 720;
     lockTo1080p = fbo1.getWidth() == 1920 && fbo1.getHeight() == 1080;
-    
 }
 
 void testApp::allocateFrameBuffers(){
@@ -989,11 +958,26 @@ void testApp::draw(){
 			if(currentlyRendering){
 				char filename[512];
 				int videoFrame = player.getVideoPlayer()->getCurrentFrame();
-				fbo1.getTextureReference().readToPixels(savingImage.getPixelsRef());
-				sprintf(filename, "%s/save_%05d.png", saveFolder.c_str(), videoFrame);
-				savingImage.mirror(true, false);
+				if(startSequenceAt0){
+					videoFrame -= timeline.getInFrame();
+				}
+                sprintf(filename, "%s/save_%05d.png", saveFolder.c_str(), videoFrame);
+
+				if(renderObjectFiles){
+                    char objFilename[512];
+					sprintf(objFilename, "%s/save_%05d.obj", saveFolder.c_str(), videoFrame);
+                    ofMesh reducedMesh =meshBuilder.getReducedMesh(true);
+					ofxObjLoader::save(string(objFilename), reducedMesh);
+                    savingImage.setFromPixels(player.getVideoPlayer()->getPixelsRef());
+				}
+                else{
+                    fbo1.getTextureReference().readToPixels(savingImage.getPixelsRef());
+                    if(!renderObjectFiles){
+                        savingImage.mirror(true, false);
+                    }
+                }
+                
 				savingImage.saveImage(filename);
-//				}
 				
 				//cout << "at save time its set to " << hiResPlayer->getCurrentFrame() << endl;
 
@@ -1006,8 +990,6 @@ void testApp::draw(){
 				//		savingImage.saveImage(filename);
 				//////
 				
-				//stop when finished
-//				currentRenderFrame++;
 				if(currentRenderFrame > timeline.getOutFrame()){
 					finishRender();
 				}
@@ -1094,13 +1076,14 @@ bool testApp::loadAssetsForScene(SceneButton* sceneButton){
 	alignmentScrubber.setXMLFileName(scene.pairingsFile);
 //	alignmentScrubber.load();
 	renderer.setup(player.getScene().calibrationFolder);
-//	meshBuilder.setup(player.getScene().calibrationFolder);
+	meshBuilder.setup(player.getScene().calibrationFolder);
+    
 	cam.setFov(renderer.getRGBCalibration().getDistortedIntrinsics().getFov().y);
 	
 	renderer.setRGBTexture(*player.getVideoPlayer());
 	renderer.setDepthImage(player.getDepthPixels());
-//	meshBuilder.setTexture(*player.getVideoPlayer());
-//	meshBuilder.setDepthPixels(player.getDepthPixels());
+	meshBuilder.setTexture(*player.getVideoPlayer());
+	meshBuilder.setDepthPixels(player.getDepthPixels());
 	
 	depthSequence.setSequence(player.getDepthSequence());
 	videoTrack->setPlayer(player.getVideoPlayer());
@@ -1109,7 +1092,6 @@ bool testApp::loadAssetsForScene(SceneButton* sceneButton){
 	timeline.setTimecontrolTrack(videoTrack);
 	timeline.setFrameRate(1.0*videoTrack->getPlayer()->getTotalNumFrames()/videoTrack->getPlayer()->getDuration());
 	timeline.setDurationInFrames(videoTrack->getPlayer()->getTotalNumFrames());
-	
 	
     //trick to help if there is no pairing file
     if(!alignmentScrubber.ready()){
@@ -1195,6 +1177,7 @@ void testApp::populateScenes(){
 
 //--------------------------------------------------------------
 void testApp::populateCompositionsForScene(){
+    
 	if(selectedScene == NULL){
         ofLogError("populateCompositionsForScene -- Take is null");
         return;
@@ -1279,8 +1262,8 @@ void testApp::loadDefaults(){
 	drawPointcloud = false;
 	drawWireframe = false;
 	drawMesh = true;
-    drawDepthDistortion = false;
-	drawGeometryDistortion = false;
+//    drawDepthDistortion = false;
+//	drawGeometryDistortion = false;
 	selfOcclude = false;
 	drawDOF = false;
 	
@@ -1370,20 +1353,11 @@ void testApp::saveComposition(){
     
 //	projectsettings.setValue("renderTriangulation", renderTriangulation);
 //	projectsettings.setValue("enableLighting", enableLighting);
-//	projectsettings.setValue("renderObjFiles", renderObjectFiles);
-//	projectsettings.setValue("startSequenceAtZero",startSequenceAt0);
+	projectsettings.setValue("renderObjFiles", renderObjectFiles);
+	projectsettings.setValue("startSequenceAtZero",startSequenceAt0);
 	
 	projectsettings.saveFile();
 
-
-//	ofxXmlSettings xyshift;
-//    xyshift.loadFile(loadedScene->scene.xyshiftFile);
-//	xyshift.setValue("xshift", currentXMultiplyShift);
-//	xyshift.setValue("yshift", currentYMultiplyShift);
-//	xyshift.setValue("xscale", currentXScale);
-//	xyshift.setValue("yscale", currentYScale);
-//    xyshift.saveFile();
-    
     selectedScene->scene.hasXYShift = true;
     
     //cout << "saved shift file of " << loadedScene->scene.xyshiftFile << endl;
@@ -1531,29 +1505,17 @@ bool testApp::loadComposition(string compositionDirectory){
         drawPointcloud = projectsettings.getValue("drawPointcloud", true);
         drawWireframe = projectsettings.getValue("drawWireframe", true);
         drawMesh = projectsettings.getValue("drawMesh", true);
-        drawDepthDistortion = projectsettings.getValue("drawDepthDistortion", true);
-        drawGeometryDistortion= projectsettings.getValue("drawGeometryDistortion", true);
+//        drawDepthDistortion = projectsettings.getValue("drawDepthDistortion", true);
+//        drawGeometryDistortion= projectsettings.getValue("drawGeometryDistortion", true);
         drawDOF = projectsettings.getValue("drawDOF",true);
         selfOcclude = projectsettings.getValue("selfOcclude",false);
         
         currentMirror = projectsettings.getValue("mirror", false);
         customWidth = projectsettings.getValue("width", 1920);
         customHeight = projectsettings.getValue("height", 1080);
-
-        
-//		drawScanlines = projectsettings.getValue("drawScanlines",false);
-//		drawParticles = projectsettings.getValue("drawParticles", false);
-//		wireframeLuminosity = projectsettings.getValue("wireframeLuminosity",false);
-//		startSequenceAt0 = projectsettings.getValue("startSequenceAtZero",false);
-
-//        currentXMultiplyShift = projectsettings.getValue("xmult", 0.);
-//        currentYMultiplyShift = projectsettings.getValue("ymult", 0.);
-//        currentXScale = projectsettings.getValue("xscale", 1.);
-//        currentYScale = projectsettings.getValue("yscale", 1.);
 		
-//		renderTriangulation = projectsettings.getValue("renderTriangulation", false);
-//		enableLighting = projectsettings.getValue("enableLighting", false);
-//		renderObjectFiles = projectsettings.getValue("renderObjFiles", false);
+		renderObjectFiles = projectsettings.getValue("renderObjFiles", false);
+        startSequenceAt0 = projectsettings.getValue("startSequenceAtZero", false);
         fillHoles = projectsettings.getValue("fillholes", false);
         currentHoleKernelSize = projectsettings.getValue("kernelSize", 1);
         currentHoleFillIterations = projectsettings.getValue("holeIterations", 1);
@@ -1656,7 +1618,7 @@ void testApp::finishRender(){
 	player.useLowResVideo();
     //render is done
 	renderer.setRGBTexture(*player.getVideoPlayer());
-//	meshBuilder.setTexture(*player.getVideoPlayer());
+	meshBuilder.setTexture(*player.getVideoPlayer());
 	
 	videoTrack->setPlayer(player.getVideoPlayer());
 	player.getVideoPlayer()->setFrame(timeline.getInFrame());

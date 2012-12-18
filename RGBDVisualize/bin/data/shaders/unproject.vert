@@ -21,18 +21,14 @@ void main(void)
     vec2 texCoordPixAligned = floor(gl_Vertex.xy) + vec2(.5,.5);
     
     float depth = texture2DRect(depthTex, texCoordPixAligned).r * 65535.;
-    float right = texture2DRect(depthTex, texCoordPixAligned + vec2(xsimplify,0.0)).r * 65535.;
-    float down  = texture2DRect(depthTex, texCoordPixAligned + vec2(0.0,ysimplify)).r * 65535.;
+    float right = texture2DRect(depthTex, texCoordPixAligned + vec2(ceil(xsimplify),0.0)).r * 65535.;
+    float down  = texture2DRect(depthTex, texCoordPixAligned + vec2(0.0,ceil(ysimplify))).r * 65535.;
 
     //cull invalid verts
-    VZPositionValid0 = (
+    VZPositionValid0 = (depth < farClip &&
+                        depth > 20. && //TODO: add variable near clip
                         abs(down - depth) < edgeClip &&
-                        abs(right - depth) < edgeClip &&
-                        depth < farClip &&
-                        depth > 20. &&
-                        right > 20. &&
-                        down > 20.
-                        ) ? 1.0 : 0.0;
+                        abs(right - depth) < edgeClip) ? 1.0 : 0.0;
 
     //find the 3d position
 	vec4 pos = vec4((gl_Vertex.x - principalPoint.x) * depth / fov.x,
