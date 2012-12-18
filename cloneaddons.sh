@@ -21,14 +21,14 @@ ${PREFIX}Flightphase/ofxRange
 ${PREFIX}Flightphase/ofxTween
 ${PREFIX}Flightphase/ofxMSAInteractiveObject
 ${PREFIX}Flightphase/ofxTextInputField
-${PREFIX}Flightphase/ofxSimpleGuiToo
 ${PREFIX}obviousjim/ofxRGBDepth
 ${PREFIX}obviousjim/ofxCv
 ${PREFIX}obviousjim/ofxKinect
 ${PREFIX}obviousjim/ofxOpenNI
 ${PREFIX}obviousjim/ofxMSATimer
-${PREFIX}YCAM/ofxTimecode
-${PREFIX}YCAM/ofxTimeline
+${PREFIX}YCAMInterlab/ofxTimecode
+${PREFIX}YCAMInterlab/ofxTimeline
+${PREFIX}obviousjim/ofxObjLoader		
 
 cd ofxCv/
 git checkout opencv-2.3
@@ -37,4 +37,4 @@ cd ..
 # you also need to replace ofxOpenCv/libs/opencv with this link:
 # https://github.com/kylemcdonald/ofxCv/downloads
 # opencv-2.3.-osx.zip — OpenCV 2.3 library 
-=======
+#=======
