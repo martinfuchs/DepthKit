@@ -90,10 +90,10 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle selfOcclude;
     ofxToggle drawDOF;
     
-    ofxButton shouldResetCamera;
+    ofxToggle shouldResetCamera;
     ofxFloatSlider cameraSpeed;
     ofxFloatSlider cameraRollSpeed;
-    ofxButton shouldSaveCameraPoint;
+    ofxToggle shouldSaveCameraPoint;
     ofxToggle currentLockCamera; 
 	
     ofxToggle currentMirror;
@@ -112,7 +112,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle renderObjectFiles;
     ofxToggle startSequenceAt0;
     bool currentRenderObjectFiles;
-
+    bool firstRenderFrame;
     bool startRenderMode;
 	//MSA Object delegate
     ofxMSAInteractiveObjectWithDelegate* mediaBinButton;

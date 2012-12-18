@@ -30,7 +30,8 @@ void testApp::setup(){
     lockTo1080p = true;
     customWidth = 1920;
     customHeight = 1080;
-
+    
+    
 	cam.maximumY =  120;
 	cam.minimumY = -120;
 	cameraRollSpeed = cam.rollSpeed = 1;
@@ -47,7 +48,8 @@ void testApp::setup(){
     
 	startRenderMode = false;
 	currentlyRendering = false;
-
+    firstRenderFrame = false;
+    
 	viewComps = false;
 	temporalAlignmentMode = false;
 
@@ -283,12 +285,7 @@ void testApp::drawGeometry(){
 		ofTranslate(0,0,-.5);
 		if(drawMesh && meshAlpha > 0){
 			ofSetColor(255*meshAlpha);
-            if(renderObjectFiles){
-                meshBuilder.draw();
-            }
-            else{
-                renderer.drawMesh();
-            }
+            renderer.drawMesh();
 			usedDepth = true;
 		}
 
@@ -623,7 +620,8 @@ void testApp::update(){
     
 	if(startRenderMode){
         startRenderMode = false;
-		
+		firstRenderFrame = true;
+        
         fbo1.begin();
         ofClear(0,0,0,0);
         fbo1.end();
@@ -658,16 +656,20 @@ void testApp::update(){
             
 			if(player.hasHighresVideo()){
 				player.useHiresVideo();
-				player.getVideoPlayer()->setVolume(0);
 				renderer.setRGBTexture(*player.getVideoPlayer());
 				meshBuilder.setTexture(*player.getVideoPlayer());
 			}
 			
+            player.getVideoPlayer()->setVolume(0);
+            
             cameraTrack->setTimelineInOutToTrack();
-
+            timeline.setCurrentTimeToInPoint();
 			player.getVideoPlayer()->setPosition(timeline.getPercentComplete());
 			player.getVideoPlayer()->update();
+            
             timeline.setPercentComplete(player.getVideoPlayer()->getPosition());
+            cout << "setting current time to " << timeline.getPercentComplete() << " seconds: " << timeline.getCurrentTime() << " video: " << player.getVideoPlayer()->getCurrentFrame() << " sec: " <<     (player.getVideoPlayer()->getPosition() * player.getVideoPlayer()->getDuration()) << endl;
+            
             currentLockCamera = cameraTrack->lockCameraToTrack = true;
             cameraTrack->jumpToTarget();
         }
@@ -707,10 +709,7 @@ void testApp::update(){
 	if(currentlyRendering){
 
 		currentRenderFrame = player.getVideoPlayer()->getCurrentFrame();
-//		cout << "update render setting frame to " << currentRenderFrame << endl;
-		//timeline.setCurrentFrame(currentRenderFrame);
 		timeline.setPercentComplete(player.getVideoPlayer()->getPosition());
-		//videoTrack->selectFrame(currentRenderFrame);
 		
 //		cout << "would have set hi res frame to " << currentRenderFrame % hiResPlayer->getTotalNumFrames() << endl;
 //		cout << "instead set it to " << hiResPlayer->getCurrentFrame() << endl;
@@ -731,10 +730,12 @@ void testApp::update(){
 		
 		if(shouldSaveCameraPoint){
 			cameraTrack->addKeyframe();
+            shouldSaveCameraPoint = false;
 		}
 		
 		if(shouldResetCamera){
 			resetCameraPosition();
+            shouldResetCamera = false;
 		}
 		else{
 			cam.applyRotation = cam.applyTranslation = true;
@@ -756,7 +757,6 @@ void testApp::update(){
 		rendererNeedsUpdate = true;
 	}
 	
-
 	renderer.meshRotate.x = timeline.getValue("X Rotate");
     renderer.meshRotate.y = timeline.getValue("Y Rotate");
     renderer.meshRotate.z = timeline.getValue("Z Rotate");
@@ -832,13 +832,11 @@ void testApp::updateRenderer(){
 		holeFiller.close(player.getDepthPixels());
     }
     
-    if(renderObjectFiles){
+    renderer.update();
+    if(renderObjectFiles && currentlyRendering){
         meshBuilder.update();
     }
-    else{
-        renderer.update();
-    }
-	
+
 	cameraTrack->setDampening(powf(timeline.getValue("Camera Dampen"),2.));
 	//used for temporal aligmnet nudging
 	currentDepthFrame = player.getDepthSequence()->getCurrentFrame();
@@ -963,24 +961,28 @@ void testApp::draw(){
 				}
                 sprintf(filename, "%s/save_%05d.png", saveFolder.c_str(), videoFrame);
 
-				if(renderObjectFiles){
-                    char objFilename[512];
-					sprintf(objFilename, "%s/save_%05d.obj", saveFolder.c_str(), videoFrame);
-                    ofMesh reducedMesh =meshBuilder.getReducedMesh(true);
-					ofxObjLoader::save(string(objFilename), reducedMesh);
-                    savingImage.setFromPixels(player.getVideoPlayer()->getPixelsRef());
-				}
-                else{
-                    fbo1.getTextureReference().readToPixels(savingImage.getPixelsRef());
-                    if(!renderObjectFiles){
-                        savingImage.mirror(true, false);
+                if(!firstRenderFrame){
+                    if(renderObjectFiles){
+                        char objFilename[512];
+                        sprintf(objFilename, "%s/save_%05d.obj", saveFolder.c_str(), videoFrame);
+                        ofMesh reducedMesh =meshBuilder.getReducedMesh(true);
+                        ofxObjLoader::save(string(objFilename), reducedMesh);
+                        savingImage.setFromPixels(player.getVideoPlayer()->getPixelsRef());
                     }
-                }
-                
-				savingImage.saveImage(filename);
-				
-				//cout << "at save time its set to " << hiResPlayer->getCurrentFrame() << endl;
+                    else{
+                        fbo1.getTextureReference().readToPixels(savingImage.getPixelsRef());
+                        if(!renderObjectFiles){
+                            savingImage.mirror(true, false);
+                        }
+                    }
+                    
 
+                    savingImage.saveImage(filename);
+                    
+                    cout << "   at save time its set to " << player.getVideoPlayer()->getCurrentFrame() << " time " << (player.getVideoPlayer()->getPosition() * player.getVideoPlayer()->getDuration() ) << endl;
+                }
+                firstRenderFrame = false;
+                
 				///////frame debugging
 				//		numFramesRendered++;
 				//		cout << "	Rendered (" << numFramesRendered << "/" << numFramesToRender << ") +++ current render frame is " << currentRenderFrame << " quick time reports frame " << hiResPlayer->getCurrentFrame() << endl;
@@ -1262,8 +1264,7 @@ void testApp::loadDefaults(){
 	drawPointcloud = false;
 	drawWireframe = false;
 	drawMesh = true;
-//    drawDepthDistortion = false;
-//	drawGeometryDistortion = false;
+    
 	selfOcclude = false;
 	drawDOF = false;
 	
@@ -1544,9 +1545,8 @@ bool testApp::loadComposition(string compositionDirectory){
     //    cout << "parings file is " << selectedScene->scene.pairingsFile << " ready? " << alignmentScrubber.ready() << endl;
 	cameraTrack->setup();
     cameraTrack->load();
-	//timeline.setCurrentFrame(cameraTrack->getCameraTrack().getFirstFrame());
 	timeline.setCurrentTimeMillis(cameraTrack->getEarliestTime());
-    
+
     //turn off view comps
 	viewComps = false;
     lastSavedDate = "Last Saved on " + ofToString(ofGetMonth() ) + "/" + ofToString( ofGetDay()) + " at " + ofToString(ofGetHours()) + ":" + ofToString( ofGetMinutes() )  + ":" + ofToString( ofGetSeconds() );
@@ -1619,10 +1619,12 @@ void testApp::finishRender(){
     //render is done
 	renderer.setRGBTexture(*player.getVideoPlayer());
 	meshBuilder.setTexture(*player.getVideoPlayer());
-	
+	player.getVideoPlayer()->setVolume(1.0);
+    
 	videoTrack->setPlayer(player.getVideoPlayer());
 	player.getVideoPlayer()->setFrame(timeline.getInFrame());
 	timeline.setCurrentTimeToInPoint();
+    
     currentLockCamera = false;
 }
 
