@@ -1,4 +1,5 @@
 #version 110
+#extension GL_ARB_texture_rectangle : enable
 
 uniform vec2 dim;
 uniform vec2 shift;
@@ -12,6 +13,7 @@ uniform float edgeClip;
 uniform float xsimplify;
 uniform float ysimplify;
 
+uniform int flipTexture; //fixes some flips on graphics cards
 uniform int useTexture;
 varying float VZPositionValid0;
 
@@ -46,6 +48,7 @@ void main(void)
         texCd.xyz /= texCd.w;
         
         texCd.y *= -1.;
+        if(flipTexture == 1) texCd.x *= -1.;
         texCd.xy += 1.;
         texCd.xy /= 2.;
         

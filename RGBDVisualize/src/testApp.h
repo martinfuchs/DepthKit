@@ -97,6 +97,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle currentLockCamera; 
 	
     ofxToggle currentMirror;
+	ofxToggle flipTexture; //Debug for some grphx cards
     ofxToggle lockTo720p;
     ofxToggle lockTo1080p;
     ofxIntSlider customWidth;

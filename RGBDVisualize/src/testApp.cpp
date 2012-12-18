@@ -110,38 +110,36 @@ void testApp::setup(){
     setButtonColors(renderBatch);
 
 	gui.setup("Settings", "defaultGuiSettings.xml");
-    gui.add(drawPointcloud.setup("Draw Pointcloud",ofxParameter<bool>()));
+	gui.add(cameraSpeed.setup("Camera Speed", ofxParameter<float>(), 0, 40));
+    gui.add(cameraRollSpeed.setup("Cam Roll Speed", ofxParameter<float>(), .0, 4));
+    gui.add(shouldResetCamera.setup("Reset Camera", ofxParameter<bool>()));
+	gui.add(currentLockCamera.setup("Lock to Track", ofxParameter<bool>()));
+    gui.add(shouldSaveCameraPoint.setup("Set Camera Point", ofxParameter<bool>()));
+
+	gui.add(drawPointcloud.setup("Draw Pointcloud",ofxParameter<bool>()));
     gui.add(drawWireframe.setup("Draw Wireframe",ofxParameter<bool>()));
     gui.add(drawMesh.setup("Draw Mesh",ofxParameter<bool>()));
-	
     gui.add(selfOcclude.setup("Self Occlude", ofxParameter<bool>()));
     gui.add(drawDOF.setup("Draw DOF", ofxParameter<bool>()));
-	
-    gui.add(shouldResetCamera.setup("Reset Camera", ofxParameter<bool>()));
-	
-    gui.add( customWidth.setup("frame width", ofxParameter<int>(), 320, 1920*2));
-    gui.add( customHeight.setup("frame height", ofxParameter<int>(), 240, 1080*2));
-    gui.add( setCurrentSize.setup("set size"));
-    gui.add( lockTo720p.setup("set to 720p", ofxParameter<bool>()));
-    gui.add( lockTo1080p.setup("set to 1080p",ofxParameter<bool>()));
- 
-    gui.add(cameraSpeed.setup("Camera Speed", ofxParameter<float>(), 0, 40));
-    gui.add(cameraRollSpeed.setup("Cam Roll Speed", ofxParameter<float>(), .0, 4));
-    gui.add(shouldSaveCameraPoint.setup("Set Camera Point", ofxParameter<bool>()));
-    gui.add(currentLockCamera.setup("Lock to Track", ofxParameter<bool>()));
+ 	
+    gui.add( customWidth.setup("Frame Width", ofxParameter<int>(), 320, 1920*2));
+    gui.add( customHeight.setup("Frame Height", ofxParameter<int>(), 240, 1080*2));
+    gui.add( setCurrentSize.setup("Apply Custom Size"));
+    gui.add( lockTo720p.setup("720p", ofxParameter<bool>()));
+    gui.add( lockTo1080p.setup("1080p",ofxParameter<bool>()));
     
     gui.add(currentMirror.setup("Mirror", ofxParameter<bool>()));
+	gui.add(flipTexture.setup("Flip Texture", ofxParameter<bool>()));
 
     gui.add(fillHoles.setup("Fill Holes", ofxParameter<bool>()));
     gui.add(currentHoleKernelSize.setup("Hole Kernel Size", ofxParameter<int>(), 1, 10));
     gui.add(currentHoleFillIterations.setup("Hole Fill Iterations", ofxParameter<int>(), 1, 20));
 
-	
     gui.add(temporalAlignmentMode.setup("Temporal Alignment", ofxParameter<bool>()));
 	gui.add(captureFramePair.setup("Set Color-Depth Time", ofxParameter<bool>()));
 
-	gui.add(renderObjectFiles.setup("create obj files", ofxParameter<bool>()));
-	gui.add(startSequenceAt0.setup("start export sequence at 0", ofxParameter<bool>()));
+	gui.add(renderObjectFiles.setup("Export .obj Files", ofxParameter<bool>()));
+	gui.add(startSequenceAt0.setup("Start Sequence at 1", ofxParameter<bool>()));
 	
     gui.loadFromFile("defaultGuiSettings.xml");
     
@@ -153,7 +151,7 @@ void testApp::setup(){
 	currentLockCamera = false;
 	cameraTrack->lockCameraToTrack = false;
     meshBuilder.cacheValidVertices = true;
-    
+
     accumulatedPerlinOffset = 0;
 
     ofxXmlSettings defaultBin;
@@ -285,7 +283,14 @@ void testApp::drawGeometry(){
 		ofTranslate(0,0,-.5);
 		if(drawMesh && meshAlpha > 0){
 			ofSetColor(255*meshAlpha);
-            renderer.drawMesh();
+           
+			if(renderObjectFiles){
+				meshBuilder.draw();
+				//renderer.drawMesh();
+			}
+			else{
+				 renderer.drawMesh();
+			}
 			usedDepth = true;
 		}
 
@@ -760,6 +765,7 @@ void testApp::update(){
 	renderer.meshRotate.x = timeline.getValue("X Rotate");
     renderer.meshRotate.y = timeline.getValue("Y Rotate");
     renderer.meshRotate.z = timeline.getValue("Z Rotate");
+	renderer.flipTexture = flipTexture;
     ofVec2f simplification = ofVec2f( timeline.getValue("Simplify X"), timeline.getValue("Simplify Y") );
 	
 	if(renderer.getSimplification().x != simplification.x || renderer.getSimplification().y != simplification.y){
@@ -833,8 +839,8 @@ void testApp::updateRenderer(){
     }
     
     renderer.update();
-    if(renderObjectFiles && currentlyRendering){
-        meshBuilder.update();
+    if(renderObjectFiles && currentlyRendering || true){
+       meshBuilder.update();
     }
 
 	cameraTrack->setDampening(powf(timeline.getValue("Camera Dampen"),2.));
@@ -965,7 +971,7 @@ void testApp::draw(){
                     if(renderObjectFiles){
                         char objFilename[512];
                         sprintf(objFilename, "%s/save_%05d.obj", saveFolder.c_str(), videoFrame);
-                        ofMesh reducedMesh =meshBuilder.getReducedMesh(true);
+                        ofMesh reducedMesh =meshBuilder.getReducedMesh(true, .001);
                         ofxObjLoader::save(string(objFilename), reducedMesh);
                         savingImage.setFromPixels(player.getVideoPlayer()->getPixelsRef());
                     }
@@ -1036,7 +1042,7 @@ void testApp::draw(){
 #pragma mark compositions
 //--------------------------------------------------------------
 bool testApp::createNewComposition(){
-    cout << "createNewComposition -- selected take " << selectedScene << endl;
+	cout << "createNewComposition -- selected take " << selectedScene->scene.name << endl;
     
     if(selectedScene == NULL){
         ofLogError("testApp::createNewComposition -- Cannot create new comp with no selected take!");
@@ -1049,14 +1055,15 @@ bool testApp::createNewComposition(){
 	}	
 	compBin.listDir();
 	
-	currentCompShortName = ofSystemTextBoxDialog("New Composition Name");
-	ofStringReplace(currentCompShortName, pathDelim, "_");
-	if(currentCompShortName == ""){
-		int compNumber = compBin.numFiles()+1;
-		currentCompShortName = "comp" + ofToString(compNumber);
+	string newName =  ofSystemTextBoxDialog("New Composition Name");
+	ofStringReplace(newName, pathDelim, "_");
+	if(newName == ""){
+		return false;
+//		int compNumber = compBin.numFiles()+1;
+//		currentCompShortName = "comp" + ofToString(compNumber);
 	}
-	currentCompShortName += pathDelim;
 
+	currentCompShortName = newName + pathDelim;
 	currentCompositionDirectory = ofToDataPath( selectedScene->scene.mediaFolder + "/compositions/" + currentCompShortName);
 	ofDirectory compDirectory( currentCompositionDirectory );
     
@@ -1334,13 +1341,8 @@ void testApp::saveComposition(){
 	projectsettings.setValue("drawPointcloud", drawPointcloud);
 	projectsettings.setValue("drawWireframe", drawWireframe);
 	projectsettings.setValue("drawMesh", drawMesh);
-//    projectsettings.setValue("drawDepthDistortion", drawDepthDistortion);
-//	projectsettings.setValue("drawGeometryDistortion", drawGeometryDistortion);
     projectsettings.setValue("selfOcclude",selfOcclude);
 	projectsettings.setValue("drawDOF",drawDOF);
-//	projectsettings.setValue("drawScanlines",drawScanlines);
-//	projectsettings.setValue("drawParticles",drawParticles);
-//	projectsettings.setValue("wireframeLuminosity",wireframeLuminosity);
 	projectsettings.setValue("cameraSpeed", cam.speed);
 	projectsettings.setValue("cameraRollSpeed", cam.rollSpeed);
 	
@@ -1349,6 +1351,8 @@ void testApp::saveComposition(){
     projectsettings.setValue("holeIterations", currentHoleFillIterations);
     
 	projectsettings.setValue("mirror", currentMirror);
+	projectsettings.setValue("flipTexture", flipTexture);
+
     projectsettings.setValue("width", customWidth);
     projectsettings.setValue("height", customHeight);
     
@@ -1367,8 +1371,11 @@ void testApp::saveComposition(){
     gui.saveToXml(defaults);
     defaults.saveFile("defaultGuiSettings.xml");
     
-    lastSavedDate = "Last Saved on " + ofToString(ofGetMonth() ) + "/" + ofToString( ofGetDay()) + " at " + ofToString(ofGetHours()) + ":" + ofToString( ofGetMinutes() )  + ":" + ofToString( ofGetSeconds() );
-    changeCompButton->setLabel(currentCompShortName + " -- " + lastSavedDate);
+	char lastSavedStr[1024];
+	sprintf(lastSavedStr, "Last Saved on %02d/%02d at %02d:%02d:%02d", ofGetMonth(), ofGetDay(), ofGetHours(), ofGetMinutes(), ofGetSeconds() );
+//    lastSavedDate = "Last Saved on " + ofToString( ) + "/" + ofToString( ) + " at " + ) + ":" + ofToString(  )  + ":" + ofToString(  );
+    lastSavedDate  = string(lastSavedStr);
+	changeCompButton->setLabel(currentCompShortName + " -- " + lastSavedDate);
 }
 
 //--------------------------------------------------------------
@@ -1402,9 +1409,9 @@ void testApp::objectDidRelease(ofxMSAInteractiveObject* object, int x, int y, in
         }
     }
     else if(object == newCompButton){
-        createNewComposition();
-        loadComposition(currentCompositionDirectory);
-
+        if(createNewComposition()){
+			loadComposition(currentCompositionDirectory);
+		}
     }
 	else if(object == saveCompButton){
 		saveComposition();		
@@ -1506,13 +1513,14 @@ bool testApp::loadComposition(string compositionDirectory){
         drawPointcloud = projectsettings.getValue("drawPointcloud", true);
         drawWireframe = projectsettings.getValue("drawWireframe", true);
         drawMesh = projectsettings.getValue("drawMesh", true);
-//        drawDepthDistortion = projectsettings.getValue("drawDepthDistortion", true);
-//        drawGeometryDistortion= projectsettings.getValue("drawGeometryDistortion", true);
+
         drawDOF = projectsettings.getValue("drawDOF",true);
         selfOcclude = projectsettings.getValue("selfOcclude",false);
         
-        currentMirror = projectsettings.getValue("mirror", false);
-        customWidth = projectsettings.getValue("width", 1920);
+        
+		currentMirror = projectsettings.getValue("mirror", false);
+        flipTexture = projectsettings.getValue("flipTexture", false);
+		customWidth = projectsettings.getValue("width", 1920);
         customHeight = projectsettings.getValue("height", 1080);
 		
 		renderObjectFiles = projectsettings.getValue("renderObjFiles", false);
@@ -1553,6 +1561,7 @@ bool testApp::loadComposition(string compositionDirectory){
     
     //TODO: change widths to prevent font overflow
     changeCompButton->setLabel(currentCompShortName + " -- " + lastSavedDate);
+	return true;
 }	
 
 void testApp::addCompToRenderQueue(CompButton* comp){
