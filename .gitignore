@@ -13,6 +13,7 @@ xcshareddata/
 .DS_Store
 RGBDVisualize/bin/data/*.xml
 timeline*.xml
+*trackPositions.xml
 
 #vs2010 stuff
 ipch/
@@ -26,3 +27,4 @@ ipch/
 *.dll
 *.bak
 *.pdb
+*.sys
