@@ -102,7 +102,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle lockTo1080p;
     ofxIntSlider customWidth;
     ofxIntSlider customHeight;
-    ofxButton setCurrentSize;
+    ofxToggle setCurrentSize;
 
     ofxToggle fillHoles;
     ofxIntSlider currentHoleKernelSize;

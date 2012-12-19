@@ -124,7 +124,7 @@ void testApp::setup(){
  	
     gui.add( customWidth.setup("Frame Width", ofxParameter<int>(), 320, 1920*2));
     gui.add( customHeight.setup("Frame Height", ofxParameter<int>(), 240, 1080*2));
-    gui.add( setCurrentSize.setup("Apply Custom Size"));
+    gui.add( setCurrentSize.setup("Apply Custom Size", ofxParameter<bool>()));
     gui.add( lockTo720p.setup("720p", ofxParameter<bool>()));
     gui.add( lockTo1080p.setup("1080p",ofxParameter<bool>()));
     
@@ -285,8 +285,8 @@ void testApp::drawGeometry(){
 			ofSetColor(255*meshAlpha);
            
 			if(renderObjectFiles){
-				meshBuilder.draw();
-				//renderer.drawMesh();
+				//meshBuilder.draw();
+				renderer.drawMesh();
 			}
 			else{
 				 renderer.drawMesh();
@@ -839,7 +839,7 @@ void testApp::updateRenderer(){
     }
     
     renderer.update();
-    if(renderObjectFiles && currentlyRendering || true){
+    if(renderObjectFiles && currentlyRendering){
        meshBuilder.update();
     }
 
@@ -866,6 +866,7 @@ void testApp::checkReallocateFrameBuffers(){
     }
     else if(setCurrentSize && (fbo1.getWidth() != customWidth || fbo1.getHeight() != customHeight)){
         allocateFrameBuffers();
+        setCurrentSize = false;
     }
     
     lockTo720p  = fbo1.getWidth() == 1280 && fbo1.getHeight() == 720;
@@ -876,6 +877,9 @@ void testApp::allocateFrameBuffers(){
 
     int fboWidth = customWidth;
     int fboHeight = customHeight;
+
+    if(fboWidth <= 0) fboWidth = 1920;
+    if(fboHeight <= 0) fboHeight = 1080;
     
 	savingImage.setUseTexture(false);
 	savingImage.allocate(fboWidth,fboHeight,OF_IMAGE_COLOR);
