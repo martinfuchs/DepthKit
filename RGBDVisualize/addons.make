@@ -1,8 +1,10 @@
 ofxCv
 ofxGameCamera
+ofxGui
 ofxMSAInteractiveObject
 ofxMSATimer
 ofxObjLoader
+ofxOpenCv
 ofxRange
 ofxRGBDepth
 ofxTextInputField

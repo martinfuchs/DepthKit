@@ -37,8 +37,29 @@
     <ClCompile Include="..\..\..\addons\ofxCv\libs\ofxCv\src\Utilities.cpp">
       <Filter>addons\ofxCv\libs\ofxCv\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxCv\libs\ofxCv\src\Wrappers.cpp">
+      <Filter>addons\ofxCv\libs\ofxCv\src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\addons\ofxGameCamera\src\ofxGameCamera.cpp">
       <Filter>addons\ofxGameCamera\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxBaseGui.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxButton.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxLabel.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxPanel.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxSlider.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxToggle.cpp">
+      <Filter>addons\ofxGui\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\addons\ofxMSAInteractiveObject\src\ofxMSAInteractiveObject.cpp">
       <Filter>addons\ofxMSAInteractiveObject\src</Filter>
@@ -48,6 +69,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp">
       <Filter>addons\ofxObjLoader\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxObjLoader\libs\glm\glm.c">
+      <Filter>addons\ofxObjLoader\libs\glm</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxCvCheckerboardPreview.cpp">
       <Filter>addons\ofxRGBDepth\src</Filter>
@@ -227,34 +251,10 @@
       <Filter>addons\ofxXmlSettings\libs</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\addons\ofxRGBDepth\couples\ofxTimeline\ofxTLDepthImageSequence.cpp">
-      <Filter>addons\ofxRGBDepth\couples</Filter>
+      <Filter>addons\ofxRGBDepth\ofxTimeline</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\addons\ofxRGBDepth\couples\ofxTimeline\ofxTLVideoDepthAlignmentScrubber.cpp">
-      <Filter>addons\ofxRGBDepth\couples</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxObjLoader\libs\glm\glm.c">
-      <Filter>addons\ofxObjLoader\libs</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxBaseGui.cpp">
-      <Filter>addons\ofxGui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxButton.cpp">
-      <Filter>addons\ofxGui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxLabel.cpp">
-      <Filter>addons\ofxGui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxPanel.cpp">
-      <Filter>addons\ofxGui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxSlider.cpp">
-      <Filter>addons\ofxGui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxToggle.cpp">
-      <Filter>addons\ofxGui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxCv\libs\ofxCv\src\Wrappers.cpp">
-      <Filter>addons\ofxCv\libs\ofxCv\src</Filter>
+      <Filter>addons\ofxRGBDepth\ofxTimeline</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -291,6 +291,12 @@
     <Filter Include="addons\ofxGameCamera\src">
       <UniqueIdentifier>{7b38b4f7-016e-1f8a-da9a-bb61e1e55a41}</UniqueIdentifier>
     </Filter>
+    <Filter Include="addons\ofxGui">
+      <UniqueIdentifier>{4f2a59af-5f4e-704b-d067-ec13ec6f115e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxGui\src">
+      <UniqueIdentifier>{645e9533-4dcd-6179-1cdf-cb65316d4924}</UniqueIdentifier>
+    </Filter>
     <Filter Include="addons\ofxMSAInteractiveObject">
       <UniqueIdentifier>{7f7a88a6-f023-28f9-9a1e-c77399743e79}</UniqueIdentifier>
     </Filter>
@@ -308,6 +314,12 @@
     </Filter>
     <Filter Include="addons\ofxObjLoader\src">
       <UniqueIdentifier>{4d864338-9cf5-6dad-25ee-df7f113113e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxObjLoader\libs">
+      <UniqueIdentifier>{34b63617-11ef-343f-d7fd-5a0c0aacf20f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxObjLoader\libs\glm">
+      <UniqueIdentifier>{5bab8b64-5224-fffb-11ad-3672ca28afdd}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxRange">
       <UniqueIdentifier>{c5cf358f-f6d6-0f61-5433-25f14c446730}</UniqueIdentifier>
@@ -357,17 +369,8 @@
     <Filter Include="addons\ofxXmlSettings\libs">
       <UniqueIdentifier>{687714a8-1662-fa1c-261f-50f068335398}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxRGBDepth\couples">
-      <UniqueIdentifier>{dcc57b45-3afa-44e5-aacc-17cea1700674}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxObjLoader\libs">
-      <UniqueIdentifier>{d0e0c847-59ec-49fe-9088-e70ff2750652}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxGui">
-      <UniqueIdentifier>{11c32b32-0944-4e83-aa36-b2c52f735fbf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxGui\src">
-      <UniqueIdentifier>{9337fc5b-1b2d-4045-989c-cab524414f2f}</UniqueIdentifier>
+    <Filter Include="addons\ofxRGBDepth\ofxTimeline">
+      <UniqueIdentifier>{782e6d92-d881-41d7-87e2-d8cb27b5cb95}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -410,6 +413,33 @@
     <ClInclude Include="..\..\..\addons\ofxGameCamera\src\ofxGameCamera.h">
       <Filter>addons\ofxGameCamera\src</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofOscParameter.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofParameter.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxBaseGui.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxButton.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxGui.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxLabel.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxPanel.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxSlider.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxToggle.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxMSAInteractiveObject\src\ofxMSAInteractiveObject.h">
       <Filter>addons\ofxMSAInteractiveObject\src</Filter>
     </ClInclude>
@@ -421,6 +451,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxObjLoader\src\ofxObjLoader.h">
       <Filter>addons\ofxObjLoader\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxObjLoader\libs\glm\glm.h">
+      <Filter>addons\ofxObjLoader\libs\glm</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxRange\src\ofRange.h">
       <Filter>addons\ofxRange\src</Filter>
@@ -597,40 +630,10 @@
       <Filter>addons\ofxXmlSettings\libs</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxRGBDepth\couples\ofxTimeline\ofxTLDepthImageSequence.h">
-      <Filter>addons\ofxRGBDepth\couples</Filter>
+      <Filter>addons\ofxRGBDepth\ofxTimeline</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxRGBDepth\couples\ofxTimeline\ofxTLVideoDepthAlignmentScrubber.h">
-      <Filter>addons\ofxRGBDepth\couples</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxObjLoader\libs\glm\glm.h">
-      <Filter>addons\ofxObjLoader\libs</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxGui\src\ofOscParameter.h">
-      <Filter>addons\ofxGui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxGui\src\ofParameter.h">
-      <Filter>addons\ofxGui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxBaseGui.h">
-      <Filter>addons\ofxGui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxButton.h">
-      <Filter>addons\ofxGui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxGui.h">
-      <Filter>addons\ofxGui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxLabel.h">
-      <Filter>addons\ofxGui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxPanel.h">
-      <Filter>addons\ofxGui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxSlider.h">
-      <Filter>addons\ofxGui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxToggle.h">
-      <Filter>addons\ofxGui</Filter>
+      <Filter>addons\ofxRGBDepth\ofxTimeline</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
