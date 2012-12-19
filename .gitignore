@@ -11,9 +11,10 @@ xcuserdata/
 xcshareddata/
 
 .DS_Store
+RGBDVisualize/bin/data/*.xml
 
 #vs2010 stuff
-
+ipch/
 *.suo
 *.opensdf
 *.sdf

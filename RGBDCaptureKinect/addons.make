@@ -3,6 +3,7 @@ ofxGameCamera
 ofxKinect
 ofxMSAInteractiveObject
 ofxMSATimer
+ofxOpenCv
 ofxRange
 ofxRGBDepth
 ofxTextInputField
