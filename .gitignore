@@ -12,6 +12,7 @@ xcshareddata/
 
 .DS_Store
 RGBDVisualize/bin/data/*.xml
+timeline*.xml
 
 #vs2010 stuff
 ipch/
