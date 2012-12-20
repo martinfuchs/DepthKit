@@ -15,6 +15,8 @@ uniform float ysimplify;
 
 uniform int flipTexture; //fixes some flips on graphics cards
 uniform int useTexture;
+uniform mat4 tTex;
+
 varying float VZPositionValid0;
 
 void main(void)
@@ -43,7 +45,8 @@ void main(void)
 
     if(useTexture == 1){
 
-        mat4 tTex = gl_TextureMatrix[0];
+        //mat4 tTex = gl_TextureMatrix[0];
+        
         vec4 texCd = tTex * pos;
         texCd.xyz /= texCd.w;
         
