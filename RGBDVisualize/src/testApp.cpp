@@ -285,8 +285,8 @@ void testApp::drawGeometry(){
 			ofSetColor(255*meshAlpha);
            
 			if(renderObjectFiles){
-				//meshBuilder.draw();
-				renderer.drawMesh();
+				meshBuilder.draw();
+				//renderer.drawMesh();
 			}
 			else{
 				 renderer.drawMesh();
@@ -839,7 +839,7 @@ void testApp::updateRenderer(){
     }
     
     renderer.update();
-    if(renderObjectFiles && currentlyRendering){
+    if(renderObjectFiles && currentlyRendering || true){
        meshBuilder.update();
     }
 

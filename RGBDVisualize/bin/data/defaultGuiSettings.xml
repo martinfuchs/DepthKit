@@ -10,10 +10,11 @@
 <Draw_DOF>0</Draw_DOF>
 <Frame_Width>1920</Frame_Width>
 <Frame_Height>1080</Frame_Height>
-<720p>1</720p>
-<1080p>0</1080p>
+<Apply_Custom_Size>1</Apply_Custom_Size>
+<720p>0</720p>
+<1080p>1</1080p>
 <Mirror>0</Mirror>
-<Flip_Texture>1</Flip_Texture>
+<Flip_Texture>0</Flip_Texture>
 <Fill_Holes>1</Fill_Holes>
 <Hole_Kernel_Size>3</Hole_Kernel_Size>
 <Hole_Fill_Iterations>2</Hole_Fill_Iterations>
