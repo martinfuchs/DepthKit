@@ -285,8 +285,8 @@ void testApp::drawGeometry(){
 			ofSetColor(255*meshAlpha);
            
 			if(renderObjectFiles){
-				meshBuilder.draw();
-				//renderer.drawMesh();
+				//meshBuilder.draw();
+				renderer.drawMesh();
 			}
 			else{
 				 renderer.drawMesh();
@@ -839,8 +839,8 @@ void testApp::updateRenderer(){
     }
     
     renderer.update();
-    if(renderObjectFiles && currentlyRendering || true){
-       meshBuilder.update();
+    if(renderObjectFiles && currentlyRendering){
+        er.update();
     }
 
 	cameraTrack->setDampening(powf(timeline.getValue("Camera Dampen"),2.));
@@ -960,7 +960,6 @@ void testApp::draw(){
 																 colorAlignAssistRect.width,
 																 -colorAlignAssistRect.height));
                 dofRange.end();
-                
             }
             
 			if(currentlyRendering){
@@ -969,13 +968,13 @@ void testApp::draw(){
 				if(startSequenceAt0){
 					videoFrame -= timeline.getInFrame();
 				}
-                sprintf(filename, "%s/save_%05d.png", saveFolder.c_str(), videoFrame);
+                sprintf(filename, "%s/save.%05d.png", saveFolder.c_str(), videoFrame);
 
                 if(!firstRenderFrame){
                     if(renderObjectFiles){
                         char objFilename[512];
-                        sprintf(objFilename, "%s/save_%05d.obj", saveFolder.c_str(), videoFrame);
-                        ofMesh reducedMesh =meshBuilder.getReducedMesh(true, .001);
+                        sprintf(objFilename, "%s/save.%05d.obj", saveFolder.c_str(), videoFrame);
+                        ofMesh reducedMesh = meshBuilder.getReducedMesh(true, ofVec3f(.001, -.001, .001), false, true);
                         ofxObjLoader::save(string(objFilename), reducedMesh);
                         savingImage.setFromPixels(player.getVideoPlayer()->getPixelsRef());
                     }
@@ -986,10 +985,9 @@ void testApp::draw(){
                         }
                     }
                     
-
                     savingImage.saveImage(filename);
                     
-                    cout << "   at save time its set to " << player.getVideoPlayer()->getCurrentFrame() << " time " << (player.getVideoPlayer()->getPosition() * player.getVideoPlayer()->getDuration() ) << endl;
+                    //cout << "   at save time its set to " << player.getVideoPlayer()->getCurrentFrame() << " time " << (player.getVideoPlayer()->getPosition() * player.getVideoPlayer()->getDuration() ) << endl;
                 }
                 firstRenderFrame = false;
                 
