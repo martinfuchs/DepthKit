@@ -12,8 +12,6 @@ uniform float farClip;
 uniform float edgeClip;
 uniform float xsimplify;
 uniform float ysimplify;
-
-uniform int flipTexture; //fixes some flips on graphics cards
 uniform int useTexture;
 uniform mat4 tTex;
 
@@ -44,14 +42,11 @@ void main(void)
     gl_FrontColor = gl_Color;
 
     if(useTexture == 1){
-
-        //mat4 tTex = gl_TextureMatrix[0];
         
         vec4 texCd = tTex * pos;
         texCd.xyz /= texCd.w;
         
         texCd.y *= -1.;
-        if(flipTexture == 1) texCd.x *= -1.;
         texCd.xy += 1.;
         texCd.xy /= 2.;
         
