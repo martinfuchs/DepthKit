@@ -4,10 +4,9 @@
 uniform sampler2DRect colorTex;
 uniform int useTexture;
 varying float VZPositionValid0;
-
+const float epsilon = 1e-6;
 void main()
 {
-
     if(useTexture == 1){
         vec4 col = texture2DRect(colorTex, gl_TexCoord[0].st);
         gl_FragColor = col * gl_Color;
@@ -16,7 +15,7 @@ void main()
         gl_FragColor = vec4(0);
     }    
     
-    if(VZPositionValid0 < 0.9999){
+    if(VZPositionValid0 < 1.0-epsilon){
     	discard;
     }
 

@@ -23,14 +23,23 @@ void main(void)
     vec2 texCoordPixAligned = floor(gl_Vertex.xy) + vec2(.5,.5);
     
     float depth = texture2DRect(depthTex, texCoordPixAligned).r * 65535.;
-    float right = texture2DRect(depthTex, texCoordPixAligned + vec2(ceil(xsimplify),0.0)).r * 65535.;
-    float down  = texture2DRect(depthTex, texCoordPixAligned + vec2(0.0,ceil(ysimplify))).r * 65535.;
+    float right = texture2DRect(depthTex, texCoordPixAligned + vec2(floor(xsimplify),0.0)).r * 65535.;
+    float down  = texture2DRect(depthTex, texCoordPixAligned + vec2(0.0,floor(ysimplify))).r * 65535.;
+    float left  = texture2DRect(depthTex, texCoordPixAligned + vec2(floor(-xsimplify),0.0)).r * 65535.;
+    float up    = texture2DRect(depthTex, texCoordPixAligned + vec2(0.0,floor(-ysimplify))).r * 65535.;
+    float bl    = texture2DRect(depthTex, texCoordPixAligned + vec2(floor(-xsimplify),floor(ysimplify))).r * 65535.;
+    float ur    = texture2DRect(depthTex, texCoordPixAligned + vec2(floor(xsimplify),floor(-ysimplify))).r * 65535.;
 
     //cull invalid verts
     VZPositionValid0 = (depth < farClip &&
                         depth > 20. && //TODO: add variable near clip
                         abs(down - depth) < edgeClip &&
-                        abs(right - depth) < edgeClip) ? 1.0 : 0.0;
+                        abs(right - depth) < edgeClip &&
+                        abs(bl - depth) < edgeClip &&
+                        abs(up - depth) < edgeClip &&                       
+                        abs(left - depth) < edgeClip &&
+                        abs(ur - depth) < edgeClip
+                         ) ? 1.0 : 0.0;
 
     //find the 3d position
 	vec4 pos = vec4((gl_Vertex.x - principalPoint.x) * depth / fov.x,
