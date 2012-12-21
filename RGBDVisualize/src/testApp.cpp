@@ -31,7 +31,6 @@ void testApp::setup(){
     customWidth = 1920;
     customHeight = 1080;
     
-    
 	cam.maximumY =  120;
 	cam.minimumY = -120;
 	cameraRollSpeed = cam.rollSpeed = 1;
@@ -177,10 +176,8 @@ void testApp::loadShaders(){
     dofBlur.end();
 
     renderer.reloadShader();
-
 }
 
-//Labbers: YOU CAN ADD TIMELINE ELEMENTS HERE
 void testApp::populateTimelineElements(){
 	
 	timeline.setPageName("Camera");
@@ -225,6 +222,7 @@ void testApp::populateTimelineElements(){
 	timeline.addCurves("Y Texture Scale", currentCompositionDirectory + "YTextureScale.xml", ofRange(.95, 1.05), 1.0 );
 	
 	timeline.setCurrentPage("Rendering");
+//	cout << "Finished adding timeline elements " << endl;
 }
 
 void testApp::drawGeometry(){
@@ -272,10 +270,9 @@ void testApp::drawGeometry(){
 		bool usedDepth = false;
 		if(selfOcclude){
 			ofTranslate(0, 0, 1);
-            renderer.useTexture = false;
+			renderer.useTexture = false;
 			renderer.drawMesh();
-            renderer.useTexture = true;
-            
+			renderer.useTexture = true;
 			ofTranslate(0, 0, -1);
 			usedDepth = true;
 		}
@@ -283,14 +280,7 @@ void testApp::drawGeometry(){
 		ofTranslate(0,0,-.5);
 		if(drawMesh && meshAlpha > 0){
 			ofSetColor(255*meshAlpha);
-           
-			if(renderObjectFiles){
-				//meshBuilder.draw();
-				renderer.drawMesh();
-			}
-			else{
-				 renderer.drawMesh();
-			}
+			renderer.drawMesh();
 			usedDepth = true;
 		}
 
@@ -604,6 +594,7 @@ void testApp::update(){
     	renderQueue[i].remove->enabled = viewComps;
     }
     
+
 	renderBatch->enabled = viewComps && (renderQueue.size() > 0);
 
     changeCompButton->enabled = isSceneLoaded;
@@ -839,8 +830,8 @@ void testApp::updateRenderer(){
     }
     
     renderer.update();
-    if(renderObjectFiles && currentlyRendering){
-        er.update();
+    if(currentlyRendering && renderObjectFiles){
+        meshBuilder.update();
     }
 
 	cameraTrack->setDampening(powf(timeline.getValue("Camera Dampen"),2.));
@@ -866,8 +857,8 @@ void testApp::checkReallocateFrameBuffers(){
     }
     else if(setCurrentSize && (fbo1.getWidth() != customWidth || fbo1.getHeight() != customHeight)){
         allocateFrameBuffers();
-        setCurrentSize = false;
     }
+    setCurrentSize = false;
     
     lockTo720p  = fbo1.getWidth() == 1280 && fbo1.getHeight() == 720;
     lockTo1080p = fbo1.getWidth() == 1920 && fbo1.getHeight() == 1080;
@@ -875,17 +866,24 @@ void testApp::checkReallocateFrameBuffers(){
 
 void testApp::allocateFrameBuffers(){
 
+	cout << " starting allocating frame buffers " << endl;
     int fboWidth = customWidth;
     int fboHeight = customHeight;
 
-    if(fboWidth <= 0) fboWidth = 1920;
-    if(fboHeight <= 0) fboHeight = 1080;
-    
-	savingImage.setUseTexture(false);
+    fboWidth  = ofClamp(fboWidth,  320, 1920*2);
+    fboHeight = ofClamp(fboHeight, 240, 1080*2);
+
+	cout << "step -2 " << fboWidth << " " << fboHeight << endl;
+
 	savingImage.allocate(fboWidth,fboHeight,OF_IMAGE_COLOR);
-	
+	savingImage.setUseTexture(false);
+
+	cout << "step -1 " << endl;
+
 	depthSequence.setAutoUpdate(false);
-	
+
+	cout << "step 1 " << endl;
+
 	fboRectangle = ofRectangle(250, 100, fboWidth, fboHeight);
     ofFbo::Settings dofBuffersSettings;
     dofBuffersSettings.width = fboWidth;
@@ -896,11 +894,16 @@ void testApp::allocateFrameBuffers(){
     dofBuffersSettings.useStencil = true;
     dofBuffersSettings.depthStencilAsTexture = true;
     dofBuffersSettings.textureTarget = ofGetUsingArbTex() ? GL_TEXTURE_RECTANGLE_ARB : GL_TEXTURE_2D;
-    
+
     dofBuffer.allocate(dofBuffersSettings);
+
+	cout << "step 2 " << endl;
+
     swapFbo.allocate(fboWidth, fboHeight, GL_RGB);
     fbo1.allocate(fboWidth, fboHeight, GL_RGBA, 4);
-    
+
+	cout << "step 3 " << endl;
+
     fbo1.begin();
     ofClear(0,0,0,0);
     fbo1.end();
@@ -908,12 +911,17 @@ void testApp::allocateFrameBuffers(){
     ofClear(0,0,0,0);
     dofBuffer.end();
 
+	cout << "finished allocating frame buffers" << endl;
+
 }
 
 
 //--------------------------------------------------------------
 void testApp::draw(){
-    
+
+	//REMOVE
+	if(!isSceneLoaded) return;
+
 	if(isSceneLoaded){
 		if(!viewComps){
             
