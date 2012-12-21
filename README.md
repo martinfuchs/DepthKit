@@ -22,7 +22,6 @@
 
 A software suite for filmmaking with Kinect paired with a Digital SLR Video camera.
 
-
 Watch the tutorials here:
 https://vimeo.com/album/1977644
 
@@ -34,7 +33,7 @@ For an HTML formatted tutorial and video walkthroughs jump over to the website: 
 
 http://www.rgbdtoolkit.com + http://rgbd.tumblr.com/
 
-RGBDToolkit is reRelease v. 004 for Mac OS X Released on December 7th 2012
+RGBDToolkit is in prerelease v. 004 for Mac OS X and Windows Released on December 21st 2012
 
 The original manual was graciously written by the wonderful and talented video artist i.m klif (http://vimeo.com/32631165) during our Resonate workshop in Belgrade, Serbia on March 16th 2012. Subsequent versions edited by James George.
 
@@ -43,7 +42,7 @@ James George, developer http://www.jamesgeorge.org
 Alexander Porter, experimental photographer http://www.alexanderporter.com
 Jonathan Minard, documentarian http://www.deepspeedmedia.com
 
-Development has been inspired and assisted by Kyle McDonald http://www.kylemcdonald.com and Elliot Woods http://www.kimchiandchips.com
+Development has been assisted by Kyle McDonald http://www.kylemcdonald.com and Elliot Woods http://www.kimchiandchips.com
 
 Supported by:
 
@@ -59,16 +58,16 @@ Very special thanks to the Resonate Festival, Eyeo Festival, and Art && Code con
 
 =======
 
-# COMPATIBILITY
+# SENSORS
 
-The RGBDToolkit is compatible with the Microsoft XBOX Kinect and the Asus Xtion series. (http://www.newegg.com/Product/Product.aspx?Item=N82E16826785030)
+The RGBDToolkit is compatible with the Microsoft XBOX Kinect and the Asus Xtion series on Mac OS X (http://www.newegg.com/Product/Product.aspx?Item=N82E16826785030)
+
+* To use the Kinect run the RGBDCaptureKinect application
+* To use the Asus Xtion pro run the RGBDCaptureOpenNI Application
 
 To use the Asus Xtion sensor you must install the OpenNI drivers. The easiest way is to use the sensecast installer package: http://sensecast.com/files/Sensecast.and.Libs.Installer.v.0.02.dmg
 
 Or you can compile and install from source here: https://github.com/PrimeSense/Sensor
-
-* To use the Kinect run the RGBDCaptureKinect application
-* To use the Asus Xtion pro run the RGBDCaptureOpenNI Application
 
 # CALIBRATION
 

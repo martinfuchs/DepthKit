@@ -25,9 +25,27 @@
 Known Issues:
 - When selecting a media bin folder in the Capture app, you'll need to restart for it to reload the calibration
 - Rendering compositions with no camera track will cause weird behavior
-- No way to change the render resolution from 1920x1080
 
 =======
+004 - December 20th 2012
+- Windows support (libfreenect)
+- OBJ sequence export added
+- Support for variable output dimensions, up to 2k
+- Optimized GPU rendering
+- Edge clipping between distance surfaces
+- Smooth camera motion
+- Wireframe thickness variable by decimal
+- Simplification set by decimal, and can be controlled independently for X and Y
+- Support for many more video codecs
+- Timeline improvements
+	- Timeline takes up less space
+	- Undo
+	- Copy+Paste keyframes
+	- Thumbnails no longer freeze the timeline when zooming
+- Option to name new compositions when you create them
+- Texture alignment can now be edited on the timeline
+- New Texture Scaling parameter to assist with alignment
+
 0031 - July 15th 2012
 - Fixed pattern size bug that was causing weird calibration issues
 - Fixed crash on exit in Capture application
