@@ -866,23 +866,15 @@ void testApp::checkReallocateFrameBuffers(){
 
 void testApp::allocateFrameBuffers(){
 
-	cout << " starting allocating frame buffers " << endl;
     int fboWidth = customWidth;
     int fboHeight = customHeight;
 
     fboWidth  = ofClamp(fboWidth,  320, 1920*2);
     fboHeight = ofClamp(fboHeight, 240, 1080*2);
 
-	cout << "step -2 " << fboWidth << " " << fboHeight << endl;
-
 	savingImage.allocate(fboWidth,fboHeight,OF_IMAGE_COLOR);
 	savingImage.setUseTexture(false);
-
-	cout << "step -1 " << endl;
-
 	depthSequence.setAutoUpdate(false);
-
-	cout << "step 1 " << endl;
 
 	fboRectangle = ofRectangle(250, 100, fboWidth, fboHeight);
     ofFbo::Settings dofBuffersSettings;

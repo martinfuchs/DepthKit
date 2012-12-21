@@ -35,8 +35,6 @@ http://www.rgbdtoolkit.com + http://rgbd.tumblr.com/
 
 RGBDToolkit is in prerelease v. 004 for Mac OS X and Windows Released on December 21st 2012
 
-The original manual was graciously written by the wonderful and talented video artist i.m klif (http://vimeo.com/32631165) during our Resonate workshop in Belgrade, Serbia on March 16th 2012. Subsequent versions edited by James George.
-
 RGBDToolkit is a labor of love by
 James George, developer http://www.jamesgeorge.org 
 Alexander Porter, experimental photographer http://www.alexanderporter.com
@@ -52,7 +50,9 @@ Eyebeam Art+Technology center http://eyebeam.org
 
 YCAM InterLab http://www.ycam.jp/en/interlab/
 
-NYY Interactive Telecommunications Program
+NYU Interactive Telecommunications Program
+
+The original manual was graciously written by the wonderful and talented video artist i.m klif (http://vimeo.com/32631165) during our Resonate workshop in Belgrade, Serbia on March 16th 2012. Subsequent versions edited by James George.
 
 Very special thanks to the Resonate Festival, Eyeo Festival, and Art && Code conference.
 
