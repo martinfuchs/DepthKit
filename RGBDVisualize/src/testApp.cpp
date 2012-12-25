@@ -1061,8 +1061,6 @@ bool testApp::createNewComposition(){
 	ofStringReplace(newName, pathDelim, "_");
 	if(newName == ""){
 		return false;
-//		int compNumber = compBin.numFiles()+1;
-//		currentCompShortName = "comp" + ofToString(compNumber);
 	}
 
 	currentCompShortName = newName + pathDelim;
@@ -1641,8 +1639,8 @@ void testApp::finishRender(){
 
 //--------------------------------------------------------------
 void testApp::windowResized(int w, int h){
-	timeline.setWidth(w);
-	timeline.setOffset(ofVec2f(0, ofGetHeight() - timeline.getDrawRect().height));    
+//	timeline.setWidth(w);
+//	timeline.setOffset(ofVec2f(0, ofGetHeight() - timeline.getDrawRect().height));
 }
 
 //--------------------------------------------------------------
