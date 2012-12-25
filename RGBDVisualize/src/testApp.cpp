@@ -889,12 +889,9 @@ void testApp::allocateFrameBuffers(){
 
     dofBuffer.allocate(dofBuffersSettings);
 
-	cout << "step 2 " << endl;
 
     swapFbo.allocate(fboWidth, fboHeight, GL_RGB);
     fbo1.allocate(fboWidth, fboHeight, GL_RGBA, 4);
-
-	cout << "step 3 " << endl;
 
     fbo1.begin();
     ofClear(0,0,0,0);

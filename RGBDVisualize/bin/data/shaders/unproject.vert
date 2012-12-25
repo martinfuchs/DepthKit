@@ -16,6 +16,7 @@ uniform int useTexture;
 uniform mat4 tTex;
 
 varying float VZPositionValid0;
+
 const float epsilon = 1e-6;
 
 void main(void)
@@ -57,7 +58,11 @@ void main(void)
                         abs(bl - depth) < edgeClip
                          ) ? 1.0 : 0.0;
 
-        
+    
+	vec4 pos = vec4((gl_Vertex.x - principalPoint.x) * depth / fov.x,
+                    (gl_Vertex.y - principalPoint.y) * depth / fov.y, depth, 1.0);
+
+    
     gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * pos;
     gl_FrontColor = gl_Color;
 
