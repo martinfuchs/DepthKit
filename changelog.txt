@@ -27,7 +27,13 @@ Known Issues:
 - Rendering compositions with no camera track will cause weird behavior
 
 =======
-004 - December 20th 2012
+
+0041 - January 3rd 2013
+ - Fixed crash in OS X version of RGBDCaptureKinect
+ - Fixed problem saving checkerboard images to disk
+ - Added more user feedback while generating calibrations
+
+004 - December 21th 2012
 - Windows support (libfreenect)
 - OBJ sequence export added
 - Support for variable output dimensions, up to 2k

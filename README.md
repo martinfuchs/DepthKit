@@ -33,7 +33,7 @@ For an HTML formatted tutorial and video walkthroughs jump over to the website: 
 
 http://www.rgbdtoolkit.com + http://rgbd.tumblr.com/
 
-RGBDToolkit is in prerelease v. 004 for Mac OS X and Windows Released on December 21st 2012
+RGBDToolkit is in prerelease v. 0041 for Mac OS X and Windows Released on January 3rd 2013
 
 RGBDToolkit is a labor of love by
 James George, developer http://www.jamesgeorge.org 
