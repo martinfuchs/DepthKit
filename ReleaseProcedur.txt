@@ -1,0 +1,34 @@
+RGBD Release TODO List:
+
+To create a release, the general strategy is to start with the last release and upate the files changed
+
+Building the release:
+Build new version for Windows and OS X.
+
+For both operating systems, go through the whole process from calibrating, capturing visualizing and exporting to be sure no weird bugs snuck in.
+
+When you're sure it's ready, update the changelog and README with the new version number (1) and any workflow changes from this new version
+For each platform:
+	-- Copy the old release folders 
+	-- Replace application files, and README files, and shaders in both the with and without example data folders
+
+Make sure that when you open the app with example data, that the example compsition loads automatically.
+
+
+Creating a source package
+With each release, the full source code needs to be uploaded as well. To prepare the sourc release:
+	-- copy the entire openFrameworks source folder
+	-- delete everything but the following directories:
+		openFrameworks/libs
+		openFrameworks/apps
+		openFrameworks/addons
+
+
+
+1) Note about RGBDToolkit version numbers: This is modeled roughly after how the openFrameworks version numbers work. 
+RGBDToolkit preRelease 00XY
+
+X is the major release, and is incremented whenever a significant change has been made to the toolkit. During the pre release period it is OK to break project compatibility with old projects when releasing a new major version
+
+Y is the minor version. Releases that are intended to fix bugs or small problems, compatibility should remain intact with the current major version.
+
