@@ -62,10 +62,6 @@ void main(void)
 	vec4 pos = vec4((gl_Vertex.x - principalPoint.x) * depth / fov.x,
                     (gl_Vertex.y - principalPoint.y) * depth / fov.y, depth, 1.0);
 
-    
-    gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * pos;
-    gl_FrontColor = gl_Color;
-
     //projective texture on the geometry
     if(useTexture == 1){
         
@@ -82,4 +78,8 @@ void main(void)
         texCd.xy *= dim;
         gl_TexCoord[0] = texCd;
     }
+    
+    gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * pos;
+    gl_FrontColor = gl_Color;
+
 }

@@ -1505,7 +1505,7 @@ bool testApp::loadComposition(string compositionDirectory){
         
         //TODO all this should be from loading the new ofxGui XML and not done manually!
         cam.speed = projectsettings.getValue("cameraSpeed", 20.);
-        cam.rollSpeed = projectsettings.setValue("cameraRollSpeed", 1);
+        cam.rollSpeed = projectsettings.getValue("cameraRollSpeed", 1);
         
         drawPointcloud = projectsettings.getValue("drawPointcloud", true);
         drawWireframe = projectsettings.getValue("drawWireframe", true);
