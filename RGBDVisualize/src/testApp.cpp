@@ -745,6 +745,7 @@ void testApp::update(){
 			alignmentScrubber.save();
             temporalAlignmentMode = false;
 		}
+		captureFramePair = false;
 	}
 
 	bool rendererNeedsUpdate = false;

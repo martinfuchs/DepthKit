@@ -108,7 +108,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxIntSlider currentHoleKernelSize;
     ofxIntSlider currentHoleFillIterations;
     ofxToggle temporalAlignmentMode;
-    ofxButton captureFramePair;
+    ofxToggle captureFramePair;
 
     ofxToggle renderObjectFiles;
     ofxToggle startSequenceAt0;
