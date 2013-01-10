@@ -246,6 +246,9 @@ void testApp::keyPressed(int key){
 			renderer.update();
 		}
 	}
+    if(key == 'V'){
+        cam.setPosition(ofVec3f(0,0,0));
+    }
 }
 
 //------------------------------------------------------------
@@ -594,6 +597,7 @@ void testApp::generateCorrespondance(){
 }
 
 void testApp::setupRenderer(){
+    renderer.reloadShader();
 	renderer.setup("rgbCalibRefined.yml", "depthCalibRefined.yml", "rotationDepthToRGB.yml", "translationDepthToRGB.yml");
 	showRGBD = true;
 	
