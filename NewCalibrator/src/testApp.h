@@ -6,8 +6,8 @@
 #include "ofxGameCamera.h"
 
 //#include "ofxFTGLFont.h"
-#include "ofxDepthImageProviderOpenNI.h"
-//#include "ofxDepthImageProviderFreenect.h"
+//#include "ofxDepthImageProviderOpenNI.h"
+#include "ofxDepthImageProviderFreenect.h"
 #include "ofxDepthImageCompressor.h"
 
 typedef struct{
@@ -61,8 +61,8 @@ class testApp : public ofBaseApp{
 	ofRectangle calibrationPreviewRect;
 	
 	ofxDepthImageCompressor compressor;
-	ofxDepthImageProviderOpenNI imageProvider;
-	//ofxDepthImageProviderFreenect imageProvider;
+	//ofxDepthImageProviderOpenNI imageProvider;
+	ofxDepthImageProviderFreenect imageProvider;
 	
 	int currentRenderPreviewIndex;
 	int lastFrame;

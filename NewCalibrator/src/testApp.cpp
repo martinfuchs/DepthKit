@@ -363,7 +363,22 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 							cout << filename << " added " << endl;
 						}
 						else {
-							ofLogError("RGBCalibration") << "Could not find checkerboard in image " << filename;
+                            /*
+                            vector<Point2f> pointBuf;
+                            image.resize(image.getWidth()/2, image.getHeight()/2);
+                            if(rgbCalibration.findBoard(toCv(image), pointBuf)){
+                                ofLogWarning("RGBCalibration") << "Found board on second try " << filename;
+                                for(int i = 0; i < pointBuf.size(); i++){
+                                    pointBuf[i] *= 2;
+                                }
+                                rgbCalibration.imagePoints.push_back(pointBuf);
+                                image.resize(image.getWidth()*2, image.getHeight()*2);
+                                rgbCalibrationImages.push_back(image);
+                            }
+                            else{
+                             */
+                                ofLogError("RGBCalibration") << "Could not find checkerboard in image " << filename;
+                            //}
 						}
 					}
 				}
@@ -508,18 +523,37 @@ void testApp::generateCorrespondance(){
 		   alignmentPairs[i]->depthCheckers.isAllocated() &&
 		   alignmentPairs[i]->colorCheckers.isAllocated())
 		{
+            
+            //save the correspondance images
+			compressor.saveToCompressedPng("correspondance_depth_pixels_" + ofToString(i) + ".png", alignmentPairs[i]->depthPixelsRaw.getPixels());
+			alignmentPairs[i]->depthCheckers.saveImage("correspondance_depth_chekers_"+ofToString(i)+".png");
+			alignmentPairs[i]->colorCheckers.saveImage("correspondance_color_checkers_"+ofToString(i)+".png");
+
 			vector<Point2f> kinectPoints;
 			bool foundBoard = depthCalibrationRefined.findBoard(toCv(alignmentPairs[i]->depthCheckers), kinectPoints);
 			if(!foundBoard){
-				ofLogError("Correspondance Error") << "depth checkerboard " << (i+1) << " of " << alignmentPairs.size() << " cannot be found " << endl;
+				ofLogError("Correspondence Error") << "depth checkerboard " << (i+1) << " of " << alignmentPairs.size() << " cannot be found " << endl;
 				continue;
 			}
 			
 			vector<Point2f> externalPoints;
 			foundBoard = externalBoardFinder.getCalibration().findBoard(toCv(alignmentPairs[i]->colorCheckers), externalPoints);
 			if(!foundBoard){
-				ofLogError("Correspondance Error") << "color checkerboard " << (i+1) << " of " << alignmentPairs.size() << " cannot be found " << endl;
-				continue;
+                //if we don't find the board, try scaling it to 1/4 size and looking...
+                ofImage downscaled;
+                downscaled.setUseTexture(false);
+                downscaled.setFromPixels(alignmentPairs[i]->colorCheckers);
+                downscaled.resize(downscaled.getWidth()/2, downscaled.getHeight()/2);
+                
+                foundBoard = externalBoardFinder.getCalibration().findBoard(toCv(downscaled), externalPoints);
+                if(!foundBoard){
+                    ofLogError("Correspondence Error") << "color checkerboard " << (i+1) << " of " << alignmentPairs.size() << " cannot be found " << endl;
+                    continue;
+                }
+                for(int i = 0; i < externalPoints.size(); i++){
+                    externalPoints[i].x *= 2;
+                    externalPoints[i].y *= 2;
+                }
 			}
 			kinectImagePoints.push_back( kinectPoints );
 			externalRGBPoints.push_back( externalPoints ); 
@@ -534,12 +568,12 @@ void testApp::generateCorrespondance(){
 			//treat the external cam as
 			objectPoints.push_back( Calibration::createObjectPoints(cv::Size(10,7), 3.2, CHESSBOARD));
 			
-			//save the correspondance images
-			compressor.saveToCompressedPng("correspondance_depth_pixels_" + ofToString(i) + ".png", alignmentPairs[i]->depthPixelsRaw.getPixels());
-			alignmentPairs[i]->depthCheckers.saveImage("correspondance_depth_chekers_"+ofToString(i)+".png");
-			alignmentPairs[i]->colorCheckers.saveImage("correspondance_color_checkers_"+ofToString(i)+".png");
 		}
 	}
+    
+    if(objectPoints.size() == 0){
+        return;
+    }
 	
 	int numPointsFound = 0;
 	for(int i = 0; i < kinect3dPoints.size(); i++){
@@ -603,6 +637,7 @@ void testApp::setupRenderer(){
 	
 	renderer.setDepthImage(alignmentPairs[0]->depthPixelsRaw);
 	renderer.setRGBTexture(alignmentPairs[0]->colorCheckers);
+    cout << "color pixel dimension  " << alignmentPairs[0]->colorCheckers.getWidth() << " " << alignmentPairs[0]->colorCheckers.getHeight() << endl;
 	renderer.update();
 
 }
