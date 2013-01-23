@@ -1,11 +1,10 @@
 #include "testApp.h"
 
-
 //--------------------------------------------------------------
 void testApp::setup(){
 	
-	
 	ofSetFrameRate(60);
+    ofSetEscapeQuitsApp(false); //for Allison
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
 	ofBackground(22);
@@ -66,6 +65,7 @@ void testApp::setup(){
 	timeline.setPageName("Main");
 	timeline.setDurationInFrames(300); //base duration
     timeline.setMovePlayheadOnDrag(false);
+    timeline.setSpacebarTogglePlay(false);
     
 	newCompButton = new ofxMSAInteractiveObjectWithDelegate();
     newCompButton->fontReference = &timeline.getFont();
@@ -142,11 +142,11 @@ void testApp::setup(){
 	
     gui.loadFromFile("defaultGuiSettings.xml");
     
-    loadShaders();
     
 	populateTimelineElements();
 	allocateFrameBuffers();
-    
+    loadShaders();
+
 	currentLockCamera = false;
 	cameraTrack->lockCameraToTrack = false;
     meshBuilder.cacheValidVertices = true;
@@ -162,18 +162,28 @@ void testApp::setup(){
     else{
         ofLogError("No default bin found");
     }
+    
+    ofSetWindowShape(ofGetScreenWidth()-125, ofGetScreenHeight()-100);
 }
 
 void testApp::loadShaders(){
+    
     dofRange.load("shaders/dofrange2");
 	cout << "LOADING DOF BLUR" << endl;
     dofBlur.load("shaders/dofblur");
 	cout << "LOADING DOF BLURANGE" << endl;
-	
-    dofBlur.begin();
-    dofBlur.setUniform1i("tex", 0);
-    dofBlur.setUniform1i("range", 1);
-    dofBlur.end();
+
+    dofQuad.clear();
+    dofQuad.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
+    dofQuad.addVertex(ofVec3f(0,0,0));
+    dofQuad.addVertex(ofVec3f(0,fbo1.getHeight(),0));
+    dofQuad.addVertex(ofVec3f(fbo1.getWidth(),0,0));
+    dofQuad.addVertex(ofVec3f(fbo1.getWidth(),fbo1.getHeight(),0));
+    
+    dofQuad.addTexCoord(ofVec2f(0,0));
+    dofQuad.addTexCoord(ofVec2f(0,fbo1.getHeight()));
+    dofQuad.addTexCoord(ofVec2f(fbo1.getWidth(),0));
+    dofQuad.addTexCoord(ofVec2f(fbo1.getWidth(),fbo1.getHeight()));
 
     renderer.reloadShader();
 }
@@ -194,6 +204,8 @@ void testApp::populateTimelineElements(){
     timeline.addCurves("Simplify Y", currentCompositionDirectory + "simplifyy.xml", ofRange(1, 8), 2);
     timeline.addCurves("Edge Clip", currentCompositionDirectory + "edgeClip.xml", ofRange(1.0, 2000), 2000 );
     timeline.addCurves("Z Threshold", currentCompositionDirectory + "zThreshold.xml", ofRange(1.0, sqrtf(6000)), sqrtf(6000) );
+    
+    timeline.addPage("Rotation", true);
 	timeline.addCurves("X Rotate", currentCompositionDirectory + "meshXRot.xml", ofRange(-360,360), 0.);
     timeline.addCurves("Y Rotate", currentCompositionDirectory + "meshYRot.xml", ofRange(-360,360), 0.);
     timeline.addCurves("Z Rotate", currentCompositionDirectory + "meshZRot.xml", ofRange(-360,360), 0.);
@@ -345,49 +357,17 @@ void testApp::drawGeometry(){
             ofSetColor(255);
             dofBlur.begin();
             
-            //mulit-text
-            //our shader uses two textures, the top layer and the alpha
-            //we can load two textures into a shader using the multi texture coordinate extensions
-            glActiveTexture(GL_TEXTURE0_ARB);
-            fbo1.getTextureReference().bind();
-            
-            glActiveTexture(GL_TEXTURE1_ARB);
-            dofBuffer.getDepthTexture().bind();
-            
             dofBlur.setUniform2f("sampleOffset", dofBlurAmount, 0);
             dofBlur.setUniform1f("focalDistance", dofFocalDistance);
             dofBlur.setUniform1f("focalRange", dofFocalRange);
-            //draw a quad the size of the frame
-            glBegin(GL_QUADS);
             
-            //move the mask around with the mouse by modifying the texture coordinates
-            glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, 0);
-            glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, 0);		
-            glVertex2f(0, 0);
+            dofBlur.setUniformTexture("tex", fbo1.getTextureReference(), 0);
+            dofBlur.setUniformTexture("range", dofBuffer.getDepthTexture(), 1);
             
-            glMultiTexCoord2d(GL_TEXTURE0_ARB, renderFboRect.width, 0);
-            glMultiTexCoord2d(GL_TEXTURE1_ARB, renderFboRect.width, 0);
-            glVertex2f(renderFboRect.width, 0);
-            
-            glMultiTexCoord2d(GL_TEXTURE0_ARB, renderFboRect.width, renderFboRect.height);
-            glMultiTexCoord2d(GL_TEXTURE1_ARB, renderFboRect.width, renderFboRect.height);
-            glVertex2f(renderFboRect.width, renderFboRect.height);
-            
-            glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, renderFboRect.height);
-            glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, renderFboRect.height);
-            glVertex2f(0, renderFboRect.height);
-            
-            glEnd();
-            
-            //deactive and clean up
-            glActiveTexture(GL_TEXTURE1_ARB);
-            dofBuffer.getDepthTexture().unbind();
-            
-            glActiveTexture(GL_TEXTURE0_ARB);
-            fbo1.getTextureReference().unbind();
-            
-            dofBlur.end();
+            dofQuad.draw();
 
+            dofBlur.end();
+            
             ofPopStyle();
             
             swapFbo.end();     
@@ -396,48 +376,14 @@ void testApp::drawGeometry(){
             ofClear(0.0,0.0,0.0,0.0);
             
             ofPushStyle();
-            ofEnableBlendMode(blendMode);
             
             ofSetColor(255, 255, 255, 255);
             dofBlur.begin();
-            
-            //mulit-text
-            //our shader uses two textures, the top layer and the alpha
-            //we can load two textures into a shader using the multi texture coordinate extensions
-            glActiveTexture(GL_TEXTURE0_ARB);
-            swapFbo.getTextureReference().bind();
-            
-            glActiveTexture(GL_TEXTURE1_ARB);
-            dofBuffer.getDepthTexture().bind();
-                    
             dofBlur.setUniform2f("sampleOffset", 0, dofBlurAmount);
-            glBegin(GL_QUADS);
+            dofBlur.setUniformTexture("tex", swapFbo.getTextureReference(), 0);
+            dofBlur.setUniformTexture("range", dofBuffer.getDepthTexture(), 1);
             
-            //move the mask around with the mouse by modifying the texture coordinates
-            glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, 0);
-            glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, 0);		
-            glVertex2f(0, 0);
-            
-            glMultiTexCoord2d(GL_TEXTURE0_ARB, renderFboRect.width, 0);
-            glMultiTexCoord2d(GL_TEXTURE1_ARB, renderFboRect.width, 0);
-            glVertex2f(renderFboRect.width, 0);
-            
-            glMultiTexCoord2d(GL_TEXTURE0_ARB, renderFboRect.width, renderFboRect.height);
-            glMultiTexCoord2d(GL_TEXTURE1_ARB, renderFboRect.width, renderFboRect.height);
-            glVertex2f(renderFboRect.width, renderFboRect.height);
-            
-            glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, renderFboRect.height);
-            glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, renderFboRect.height);
-            glVertex2f(0, renderFboRect.height);
-            
-            glEnd();
-            
-            //deactive and clean up
-            glActiveTexture(GL_TEXTURE1_ARB);
-            dofBuffer.getDepthTexture().unbind();
-            
-            glActiveTexture(GL_TEXTURE0_ARB);
-            swapFbo.getTextureReference().unbind();
+            dofQuad.draw();
             
             dofBlur.end();
             
@@ -1143,8 +1089,8 @@ void testApp::populateScenes(){
 	dir.listDir();
 	int mediaFolders = dir.numFiles();
 	int currentCompButton = 0;
-	int compx = 0;
-	int compy = 50;
+//	int compx = 0;
+//	int compy = 50;
     
     for(int i = scenes.size()-1; i >= 0; i--){
         delete scenes[i].button;            
@@ -1163,23 +1109,45 @@ void testApp::populateScenes(){
         sceneButton.button->fontReference = &timeline.getFont();
         sceneButton.button->setup();
         sceneButton.button->setDelegate(this);				       
-        sceneButton.button->setPosAndSize(compx,compy,250,25);
+//        sceneButton.button->setPosAndSize(compx,compy,250,25);
         sceneButton.button->setLabel(sceneButton.scene.name);
         setButtonColors(sceneButton.button);
         
-        compy += 25;
-        if(compy > ofGetHeight()-100){
-            compy  = 150;
-        	compx += 250;
-        }        
+//        compy += 25;
+//        if(compy > ofGetHeight()-100){
+//            compy  = 150;
+//        	compx += 250;
+//        }        
         scenes.push_back( sceneButton );
 	}
-	maxSceneX = compx+250;
+//	maxSceneX = compx+250;
 
     if(scenes.size() == 0){
         ofSystemAlertDialog(mediaBinFolder + " has no valid scenes! Make sure to select the folder containing all of the scenes.");
         mediaBinButton->setLabel("Load MediaBin");
     }
+    
+    positionSceneButtons();
+}
+
+//--------------------------------------------------------------
+void testApp::positionSceneButtons(){
+    int compx = 0;
+	int compy = 50;
+
+    for(int i = 0; i < scenes.size(); i++){
+        
+        scenes[i].button->setPosAndSize(compx,compy,250,25);
+
+        compy += 25;
+        if(compy > ofGetHeight()-100){
+            compy  = 150;
+        	compx += 250;
+        }
+
+    }
+    maxSceneX = compx+250;
+
 }
 
 //--------------------------------------------------------------
@@ -1637,6 +1605,9 @@ void testApp::finishRender(){
 
 //--------------------------------------------------------------
 void testApp::windowResized(int w, int h){
+    
+    positionSceneButtons();
+    
 //	timeline.setWidth(w);
 //	timeline.setOffset(ofVec2f(0, ofGetHeight() - timeline.getDrawRect().height));
 }

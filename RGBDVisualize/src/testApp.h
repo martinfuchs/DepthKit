@@ -67,6 +67,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxXmlSettings projectsettings;
 	void loadNewMediaBin();
 	void populateScenes();
+    void positionSceneButtons();
+    
     void populateCompositionsForScene();
     void populateRenderQueue();
 
@@ -176,7 +178,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 
     ofShader dofRange;
     ofShader dofBlur;
-
+    ofVboMesh dofQuad;
+    
 	ofFbo fbo1;
     ofFbo swapFbo; //used for temp drawing
     ofFbo dofBuffer; //used to get a solid depth texture
@@ -193,6 +196,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	int currentVideoFrame;
 	bool rendererDirty;
     ofNode renderedCameraPos;
+    
     
 	string pathDelim;	
 };
