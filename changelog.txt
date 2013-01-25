@@ -27,6 +27,12 @@ Known Issues:
 - Rendering compositions with no camera track will cause weird behavior
 
 =======
+0042 - 
+ - Escape no longer quits app
+ - Window size is fit to screen on start up
+ - Moved rotation to its own timeline page
+ - Load scene buttons will resize when s
+ - If composition creation fails the user is notified
 
 0041 - January 3rd 2013
  - Fixed crash in OS X version of RGBDCaptureKinect
