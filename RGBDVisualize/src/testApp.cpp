@@ -146,7 +146,7 @@ void testApp::setup(){
 	populateTimelineElements();
 	allocateFrameBuffers();
     loadShaders();
-
+ 
 	currentLockCamera = false;
 	cameraTrack->lockCameraToTrack = false;
     meshBuilder.cacheValidVertices = true;
@@ -997,7 +997,10 @@ bool testApp::createNewComposition(){
     
 	ofDirectory compBin( ofToDataPath(selectedScene->scene.mediaFolder + "/compositions/") );
 	if(!compBin.exists()){
-		compBin.create();
+		if(!compBin.create(true)){
+            ofSystemAlertDialog("Unable to create composition directory: " + compBin.getOriginalDirectory());
+            return false;
+        }
 	}	
 	compBin.listDir();
 	
@@ -1012,8 +1015,12 @@ bool testApp::createNewComposition(){
 	ofDirectory compDirectory( currentCompositionDirectory );
     
     if(!compDirectory.exists()){
-        compDirectory.create();
+        if(!compDirectory.create()){
+            ofSystemAlertDialog("Unable to create composition: " + compDirectory.getOriginalDirectory());
+            return false;
+        }
     }
+    
 	return true;
 }
 
@@ -1044,8 +1051,9 @@ bool testApp::loadAssetsForScene(SceneButton* sceneButton){
 	
 	timeline.setTimecontrolTrack(videoTrack);
 	timeline.setFrameRate(1.0*videoTrack->getPlayer()->getTotalNumFrames()/videoTrack->getPlayer()->getDuration());
-	timeline.setDurationInFrames(videoTrack->getPlayer()->getTotalNumFrames());
-	
+	//timeline.setDurationInFrames(videoTrack->getPlayer()->getTotalNumFrames());
+	timeline.setDurationInSeconds(MAX(depthSequence.getDurationInMillis()/1000.0, videoTrack->getPlayer()->getDuration()) );
+
     //trick to help if there is no pairing file
     if(!alignmentScrubber.ready()){
         resetCameraPosition();
@@ -1384,15 +1392,16 @@ void testApp::objectDidRelease(ofxMSAInteractiveObject* object, int x, int y, in
 	}
 	else if(object == saveCompAsNewButton){
         string oldCompFolder = currentCompositionDirectory;
-        createNewComposition();
+        if(createNewComposition()){
         
-        ofDirectory oldCompDirectory(oldCompFolder);
-        oldCompDirectory.allowExt("xml");
-        oldCompDirectory.listDir();
-        for(int i = 0; i < oldCompDirectory.numFiles(); i++){
-            oldCompDirectory.getFile(i).copyTo( currentCompositionDirectory + oldCompDirectory.getName(i));
+            ofDirectory oldCompDirectory(oldCompFolder);
+            oldCompDirectory.allowExt("xml");
+            oldCompDirectory.listDir();
+            for(int i = 0; i < oldCompDirectory.numFiles(); i++){
+                oldCompDirectory.getFile(i).copyTo( currentCompositionDirectory + oldCompDirectory.getName(i));
+            }
+            loadComposition(currentCompositionDirectory);
         }
-        loadComposition(currentCompositionDirectory);
 	}
     else if(object == renderBatch){
         startRenderMode = true;
