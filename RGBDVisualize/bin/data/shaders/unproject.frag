@@ -22,7 +22,4 @@ void main()
     }    
     
     //gl_FragColor = vec4(VZPositionValid0);
-    //gl_FragColor.z = 1.0;
-    
-
 }
