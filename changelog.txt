@@ -33,6 +33,9 @@ Known Issues:
  - Moved rotation to its own timeline page
  - Load scene buttons will resize when s
  - If composition creation fails the user is notified
+ - If the user cancels "Copy to New" the current composition is retained
+ - Fixed depth data appearing off the end of the track
+ - Fixed bug with duplicated entries in depth data
 
 0041 - January 3rd 2013
  - Fixed crash in OS X version of RGBDCaptureKinect
