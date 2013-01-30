@@ -6,8 +6,8 @@
 #include "ofxGameCamera.h"
 
 //#include "ofxFTGLFont.h"
-//#include "ofxDepthImageProviderOpenNI.h"
-#include "ofxDepthImageProviderFreenect.h"
+#include "ofxDepthImageProviderOpenNI.h"
+//#include "ofxDepthImageProviderFreenect.h"
 #include "ofxDepthImageCompressor.h"
 
 typedef struct{
@@ -39,7 +39,7 @@ class testApp : public ofBaseApp{
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 
-	void generateCorrespondance();
+	void generateCorrespondence();
 	void setupRenderer();
 	
 	ofTrueTypeFont helperFont;
@@ -61,13 +61,13 @@ class testApp : public ofBaseApp{
 	ofRectangle calibrationPreviewRect;
 	
 	ofxDepthImageCompressor compressor;
-	//ofxDepthImageProviderOpenNI imageProvider;
-	ofxDepthImageProviderFreenect imageProvider;
+	ofxDepthImageProviderOpenNI imageProvider;
+	//ofxDepthImageProviderFreenect imageProvider;
 	
 	int currentRenderPreviewIndex;
 	int lastFrame;
 	bool depthCalibrationLoaded;
-	bool checkGenerateCorrespondance;
+	bool checkGenerateCorrespondence;
 //	bool depthCalibrationRefined;
 //    bool grabberInited;
 //	ofxKinect kinect;

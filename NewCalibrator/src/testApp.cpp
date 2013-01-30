@@ -38,7 +38,7 @@ void testApp::setup(){
 	currentCalibrationImage = 0;
 	currentAlignmentPair = new AlignmentPair();
 	alignmentPairs.push_back(currentAlignmentPair);
-	checkGenerateCorrespondance = false;
+	checkGenerateCorrespondence = false;
 	imageProvider.setup();
 	
 }
@@ -71,9 +71,9 @@ void testApp::update(){
 		
 	}
 	
-	if(checkGenerateCorrespondance){
-		checkGenerateCorrespondance = false;
-		generateCorrespondance();
+	if(checkGenerateCorrespondence){
+		checkGenerateCorrespondence = false;
+		generateCorrespondence();
 	}
 	
 	generateRect = currentAlignmentPair->depthImageRect.
@@ -314,7 +314,7 @@ void testApp::mousePressed(int x, int y, int button){
 	}
 	
 	if(generateRect.inside(x,y)){
-		checkGenerateCorrespondance = true;
+		checkGenerateCorrespondence = true;
 	}
 }
 
@@ -363,7 +363,7 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 							cout << filename << " added " << endl;
 						}
 						else {
-                            /*
+
                             vector<Point2f> pointBuf;
                             image.resize(image.getWidth()/2, image.getHeight()/2);
                             if(rgbCalibration.findBoard(toCv(image), pointBuf)){
@@ -376,9 +376,8 @@ void testApp::dragEvent(ofDragInfo dragInfo){
                                 rgbCalibrationImages.push_back(image);
                             }
                             else{
-                             */
                                 ofLogError("RGBCalibration") << "Could not find checkerboard in image " << filename;
-                            //}
+                            }
 						}
 					}
 				}
@@ -461,7 +460,7 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 
 
 void testApp::refineDepthCalibration(){
-	int width = imageProvider.getRawIRImage().getWidth();
+	int width  = imageProvider.getRawIRImage().getWidth();
 	int height = imageProvider.getRawIRImage().getHeight();
 	vector<Point3f> depthObjectCollection;
 	vector<Point2f> depthImageCollection;
@@ -503,10 +502,9 @@ void testApp::refineDepthCalibration(){
 
 	depthCalibrationRefined.setIntrinsics(newDepth, depthDistCoeffs);
 	depthCalibrationRefined.save("depthCalibRefined.yml");
-	
 }
 
-void testApp::generateCorrespondance(){
+void testApp::generateCorrespondence(){
 	if(!depthCalibrationRefined.isReady() || !rgbCalibration.isReady()){
 		return;
 	}
@@ -524,10 +522,10 @@ void testApp::generateCorrespondance(){
 		   alignmentPairs[i]->colorCheckers.isAllocated())
 		{
             
-            //save the correspondance images
-			compressor.saveToCompressedPng("correspondance_depth_pixels_" + ofToString(i) + ".png", alignmentPairs[i]->depthPixelsRaw.getPixels());
-			alignmentPairs[i]->depthCheckers.saveImage("correspondance_depth_chekers_"+ofToString(i)+".png");
-			alignmentPairs[i]->colorCheckers.saveImage("correspondance_color_checkers_"+ofToString(i)+".png");
+            //save the correspondnce images
+			compressor.saveToCompressedPng("correspondence_"+ofToString(i)+"_depth_pixels.png", alignmentPairs[i]->depthPixelsRaw.getPixels());
+			alignmentPairs[i]->depthCheckers.saveImage("correspondence_"+ofToString(i)+"_checkers.png");
+			alignmentPairs[i]->colorCheckers.saveImage("correspondence_"+ofToString(i)+"_color_checkers.png");
 
 			vector<Point2f> kinectPoints;
 			bool foundBoard = depthCalibrationRefined.findBoard(toCv(alignmentPairs[i]->depthCheckers), kinectPoints);
@@ -579,7 +577,7 @@ void testApp::generateCorrespondance(){
 	for(int i = 0; i < kinect3dPoints.size(); i++){
 		for(int j = 0; j < kinect3dPoints[i].size(); j++){
 			if(kinect3dPoints[i][j].z > 0){
-				cout << "World point is " << kinect3dPoints[i][j] << " for checkerboard image point " << externalRGBPoints[i][j] << endl;
+//				cout << "World point is " << kinect3dPoints[i][j] << " for checkerboard image point " << externalRGBPoints[i][j] << endl;
 
 				filteredKinectObjectPoints.push_back( toCv(kinect3dPoints[i][j]) );
 				filteredExternalImagePoints.push_back( externalRGBPoints[i][j] );
@@ -588,9 +586,10 @@ void testApp::generateCorrespondance(){
 		}
 	}
 	
-	cout << "Found a total of " << numPointsFound << " for correspondance " << endl;
+	cout << "Found a total of " << numPointsFound << " for correspondence " << endl;
 	vector< vector<Point3f> > cvObjectPoints;
 	vector< vector<Point2f> > cvImagePoints;
+
 	cvObjectPoints.push_back( filteredKinectObjectPoints );
 	cvImagePoints.push_back( filteredExternalImagePoints );
 	
@@ -606,7 +605,18 @@ void testApp::generateCorrespondance(){
 //	int flags = CV_CALIB_FIX_INTRINSIC;
 //	int flags = CV_CALIB_USE_INTRINSIC_GUESS | CV_CALIB_FIX_INTRINSIC;
 	//double rms  = calibrateCamera(cvObjectPoints, cvImagePoints, cv::Size(rgbCalibration.getDistortedIntrinsics().getImageSize()), cameraMatrix, distCoeffs,rotations,translations, flags); //todo fix distortion
-	solvePnPRansac(filteredKinectObjectPoints, filteredExternalImagePoints, cameraMatrix, distCoeffs, rotationDepthToRGB, translationDepthToRGB);
+    Mat inliers;
+	solvePnPRansac(filteredKinectObjectPoints, filteredExternalImagePoints,
+                   cameraMatrix, distCoeffs,
+                   rotationDepthToRGB, translationDepthToRGB,
+                   false,//use intrinsics guess
+                   100, //iterations
+                   3, //reprojection error
+                   numPointsFound, //min inliers
+                   inliers ); //output inliers
+    cout << "inliers " << inliers.total() << endl;
+//    cout << inl.size() << endl;
+    
 //	rotationDepthToRGB = rotations[0];
 //	translationDepthToRGB = translations[0];
 	
