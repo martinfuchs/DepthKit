@@ -1,8 +1,9 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxRGBDRenderer.h"
-#include "ofxRGBDMeshBuilder.h"
+
+#include "ofxRGBDCPURenderer.h"
+#include "ofxRGBDGPURenderer.h"
 #include "ofxRGBDVideoDepthSequence.h"
 #include "ofxGameCamera.h"
 #include "ofxTimeline.h"
@@ -165,8 +166,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxTLVideoTrack* videoTrack;
 	
 	ofxRGBDPlayer player;
-	ofxRGBDRenderer renderer;
-    ofxRGBDMeshBuilder meshBuilder;
+	ofxRGBDGPURenderer renderer;
+    ofxRGBDCPURenderer meshBuilder;
     
 	ofxTLDepthImageSequence depthSequence;
 	ofxTLVideoDepthAlignmentScrubber alignmentScrubber;

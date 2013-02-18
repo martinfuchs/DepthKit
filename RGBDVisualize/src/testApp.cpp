@@ -599,7 +599,7 @@ void testApp::update(){
 			if(player.hasHighresVideo()){
 				player.useHiresVideo();
 				renderer.setRGBTexture(*player.getVideoPlayer());
-				meshBuilder.setTexture(*player.getVideoPlayer());
+				meshBuilder.setRGBTexture(*player.getVideoPlayer());
 			}
 			
             player.getVideoPlayer()->setVolume(0);
@@ -700,9 +700,9 @@ void testApp::update(){
 		rendererNeedsUpdate = true;
 	}
 	
-	renderer.meshRotate.x = timeline.getValue("X Rotate");
-    renderer.meshRotate.y = timeline.getValue("Y Rotate");
-    renderer.meshRotate.z = timeline.getValue("Z Rotate");
+	renderer.worldRotation.x = timeline.getValue("X Rotate");
+    renderer.worldRotation.y = timeline.getValue("Y Rotate");
+    renderer.worldRotation.z = timeline.getValue("Z Rotate");
 	renderer.flipTexture = flipTexture;
     ofVec2f simplification = ofVec2f( timeline.getValue("Simplify X"), timeline.getValue("Simplify Y") );
 	
@@ -718,10 +718,10 @@ void testApp::update(){
     }
 
 	float currentFarClip = powf(timeline.getValue("Z Threshold"), 2.0);
-	if(timeline.getValue("X Texture Shift") != renderer.xshift ||
-	   timeline.getValue("Y Texture Shift") != renderer.yshift ||
-       timeline.getValue("X Texture Scale") != renderer.xscale ||
-       timeline.getValue("Y Texture Scale") != renderer.yscale ||
+	if(timeline.getValue("X Texture Shift") != renderer.shift.x ||
+	   timeline.getValue("Y Texture Shift") != renderer.shift.y ||
+       timeline.getValue("X Texture Scale") != renderer.scale.x ||
+       timeline.getValue("Y Texture Scale") != renderer.scale.y ||
 	   timeline.getValue("Edge Clip") != renderer.edgeClip ||
 	   currentMirror != renderer.mirror ||
 	   fillHoles != holeFiller.enable ||
@@ -729,10 +729,10 @@ void testApp::update(){
        currentHoleFillIterations != holeFiller.getIterations()||
 	   currentFarClip != renderer.farClip )
 	{
-		renderer.xshift = timeline.getValue("X Texture Shift");
-		renderer.yshift = timeline.getValue("Y Texture Shift");
-        renderer.xscale = timeline.getValue("X Texture Scale");
-        renderer.yscale = timeline.getValue("Y Texture Scale");
+		renderer.shift.x = timeline.getValue("X Texture Shift");
+		renderer.shift.y = timeline.getValue("Y Texture Shift");
+        renderer.scale.x = timeline.getValue("X Texture Scale");
+        renderer.scale.y = timeline.getValue("Y Texture Scale");
 		renderer.mirror = currentMirror;
 		renderer.farClip = currentFarClip;
         renderer.edgeClip = timeline.getValue("Edge Clip");
@@ -742,7 +742,7 @@ void testApp::update(){
 		meshBuilder.shift.y = timeline.getValue("Y Texture Shift");
         meshBuilder.scale.x = timeline.getValue("X Texture Scale");
         meshBuilder.scale.y = timeline.getValue("Y Texture Scale");
-		meshBuilder.getHoleFiller().enable = false;
+
 		meshBuilder.farClip = currentFarClip;
         meshBuilder.edgeClip = renderer.edgeClip;
         
@@ -1042,8 +1042,8 @@ bool testApp::loadAssetsForScene(SceneButton* sceneButton){
 	
 	renderer.setRGBTexture(*player.getVideoPlayer());
 	renderer.setDepthImage(player.getDepthPixels());
-	meshBuilder.setTexture(*player.getVideoPlayer());
-	meshBuilder.setDepthPixels(player.getDepthPixels());
+	meshBuilder.setRGBTexture(*player.getVideoPlayer());
+	meshBuilder.setDepthImage(player.getDepthPixels());
 	
 	depthSequence.setSequence(player.getDepthSequence());
 	videoTrack->setPlayer(player.getVideoPlayer());
@@ -1602,7 +1602,7 @@ void testApp::finishRender(){
 	player.useLowResVideo();
     //render is done
 	renderer.setRGBTexture(*player.getVideoPlayer());
-	meshBuilder.setTexture(*player.getVideoPlayer());
+	meshBuilder.setRGBTexture(*player.getVideoPlayer());
 	player.getVideoPlayer()->setVolume(1.0);
     
 	videoTrack->setPlayer(player.getVideoPlayer());
