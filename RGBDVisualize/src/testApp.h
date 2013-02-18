@@ -18,6 +18,8 @@
 #include "ofxGui.h"
 #include "ofxObjLoader.h"
 
+#include "ofxSPK.h"
+
 typedef struct {
 	ofxRGBDScene scene;
     ofxMSAInteractiveObjectWithDelegate* button;
@@ -84,6 +86,21 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     void resetCameraPosition();
     void checkReallocateFrameBuffers();
     void allocateFrameBuffers();
+    
+    
+    //SPARKSTUFF
+    ofxToggle drawParticles;
+    void setupSpark();
+    void updateSpark();
+    
+    ofxSPK::System sys;
+    ofxSPK::Group group;
+    SPK::Ring* ringZone;
+    //vector<ofxSPK::Emitter0> emitters;
+    ofxSPK::Emitter ringEmitter;
+    ofxSPK::Modifier attractor;
+    
+    //END SPARK STUFF
     
     ofxPanel gui;
     

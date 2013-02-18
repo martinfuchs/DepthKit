@@ -1,10 +1,11 @@
 #include "testApp.h"
 
+
 //--------------------------------------------------------------
 void testApp::setup(){
 	
 	ofSetFrameRate(60);
-    ofSetEscapeQuitsApp(false); //for Allison
+    ofSetEscapeQuitsApp(false);
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
 	ofBackground(22);
@@ -118,6 +119,8 @@ void testApp::setup(){
 	gui.add(drawPointcloud.setup("Draw Pointcloud",ofxParameter<bool>()));
     gui.add(drawWireframe.setup("Draw Wireframe",ofxParameter<bool>()));
     gui.add(drawMesh.setup("Draw Mesh",ofxParameter<bool>()));
+    gui.add(drawParticles.setup("Draw Particles",ofxParameter<bool>()));
+    
     gui.add(selfOcclude.setup("Self Occlude", ofxParameter<bool>()));
     gui.add(drawDOF.setup("Draw DOF", ofxParameter<bool>()));
  	
@@ -146,7 +149,10 @@ void testApp::setup(){
 	populateTimelineElements();
 	allocateFrameBuffers();
     loadShaders();
- 
+    
+    //SPARK
+    setupSpark();
+    
 	currentLockCamera = false;
 	cameraTrack->lockCameraToTrack = false;
     meshBuilder.cacheValidVertices = true;
@@ -227,12 +233,30 @@ void testApp::populateTimelineElements(){
 	timeline.addTrack("Depth Sequence", &depthSequence);
 	timeline.addTrack("Alignment", &alignmentScrubber);
 	
-	timeline.addPage("Texture Alignment");
+	timeline.addPage("Texture Alignment", true);
 	timeline.addCurves("X Texture Shift", currentCompositionDirectory + "XTextureShift.xml", ofRange(-.15, .15), 0.0 );
 	timeline.addCurves("Y Texture Shift", currentCompositionDirectory + "YTextureShift.xml", ofRange(-.15, .15), 0.0 );
 	timeline.addCurves("X Texture Scale", currentCompositionDirectory + "XTextureScale.xml", ofRange(.95, 1.05), 1.0 );
 	timeline.addCurves("Y Texture Scale", currentCompositionDirectory + "YTextureScale.xml", ofRange(.95, 1.05), 1.0 );
 	
+    timeline.addPage("Ring Emitter Size", true);
+	timeline.addCurves("Ring Emitter Min Radius", currentCompositionDirectory + "RingEmitterMinRadius.xml", ofRange(0, 2000), 0.0 );
+	timeline.addCurves("Ring Emitter Width", currentCompositionDirectory + "RingEmitterWidth.xml", ofRange(0, 1000), 50 );
+	timeline.addCurves("Ring Emitter Z", currentCompositionDirectory + "RingEmitterZ.xml", ofRange(0, 10000), 0 );
+    
+    timeline.addPage("Ring Emitter Properties", true);
+    timeline.addCurves("Ring Emitter Lifetime", currentCompositionDirectory + "RingEmitterLifetime.xml", ofRange(0.0, 100), 0.1 );
+    timeline.addCurves("Ring Emitter Size", currentCompositionDirectory + "RingEmitterSize.xml", ofRange(0.0, 10), 0.1 );
+	timeline.addCurves("Ring Emitter Flow", currentCompositionDirectory + "RingEmitterFlow.xml", ofRange(0.0, 10000), 0.1 );
+	timeline.addCurves("Ring Emitter Min Force", currentCompositionDirectory + "RingEmitterMinForce.xml", ofRange(0.0, 1000), 0.1 );
+    timeline.addCurves("Ring Emitter Force Range", currentCompositionDirectory + "RingEmitterForceRange.xml", ofRange(0.0, 1000), 0.1 );
+    
+    timeline.addPage("Ring Emitter Colors", true);
+    timeline.addColors("Ring Start Color A", currentCompositionDirectory + "RingStartColorA.xml");
+    timeline.addColors("Ring Start Color B", currentCompositionDirectory + "RingStartColorB.xml");
+    timeline.addColors("Ring End Color A", currentCompositionDirectory + "RingEndColorA.xml");
+    timeline.addColors("Ring End Color B", currentCompositionDirectory + "RingEndColorB.xml");
+    
 	timeline.setCurrentPage("Rendering");
 //	cout << "Finished adding timeline elements " << endl;
 }
@@ -284,6 +308,7 @@ void testApp::drawGeometry(){
 			ofTranslate(0, 0, 1);
 			renderer.useTexture = false;
 			renderer.drawMesh();
+            
 			renderer.useTexture = true;
 			ofTranslate(0, 0, -1);
 			usedDepth = true;
@@ -293,6 +318,7 @@ void testApp::drawGeometry(){
 		if(drawMesh && meshAlpha > 0){
 			ofSetColor(255*meshAlpha);
 			renderer.drawMesh();
+            //meshBuilder.drawMesh();
 			usedDepth = true;
 		}
 
@@ -319,12 +345,18 @@ void testApp::drawGeometry(){
 			renderer.drawPointCloud();
 			
 		}
-		
+        
 		ofPopStyle();
 		ofPopMatrix();
+        
+        if(drawParticles){
+            sys.draw();
+            ringEmitter.draw();
+        }
 		
 		glDisable(GL_DEPTH_TEST);
-		
+        
+
 		cam.end();
 		fbo1.end();
 		//END NEW STYLE
@@ -700,9 +732,10 @@ void testApp::update(){
 		rendererNeedsUpdate = true;
 	}
 	
-	renderer.worldRotation.x = timeline.getValue("X Rotate");
-    renderer.worldRotation.y = timeline.getValue("Y Rotate");
-    renderer.worldRotation.z = timeline.getValue("Z Rotate");
+	//renderer.worldRotation.x = timeline.getValue("X Rotate");
+    //renderer.worldRotation.y = timeline.getValue("Y Rotate");
+    //renderer.worldRotation.z = timeline.getValue("Z Rotate");
+    
 	renderer.flipTexture = flipTexture;
     ofVec2f simplification = ofVec2f( timeline.getValue("Simplify X"), timeline.getValue("Simplify Y") );
 	
@@ -743,7 +776,7 @@ void testApp::update(){
         meshBuilder.scale.x = timeline.getValue("X Texture Scale");
         meshBuilder.scale.y = timeline.getValue("Y Texture Scale");
 
-		meshBuilder.farClip = currentFarClip;
+		meshBuilder.farClip = renderer.farClip;
         meshBuilder.edgeClip = renderer.edgeClip;
         
 		holeFiller.enable = fillHoles;
@@ -777,10 +810,14 @@ void testApp::updateRenderer(){
     }
     
     renderer.update();
-    if(currentlyRendering && renderObjectFiles){
+    if(drawParticles || (currentlyRendering && renderObjectFiles)){
         meshBuilder.update();
     }
 
+    if(drawParticles){
+        updateSpark();
+    }
+    
 	cameraTrack->setDampening(powf(timeline.getValue("Camera Dampen"),2.));
 	//used for temporal aligmnet nudging
 	currentDepthFrame = player.getDepthSequence()->getCurrentFrame();
@@ -848,6 +885,89 @@ void testApp::allocateFrameBuffers(){
     dofBuffer.end();
 
 	cout << "finished allocating frame buffers" << endl;
+}
+
+void testApp::setupSpark(){
+    
+    sys.setup();
+
+	group.setup(sys);
+	group.setColor(ofxSPK::RangeC(ofColor(255, 255, 0, 255), ofColor(255, 0, 0, 255)),
+				   ofxSPK::RangeC(ofColor(255, 0, 255, 0), ofColor(255, 255, 0, 0)));
+	
+	group.setLifeTime(0.5);
+	group.setFriction(0.9);
+	group.setSize(3);
+    
+	group.setGravity(ofVec3f(0, 0.98, 0));
+	group.reserve(10000);
+    
+    ringEmitter.setup(SPK::SphericEmitter::create(), group);
+    ringZone = SPK::Ring::create(toSPK(ofVec3f(0, 0, 100)), toSPK(ofVec3f(0, 0, 1)), 40, 160);
+
+    ringEmitter.setZone(ringZone, false);
+//    emitters.resize(320*240);
+//    for(int i = 0; i < 320*240; i++){
+//        emitters[i] = group.createEmitter(ofxSPK::Emitter::SPHERIC);
+//        emitters[i].setFlow(.002);
+//        emitters[i].setForce(100*.1, 1350*.1);
+//        emitters[i].setAngles(0.0, 0.1);
+//    }
+
+}
+
+//Ring Emitter Min Radius
+//Ring Emitter Width
+//Ring Emitter Z"
+//Ring Emitter Flow
+//Ring Emitter Min Force
+//Ringe Emitter Force Range
+//ofColor startColorA = timeline.getColor("Ring Start Color A");
+//ofColor startColorB = timeline.getColor("Ring Start Color B");
+//ofColor endColorA   = timeline.getColor("Ring End Color A");
+//ofColor endColorB   = timeline.getColor("Ring End Color B");
+
+void testApp::updateSpark(){
+	sys->setCameraPosition(toSPK(cam.getPosition()));
+	sys.update();
+    
+    group.setLifeTime(timeline.getValue("Ring Emitter Lifetime"));
+	group.setFriction(0.9);
+	group.setSize(timeline.getValue("Ring Emitter Size"));
+    
+    float minRadius = timeline.getValue("Ring Emitter Min Radius");
+    float maxRaidus = minRadius + timeline.getValue("Ring Emitter Width");
+    ringZone->setRadius(minRadius,maxRaidus);
+    ringZone->setPosition(toSPK(ofVec3f(0,0, timeline.getValue("Ring Emitter Z"))));
+    
+    ofColor startColorA = timeline.getColor("Ring Start Color A");
+    ofColor startColorB = timeline.getColor("Ring Start Color B");
+    ofColor endColorA   = timeline.getColor("Ring End Color A");
+    ofColor endColorB   = timeline.getColor("Ring End Color B");
+    endColorA.a = 0;
+    endColorB.a = 0;
+    group.setColor(ofxSPK::RangeC(startColorA,startColorB),
+				   ofxSPK::RangeC(endColorA, endColorB));
+
+    ringEmitter.setFlow(timeline.getValue("Ring Emitter Flow"));
+    float minForce = timeline.getValue("Ring Emitter Min Force");
+    float maxForce = minForce + timeline.getValue("Ring Emitter Force Range");
+//    ringEmitter.setForce(minForce, maxForce);
+
+    
+    /*
+    for(int i = 0; i < meshBuilder.validVertIndices.size(); i++){
+        emitters[i].setFlow(.01);
+        ofVec3f position = meshBuilder.getMesh().getVertices()[ meshBuilder.validVertIndices[i] ] ;
+        emitters[i].setPosition(-position.x,-position.y,position.z);
+        emitters[i].update();
+    }
+
+    for(int i = meshBuilder.validVertIndices.size(); i < 320*240; i++){
+        emitters[i].setFlow(0);
+        emitters[i].update();
+    }
+     */
 
 }
 
@@ -1041,9 +1161,10 @@ bool testApp::loadAssetsForScene(SceneButton* sceneButton){
 	cam.setFov(renderer.getRGBCalibration().getDistortedIntrinsics().getFov().y);
 	
 	renderer.setRGBTexture(*player.getVideoPlayer());
-	renderer.setDepthImage(player.getDepthPixels());
 	meshBuilder.setRGBTexture(*player.getVideoPlayer());
-	meshBuilder.setDepthImage(player.getDepthPixels());
+
+    renderer.setDepthImage(player.getDepthPixels());
+    meshBuilder.setDepthImage(player.getDepthPixels());
 	
 	depthSequence.setSequence(player.getDepthSequence());
 	videoTrack->setPlayer(player.getVideoPlayer());
@@ -1330,8 +1451,6 @@ void testApp::saveComposition(){
     projectsettings.setValue("width", customWidth);
     projectsettings.setValue("height", customHeight);
     
-//	projectsettings.setValue("renderTriangulation", renderTriangulation);
-//	projectsettings.setValue("enableLighting", enableLighting);
 	projectsettings.setValue("renderObjFiles", renderObjectFiles);
 	projectsettings.setValue("startSequenceAtZero",startSequenceAt0);
 	

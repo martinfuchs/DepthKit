@@ -100,6 +100,57 @@
 		E78FD57D16D29917004D6A36 /* kiss_fftr.c in Sources */ = {isa = PBXBuildFile; fileRef = E78FD55C16D29917004D6A36 /* kiss_fftr.c */; };
 		E78FD57E16D29917004D6A36 /* ofOpenALSoundPlayer_TimelineAdditions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD55F16D29917004D6A36 /* ofOpenALSoundPlayer_TimelineAdditions.cpp */; };
 		E78FD58216D29917004D6A36 /* libsndfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E78FD57716D29917004D6A36 /* libsndfile.a */; };
+		E78FD72A16D2DA66004D6A36 /* SPK_BufferHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6DE16D2DA66004D6A36 /* SPK_BufferHandler.cpp */; };
+		E78FD72B16D2DA66004D6A36 /* SPK_DEF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6DF16D2DA66004D6A36 /* SPK_DEF.cpp */; };
+		E78FD72C16D2DA66004D6A36 /* SPK_Emitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6E016D2DA66004D6A36 /* SPK_Emitter.cpp */; };
+		E78FD72D16D2DA66004D6A36 /* SPK_Factory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6E116D2DA66004D6A36 /* SPK_Factory.cpp */; };
+		E78FD72E16D2DA66004D6A36 /* SPK_Group.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6E216D2DA66004D6A36 /* SPK_Group.cpp */; };
+		E78FD72F16D2DA66004D6A36 /* SPK_Interpolator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6E316D2DA66004D6A36 /* SPK_Interpolator.cpp */; };
+		E78FD73016D2DA66004D6A36 /* SPK_Model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6E416D2DA66004D6A36 /* SPK_Model.cpp */; };
+		E78FD73116D2DA66004D6A36 /* SPK_Modifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6E516D2DA66004D6A36 /* SPK_Modifier.cpp */; };
+		E78FD73216D2DA66004D6A36 /* SPK_Particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6E616D2DA66004D6A36 /* SPK_Particle.cpp */; };
+		E78FD73316D2DA66004D6A36 /* SPK_Registerable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6E716D2DA66004D6A36 /* SPK_Registerable.cpp */; };
+		E78FD73416D2DA66004D6A36 /* SPK_Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6E816D2DA66004D6A36 /* SPK_Renderer.cpp */; };
+		E78FD73516D2DA66004D6A36 /* SPK_System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6E916D2DA66004D6A36 /* SPK_System.cpp */; };
+		E78FD73616D2DA66004D6A36 /* SPK_Transformable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6EA16D2DA66004D6A36 /* SPK_Transformable.cpp */; };
+		E78FD73716D2DA66004D6A36 /* SPK_Vector3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6EB16D2DA66004D6A36 /* SPK_Vector3D.cpp */; };
+		E78FD73816D2DA66004D6A36 /* SPK_Zone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6EC16D2DA66004D6A36 /* SPK_Zone.cpp */; };
+		E78FD73916D2DA66004D6A36 /* SPK_NormalEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6EF16D2DA66004D6A36 /* SPK_NormalEmitter.cpp */; };
+		E78FD73A16D2DA66004D6A36 /* SPK_RandomEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6F016D2DA66004D6A36 /* SPK_RandomEmitter.cpp */; };
+		E78FD73B16D2DA66004D6A36 /* SPK_SphericEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6F116D2DA66004D6A36 /* SPK_SphericEmitter.cpp */; };
+		E78FD73C16D2DA66004D6A36 /* SPK_StraightEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6F216D2DA66004D6A36 /* SPK_StraightEmitter.cpp */; };
+		E78FD73D16D2DA66004D6A36 /* SPK_Collision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6F416D2DA66004D6A36 /* SPK_Collision.cpp */; };
+		E78FD73E16D2DA66004D6A36 /* SPK_Destroyer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6F516D2DA66004D6A36 /* SPK_Destroyer.cpp */; };
+		E78FD73F16D2DA66004D6A36 /* SPK_LinearForce.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6F616D2DA66004D6A36 /* SPK_LinearForce.cpp */; };
+		E78FD74016D2DA66004D6A36 /* SPK_ModifierGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6F716D2DA66004D6A36 /* SPK_ModifierGroup.cpp */; };
+		E78FD74116D2DA66004D6A36 /* SPK_Obstacle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6F816D2DA66004D6A36 /* SPK_Obstacle.cpp */; };
+		E78FD74216D2DA66004D6A36 /* SPK_PointMass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6F916D2DA66004D6A36 /* SPK_PointMass.cpp */; };
+		E78FD74316D2DA66004D6A36 /* SPK_Vortex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6FA16D2DA66004D6A36 /* SPK_Vortex.cpp */; };
+		E78FD74416D2DA66004D6A36 /* SPK_Oriented3DRendererInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6FC16D2DA66004D6A36 /* SPK_Oriented3DRendererInterface.cpp */; };
+		E78FD74516D2DA66004D6A36 /* SPK_QuadRendererInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6FD16D2DA66004D6A36 /* SPK_QuadRendererInterface.cpp */; };
+		E78FD74616D2DA66004D6A36 /* SPK_AABox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD6FF16D2DA66004D6A36 /* SPK_AABox.cpp */; };
+		E78FD74716D2DA66004D6A36 /* SPK_Cylinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD70016D2DA66004D6A36 /* SPK_Cylinder.cpp */; };
+		E78FD74816D2DA66004D6A36 /* SPK_Line.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD70116D2DA66004D6A36 /* SPK_Line.cpp */; };
+		E78FD74916D2DA66004D6A36 /* SPK_Plane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD70216D2DA66004D6A36 /* SPK_Plane.cpp */; };
+		E78FD74A16D2DA66004D6A36 /* SPK_Point.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD70316D2DA66004D6A36 /* SPK_Point.cpp */; };
+		E78FD74B16D2DA66004D6A36 /* SPK_Ring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD70416D2DA66004D6A36 /* SPK_Ring.cpp */; };
+		E78FD74C16D2DA66004D6A36 /* SPK_Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD70516D2DA66004D6A36 /* SPK_Sphere.cpp */; };
+		E78FD74D16D2DA66004D6A36 /* SPK_ZoneIntersection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD70616D2DA66004D6A36 /* SPK_ZoneIntersection.cpp */; };
+		E78FD74E16D2DA66004D6A36 /* SPK_ZoneUnion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD70716D2DA66004D6A36 /* SPK_ZoneUnion.cpp */; };
+		E78FD74F16D2DA66004D6A36 /* SPK_GLExtHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD70A16D2DA66004D6A36 /* SPK_GLExtHandler.cpp */; };
+		E78FD75016D2DA66004D6A36 /* SPK_GLLineRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD70B16D2DA66004D6A36 /* SPK_GLLineRenderer.cpp */; };
+		E78FD75116D2DA66004D6A36 /* SPK_GLLineTrailRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD70C16D2DA66004D6A36 /* SPK_GLLineTrailRenderer.cpp */; };
+		E78FD75216D2DA66004D6A36 /* SPK_GLPointRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD70D16D2DA66004D6A36 /* SPK_GLPointRenderer.cpp */; };
+		E78FD75316D2DA66004D6A36 /* SPK_GLQuadRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD70E16D2DA66004D6A36 /* SPK_GLQuadRenderer.cpp */; };
+		E78FD75416D2DA66004D6A36 /* SPK_GLRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD70F16D2DA66004D6A36 /* SPK_GLRenderer.cpp */; };
+		E78FD75516D2DA66004D6A36 /* ofxSPK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD71116D2DA66004D6A36 /* ofxSPK.cpp */; };
+		E78FD75616D2DA66004D6A36 /* ofxSPKEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD71316D2DA66004D6A36 /* ofxSPKEmitter.cpp */; };
+		E78FD75716D2DA66004D6A36 /* ofxSPKGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD71516D2DA66004D6A36 /* ofxSPKGroup.cpp */; };
+		E78FD75816D2DA66004D6A36 /* ofxSPKModifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD71716D2DA66004D6A36 /* ofxSPKModifier.cpp */; };
+		E78FD75916D2DA66004D6A36 /* ofxSPKRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD71916D2DA66004D6A36 /* ofxSPKRenderer.cpp */; };
+		E78FD75A16D2DA66004D6A36 /* ofxSPKSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD71B16D2DA66004D6A36 /* ofxSPKSystem.cpp */; };
+		E78FD75B16D2DA66004D6A36 /* ofxSPKUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD71D16D2DA66004D6A36 /* ofxSPKUtils.cpp */; };
+		E78FD75C16D2DA66004D6A36 /* ofxSPKZone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD71F16D2DA66004D6A36 /* ofxSPKZone.cpp */; };
 		E79F58331625C6C9002B2B34 /* ofxTLCameraTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E79F58311625C6C9002B2B34 /* ofxTLCameraTrack.cpp */; };
 		E7A0BA7A166EB7BE00764549 /* dofrange2.frag in Sources */ = {isa = PBXBuildFile; fileRef = E7A0BA78166EB7BE00764549 /* dofrange2.frag */; };
 		E7A0BA7B166EB7BE00764549 /* dofrange2.vert in Sources */ = {isa = PBXBuildFile; fileRef = E7A0BA79166EB7BE00764549 /* dofrange2.vert */; };
@@ -395,6 +446,120 @@
 		E78FD57316D29917004D6A36 /* sndfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sndfile.h; sourceTree = "<group>"; };
 		E78FD57416D29917004D6A36 /* sndfile.hh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = sndfile.hh; sourceTree = "<group>"; };
 		E78FD57716D29917004D6A36 /* libsndfile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libsndfile.a; sourceTree = "<group>"; };
+		E78FD69E16D2DA66004D6A36 /* SPK_ArrayBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_ArrayBuffer.h; sourceTree = "<group>"; };
+		E78FD69F16D2DA66004D6A36 /* SPK_Buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Buffer.h; sourceTree = "<group>"; };
+		E78FD6A016D2DA66004D6A36 /* SPK_BufferHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_BufferHandler.h; sourceTree = "<group>"; };
+		E78FD6A116D2DA66004D6A36 /* SPK_DEF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_DEF.h; sourceTree = "<group>"; };
+		E78FD6A216D2DA66004D6A36 /* SPK_Emitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Emitter.h; sourceTree = "<group>"; };
+		E78FD6A316D2DA66004D6A36 /* SPK_Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Factory.h; sourceTree = "<group>"; };
+		E78FD6A416D2DA66004D6A36 /* SPK_Group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Group.h; sourceTree = "<group>"; };
+		E78FD6A516D2DA66004D6A36 /* SPK_Interpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Interpolator.h; sourceTree = "<group>"; };
+		E78FD6A616D2DA66004D6A36 /* SPK_Model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Model.h; sourceTree = "<group>"; };
+		E78FD6A716D2DA66004D6A36 /* SPK_Modifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Modifier.h; sourceTree = "<group>"; };
+		E78FD6A816D2DA66004D6A36 /* SPK_Particle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Particle.h; sourceTree = "<group>"; };
+		E78FD6A916D2DA66004D6A36 /* SPK_Pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Pool.h; sourceTree = "<group>"; };
+		E78FD6AA16D2DA66004D6A36 /* SPK_Registerable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Registerable.h; sourceTree = "<group>"; };
+		E78FD6AB16D2DA66004D6A36 /* SPK_RegWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_RegWrapper.h; sourceTree = "<group>"; };
+		E78FD6AC16D2DA66004D6A36 /* SPK_Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Renderer.h; sourceTree = "<group>"; };
+		E78FD6AD16D2DA66004D6A36 /* SPK_System.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_System.h; sourceTree = "<group>"; };
+		E78FD6AE16D2DA66004D6A36 /* SPK_Transformable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Transformable.h; sourceTree = "<group>"; };
+		E78FD6AF16D2DA66004D6A36 /* SPK_Vector3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Vector3D.h; sourceTree = "<group>"; };
+		E78FD6B016D2DA66004D6A36 /* SPK_Zone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Zone.h; sourceTree = "<group>"; };
+		E78FD6B316D2DA66004D6A36 /* SPK_NormalEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_NormalEmitter.h; sourceTree = "<group>"; };
+		E78FD6B416D2DA66004D6A36 /* SPK_RandomEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_RandomEmitter.h; sourceTree = "<group>"; };
+		E78FD6B516D2DA66004D6A36 /* SPK_SphericEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_SphericEmitter.h; sourceTree = "<group>"; };
+		E78FD6B616D2DA66004D6A36 /* SPK_StaticEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_StaticEmitter.h; sourceTree = "<group>"; };
+		E78FD6B716D2DA66004D6A36 /* SPK_StraightEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_StraightEmitter.h; sourceTree = "<group>"; };
+		E78FD6B916D2DA66004D6A36 /* SPK_Collision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Collision.h; sourceTree = "<group>"; };
+		E78FD6BA16D2DA66004D6A36 /* SPK_Destroyer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Destroyer.h; sourceTree = "<group>"; };
+		E78FD6BB16D2DA66004D6A36 /* SPK_LinearForce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_LinearForce.h; sourceTree = "<group>"; };
+		E78FD6BC16D2DA66004D6A36 /* SPK_ModifierGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_ModifierGroup.h; sourceTree = "<group>"; };
+		E78FD6BD16D2DA66004D6A36 /* SPK_Obstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Obstacle.h; sourceTree = "<group>"; };
+		E78FD6BE16D2DA66004D6A36 /* SPK_PointMass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_PointMass.h; sourceTree = "<group>"; };
+		E78FD6BF16D2DA66004D6A36 /* SPK_Rotator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Rotator.h; sourceTree = "<group>"; };
+		E78FD6C016D2DA66004D6A36 /* SPK_Vortex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Vortex.h; sourceTree = "<group>"; };
+		E78FD6C216D2DA66004D6A36 /* SPK_LineRendererInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_LineRendererInterface.h; sourceTree = "<group>"; };
+		E78FD6C316D2DA66004D6A36 /* SPK_Oriented2DRendererInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Oriented2DRendererInterface.h; sourceTree = "<group>"; };
+		E78FD6C416D2DA66004D6A36 /* SPK_Oriented3DRendererInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Oriented3DRendererInterface.h; sourceTree = "<group>"; };
+		E78FD6C516D2DA66004D6A36 /* SPK_PointRendererInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_PointRendererInterface.h; sourceTree = "<group>"; };
+		E78FD6C616D2DA66004D6A36 /* SPK_QuadRendererInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_QuadRendererInterface.h; sourceTree = "<group>"; };
+		E78FD6C816D2DA66004D6A36 /* SPK_AABox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_AABox.h; sourceTree = "<group>"; };
+		E78FD6C916D2DA66004D6A36 /* SPK_Cylinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Cylinder.h; sourceTree = "<group>"; };
+		E78FD6CA16D2DA66004D6A36 /* SPK_Line.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Line.h; sourceTree = "<group>"; };
+		E78FD6CB16D2DA66004D6A36 /* SPK_Plane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Plane.h; sourceTree = "<group>"; };
+		E78FD6CC16D2DA66004D6A36 /* SPK_Point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Point.h; sourceTree = "<group>"; };
+		E78FD6CD16D2DA66004D6A36 /* SPK_Ring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Ring.h; sourceTree = "<group>"; };
+		E78FD6CE16D2DA66004D6A36 /* SPK_Sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Sphere.h; sourceTree = "<group>"; };
+		E78FD6CF16D2DA66004D6A36 /* SPK_ZoneIntersection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_ZoneIntersection.h; sourceTree = "<group>"; };
+		E78FD6D016D2DA66004D6A36 /* SPK_ZoneUnion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_ZoneUnion.h; sourceTree = "<group>"; };
+		E78FD6D316D2DA66004D6A36 /* SPK_GL_DEF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_GL_DEF.h; sourceTree = "<group>"; };
+		E78FD6D416D2DA66004D6A36 /* SPK_GLExtHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_GLExtHandler.h; sourceTree = "<group>"; };
+		E78FD6D516D2DA66004D6A36 /* SPK_GLLineRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_GLLineRenderer.h; sourceTree = "<group>"; };
+		E78FD6D616D2DA66004D6A36 /* SPK_GLLineTrailRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_GLLineTrailRenderer.h; sourceTree = "<group>"; };
+		E78FD6D716D2DA66004D6A36 /* SPK_GLPointRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_GLPointRenderer.h; sourceTree = "<group>"; };
+		E78FD6D816D2DA66004D6A36 /* SPK_GLQuadRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_GLQuadRenderer.h; sourceTree = "<group>"; };
+		E78FD6D916D2DA66004D6A36 /* SPK_GLRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_GLRenderer.h; sourceTree = "<group>"; };
+		E78FD6DA16D2DA66004D6A36 /* SPK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK.h; sourceTree = "<group>"; };
+		E78FD6DB16D2DA66004D6A36 /* SPK_GL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_GL.h; sourceTree = "<group>"; };
+		E78FD6DE16D2DA66004D6A36 /* SPK_BufferHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_BufferHandler.cpp; sourceTree = "<group>"; };
+		E78FD6DF16D2DA66004D6A36 /* SPK_DEF.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_DEF.cpp; sourceTree = "<group>"; };
+		E78FD6E016D2DA66004D6A36 /* SPK_Emitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Emitter.cpp; sourceTree = "<group>"; };
+		E78FD6E116D2DA66004D6A36 /* SPK_Factory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Factory.cpp; sourceTree = "<group>"; };
+		E78FD6E216D2DA66004D6A36 /* SPK_Group.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Group.cpp; sourceTree = "<group>"; };
+		E78FD6E316D2DA66004D6A36 /* SPK_Interpolator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Interpolator.cpp; sourceTree = "<group>"; };
+		E78FD6E416D2DA66004D6A36 /* SPK_Model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Model.cpp; sourceTree = "<group>"; };
+		E78FD6E516D2DA66004D6A36 /* SPK_Modifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Modifier.cpp; sourceTree = "<group>"; };
+		E78FD6E616D2DA66004D6A36 /* SPK_Particle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Particle.cpp; sourceTree = "<group>"; };
+		E78FD6E716D2DA66004D6A36 /* SPK_Registerable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Registerable.cpp; sourceTree = "<group>"; };
+		E78FD6E816D2DA66004D6A36 /* SPK_Renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Renderer.cpp; sourceTree = "<group>"; };
+		E78FD6E916D2DA66004D6A36 /* SPK_System.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_System.cpp; sourceTree = "<group>"; };
+		E78FD6EA16D2DA66004D6A36 /* SPK_Transformable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Transformable.cpp; sourceTree = "<group>"; };
+		E78FD6EB16D2DA66004D6A36 /* SPK_Vector3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Vector3D.cpp; sourceTree = "<group>"; };
+		E78FD6EC16D2DA66004D6A36 /* SPK_Zone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Zone.cpp; sourceTree = "<group>"; };
+		E78FD6EF16D2DA66004D6A36 /* SPK_NormalEmitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_NormalEmitter.cpp; sourceTree = "<group>"; };
+		E78FD6F016D2DA66004D6A36 /* SPK_RandomEmitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_RandomEmitter.cpp; sourceTree = "<group>"; };
+		E78FD6F116D2DA66004D6A36 /* SPK_SphericEmitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_SphericEmitter.cpp; sourceTree = "<group>"; };
+		E78FD6F216D2DA66004D6A36 /* SPK_StraightEmitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_StraightEmitter.cpp; sourceTree = "<group>"; };
+		E78FD6F416D2DA66004D6A36 /* SPK_Collision.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Collision.cpp; sourceTree = "<group>"; };
+		E78FD6F516D2DA66004D6A36 /* SPK_Destroyer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Destroyer.cpp; sourceTree = "<group>"; };
+		E78FD6F616D2DA66004D6A36 /* SPK_LinearForce.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_LinearForce.cpp; sourceTree = "<group>"; };
+		E78FD6F716D2DA66004D6A36 /* SPK_ModifierGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_ModifierGroup.cpp; sourceTree = "<group>"; };
+		E78FD6F816D2DA66004D6A36 /* SPK_Obstacle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Obstacle.cpp; sourceTree = "<group>"; };
+		E78FD6F916D2DA66004D6A36 /* SPK_PointMass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_PointMass.cpp; sourceTree = "<group>"; };
+		E78FD6FA16D2DA66004D6A36 /* SPK_Vortex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Vortex.cpp; sourceTree = "<group>"; };
+		E78FD6FC16D2DA66004D6A36 /* SPK_Oriented3DRendererInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Oriented3DRendererInterface.cpp; sourceTree = "<group>"; };
+		E78FD6FD16D2DA66004D6A36 /* SPK_QuadRendererInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_QuadRendererInterface.cpp; sourceTree = "<group>"; };
+		E78FD6FF16D2DA66004D6A36 /* SPK_AABox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_AABox.cpp; sourceTree = "<group>"; };
+		E78FD70016D2DA66004D6A36 /* SPK_Cylinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Cylinder.cpp; sourceTree = "<group>"; };
+		E78FD70116D2DA66004D6A36 /* SPK_Line.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Line.cpp; sourceTree = "<group>"; };
+		E78FD70216D2DA66004D6A36 /* SPK_Plane.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Plane.cpp; sourceTree = "<group>"; };
+		E78FD70316D2DA66004D6A36 /* SPK_Point.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Point.cpp; sourceTree = "<group>"; };
+		E78FD70416D2DA66004D6A36 /* SPK_Ring.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Ring.cpp; sourceTree = "<group>"; };
+		E78FD70516D2DA66004D6A36 /* SPK_Sphere.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Sphere.cpp; sourceTree = "<group>"; };
+		E78FD70616D2DA66004D6A36 /* SPK_ZoneIntersection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_ZoneIntersection.cpp; sourceTree = "<group>"; };
+		E78FD70716D2DA66004D6A36 /* SPK_ZoneUnion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_ZoneUnion.cpp; sourceTree = "<group>"; };
+		E78FD70A16D2DA66004D6A36 /* SPK_GLExtHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_GLExtHandler.cpp; sourceTree = "<group>"; };
+		E78FD70B16D2DA66004D6A36 /* SPK_GLLineRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_GLLineRenderer.cpp; sourceTree = "<group>"; };
+		E78FD70C16D2DA66004D6A36 /* SPK_GLLineTrailRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_GLLineTrailRenderer.cpp; sourceTree = "<group>"; };
+		E78FD70D16D2DA66004D6A36 /* SPK_GLPointRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_GLPointRenderer.cpp; sourceTree = "<group>"; };
+		E78FD70E16D2DA66004D6A36 /* SPK_GLQuadRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_GLQuadRenderer.cpp; sourceTree = "<group>"; };
+		E78FD70F16D2DA66004D6A36 /* SPK_GLRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_GLRenderer.cpp; sourceTree = "<group>"; };
+		E78FD71116D2DA66004D6A36 /* ofxSPK.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSPK.cpp; sourceTree = "<group>"; };
+		E78FD71216D2DA66004D6A36 /* ofxSPK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSPK.h; sourceTree = "<group>"; };
+		E78FD71316D2DA66004D6A36 /* ofxSPKEmitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSPKEmitter.cpp; sourceTree = "<group>"; };
+		E78FD71416D2DA66004D6A36 /* ofxSPKEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSPKEmitter.h; sourceTree = "<group>"; };
+		E78FD71516D2DA66004D6A36 /* ofxSPKGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSPKGroup.cpp; sourceTree = "<group>"; };
+		E78FD71616D2DA66004D6A36 /* ofxSPKGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSPKGroup.h; sourceTree = "<group>"; };
+		E78FD71716D2DA66004D6A36 /* ofxSPKModifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSPKModifier.cpp; sourceTree = "<group>"; };
+		E78FD71816D2DA66004D6A36 /* ofxSPKModifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSPKModifier.h; sourceTree = "<group>"; };
+		E78FD71916D2DA66004D6A36 /* ofxSPKRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSPKRenderer.cpp; sourceTree = "<group>"; };
+		E78FD71A16D2DA66004D6A36 /* ofxSPKRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSPKRenderer.h; sourceTree = "<group>"; };
+		E78FD71B16D2DA66004D6A36 /* ofxSPKSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSPKSystem.cpp; sourceTree = "<group>"; };
+		E78FD71C16D2DA66004D6A36 /* ofxSPKSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSPKSystem.h; sourceTree = "<group>"; };
+		E78FD71D16D2DA66004D6A36 /* ofxSPKUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSPKUtils.cpp; sourceTree = "<group>"; };
+		E78FD71E16D2DA66004D6A36 /* ofxSPKUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSPKUtils.h; sourceTree = "<group>"; };
+		E78FD71F16D2DA66004D6A36 /* ofxSPKZone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSPKZone.cpp; sourceTree = "<group>"; };
+		E78FD72016D2DA66004D6A36 /* ofxSPKZone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSPKZone.h; sourceTree = "<group>"; };
 		E7997A5D1541D06500D4130C /* dofblur.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = dofblur.frag; sourceTree = "<group>"; };
 		E7997A5E1541D06500D4130C /* dofblur.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = dofblur.vert; sourceTree = "<group>"; };
 		E79F58311625C6C9002B2B34 /* ofxTLCameraTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLCameraTrack.cpp; sourceTree = "<group>"; };
@@ -670,6 +835,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				E78FD68816D2DA65004D6A36 /* ofxSPK */,
 				E724A96E16798FD8004CC19E /* ofxObjLoader */,
 				E74806DA15EBC06800B4157F /* ofxTimecode */,
 				E74806A715EBBFEB00B4157F /* ofxMSATimer */,
@@ -1290,6 +1456,296 @@
 			path = osx;
 			sourceTree = "<group>";
 		};
+		E78FD68816D2DA65004D6A36 /* ofxSPK */ = {
+			isa = PBXGroup;
+			children = (
+				E78FD69A16D2DA66004D6A36 /* libs */,
+				E78FD71016D2DA66004D6A36 /* src */,
+			);
+			name = ofxSPK;
+			path = ../../../addons/ofxSPK;
+			sourceTree = "<group>";
+		};
+		E78FD69A16D2DA66004D6A36 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				E78FD69B16D2DA66004D6A36 /* SPARK */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		E78FD69B16D2DA66004D6A36 /* SPARK */ = {
+			isa = PBXGroup;
+			children = (
+				E78FD69C16D2DA66004D6A36 /* include */,
+				E78FD6DC16D2DA66004D6A36 /* src */,
+			);
+			path = SPARK;
+			sourceTree = "<group>";
+		};
+		E78FD69C16D2DA66004D6A36 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				E78FD69D16D2DA66004D6A36 /* Core */,
+				E78FD6B116D2DA66004D6A36 /* Extensions */,
+				E78FD6D116D2DA66004D6A36 /* RenderingAPIs */,
+				E78FD6DA16D2DA66004D6A36 /* SPK.h */,
+				E78FD6DB16D2DA66004D6A36 /* SPK_GL.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		E78FD69D16D2DA66004D6A36 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				E78FD69E16D2DA66004D6A36 /* SPK_ArrayBuffer.h */,
+				E78FD69F16D2DA66004D6A36 /* SPK_Buffer.h */,
+				E78FD6A016D2DA66004D6A36 /* SPK_BufferHandler.h */,
+				E78FD6A116D2DA66004D6A36 /* SPK_DEF.h */,
+				E78FD6A216D2DA66004D6A36 /* SPK_Emitter.h */,
+				E78FD6A316D2DA66004D6A36 /* SPK_Factory.h */,
+				E78FD6A416D2DA66004D6A36 /* SPK_Group.h */,
+				E78FD6A516D2DA66004D6A36 /* SPK_Interpolator.h */,
+				E78FD6A616D2DA66004D6A36 /* SPK_Model.h */,
+				E78FD6A716D2DA66004D6A36 /* SPK_Modifier.h */,
+				E78FD6A816D2DA66004D6A36 /* SPK_Particle.h */,
+				E78FD6A916D2DA66004D6A36 /* SPK_Pool.h */,
+				E78FD6AA16D2DA66004D6A36 /* SPK_Registerable.h */,
+				E78FD6AB16D2DA66004D6A36 /* SPK_RegWrapper.h */,
+				E78FD6AC16D2DA66004D6A36 /* SPK_Renderer.h */,
+				E78FD6AD16D2DA66004D6A36 /* SPK_System.h */,
+				E78FD6AE16D2DA66004D6A36 /* SPK_Transformable.h */,
+				E78FD6AF16D2DA66004D6A36 /* SPK_Vector3D.h */,
+				E78FD6B016D2DA66004D6A36 /* SPK_Zone.h */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		E78FD6B116D2DA66004D6A36 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E78FD6B216D2DA66004D6A36 /* Emitters */,
+				E78FD6B816D2DA66004D6A36 /* Modifiers */,
+				E78FD6C116D2DA66004D6A36 /* Renderers */,
+				E78FD6C716D2DA66004D6A36 /* Zones */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		E78FD6B216D2DA66004D6A36 /* Emitters */ = {
+			isa = PBXGroup;
+			children = (
+				E78FD6B316D2DA66004D6A36 /* SPK_NormalEmitter.h */,
+				E78FD6B416D2DA66004D6A36 /* SPK_RandomEmitter.h */,
+				E78FD6B516D2DA66004D6A36 /* SPK_SphericEmitter.h */,
+				E78FD6B616D2DA66004D6A36 /* SPK_StaticEmitter.h */,
+				E78FD6B716D2DA66004D6A36 /* SPK_StraightEmitter.h */,
+			);
+			path = Emitters;
+			sourceTree = "<group>";
+		};
+		E78FD6B816D2DA66004D6A36 /* Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+				E78FD6B916D2DA66004D6A36 /* SPK_Collision.h */,
+				E78FD6BA16D2DA66004D6A36 /* SPK_Destroyer.h */,
+				E78FD6BB16D2DA66004D6A36 /* SPK_LinearForce.h */,
+				E78FD6BC16D2DA66004D6A36 /* SPK_ModifierGroup.h */,
+				E78FD6BD16D2DA66004D6A36 /* SPK_Obstacle.h */,
+				E78FD6BE16D2DA66004D6A36 /* SPK_PointMass.h */,
+				E78FD6BF16D2DA66004D6A36 /* SPK_Rotator.h */,
+				E78FD6C016D2DA66004D6A36 /* SPK_Vortex.h */,
+			);
+			path = Modifiers;
+			sourceTree = "<group>";
+		};
+		E78FD6C116D2DA66004D6A36 /* Renderers */ = {
+			isa = PBXGroup;
+			children = (
+				E78FD6C216D2DA66004D6A36 /* SPK_LineRendererInterface.h */,
+				E78FD6C316D2DA66004D6A36 /* SPK_Oriented2DRendererInterface.h */,
+				E78FD6C416D2DA66004D6A36 /* SPK_Oriented3DRendererInterface.h */,
+				E78FD6C516D2DA66004D6A36 /* SPK_PointRendererInterface.h */,
+				E78FD6C616D2DA66004D6A36 /* SPK_QuadRendererInterface.h */,
+			);
+			path = Renderers;
+			sourceTree = "<group>";
+		};
+		E78FD6C716D2DA66004D6A36 /* Zones */ = {
+			isa = PBXGroup;
+			children = (
+				E78FD6C816D2DA66004D6A36 /* SPK_AABox.h */,
+				E78FD6C916D2DA66004D6A36 /* SPK_Cylinder.h */,
+				E78FD6CA16D2DA66004D6A36 /* SPK_Line.h */,
+				E78FD6CB16D2DA66004D6A36 /* SPK_Plane.h */,
+				E78FD6CC16D2DA66004D6A36 /* SPK_Point.h */,
+				E78FD6CD16D2DA66004D6A36 /* SPK_Ring.h */,
+				E78FD6CE16D2DA66004D6A36 /* SPK_Sphere.h */,
+				E78FD6CF16D2DA66004D6A36 /* SPK_ZoneIntersection.h */,
+				E78FD6D016D2DA66004D6A36 /* SPK_ZoneUnion.h */,
+			);
+			path = Zones;
+			sourceTree = "<group>";
+		};
+		E78FD6D116D2DA66004D6A36 /* RenderingAPIs */ = {
+			isa = PBXGroup;
+			children = (
+				E78FD6D216D2DA66004D6A36 /* OpenGL */,
+			);
+			path = RenderingAPIs;
+			sourceTree = "<group>";
+		};
+		E78FD6D216D2DA66004D6A36 /* OpenGL */ = {
+			isa = PBXGroup;
+			children = (
+				E78FD6D316D2DA66004D6A36 /* SPK_GL_DEF.h */,
+				E78FD6D416D2DA66004D6A36 /* SPK_GLExtHandler.h */,
+				E78FD6D516D2DA66004D6A36 /* SPK_GLLineRenderer.h */,
+				E78FD6D616D2DA66004D6A36 /* SPK_GLLineTrailRenderer.h */,
+				E78FD6D716D2DA66004D6A36 /* SPK_GLPointRenderer.h */,
+				E78FD6D816D2DA66004D6A36 /* SPK_GLQuadRenderer.h */,
+				E78FD6D916D2DA66004D6A36 /* SPK_GLRenderer.h */,
+			);
+			path = OpenGL;
+			sourceTree = "<group>";
+		};
+		E78FD6DC16D2DA66004D6A36 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				E78FD6DD16D2DA66004D6A36 /* Core */,
+				E78FD6ED16D2DA66004D6A36 /* Extensions */,
+				E78FD70816D2DA66004D6A36 /* RenderingAPIs */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		E78FD6DD16D2DA66004D6A36 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				E78FD6DE16D2DA66004D6A36 /* SPK_BufferHandler.cpp */,
+				E78FD6DF16D2DA66004D6A36 /* SPK_DEF.cpp */,
+				E78FD6E016D2DA66004D6A36 /* SPK_Emitter.cpp */,
+				E78FD6E116D2DA66004D6A36 /* SPK_Factory.cpp */,
+				E78FD6E216D2DA66004D6A36 /* SPK_Group.cpp */,
+				E78FD6E316D2DA66004D6A36 /* SPK_Interpolator.cpp */,
+				E78FD6E416D2DA66004D6A36 /* SPK_Model.cpp */,
+				E78FD6E516D2DA66004D6A36 /* SPK_Modifier.cpp */,
+				E78FD6E616D2DA66004D6A36 /* SPK_Particle.cpp */,
+				E78FD6E716D2DA66004D6A36 /* SPK_Registerable.cpp */,
+				E78FD6E816D2DA66004D6A36 /* SPK_Renderer.cpp */,
+				E78FD6E916D2DA66004D6A36 /* SPK_System.cpp */,
+				E78FD6EA16D2DA66004D6A36 /* SPK_Transformable.cpp */,
+				E78FD6EB16D2DA66004D6A36 /* SPK_Vector3D.cpp */,
+				E78FD6EC16D2DA66004D6A36 /* SPK_Zone.cpp */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		E78FD6ED16D2DA66004D6A36 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E78FD6EE16D2DA66004D6A36 /* Emitters */,
+				E78FD6F316D2DA66004D6A36 /* Modifiers */,
+				E78FD6FB16D2DA66004D6A36 /* Renderers */,
+				E78FD6FE16D2DA66004D6A36 /* Zones */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		E78FD6EE16D2DA66004D6A36 /* Emitters */ = {
+			isa = PBXGroup;
+			children = (
+				E78FD6EF16D2DA66004D6A36 /* SPK_NormalEmitter.cpp */,
+				E78FD6F016D2DA66004D6A36 /* SPK_RandomEmitter.cpp */,
+				E78FD6F116D2DA66004D6A36 /* SPK_SphericEmitter.cpp */,
+				E78FD6F216D2DA66004D6A36 /* SPK_StraightEmitter.cpp */,
+			);
+			path = Emitters;
+			sourceTree = "<group>";
+		};
+		E78FD6F316D2DA66004D6A36 /* Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+				E78FD6F416D2DA66004D6A36 /* SPK_Collision.cpp */,
+				E78FD6F516D2DA66004D6A36 /* SPK_Destroyer.cpp */,
+				E78FD6F616D2DA66004D6A36 /* SPK_LinearForce.cpp */,
+				E78FD6F716D2DA66004D6A36 /* SPK_ModifierGroup.cpp */,
+				E78FD6F816D2DA66004D6A36 /* SPK_Obstacle.cpp */,
+				E78FD6F916D2DA66004D6A36 /* SPK_PointMass.cpp */,
+				E78FD6FA16D2DA66004D6A36 /* SPK_Vortex.cpp */,
+			);
+			path = Modifiers;
+			sourceTree = "<group>";
+		};
+		E78FD6FB16D2DA66004D6A36 /* Renderers */ = {
+			isa = PBXGroup;
+			children = (
+				E78FD6FC16D2DA66004D6A36 /* SPK_Oriented3DRendererInterface.cpp */,
+				E78FD6FD16D2DA66004D6A36 /* SPK_QuadRendererInterface.cpp */,
+			);
+			path = Renderers;
+			sourceTree = "<group>";
+		};
+		E78FD6FE16D2DA66004D6A36 /* Zones */ = {
+			isa = PBXGroup;
+			children = (
+				E78FD6FF16D2DA66004D6A36 /* SPK_AABox.cpp */,
+				E78FD70016D2DA66004D6A36 /* SPK_Cylinder.cpp */,
+				E78FD70116D2DA66004D6A36 /* SPK_Line.cpp */,
+				E78FD70216D2DA66004D6A36 /* SPK_Plane.cpp */,
+				E78FD70316D2DA66004D6A36 /* SPK_Point.cpp */,
+				E78FD70416D2DA66004D6A36 /* SPK_Ring.cpp */,
+				E78FD70516D2DA66004D6A36 /* SPK_Sphere.cpp */,
+				E78FD70616D2DA66004D6A36 /* SPK_ZoneIntersection.cpp */,
+				E78FD70716D2DA66004D6A36 /* SPK_ZoneUnion.cpp */,
+			);
+			path = Zones;
+			sourceTree = "<group>";
+		};
+		E78FD70816D2DA66004D6A36 /* RenderingAPIs */ = {
+			isa = PBXGroup;
+			children = (
+				E78FD70916D2DA66004D6A36 /* OpenGL */,
+			);
+			path = RenderingAPIs;
+			sourceTree = "<group>";
+		};
+		E78FD70916D2DA66004D6A36 /* OpenGL */ = {
+			isa = PBXGroup;
+			children = (
+				E78FD70A16D2DA66004D6A36 /* SPK_GLExtHandler.cpp */,
+				E78FD70B16D2DA66004D6A36 /* SPK_GLLineRenderer.cpp */,
+				E78FD70C16D2DA66004D6A36 /* SPK_GLLineTrailRenderer.cpp */,
+				E78FD70D16D2DA66004D6A36 /* SPK_GLPointRenderer.cpp */,
+				E78FD70E16D2DA66004D6A36 /* SPK_GLQuadRenderer.cpp */,
+				E78FD70F16D2DA66004D6A36 /* SPK_GLRenderer.cpp */,
+			);
+			path = OpenGL;
+			sourceTree = "<group>";
+		};
+		E78FD71016D2DA66004D6A36 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				E78FD71116D2DA66004D6A36 /* ofxSPK.cpp */,
+				E78FD71216D2DA66004D6A36 /* ofxSPK.h */,
+				E78FD71316D2DA66004D6A36 /* ofxSPKEmitter.cpp */,
+				E78FD71416D2DA66004D6A36 /* ofxSPKEmitter.h */,
+				E78FD71516D2DA66004D6A36 /* ofxSPKGroup.cpp */,
+				E78FD71616D2DA66004D6A36 /* ofxSPKGroup.h */,
+				E78FD71716D2DA66004D6A36 /* ofxSPKModifier.cpp */,
+				E78FD71816D2DA66004D6A36 /* ofxSPKModifier.h */,
+				E78FD71916D2DA66004D6A36 /* ofxSPKRenderer.cpp */,
+				E78FD71A16D2DA66004D6A36 /* ofxSPKRenderer.h */,
+				E78FD71B16D2DA66004D6A36 /* ofxSPKSystem.cpp */,
+				E78FD71C16D2DA66004D6A36 /* ofxSPKSystem.h */,
+				E78FD71D16D2DA66004D6A36 /* ofxSPKUtils.cpp */,
+				E78FD71E16D2DA66004D6A36 /* ofxSPKUtils.h */,
+				E78FD71F16D2DA66004D6A36 /* ofxSPKZone.cpp */,
+				E78FD72016D2DA66004D6A36 /* ofxSPKZone.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		E7DF56AC147CA3A800A3A9C7 /* couples */ = {
 			isa = PBXGroup;
 			children = (
@@ -1556,6 +2012,57 @@
 				E78FD57C16D29917004D6A36 /* kiss_fft.c in Sources */,
 				E78FD57D16D29917004D6A36 /* kiss_fftr.c in Sources */,
 				E78FD57E16D29917004D6A36 /* ofOpenALSoundPlayer_TimelineAdditions.cpp in Sources */,
+				E78FD72A16D2DA66004D6A36 /* SPK_BufferHandler.cpp in Sources */,
+				E78FD72B16D2DA66004D6A36 /* SPK_DEF.cpp in Sources */,
+				E78FD72C16D2DA66004D6A36 /* SPK_Emitter.cpp in Sources */,
+				E78FD72D16D2DA66004D6A36 /* SPK_Factory.cpp in Sources */,
+				E78FD72E16D2DA66004D6A36 /* SPK_Group.cpp in Sources */,
+				E78FD72F16D2DA66004D6A36 /* SPK_Interpolator.cpp in Sources */,
+				E78FD73016D2DA66004D6A36 /* SPK_Model.cpp in Sources */,
+				E78FD73116D2DA66004D6A36 /* SPK_Modifier.cpp in Sources */,
+				E78FD73216D2DA66004D6A36 /* SPK_Particle.cpp in Sources */,
+				E78FD73316D2DA66004D6A36 /* SPK_Registerable.cpp in Sources */,
+				E78FD73416D2DA66004D6A36 /* SPK_Renderer.cpp in Sources */,
+				E78FD73516D2DA66004D6A36 /* SPK_System.cpp in Sources */,
+				E78FD73616D2DA66004D6A36 /* SPK_Transformable.cpp in Sources */,
+				E78FD73716D2DA66004D6A36 /* SPK_Vector3D.cpp in Sources */,
+				E78FD73816D2DA66004D6A36 /* SPK_Zone.cpp in Sources */,
+				E78FD73916D2DA66004D6A36 /* SPK_NormalEmitter.cpp in Sources */,
+				E78FD73A16D2DA66004D6A36 /* SPK_RandomEmitter.cpp in Sources */,
+				E78FD73B16D2DA66004D6A36 /* SPK_SphericEmitter.cpp in Sources */,
+				E78FD73C16D2DA66004D6A36 /* SPK_StraightEmitter.cpp in Sources */,
+				E78FD73D16D2DA66004D6A36 /* SPK_Collision.cpp in Sources */,
+				E78FD73E16D2DA66004D6A36 /* SPK_Destroyer.cpp in Sources */,
+				E78FD73F16D2DA66004D6A36 /* SPK_LinearForce.cpp in Sources */,
+				E78FD74016D2DA66004D6A36 /* SPK_ModifierGroup.cpp in Sources */,
+				E78FD74116D2DA66004D6A36 /* SPK_Obstacle.cpp in Sources */,
+				E78FD74216D2DA66004D6A36 /* SPK_PointMass.cpp in Sources */,
+				E78FD74316D2DA66004D6A36 /* SPK_Vortex.cpp in Sources */,
+				E78FD74416D2DA66004D6A36 /* SPK_Oriented3DRendererInterface.cpp in Sources */,
+				E78FD74516D2DA66004D6A36 /* SPK_QuadRendererInterface.cpp in Sources */,
+				E78FD74616D2DA66004D6A36 /* SPK_AABox.cpp in Sources */,
+				E78FD74716D2DA66004D6A36 /* SPK_Cylinder.cpp in Sources */,
+				E78FD74816D2DA66004D6A36 /* SPK_Line.cpp in Sources */,
+				E78FD74916D2DA66004D6A36 /* SPK_Plane.cpp in Sources */,
+				E78FD74A16D2DA66004D6A36 /* SPK_Point.cpp in Sources */,
+				E78FD74B16D2DA66004D6A36 /* SPK_Ring.cpp in Sources */,
+				E78FD74C16D2DA66004D6A36 /* SPK_Sphere.cpp in Sources */,
+				E78FD74D16D2DA66004D6A36 /* SPK_ZoneIntersection.cpp in Sources */,
+				E78FD74E16D2DA66004D6A36 /* SPK_ZoneUnion.cpp in Sources */,
+				E78FD74F16D2DA66004D6A36 /* SPK_GLExtHandler.cpp in Sources */,
+				E78FD75016D2DA66004D6A36 /* SPK_GLLineRenderer.cpp in Sources */,
+				E78FD75116D2DA66004D6A36 /* SPK_GLLineTrailRenderer.cpp in Sources */,
+				E78FD75216D2DA66004D6A36 /* SPK_GLPointRenderer.cpp in Sources */,
+				E78FD75316D2DA66004D6A36 /* SPK_GLQuadRenderer.cpp in Sources */,
+				E78FD75416D2DA66004D6A36 /* SPK_GLRenderer.cpp in Sources */,
+				E78FD75516D2DA66004D6A36 /* ofxSPK.cpp in Sources */,
+				E78FD75616D2DA66004D6A36 /* ofxSPKEmitter.cpp in Sources */,
+				E78FD75716D2DA66004D6A36 /* ofxSPKGroup.cpp in Sources */,
+				E78FD75816D2DA66004D6A36 /* ofxSPKModifier.cpp in Sources */,
+				E78FD75916D2DA66004D6A36 /* ofxSPKRenderer.cpp in Sources */,
+				E78FD75A16D2DA66004D6A36 /* ofxSPKSystem.cpp in Sources */,
+				E78FD75B16D2DA66004D6A36 /* ofxSPKUtils.cpp in Sources */,
+				E78FD75C16D2DA66004D6A36 /* ofxSPKZone.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1591,6 +2098,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = NO;
 				GCC_WARN_UNUSED_VALUE = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(OF_CORE_HEADERS)",
+					"$(HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_1)",
+					"$(HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_2)",
+					"$(OF_PATH)/addons/ofxSPK/libs/SPARK/include",
+				);
+				HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_1 = "\"../../../addons/ofxOpenCv/libs/opencv/include/\"";
+				HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_2 = "\"../../../addons/ofxCv/libs/ofxCv/include/\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH_PRE_XCODE_3_1 = "$(NATIVE_ARCH)";
 				OTHER_CPLUSPLUSFLAGS = (
@@ -1625,6 +2140,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = NO;
 				GCC_WARN_UNUSED_VALUE = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(OF_CORE_HEADERS)",
+					"$(HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_1)",
+					"$(HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_2)",
+					"$(OF_PATH)/addons/ofxSPK/libs/SPARK/include",
+				);
+				HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_1 = "\"../../../addons/ofxOpenCv/libs/opencv/include/\"";
+				HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_2 = "\"../../../addons/ofxCv/libs/ofxCv/include/\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-D__MACOSX_CORE__",
@@ -1727,18 +2250,12 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_11)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_6)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_7)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_8)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/osx\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../../../addons/ofxTimeline/libs/openal/libs/vs2010/EFX-Util_MT\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5 = "\"$(SRCROOT)/../../../addons/ofxTimeline/libs/openal/libs/vs2010/EFX-Util_MTDLL\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_6 = "\"$(SRCROOT)/../../../addons/ofxTimeline/libs/openal/libs/vs2010\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_7 = "\"$(SRCROOT)/../../../addons/ofxTimeline/libs/sndfile/lib/osx\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_8 = "\"$(SRCROOT)/../../../addons/ofxTimeline/libs/sndfile/lib/vs2010\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../../../addons/ofxSPK/libs/\"/**";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5 = "\"$(SRCROOT)/../../../addons/ofxTimeline/libs/sndfile/lib/osx\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = RGBDVisualizeDebug;
 				VALID_ARCHS = i386;
@@ -1838,19 +2355,13 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_10)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_6)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_7)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_8)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../../../addons/ofxTimeline/libs/kiss/lib/linux\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../../../addons/ofxTimeline/libs/openal/libs/vs2010/EFX-Util_MT\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5 = "\"$(SRCROOT)/../../../addons/ofxTimeline/libs/openal/libs/vs2010/EFX-Util_MTDLL\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_6 = "\"$(SRCROOT)/../../../addons/ofxTimeline/libs/openal/libs/vs2010\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_7 = "\"$(SRCROOT)/../../../addons/ofxTimeline/libs/sndfile/lib/osx\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_8 = "\"$(SRCROOT)/../../../addons/ofxTimeline/libs/sndfile/lib/vs2010\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../../../addons/ofxSPK/libs/\"/**";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5 = "\"$(SRCROOT)/../../../addons/ofxTimeline/libs/sndfile/lib/osx\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = RGBDVisualize;
 				VALID_ARCHS = i386;
