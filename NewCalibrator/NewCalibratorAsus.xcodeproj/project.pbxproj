@@ -99,6 +99,8 @@
 		E786A294164891AE006FD003 /* usb_libusb10.c in Sources */ = {isa = PBXBuildFile; fileRef = E786A244164891AE006FD003 /* usb_libusb10.c */; };
 		E786A295164891AE006FD003 /* usb-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E786A24C164891AE006FD003 /* usb-1.0.a */; };
 		E786A296164891AE006FD003 /* ofxKinect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E786A285164891AE006FD003 /* ofxKinect.cpp */; };
+		E78FD19116CEBBD2004D6A36 /* ofxRGBDCPURenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD18D16CEBBD2004D6A36 /* ofxRGBDCPURenderer.cpp */; };
+		E78FD19216CEBBD2004D6A36 /* ofxRGBDGPURenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD18F16CEBBD2004D6A36 /* ofxRGBDGPURenderer.cpp */; };
 		E7DF63D115E352F0003D7804 /* ofxRGBDRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DF63CF15E352F0003D7804 /* ofxRGBDRenderer.cpp */; };
 		E7DF63EF15E35FA1003D7804 /* ofxGameCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DF63E615E35FA1003D7804 /* ofxGameCamera.cpp */; };
 		E7DF63FC15E35FCC003D7804 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DF63F515E35FCC003D7804 /* tinyxml.cpp */; };
@@ -570,6 +572,10 @@
 		E786A284164891AE006FD003 /* ofxBase3DVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxBase3DVideo.h; sourceTree = "<group>"; };
 		E786A285164891AE006FD003 /* ofxKinect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxKinect.cpp; sourceTree = "<group>"; };
 		E786A286164891AE006FD003 /* ofxKinect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxKinect.h; sourceTree = "<group>"; };
+		E78FD18D16CEBBD2004D6A36 /* ofxRGBDCPURenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDCPURenderer.cpp; sourceTree = "<group>"; };
+		E78FD18E16CEBBD2004D6A36 /* ofxRGBDCPURenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDCPURenderer.h; sourceTree = "<group>"; };
+		E78FD18F16CEBBD2004D6A36 /* ofxRGBDGPURenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDGPURenderer.cpp; sourceTree = "<group>"; };
+		E78FD19016CEBBD2004D6A36 /* ofxRGBDGPURenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDGPURenderer.h; sourceTree = "<group>"; };
 		E7DF63CF15E352F0003D7804 /* ofxRGBDRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDRenderer.cpp; sourceTree = "<group>"; };
 		E7DF63D015E352F0003D7804 /* ofxRGBDRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDRenderer.h; sourceTree = "<group>"; };
 		E7DF63E615E35FA1003D7804 /* ofxGameCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxGameCamera.cpp; sourceTree = "<group>"; };
@@ -1313,8 +1319,12 @@
 				E713DA2815E4DE26002E38A4 /* ofxDepthImageProvider.h */,
 				E71DD70015E11B3D008A89C2 /* ofxCvCheckerboardPreview.h */,
 				E71DD6FF15E11B3D008A89C2 /* ofxCvCheckerboardPreview.cpp */,
-				E7DF63CF15E352F0003D7804 /* ofxRGBDRenderer.cpp */,
 				E7DF63D015E352F0003D7804 /* ofxRGBDRenderer.h */,
+				E7DF63CF15E352F0003D7804 /* ofxRGBDRenderer.cpp */,
+				E78FD18E16CEBBD2004D6A36 /* ofxRGBDCPURenderer.h */,
+				E78FD18D16CEBBD2004D6A36 /* ofxRGBDCPURenderer.cpp */,
+				E78FD19016CEBBD2004D6A36 /* ofxRGBDGPURenderer.h */,
+				E78FD18F16CEBBD2004D6A36 /* ofxRGBDGPURenderer.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -1900,6 +1910,8 @@
 				E786A293164891AE006FD003 /* tilt.c in Sources */,
 				E786A294164891AE006FD003 /* usb_libusb10.c in Sources */,
 				E786A296164891AE006FD003 /* ofxKinect.cpp in Sources */,
+				E78FD19116CEBBD2004D6A36 /* ofxRGBDCPURenderer.cpp in Sources */,
+				E78FD19216CEBBD2004D6A36 /* ofxRGBDGPURenderer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
