@@ -99,8 +99,12 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     //vector<ofxSPK::Emitter0> emitters;
     ofxSPK::Emitter ringEmitter;
     ofxSPK::Modifier attractor;
-    
     //END SPARK STUFF
+    
+    //TEST DRAWING SYSTEM
+    ofMesh testMesh;
+    
+    //END TEST DRAWING SYSTEM
     
     ofxPanel gui;
     
@@ -216,5 +220,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofNode renderedCameraPos;
     
     
-	string pathDelim;	
+	string pathDelim;
+    
+    
+    
 };

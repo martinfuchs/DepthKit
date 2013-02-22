@@ -152,8 +152,6 @@
 		E78FD75B16D2DA66004D6A36 /* ofxSPKUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD71D16D2DA66004D6A36 /* ofxSPKUtils.cpp */; };
 		E78FD75C16D2DA66004D6A36 /* ofxSPKZone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD71F16D2DA66004D6A36 /* ofxSPKZone.cpp */; };
 		E79F58331625C6C9002B2B34 /* ofxTLCameraTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E79F58311625C6C9002B2B34 /* ofxTLCameraTrack.cpp */; };
-		E7A0BA7A166EB7BE00764549 /* dofrange2.frag in Sources */ = {isa = PBXBuildFile; fileRef = E7A0BA78166EB7BE00764549 /* dofrange2.frag */; };
-		E7A0BA7B166EB7BE00764549 /* dofrange2.vert in Sources */ = {isa = PBXBuildFile; fileRef = E7A0BA79166EB7BE00764549 /* dofrange2.vert */; };
 		E7CC5397164D5F7300084827 /* ofxRemoveCocoaMenu.mm in Sources */ = {isa = PBXBuildFile; fileRef = E7CC5396164D5F7300084827 /* ofxRemoveCocoaMenu.mm */; };
 		E7DF56B2147CA3A800A3A9C7 /* ofxTLDepthImageSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DF56AE147CA3A800A3A9C7 /* ofxTLDepthImageSequence.cpp */; };
 		E7DF56B3147CA3A800A3A9C7 /* ofxTLVideoDepthAlignmentScrubber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DF56B0147CA3A800A3A9C7 /* ofxTLVideoDepthAlignmentScrubber.cpp */; };
@@ -2003,8 +2001,6 @@
 				E7E2D18715F4C5F800CADFC5 /* ofxTLColorTrack.cpp in Sources */,
 				E79F58331625C6C9002B2B34 /* ofxTLCameraTrack.cpp in Sources */,
 				E7CC5397164D5F7300084827 /* ofxRemoveCocoaMenu.mm in Sources */,
-				E7A0BA7A166EB7BE00764549 /* dofrange2.frag in Sources */,
-				E7A0BA7B166EB7BE00764549 /* dofrange2.vert in Sources */,
 				E724A99516798FD8004CC19E /* glm.c in Sources */,
 				E724A99716798FD8004CC19E /* ofxObjLoader.cpp in Sources */,
 				E78FD55216D298D1004D6A36 /* ofxRGBDCPURenderer.cpp in Sources */,

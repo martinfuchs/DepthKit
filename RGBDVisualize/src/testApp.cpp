@@ -240,16 +240,16 @@ void testApp::populateTimelineElements(){
 	timeline.addCurves("Y Texture Scale", currentCompositionDirectory + "YTextureScale.xml", ofRange(.95, 1.05), 1.0 );
 	
     timeline.addPage("Ring Emitter Size", true);
-	timeline.addCurves("Ring Emitter Min Radius", currentCompositionDirectory + "RingEmitterMinRadius.xml", ofRange(0, 2000), 0.0 );
-	timeline.addCurves("Ring Emitter Width", currentCompositionDirectory + "RingEmitterWidth.xml", ofRange(0, 1000), 50 );
+	timeline.addCurves("Ring Emitter Min Radius", currentCompositionDirectory + "RingEmitterMinRadius.xml", ofRange(0, 4000), 0.0 );
+	timeline.addCurves("Ring Emitter Width", currentCompositionDirectory + "RingEmitterWidth.xml", ofRange(0, 4000), 50 );
 	timeline.addCurves("Ring Emitter Z", currentCompositionDirectory + "RingEmitterZ.xml", ofRange(0, 10000), 0 );
     
     timeline.addPage("Ring Emitter Properties", true);
     timeline.addCurves("Ring Emitter Lifetime", currentCompositionDirectory + "RingEmitterLifetime.xml", ofRange(0.0, 100), 0.1 );
-    timeline.addCurves("Ring Emitter Size", currentCompositionDirectory + "RingEmitterSize.xml", ofRange(0.0, 10), 0.1 );
+    timeline.addCurves("Ring Emitter Size", currentCompositionDirectory + "RingEmitterSize.xml", ofRange(0.0, 20), 0.1 );
 	timeline.addCurves("Ring Emitter Flow", currentCompositionDirectory + "RingEmitterFlow.xml", ofRange(0.0, 10000), 0.1 );
-	timeline.addCurves("Ring Emitter Min Force", currentCompositionDirectory + "RingEmitterMinForce.xml", ofRange(0.0, 1000), 0.1 );
-    timeline.addCurves("Ring Emitter Force Range", currentCompositionDirectory + "RingEmitterForceRange.xml", ofRange(0.0, 1000), 0.1 );
+	timeline.addCurves("Ring Emitter Min Force", currentCompositionDirectory + "RingEmitterMinForce.xml", ofRange(0.0, 5000), 0.1 );
+    timeline.addCurves("Ring Emitter Force Range", currentCompositionDirectory + "RingEmitterForceRange.xml", ofRange(0.0, 5000), 0.1 );
     
     timeline.addPage("Ring Emitter Colors", true);
     timeline.addColors("Ring Start Color A", currentCompositionDirectory + "RingStartColorA.xml");
@@ -349,13 +349,26 @@ void testApp::drawGeometry(){
 		ofPopStyle();
 		ofPopMatrix();
         
+        glDisable(GL_DEPTH_TEST);
+
         if(drawParticles){
+            
             sys.draw();
             ringEmitter.draw();
+            renderer.bindRenderer();
+            
+            ofPushStyle();
+            float pointSize = timeline.getValue("Point Size");
+            float thickness = timeline.getValue("Wireframe Thickness");
+            thickness *= thickness;
+			ofSetLineWidth(thickness);
+
+            testMesh.setMode(OF_PRIMITIVE_LINE_STRIP);
+            testMesh.draw();
+            renderer.unbindRenderer();
+            ofPopStyle();
         }
 		
-		glDisable(GL_DEPTH_TEST);
-        
 
 		cam.end();
 		fbo1.end();
@@ -810,7 +823,7 @@ void testApp::updateRenderer(){
     }
     
     renderer.update();
-    if(drawParticles || (currentlyRendering && renderObjectFiles)){
+    if(currentlyRendering && renderObjectFiles){
         meshBuilder.update();
     }
 
@@ -900,7 +913,7 @@ void testApp::setupSpark(){
 	group.setSize(3);
     
 	group.setGravity(ofVec3f(0, 0.98, 0));
-	group.reserve(10000);
+	group.reserve(50000);
     
     ringEmitter.setup(SPK::SphericEmitter::create(), group);
     ringZone = SPK::Ring::create(toSPK(ofVec3f(0, 0, 100)), toSPK(ofVec3f(0, 0, 1)), 40, 160);
@@ -916,18 +929,7 @@ void testApp::setupSpark(){
 
 }
 
-//Ring Emitter Min Radius
-//Ring Emitter Width
-//Ring Emitter Z"
-//Ring Emitter Flow
-//Ring Emitter Min Force
-//Ringe Emitter Force Range
-//ofColor startColorA = timeline.getColor("Ring Start Color A");
-//ofColor startColorB = timeline.getColor("Ring Start Color B");
-//ofColor endColorA   = timeline.getColor("Ring End Color A");
-//ofColor endColorB   = timeline.getColor("Ring End Color B");
-
-void testApp::updateSpark(){
+void testApp::updateSpark(){ 
 	sys->setCameraPosition(toSPK(cam.getPosition()));
 	sys.update();
     
@@ -952,8 +954,17 @@ void testApp::updateSpark(){
     ringEmitter.setFlow(timeline.getValue("Ring Emitter Flow"));
     float minForce = timeline.getValue("Ring Emitter Min Force");
     float maxForce = minForce + timeline.getValue("Ring Emitter Force Range");
-//    ringEmitter.setForce(minForce, maxForce);
+    ringEmitter.setForce(-minForce, -maxForce);
 
+    
+    //quick mesh test
+
+    testMesh.clear();
+    for(int x = 0; x < 640; x+=5){
+        for(int i = 0; i < 480; i+=5){
+            testMesh.addVertex(ofVec3f(x+ ofGetFrameNum()%5,i,0));
+        }
+    }
     
     /*
     for(int i = 0; i < meshBuilder.validVertIndices.size(); i++){
@@ -1276,7 +1287,6 @@ void testApp::positionSceneButtons(){
 
     }
     maxSceneX = compx+250;
-
 }
 
 //--------------------------------------------------------------
