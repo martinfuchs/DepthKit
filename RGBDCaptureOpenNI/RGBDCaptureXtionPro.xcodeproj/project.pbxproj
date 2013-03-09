@@ -102,9 +102,7 @@
 		E7A5A2A316DDABEB003FCBB8 /* libsndfile-1.lib in Frameworks */ = {isa = PBXBuildFile; fileRef = E7A5A29916DDABEB003FCBB8 /* libsndfile-1.lib */; };
 		E7A5A2A716DDAC12003FCBB8 /* ofxTLAudioTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7A5A2A516DDAC12003FCBB8 /* ofxTLAudioTrack.cpp */; };
 		E7DE648F1623D0F6004BD7A6 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = E7DE648C1623D0F6004BD7A6 /* .gitignore */; };
-		E7DE64F21623D0FF004BD7A6 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = E7DE64911623D0FD004BD7A6 /* .gitignore */; };
 		E7DE65121623D0FF004BD7A6 /* ofxRGBDCaptureGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DE64CC1623D0FE004BD7A6 /* ofxRGBDCaptureGui.cpp */; };
-		E7DE65131623D0FF004BD7A6 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E7DE64CE1623D0FE004BD7A6 /* README.md */; };
 		E7DE65141623D0FF004BD7A6 /* ofxCvCheckerboardPreview.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DE64D01623D0FE004BD7A6 /* ofxCvCheckerboardPreview.cpp */; };
 		E7DE65151623D0FF004BD7A6 /* ofxDepthHoleFiller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DE64D21623D0FE004BD7A6 /* ofxDepthHoleFiller.cpp */; };
 		E7DE65161623D0FF004BD7A6 /* ofxDepthImageCompressor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DE64D41623D0FE004BD7A6 /* ofxDepthImageCompressor.cpp */; };
@@ -548,10 +546,8 @@
 		E7A5A2A616DDAC12003FCBB8 /* ofxTLAudioTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLAudioTrack.h; sourceTree = "<group>"; };
 		E7DE648C1623D0F6004BD7A6 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		E7DE648E1623D0F6004BD7A6 /* ofRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofRange.h; sourceTree = "<group>"; };
-		E7DE64911623D0FD004BD7A6 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		E7DE64CC1623D0FE004BD7A6 /* ofxRGBDCaptureGui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDCaptureGui.cpp; sourceTree = "<group>"; };
 		E7DE64CD1623D0FE004BD7A6 /* ofxRGBDCaptureGui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDCaptureGui.h; sourceTree = "<group>"; };
-		E7DE64CE1623D0FE004BD7A6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		E7DE64D01623D0FE004BD7A6 /* ofxCvCheckerboardPreview.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCvCheckerboardPreview.cpp; sourceTree = "<group>"; };
 		E7DE64D11623D0FE004BD7A6 /* ofxCvCheckerboardPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCvCheckerboardPreview.h; sourceTree = "<group>"; };
 		E7DE64D21623D0FE004BD7A6 /* ofxDepthHoleFiller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDepthHoleFiller.cpp; sourceTree = "<group>"; };
@@ -833,8 +829,8 @@
 		A638C7AC14943A270060809C /* src */ = {
 			isa = PBXGroup;
 			children = (
-				A638C7AD14943A270060809C /* ofxTextInputField.cpp */,
 				A638C7AE14943A270060809C /* ofxTextInputField.h */,
+				A638C7AD14943A270060809C /* ofxTextInputField.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -1536,8 +1532,8 @@
 		E78D615A149A8784004806BF /* src */ = {
 			isa = PBXGroup;
 			children = (
-				E78D615B149A8784004806BF /* ofxGameCamera.cpp */,
 				E78D615C149A8784004806BF /* ofxGameCamera.h */,
+				E78D615B149A8784004806BF /* ofxGameCamera.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -1662,9 +1658,7 @@
 			isa = PBXGroup;
 			children = (
 				E7DE68231623D18E004BD7A6 /* couples */,
-				E7DE64911623D0FD004BD7A6 /* .gitignore */,
 				E7DE64CB1623D0FE004BD7A6 /* gui */,
-				E7DE64CE1623D0FE004BD7A6 /* README.md */,
 				E7DE64CF1623D0FE004BD7A6 /* src */,
 			);
 			name = ofxRGBDepth;
@@ -1907,8 +1901,6 @@
 			files = (
 				E7EF809914DE5474007CD3CA /* RGBD.icns in Resources */,
 				E7DE648F1623D0F6004BD7A6 /* .gitignore in Resources */,
-				E7DE64F21623D0FF004BD7A6 /* .gitignore in Resources */,
-				E7DE65131623D0FF004BD7A6 /* README.md in Resources */,
 				E7DE675E1623D109004BD7A6 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2054,7 +2046,6 @@
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
@@ -2085,7 +2076,6 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_UNROLL_LOOPS = YES;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
