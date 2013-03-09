@@ -416,8 +416,8 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 			currentAlignmentPair = new AlignmentPair();
 			alignmentPairs.push_back(currentAlignmentPair);
 		}
-		
 	}
+    
 	if(extension == "mov" || extension == "mp4"){
 		for(int i = 0; i < alignmentPairs.size(); i++){
 			if(alignmentPairs[i]->colorCheckersRect.inside(dragInfo.position)){

@@ -2,7 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxCvCheckerboardPreview.h"
-#include "ofxRGBDRenderer.h"
+#include "ofxRGBDGPURenderer.h"
 #include "ofxGameCamera.h"
 
 //#include "ofxFTGLFont.h"
@@ -98,7 +98,7 @@ class testApp : public ofBaseApp{
     int imagenum;
 
     bool showRGBD;
-    ofxRGBDRenderer renderer;
+    ofxRGBDGPURenderer renderer;
 	
 	void refineDepthCalibration();
 };
