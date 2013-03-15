@@ -109,36 +109,38 @@ void testApp::setup(){
     setButtonColors(renderBatch);
 	
 	gui.setup("Settings", "defaultGuiSettings.xml");
-	gui.add(cameraSpeed.setup("Camera Speed", ofxParameter<float>(), 0, 40));
-    gui.add(cameraRollSpeed.setup("Cam Roll Speed", ofxParameter<float>(), .0, 4));
-    gui.add(shouldResetCamera.setup("Reset Camera", ofxParameter<bool>()));
-	gui.add(currentLockCamera.setup("Lock to Track", ofxParameter<bool>()));
-    gui.add(shouldSaveCameraPoint.setup("Set Camera Point", ofxParameter<bool>()));
+	gui.add(cameraSpeed.setup("Camera Speed", ofParameter<float>(), 0, 40));
+    gui.add(cameraRollSpeed.setup("Cam Roll Speed", ofParameter<float>(), .0, 4));
+    gui.add(shouldResetCamera.setup("Reset Camera", ofParameter<bool>()));
+	gui.add(currentLockCamera.setup("Lock to Track", ofParameter<bool>()));
+    gui.add(shouldSaveCameraPoint.setup("Set Camera Point", ofParameter<bool>()));
 	
-	gui.add(drawPointcloud.setup("Draw Pointcloud",ofxParameter<bool>()));
-    gui.add(drawWireframe.setup("Draw Wireframe",ofxParameter<bool>()));
-    gui.add(drawMesh.setup("Draw Mesh",ofxParameter<bool>()));
-    gui.add(selfOcclude.setup("Self Occlude", ofxParameter<bool>()));
-    gui.add(drawDOF.setup("Draw DOF", ofxParameter<bool>()));
+	gui.add(drawPointcloud.setup("Draw Pointcloud",ofParameter<bool>()));
+    gui.add(drawWireframe.setup("Draw Wireframe",ofParameter<bool>()));
+    gui.add(drawMesh.setup("Draw Mesh",ofParameter<bool>()));
+    gui.add(selfOcclude.setup("Self Occlude", ofParameter<bool>()));
+    gui.add(drawDOF.setup("Draw DOF", ofParameter<bool>()));
  	
-    gui.add( customWidth.setup("Frame Width", ofxParameter<int>(), 320, 1920*2));
-    gui.add( customHeight.setup("Frame Height", ofxParameter<int>(), 240, 1080*2));
-    gui.add( setCurrentSize.setup("Apply Custom Size", ofxParameter<bool>()));
-    gui.add( lockTo720p.setup("720p", ofxParameter<bool>()));
-    gui.add( lockTo1080p.setup("1080p",ofxParameter<bool>()));
+    gui.add( customWidth.setup("Frame Width", ofParameter<int>(), 320, 1920*2));
+    gui.add( customHeight.setup("Frame Height", ofParameter<int>(), 240, 1080*2));
+    gui.add( setCurrentSize.setup("Apply Custom Size", ofParameter<bool>()));
+    gui.add( lockTo720p.setup("720p", ofParameter<bool>()));
+    gui.add( lockTo1080p.setup("1080p",ofParameter<bool>()));
     
-    gui.add(currentMirror.setup("Mirror", ofxParameter<bool>()));
-	gui.add(flipTexture.setup("Flip Texture", ofxParameter<bool>()));
+    gui.add(currentMirror.setup("Mirror", ofParameter<bool>()));
+	gui.add(flipTexture.setup("Flip Texture", ofParameter<bool>()));
 	
-    gui.add(fillHoles.setup("Fill Holes", ofxParameter<bool>()));
-    gui.add(currentHoleKernelSize.setup("Hole Kernel Size", ofxParameter<int>(), 1, 10));
-    gui.add(currentHoleFillIterations.setup("Hole Fill Iterations", ofxParameter<int>(), 1, 20));
+    gui.add(fillHoles.setup("Fill Holes", ofParameter<bool>()));
+    gui.add(currentHoleKernelSize.setup("Hole Kernel Size", ofParameter<int>(), 1, 10));
+    gui.add(currentHoleFillIterations.setup("Hole Fill Iterations", ofParameter<int>(), 1, 20));
 	
-    gui.add(temporalAlignmentMode.setup("Temporal Alignment", ofxParameter<bool>()));
-	gui.add(captureFramePair.setup("Set Color-Depth Time", ofxParameter<bool>()));
+    gui.add(temporalAlignmentMode.setup("Temporal Alignment", ofParameter<bool>()));
+	gui.add(captureFramePair.setup("Set Color-Depth Time", ofParameter<bool>()));
 	
-	gui.add(renderObjectFiles.setup("Export .obj Files", ofxParameter<bool>()));
-	gui.add(startSequenceAt0.setup("Start Sequence at 1", ofxParameter<bool>()));
+	gui.add(renderObjectFiles.setup("Export .obj Files", ofParameter<bool>()));
+	gui.add(renderRainbowVideo.setup("Export Combined Rainbow", ofParameter<bool>()));
+	
+	gui.add(startSequenceAt0.setup("Start Sequence at 1", ofParameter<bool>()));
 	
     gui.loadFromFile("defaultGuiSettings.xml");
     
@@ -914,6 +916,16 @@ void testApp::draw(){
 				}
                 sprintf(filename, "%s/save.%05d.png", saveFolder.c_str(), videoFrame);
 				
+				if(renderRainbowVideo){
+					rainbowExporter.setPlayer(&player);
+					rainbowExporter.maxDepth = renderer.farClip;
+					rainbowExporter.minDepth = 400;
+					rainbowExporter.inoutPoint.min = timeline.getInFrame();
+					rainbowExporter.inoutPoint.max = timeline.getOutFrame();
+					rainbowExporter.render(saveFolder, "save.");
+					currentRenderFrame = timeline.getOutFrame()+1;
+				}
+
                 if(!firstRenderFrame){
                     if(renderObjectFiles){
                         char objFilename[512];
@@ -929,7 +941,9 @@ void testApp::draw(){
                         }
                     }
                     
-                    savingImage.saveImage(filename);
+					if(!renderRainbowVideo){
+						savingImage.saveImage(filename);
+					}
                     
                     //cout << "   at save time its set to " << player.getVideoPlayer()->getCurrentFrame() << " time " << (player.getVideoPlayer()->getPosition() * player.getVideoPlayer()->getDuration() ) << endl;
                 }
@@ -1333,6 +1347,8 @@ void testApp::saveComposition(){
 	//	projectsettings.setValue("renderTriangulation", renderTriangulation);
 	//	projectsettings.setValue("enableLighting", enableLighting);
 	projectsettings.setValue("renderObjFiles", renderObjectFiles);
+	projectsettings.setValue("renderRainbowVideo", renderRainbowVideo);
+	
 	projectsettings.setValue("startSequenceAtZero",startSequenceAt0);
 	
 	projectsettings.saveFile();
@@ -1342,7 +1358,8 @@ void testApp::saveComposition(){
     //cout << "saved shift file of " << loadedScene->scene.xyshiftFile << endl;
     
 	ofxXmlSettings defaults;
-    gui.saveToXml(defaults);
+	gui.saveToFile("defaultGuiSettings.xml");
+//    gui.saveToXml(defaults);
     defaults.saveFile("defaultGuiSettings.xml");
     
 	char lastSavedStr[1024];
@@ -1499,6 +1516,7 @@ bool testApp::loadComposition(string compositionDirectory){
         customHeight = projectsettings.getValue("height", 1080);
 		
 		renderObjectFiles = projectsettings.getValue("renderObjFiles", false);
+		renderRainbowVideo = projectsettings.getValue("renderRainbowVideo", false);
         startSequenceAt0 = projectsettings.getValue("startSequenceAtZero", false);
         fillHoles = projectsettings.getValue("fillholes", false);
         currentHoleKernelSize = projectsettings.getValue("kernelSize", 1);
