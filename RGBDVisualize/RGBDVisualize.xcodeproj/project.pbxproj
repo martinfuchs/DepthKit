@@ -94,6 +94,7 @@
 		E79F58331625C6C9002B2B34 /* ofxTLCameraTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E79F58311625C6C9002B2B34 /* ofxTLCameraTrack.cpp */; };
 		E7A0BA7A166EB7BE00764549 /* dofrange2.frag in Sources */ = {isa = PBXBuildFile; fileRef = E7A0BA78166EB7BE00764549 /* dofrange2.frag */; };
 		E7A0BA7B166EB7BE00764549 /* dofrange2.vert in Sources */ = {isa = PBXBuildFile; fileRef = E7A0BA79166EB7BE00764549 /* dofrange2.vert */; };
+		E7B28C2916F3D132008F0765 /* ofxRGBDCombinedVideoRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7B28C2716F3D131008F0765 /* ofxRGBDCombinedVideoRenderer.cpp */; };
 		E7CC5397164D5F7300084827 /* ofxRemoveCocoaMenu.mm in Sources */ = {isa = PBXBuildFile; fileRef = E7CC5396164D5F7300084827 /* ofxRemoveCocoaMenu.mm */; };
 		E7DF56B2147CA3A800A3A9C7 /* ofxTLDepthImageSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DF56AE147CA3A800A3A9C7 /* ofxTLDepthImageSequence.cpp */; };
 		E7DF56B3147CA3A800A3A9C7 /* ofxTLVideoDepthAlignmentScrubber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7DF56B0147CA3A800A3A9C7 /* ofxTLVideoDepthAlignmentScrubber.cpp */; };
@@ -385,6 +386,8 @@
 		E79F58321625C6C9002B2B34 /* ofxTLCameraTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLCameraTrack.h; sourceTree = "<group>"; };
 		E7A0BA78166EB7BE00764549 /* dofrange2.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = dofrange2.frag; sourceTree = "<group>"; };
 		E7A0BA79166EB7BE00764549 /* dofrange2.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = dofrange2.vert; sourceTree = "<group>"; };
+		E7B28C2716F3D131008F0765 /* ofxRGBDCombinedVideoRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDCombinedVideoRenderer.cpp; sourceTree = "<group>"; };
+		E7B28C2816F3D132008F0765 /* ofxRGBDCombinedVideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDCombinedVideoRenderer.h; sourceTree = "<group>"; };
 		E7CC5395164D5F7300084827 /* ofxRemoveCocoaMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRemoveCocoaMenu.h; sourceTree = "<group>"; };
 		E7CC5396164D5F7300084827 /* ofxRemoveCocoaMenu.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxRemoveCocoaMenu.mm; sourceTree = "<group>"; };
 		E7DF56AE147CA3A800A3A9C7 /* ofxTLDepthImageSequence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLDepthImageSequence.cpp; sourceTree = "<group>"; };
@@ -425,7 +428,7 @@
 		E7F4F35614AFF9C200198383 /* ofxMSAInteractiveObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMSAInteractiveObject.h; sourceTree = "<group>"; };
 		E7F4F35714AFF9C200198383 /* ofxMSAInteractiveObjectDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMSAInteractiveObjectDelegate.h; sourceTree = "<group>"; };
 		E7F96F0D153E8D0F005841A9 /* unproject.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = unproject.frag; sourceTree = "<group>"; };
-		E7F96F0E153E8D0F005841A9 /* unproject.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = unproject.vert; sourceTree = "<group>"; };
+		E7F96F0E153E8D0F005841A9 /* unproject.vert */ = {isa = PBXFileReference; explicitFileType = sourcecode.c; fileEncoding = 4; path = unproject.vert; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -510,6 +513,8 @@
 				E738E8ED153C735400BDA0F3 /* ofxDepthImageSequence.cpp */,
 				E751030116F156D700D59EC9 /* ofxRGBDVideoExporter.h */,
 				E751030016F156D700D59EC9 /* ofxRGBDVideoExporter.cpp */,
+				E7B28C2716F3D131008F0765 /* ofxRGBDCombinedVideoRenderer.cpp */,
+				E7B28C2816F3D132008F0765 /* ofxRGBDCombinedVideoRenderer.h */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -1532,6 +1537,7 @@
 				E74DCB9F16ED823200A45F2F /* ofxSliderGroup.cpp in Sources */,
 				E74DCBA016ED823200A45F2F /* ofxToggle.cpp in Sources */,
 				E751030216F156D700D59EC9 /* ofxRGBDVideoExporter.cpp in Sources */,
+				E7B28C2916F3D132008F0765 /* ofxRGBDCombinedVideoRenderer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

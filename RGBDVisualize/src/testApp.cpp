@@ -918,6 +918,7 @@ void testApp::draw(){
 				
 				if(renderRainbowVideo){
 					rainbowExporter.setPlayer(&player);
+					rainbowExporter.setRenderer(&renderer);
 					rainbowExporter.maxDepth = renderer.farClip;
 					rainbowExporter.minDepth = 400;
 					rainbowExporter.inoutPoint.min = timeline.getInFrame();
