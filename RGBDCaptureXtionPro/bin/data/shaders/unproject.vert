@@ -13,10 +13,12 @@ uniform float edgeClip;
 uniform float xsimplify;
 uniform float ysimplify;
 uniform int useTexture;
+uniform mat4 tTex;
 uniform mat3 colorRotate;
 uniform vec3 colorTranslate;
 uniform vec2 colorFOV;
 uniform vec2 colorPP;
+
 uniform vec3 dK;
 uniform vec2 dP;
 
@@ -61,7 +63,7 @@ void main(void)
                         abs(left - depth) < edgeClip &&
                         abs(ur - depth) < edgeClip &&
                         abs(bl - depth) < edgeClip
-						) ? 1.0 : 0.0;
+                         ) ? 1.0 : 0.0;
 
 
 	vec4 pos = vec4((gl_Vertex.x - principalPoint.x) * depth / fov.x,
@@ -71,19 +73,26 @@ void main(void)
     if(useTexture == 1){
         vec4 texCd;
 		//http://opencv.willowgarage.com/documentation/camera_calibration_and_3d_reconstruction.html
+        //vec3 projection = colorRotate * pos.xyz + colorTranslate;
 		vec3 projection = colorRotate * pos.xyz + colorTranslate;
 		if(projection.z != 0.0) {
 
 			vec2 xyp = projection.xy / projection.z;
 			float r2 = pow(xyp.x, 2.0) + pow(xyp.y, 2.0);
-			float r4 = r2*r2;
-			float r6 = r4*r2;
+			float r4 = pow(r2,2.0);
+			float r6 = pow(r2,6.0);
 			vec2 xypp = xyp;
 			xypp.x = xyp.x * (1.0 + dK.x*r2 + dK.y*r4 + dK.z*r6) + 2.0*dP.x * xyp.x * xyp.y + dP.y*(r2 + 2.0 * pow(xyp.x,2.0) );
 			xypp.y = xyp.y * (1.0 + dK.x*r2 + dK.y*r4 + dK.z*r6) + dP.x * (r2 + 2.0*pow(xyp.y, 2.0) ) + 2.0*dP.y*xyp.x*xyp.y;
 
 			vec2 uv = colorFOV * xypp + colorPP;
 			texCd.xy = uv;
+
+//			texCd.y *= -1.;
+//			texCd.xy /= 2.;
+//			texCd.xy *= scale;
+//			texCd.xy += shift;
+//			texCd.xy *= dim;
 		}
 
         gl_TexCoord[0] = texCd;

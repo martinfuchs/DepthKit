@@ -16,12 +16,12 @@ void main()
     if(useTexture == 1){
         vec4 col = texture2DRect(colorTex, gl_TexCoord[0].st);
         gl_FragColor = col * gl_Color;
-		
     }
     else{
         gl_FragColor = vec4(0);
     }
 	
     //gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+	
     //gl_FragColor = vec4(VZPositionValid0);
 }
