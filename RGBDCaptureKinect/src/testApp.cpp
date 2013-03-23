@@ -48,4 +48,9 @@ void testApp::windowResized(int w, int h){}
 void testApp::gotMessage(ofMessage msg){}
 
 //--------------------------------------------------------------
-void testApp::dragEvent(ofDragInfo dragInfo){ }
+void testApp::dragEvent(ofDragInfo dragInfo){ 
+#ifdef TARGET_WIN32
+	gui.dragEvent(dragInfo);
+#endif
+	cout << "Drag event!" << endl;
+}
