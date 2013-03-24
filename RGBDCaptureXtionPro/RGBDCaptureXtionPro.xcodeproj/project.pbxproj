@@ -536,8 +536,6 @@
 		E78D615C149A8784004806BF /* ofxGameCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxGameCamera.h; sourceTree = "<group>"; };
 		E7A5A26E16DD93AA003FCBB8 /* ofxRGBDGPURenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDGPURenderer.cpp; sourceTree = "<group>"; };
 		E7A5A26F16DD93AA003FCBB8 /* ofxRGBDGPURenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDGPURenderer.h; sourceTree = "<group>"; };
-		E7A5A27116DD93C2003FCBB8 /* ofxRGBDCaptureGuiOld.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDCaptureGuiOld.cpp; sourceTree = "<group>"; };
-		E7A5A27216DD93C2003FCBB8 /* ofxRGBDCaptureGuiOld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDCaptureGuiOld.h; sourceTree = "<group>"; };
 		E7A5A27716DDABEB003FCBB8 /* kiss_fft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kiss_fft.h; sourceTree = "<group>"; };
 		E7A5A27816DDABEB003FCBB8 /* kiss_fftr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kiss_fftr.h; sourceTree = "<group>"; };
 		E7A5A27A16DDABEB003FCBB8 /* _kiss_fft_guts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _kiss_fft_guts.h; sourceTree = "<group>"; };
@@ -1677,8 +1675,6 @@
 		E7DE64CB1623D0FE004BD7A6 /* gui */ = {
 			isa = PBXGroup;
 			children = (
-				E7A5A27216DD93C2003FCBB8 /* ofxRGBDCaptureGuiOld.h */,
-				E7A5A27116DD93C2003FCBB8 /* ofxRGBDCaptureGuiOld.cpp */,
 				E7DE64CD1623D0FE004BD7A6 /* ofxRGBDCaptureGui.h */,
 				E7DE64CC1623D0FE004BD7A6 /* ofxRGBDCaptureGui.cpp */,
 			);
