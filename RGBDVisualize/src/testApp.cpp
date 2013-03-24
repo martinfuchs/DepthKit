@@ -1,5 +1,9 @@
 #include "testApp.h"
 
+#if (OF_VERSION_MINOR <= 7 && OF_VERSION_PATCH <= 4)
+#define ofParameter ofxParameter
+#endif
+
 //--------------------------------------------------------------
 void testApp::setup(){
 	
@@ -55,6 +59,7 @@ void testApp::setup(){
 	currentHoleKernelSize = 1;
 	currentHoleFillIterations = 1;
     
+	
 	player.updateVideoPlayer = false;
     rendererDirty = true;
     isSceneLoaded = false;
@@ -107,8 +112,9 @@ void testApp::setup(){
     renderBatch->setLabel("Start Rendering Queue >>");
 	renderBatch->setDelegate(this);
     setButtonColors(renderBatch);
+
 	
-	gui.setup("Settings", "defaultGuiSettings.xml");
+	gui.setup("Settings");
 	gui.add(cameraSpeed.setup("Camera Speed", ofParameter<float>(), 0, 40));
     gui.add(cameraRollSpeed.setup("Cam Roll Speed", ofParameter<float>(), .0, 4));
     gui.add(shouldResetCamera.setup("Reset Camera", ofParameter<bool>()));
@@ -128,7 +134,7 @@ void testApp::setup(){
     gui.add( lockTo1080p.setup("1080p",ofParameter<bool>()));
     
     gui.add(currentMirror.setup("Mirror", ofParameter<bool>()));
-	gui.add(flipTexture.setup("Flip Texture", ofParameter<bool>()));
+//	gui.add(flipTexture.setup("Flip Texture", ofParameter<bool>()));
 	
     gui.add(fillHoles.setup("Fill Holes", ofParameter<bool>()));
     gui.add(currentHoleKernelSize.setup("Hole Kernel Size", ofParameter<int>(), 1, 10));
@@ -138,12 +144,13 @@ void testApp::setup(){
 	gui.add(captureFramePair.setup("Set Color-Depth Time", ofParameter<bool>()));
 	
 	gui.add(renderObjectFiles.setup("Export .obj Files", ofParameter<bool>()));
-	gui.add(renderRainbowVideo.setup("Export Combined Rainbow", ofParameter<bool>()));
+//	gui.add(renderRainbowVideo.setup("Export Combined Rainbow", ofParameter<bool>()));
 	
 	gui.add(startSequenceAt0.setup("Start Sequence at 1", ofParameter<bool>()));
 	
     gui.loadFromFile("defaultGuiSettings.xml");
     
+	loadDefaults();	
     
 	populateTimelineElements();
 	allocateFrameBuffers();
@@ -755,7 +762,6 @@ void testApp::update(){
 		rendererNeedsUpdate = true;
 	}
 	
-	
     if(timeline.getUserChangedValue()){
 		rendererDirty = true;
     }
@@ -835,7 +841,6 @@ void testApp::allocateFrameBuffers(){
     dofBuffersSettings.useStencil = true;
     dofBuffersSettings.depthStencilAsTexture = true;
     dofBuffersSettings.textureTarget = ofGetUsingArbTex() ? GL_TEXTURE_RECTANGLE_ARB : GL_TEXTURE_2D;
-	
     dofBuffer.allocate(dofBuffersSettings);
 	
 	
@@ -1264,6 +1269,9 @@ void testApp::loadDefaults(){
 	selfOcclude = false;
 	drawDOF = false;
 	
+	captureFramePair = false;
+	temporalAlignmentMode = true;
+	
     cam.speed = 20;
 	cam.rollSpeed = 0;
 	
@@ -1275,8 +1283,16 @@ void testApp::loadDefaults(){
     
     customWidth = 1920;
     customHeight = 1080;
-    
+    lockTo1080p = true;
+	setCurrentSize = false;
+	
+    renderObjectFiles = false;
+	renderRainbowVideo = false;
+    startSequenceAt0 = false;
+	
     resetCameraPosition();
+	
+	saveComposition();
 }
 
 //--------------------------------------------------------------
@@ -1326,7 +1342,11 @@ void testApp::saveComposition(){
 	cameraTrack->save();
     
     timeline.save();
-    
+    gui.saveToFile(currentCompositionFile);
+	setCompositionButtonName();
+	
+//	selectedScene->scene.hasXYShift = true;
+	/*
 	projectsettings.setValue("drawPointcloud", drawPointcloud);
 	projectsettings.setValue("drawWireframe", drawWireframe);
 	projectsettings.setValue("drawMesh", drawMesh);
@@ -1353,21 +1373,21 @@ void testApp::saveComposition(){
 	projectsettings.setValue("startSequenceAtZero",startSequenceAt0);
 	
 	projectsettings.saveFile();
+	*/
 	
-    selectedScene->scene.hasXYShift = true;
-    
+        
     //cout << "saved shift file of " << loadedScene->scene.xyshiftFile << endl;
-    
-	ofxXmlSettings defaults;
-	gui.saveToFile("defaultGuiSettings.xml");
+//	ofxXmlSettings defaults;
+//	gui.saveToFile("defaultGuiSettings.xml");
 //    gui.saveToXml(defaults);
-    defaults.saveFile("defaultGuiSettings.xml");
+//    defaults.saveFile("defaultGuiSettings.xml");
     
-	char lastSavedStr[1024];
-	sprintf(lastSavedStr, "Last Saved on %02d/%02d at %02d:%02d:%02d", ofGetMonth(), ofGetDay(), ofGetHours(), ofGetMinutes(), ofGetSeconds() );
-	//    lastSavedDate = "Last Saved on " + ofToString( ) + "/" + ofToString( ) + " at " + ) + ":" + ofToString(  )  + ":" + ofToString(  );
-    lastSavedDate  = string(lastSavedStr);
-	changeCompButton->setLabel(currentCompShortName + " -- " + lastSavedDate);
+//	char lastSavedStr[1024];
+//	sprintf(lastSavedStr, "Last Saved on %02d/%02d at %02d:%02d:%02d", ofGetMonth(), ofGetDay(), ofGetHours(), ofGetMinutes(), ofGetSeconds() );
+//	//    lastSavedDate = "Last Saved on " + ofToString( ) + "/" + ofToString( ) + " at " + ) + ":" + ofToString(  )  + ":" + ofToString(  );
+//    lastSavedDate  = string(lastSavedStr);
+//	changeCompButton->setLabel(currentCompShortName + " -- " + lastSavedDate);
+
 }
 
 //--------------------------------------------------------------
@@ -1396,8 +1416,9 @@ void testApp::objectDidRelease(ofxMSAInteractiveObject* object, int x, int y, in
         }
         else {
             viewComps = false;
-            string label = currentCompShortName + " -- " + lastSavedDate;
-            changeCompButton->setLabel(label);
+//            string label = currentCompShortName + " -- " + lastSavedDate;
+//            changeCompButton->setLabel(label);
+			setCompositionButtonName();
         }
     }
     else if(object == newCompButton){
@@ -1486,49 +1507,52 @@ bool testApp::loadComposition(string compositionDirectory){
     }
 	
 	currentCompositionDirectory = compositionDirectory;
-    string currentCompositionFile = currentCompositionDirectory+"compositionsettings.xml";
+    currentCompositionFile = currentCompositionDirectory+"compositionsettings.xml";
 	
     //camera stuff
     cam.cameraPositionFile = currentCompositionDirectory + "camera_position.xml";
+	cam.loadCameraPosition();
     string cameraSaveFile = currentCompositionDirectory + "camera.xml";
 	cameraTrack->setXMLFileName(cameraSaveFile);
 	
     timeline.setCurrentPage(0);
     accumulatedPerlinOffset = 0;
-    
-    bool successfullyLoadedSettings = projectsettings.loadFile(currentCompositionFile);
-    if(successfullyLoadedSettings){
-        
-        //TODO all this should be from loading the new ofxGui XML and not done manually!
-        cam.speed = projectsettings.getValue("cameraSpeed", 20.);
-        cam.rollSpeed = projectsettings.getValue("cameraRollSpeed", 1);
-        
-        drawPointcloud = projectsettings.getValue("drawPointcloud", true);
-        drawWireframe = projectsettings.getValue("drawWireframe", true);
-        drawMesh = projectsettings.getValue("drawMesh", true);
-		
-        drawDOF = projectsettings.getValue("drawDOF",true);
-        selfOcclude = projectsettings.getValue("selfOcclude",false);
-        
-        
-		currentMirror = projectsettings.getValue("mirror", false);
-        flipTexture = projectsettings.getValue("flipTexture", false);
-		customWidth = projectsettings.getValue("width", 1920);
-        customHeight = projectsettings.getValue("height", 1080);
-		
-		renderObjectFiles = projectsettings.getValue("renderObjFiles", false);
-		renderRainbowVideo = projectsettings.getValue("renderRainbowVideo", false);
-        startSequenceAt0 = projectsettings.getValue("startSequenceAtZero", false);
-        fillHoles = projectsettings.getValue("fillholes", false);
-        currentHoleKernelSize = projectsettings.getValue("kernelSize", 1);
-        currentHoleFillIterations = projectsettings.getValue("holeIterations", 1);
-        
-        cam.loadCameraPosition();
+	if(ofFile::doesFileExist(currentCompositionFile)){
+		gui.loadFromFile(currentCompositionFile);
 	}
-    else{
+	else{
+////    bool successfullyLoadedSettings = projectsettings.loadFile(currentCompositionFile);
+//////    if(successfullyLoadedSettings){
+//    
+//        //TODO all this should be from loading the new ofxGui XML and not done manually!
+//        cam.speed = projectsettings.getValue("cameraSpeed", 20.);
+//        cam.rollSpeed = projectsettings.getValue("cameraRollSpeed", 1);
+//        
+//        drawPointcloud = projectsettings.getValue("drawPointcloud", true);
+//        drawWireframe = projectsettings.getValue("drawWireframe", true);
+//        drawMesh = projectsettings.getValue("drawMesh", true);
+//		
+//        drawDOF = projectsettings.getValue("drawDOF",true);
+//        selfOcclude = projectsettings.getValue("selfOcclude",false);
+//        
+//        
+//		currentMirror = projectsettings.getValue("mirror", false);
+//        flipTexture = projectsettings.getValue("flipTexture", false);
+//		customWidth = projectsettings.getValue("width", 1920);
+//        customHeight = projectsettings.getValue("height", 1080);
+//		
+//		renderObjectFiles = projectsettings.getValue("renderObjFiles", false);
+//		renderRainbowVideo = projectsettings.getValue("renderRainbowVideo", false);
+//        startSequenceAt0 = projectsettings.getValue("startSequenceAtZero", false);
+//        fillHoles = projectsettings.getValue("fillholes", false);
+//        currentHoleKernelSize = projectsettings.getValue("kernelSize", 1);
+//        currentHoleFillIterations = projectsettings.getValue("holeIterations", 1);
+//
+//	}
+//    else{
         loadDefaults();
     }
-    
+
     alignmentScrubber.setup();
 	alignmentScrubber.videoSequence = videoTrack;
 	alignmentScrubber.depthSequence = &depthSequence;
@@ -1549,13 +1573,18 @@ bool testApp::loadComposition(string compositionDirectory){
     cameraTrack->load();
 	timeline.setCurrentTimeMillis(cameraTrack->getEarliestTime());
 	
+	setCompositionButtonName();
+	
     //turn off view comps
 	viewComps = false;
+	return true;
+}
+
+void testApp::setCompositionButtonName(){
     lastSavedDate = "Last Saved on " + ofToString(ofGetMonth() ) + "/" + ofToString( ofGetDay()) + " at " + ofToString(ofGetHours()) + ":" + ofToString( ofGetMinutes() )  + ":" + ofToString( ofGetSeconds() );
     
     //TODO: change widths to prevent font overflow
-    changeCompButton->setLabel(currentCompShortName + " -- " + lastSavedDate);
-	return true;
+    changeCompButton->setLabel(selectedScene->scene.name + "/" + currentCompShortName + " -- " + lastSavedDate);
 }
 
 void testApp::addCompToRenderQueue(CompButton* comp){
@@ -1578,8 +1607,6 @@ void testApp::addCompToRenderQueue(CompButton* comp){
 
 //--------------------------------------------------------------
 void testApp::populateRenderQueue(){
-    
-	//TODO: sort queue;
     
     int posx = ofGetWidth()-300;
     int posy = 50;
