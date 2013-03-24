@@ -195,6 +195,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	string saveFolder;
 	string lastSavedDate;    
 
+	bool timelineElementsAdded;
 	bool currentlyRendering;
 	int currentRenderFrame;
     
