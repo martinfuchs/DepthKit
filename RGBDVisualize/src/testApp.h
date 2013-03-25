@@ -81,6 +81,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     void loadDefaults();
 	void saveComposition();
 	bool loadComposition(string compositionDirectory);
+	void setCompositionButtonName();
+	
 	bool loadAssetsForScene(SceneButton* scene);
     void resetCameraPosition();
     void checkReallocateFrameBuffers();
@@ -155,6 +157,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     
     string currentCompShortName;
 	string currentCompositionDirectory;
+	string currentCompositionFile;
     string currentCompositionLabel;
 	string mediaBinFolder;
 	
@@ -192,6 +195,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	string saveFolder;
 	string lastSavedDate;    
 
+	bool timelineElementsAdded;
 	bool currentlyRendering;
 	int currentRenderFrame;
     

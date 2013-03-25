@@ -1,5 +1,9 @@
 #include "testApp.h"
 
+#if (OF_VERSION_MINOR <= 7 && OF_VERSION_PATCH <= 4)
+#define ofParameter ofxParameter
+#endif
+
 //--------------------------------------------------------------
 void testApp::setup(){
 	
@@ -55,6 +59,7 @@ void testApp::setup(){
 	currentHoleKernelSize = 1;
 	currentHoleFillIterations = 1;
     
+	
 	player.updateVideoPlayer = false;
     rendererDirty = true;
     isSceneLoaded = false;
@@ -107,8 +112,9 @@ void testApp::setup(){
     renderBatch->setLabel("Start Rendering Queue >>");
 	renderBatch->setDelegate(this);
     setButtonColors(renderBatch);
+
 	
-	gui.setup("Settings", "defaultGuiSettings.xml");
+	gui.setup("Settings");
 	gui.add(cameraSpeed.setup("Camera Speed", ofParameter<float>(), 0, 40));
     gui.add(cameraRollSpeed.setup("Cam Roll Speed", ofParameter<float>(), .0, 4));
     gui.add(shouldResetCamera.setup("Reset Camera", ofParameter<bool>()));
@@ -128,7 +134,7 @@ void testApp::setup(){
     gui.add( lockTo1080p.setup("1080p",ofParameter<bool>()));
     
     gui.add(currentMirror.setup("Mirror", ofParameter<bool>()));
-	gui.add(flipTexture.setup("Flip Texture", ofParameter<bool>()));
+//	gui.add(flipTexture.setup("Flip Texture", ofParameter<bool>()));
 	
     gui.add(fillHoles.setup("Fill Holes", ofParameter<bool>()));
     gui.add(currentHoleKernelSize.setup("Hole Kernel Size", ofParameter<int>(), 1, 10));
@@ -138,19 +144,20 @@ void testApp::setup(){
 	gui.add(captureFramePair.setup("Set Color-Depth Time", ofParameter<bool>()));
 	
 	gui.add(renderObjectFiles.setup("Export .obj Files", ofParameter<bool>()));
-	gui.add(renderRainbowVideo.setup("Export Combined Rainbow", ofParameter<bool>()));
+//	gui.add(renderRainbowVideo.setup("Export Combined Rainbow", ofParameter<bool>()));
 	
 	gui.add(startSequenceAt0.setup("Start Sequence at 1", ofParameter<bool>()));
 	
     gui.loadFromFile("defaultGuiSettings.xml");
     
+	loadDefaults();	
     
-	populateTimelineElements();
+	//populateTimelineElements();
+	timelineElementsAdded = false;
 	allocateFrameBuffers();
     loadShaders();
 	
 	currentLockCamera = false;
-	cameraTrack->lockCameraToTrack = false;
     meshBuilder.cacheValidVertices = true;
 	
     accumulatedPerlinOffset = 0;
@@ -195,6 +202,8 @@ void testApp::populateTimelineElements(){
 	timeline.setPageName("Camera");
 	cameraTrack = new ofxTLCameraTrack();
 	cameraTrack->setCamera(cam);
+	cameraTrack->lockCameraToTrack = false;
+
 	timeline.addTrack("Camera", cameraTrack);
 	timeline.addCurves("Camera Dampen", ofRange(0,1.0), .3);
 	videoTrack = new ofxTLVideoTrack();
@@ -230,13 +239,12 @@ void testApp::populateTimelineElements(){
 	timeline.addTrack("Alignment", &alignmentScrubber);
 	
 	timeline.addPage("Texture Alignment");
-	timeline.addCurves("X Texture Shift", currentCompositionDirectory + "XTextureShift.xml", ofRange(-.15, .15), 0.0 );
-	timeline.addCurves("Y Texture Shift", currentCompositionDirectory + "YTextureShift.xml", ofRange(-.15, .15), 0.0 );
-	timeline.addCurves("X Texture Scale", currentCompositionDirectory + "XTextureScale.xml", ofRange(.95, 1.05), 1.0 );
-	timeline.addCurves("Y Texture Scale", currentCompositionDirectory + "YTextureScale.xml", ofRange(.95, 1.05), 1.0 );
+	timeline.addCurves("X Texture Shift", currentCompositionDirectory + "XTextureShift.xml", ofRange(-.25, .25), 0.0 );
+	timeline.addCurves("Y Texture Shift", currentCompositionDirectory + "YTextureShift.xml", ofRange(-.25, .25), 0.0 );
+	timeline.addCurves("X Texture Scale", currentCompositionDirectory + "XTextureScale.xml", ofRange(.85, 1.15), 1.0 );
+	timeline.addCurves("Y Texture Scale", currentCompositionDirectory + "YTextureScale.xml", ofRange(.85, 1.15), 1.0 );
 	
 	timeline.setCurrentPage("Rendering");
-	//	cout << "Finished adding timeline elements " << endl;
 }
 
 void testApp::drawGeometry(){
@@ -405,9 +413,6 @@ void testApp::drawGeometry(){
     fbo1.getTextureReference().draw(ofRectangle(fboRectangle.x,fboRectangle.y+fboRectangle.height,fboRectangle.width,-fboRectangle.height));
 }
 
-//************************************************************
-///CUSTOMIZATION: Feel free to add things for interaction here
-//************************************************************
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
 	
@@ -612,7 +617,7 @@ void testApp::update(){
 			player.getVideoPlayer()->update();
             
             timeline.setPercentComplete(player.getVideoPlayer()->getPosition());
-            cout << "setting current time to " << timeline.getPercentComplete() << " seconds: " << timeline.getCurrentTime() << " video: " << player.getVideoPlayer()->getCurrentFrame() << " sec: " <<     (player.getVideoPlayer()->getPosition() * player.getVideoPlayer()->getDuration()) << endl;
+//            cout << "setting current time to " << timeline.getPercentComplete() << " seconds: " << timeline.getCurrentTime() << " video: " << player.getVideoPlayer()->getCurrentFrame() << " sec: " <<     (player.getVideoPlayer()->getPosition() * player.getVideoPlayer()->getDuration()) << endl;
             
             currentLockCamera = cameraTrack->lockCameraToTrack = true;
             cameraTrack->jumpToTarget();
@@ -755,7 +760,6 @@ void testApp::update(){
 		rendererNeedsUpdate = true;
 	}
 	
-	
     if(timeline.getUserChangedValue()){
 		rendererDirty = true;
     }
@@ -835,7 +839,6 @@ void testApp::allocateFrameBuffers(){
     dofBuffersSettings.useStencil = true;
     dofBuffersSettings.depthStencilAsTexture = true;
     dofBuffersSettings.textureTarget = ofGetUsingArbTex() ? GL_TEXTURE_RECTANGLE_ARB : GL_TEXTURE_2D;
-	
     dofBuffer.allocate(dofBuffersSettings);
 	
 	
@@ -1044,12 +1047,17 @@ bool testApp::loadAssetsForScene(SceneButton* sceneButton){
 	ofxRGBDScene& scene = sceneButton->scene;
 	if(!player.setup(scene)){
 		ofSystemAlertDialog("Load Failed -- Scene invalid");
-		//TODO: handle scene fail better
 		return false;
 	}
 	
+	timeline.setWorkingFolder(currentCompositionDirectory);
+	
+	if(!timelineElementsAdded){
+		timelineElementsAdded = true;
+		populateTimelineElements();
+	}
+	
 	alignmentScrubber.setXMLFileName(scene.pairingsFile);
-	//	alignmentScrubber.load();
 	renderer.setup(player.getScene().calibrationFolder);
 	meshBuilder.setup(player.getScene().calibrationFolder);
     
@@ -1066,7 +1074,6 @@ bool testApp::loadAssetsForScene(SceneButton* sceneButton){
 	
 	timeline.setTimecontrolTrack(videoTrack);
 	timeline.setFrameRate(1.0*videoTrack->getPlayer()->getTotalNumFrames()/videoTrack->getPlayer()->getDuration());
-	//timeline.setDurationInFrames(videoTrack->getPlayer()->getTotalNumFrames());
 	timeline.setDurationInSeconds(MAX(depthSequence.getDurationInMillis()/1000.0, videoTrack->getPlayer()->getDuration()) );
 	
     //trick to help if there is no pairing file
@@ -1112,8 +1119,6 @@ void testApp::populateScenes(){
 	dir.listDir();
 	int mediaFolders = dir.numFiles();
 	int currentCompButton = 0;
-	//	int compx = 0;
-	//	int compy = 50;
     
     for(int i = scenes.size()-1; i >= 0; i--){
         delete scenes[i].button;
@@ -1132,18 +1137,10 @@ void testApp::populateScenes(){
         sceneButton.button->fontReference = &timeline.getFont();
         sceneButton.button->setup();
         sceneButton.button->setDelegate(this);
-		//        sceneButton.button->setPosAndSize(compx,compy,250,25);
         sceneButton.button->setLabel(sceneButton.scene.name);
         setButtonColors(sceneButton.button);
-        
-		//        compy += 25;
-		//        if(compy > ofGetHeight()-100){
-		//            compy  = 150;
-		//        	compx += 250;
-		//        }
         scenes.push_back( sceneButton );
 	}
-	//	maxSceneX = compx+250;
 	
     if(scenes.size() == 0){
         ofSystemAlertDialog(mediaBinFolder + " has no valid scenes! Make sure to select the folder containing all of the scenes.");
@@ -1167,10 +1164,8 @@ void testApp::positionSceneButtons(){
             compy  = 150;
         	compx += 250;
         }
-		
     }
     maxSceneX = compx+250;
-	
 }
 
 //--------------------------------------------------------------
@@ -1264,6 +1259,9 @@ void testApp::loadDefaults(){
 	selfOcclude = false;
 	drawDOF = false;
 	
+	captureFramePair = false;
+	temporalAlignmentMode = true;
+	
     cam.speed = 20;
 	cam.rollSpeed = 0;
 	
@@ -1275,8 +1273,16 @@ void testApp::loadDefaults(){
     
     customWidth = 1920;
     customHeight = 1080;
-    
+    lockTo1080p = true;
+	setCurrentSize = false;
+	
+    renderObjectFiles = false;
+	renderRainbowVideo = false;
+    startSequenceAt0 = false;
+	
     resetCameraPosition();
+	
+	saveComposition();
 }
 
 //--------------------------------------------------------------
@@ -1326,48 +1332,8 @@ void testApp::saveComposition(){
 	cameraTrack->save();
     
     timeline.save();
-    
-	projectsettings.setValue("drawPointcloud", drawPointcloud);
-	projectsettings.setValue("drawWireframe", drawWireframe);
-	projectsettings.setValue("drawMesh", drawMesh);
-    projectsettings.setValue("selfOcclude",selfOcclude);
-	projectsettings.setValue("drawDOF",drawDOF);
-	projectsettings.setValue("cameraSpeed", cam.speed);
-	projectsettings.setValue("cameraRollSpeed", cam.rollSpeed);
-	
-    projectsettings.setValue("fillholes", fillHoles);
-    projectsettings.setValue("kernelSize", currentHoleKernelSize);
-    projectsettings.setValue("holeIterations", currentHoleFillIterations);
-    
-	projectsettings.setValue("mirror", currentMirror);
-	projectsettings.setValue("flipTexture", flipTexture);
-	
-    projectsettings.setValue("width", customWidth);
-    projectsettings.setValue("height", customHeight);
-    
-	//	projectsettings.setValue("renderTriangulation", renderTriangulation);
-	//	projectsettings.setValue("enableLighting", enableLighting);
-	projectsettings.setValue("renderObjFiles", renderObjectFiles);
-	projectsettings.setValue("renderRainbowVideo", renderRainbowVideo);
-	
-	projectsettings.setValue("startSequenceAtZero",startSequenceAt0);
-	
-	projectsettings.saveFile();
-	
-    selectedScene->scene.hasXYShift = true;
-    
-    //cout << "saved shift file of " << loadedScene->scene.xyshiftFile << endl;
-    
-	ofxXmlSettings defaults;
-	gui.saveToFile("defaultGuiSettings.xml");
-//    gui.saveToXml(defaults);
-    defaults.saveFile("defaultGuiSettings.xml");
-    
-	char lastSavedStr[1024];
-	sprintf(lastSavedStr, "Last Saved on %02d/%02d at %02d:%02d:%02d", ofGetMonth(), ofGetDay(), ofGetHours(), ofGetMinutes(), ofGetSeconds() );
-	//    lastSavedDate = "Last Saved on " + ofToString( ) + "/" + ofToString( ) + " at " + ) + ":" + ofToString(  )  + ":" + ofToString(  );
-    lastSavedDate  = string(lastSavedStr);
-	changeCompButton->setLabel(currentCompShortName + " -- " + lastSavedDate);
+    gui.saveToFile(currentCompositionFile);
+	setCompositionButtonName();
 }
 
 //--------------------------------------------------------------
@@ -1396,8 +1362,7 @@ void testApp::objectDidRelease(ofxMSAInteractiveObject* object, int x, int y, in
         }
         else {
             viewComps = false;
-            string label = currentCompShortName + " -- " + lastSavedDate;
-            changeCompButton->setLabel(label);
+			setCompositionButtonName();
         }
     }
     else if(object == newCompButton){
@@ -1476,64 +1441,48 @@ void testApp::objectDidMouseMove(ofxMSAInteractiveObject* object, int x, int y){
 
 //--------------------------------------------------------------
 bool testApp::loadComposition(string compositionDirectory){
+	
     if(selectedScene == NULL){
 		ofLogError("loadComposition -- Loading with a NULL secene");
 		return false;
 	}
+	
+	string oldCompDir = currentCompositionDirectory;
+	string oldCompFile = currentCompositionFile;
+	currentCompositionDirectory = compositionDirectory;
+    currentCompositionFile = currentCompositionDirectory+"compositionsettings.xml";
+	
     if(loadedScene != selectedScene){
         isSceneLoaded = loadAssetsForScene(selectedScene);
+		if(!isSceneLoaded){
+			currentCompositionDirectory = oldCompDir;
+			currentCompositionFile = oldCompFile;
+			return false;
+		}
+		
         loadedScene = selectedScene;
     }
 	
-	currentCompositionDirectory = compositionDirectory;
-    string currentCompositionFile = currentCompositionDirectory+"compositionsettings.xml";
-	
     //camera stuff
     cam.cameraPositionFile = currentCompositionDirectory + "camera_position.xml";
+	cam.loadCameraPosition();
     string cameraSaveFile = currentCompositionDirectory + "camera.xml";
 	cameraTrack->setXMLFileName(cameraSaveFile);
 	
     timeline.setCurrentPage(0);
     accumulatedPerlinOffset = 0;
-    
-    bool successfullyLoadedSettings = projectsettings.loadFile(currentCompositionFile);
-    if(successfullyLoadedSettings){
-        
-        //TODO all this should be from loading the new ofxGui XML and not done manually!
-        cam.speed = projectsettings.getValue("cameraSpeed", 20.);
-        cam.rollSpeed = projectsettings.getValue("cameraRollSpeed", 1);
-        
-        drawPointcloud = projectsettings.getValue("drawPointcloud", true);
-        drawWireframe = projectsettings.getValue("drawWireframe", true);
-        drawMesh = projectsettings.getValue("drawMesh", true);
-		
-        drawDOF = projectsettings.getValue("drawDOF",true);
-        selfOcclude = projectsettings.getValue("selfOcclude",false);
-        
-        
-		currentMirror = projectsettings.getValue("mirror", false);
-        flipTexture = projectsettings.getValue("flipTexture", false);
-		customWidth = projectsettings.getValue("width", 1920);
-        customHeight = projectsettings.getValue("height", 1080);
-		
-		renderObjectFiles = projectsettings.getValue("renderObjFiles", false);
-		renderRainbowVideo = projectsettings.getValue("renderRainbowVideo", false);
-        startSequenceAt0 = projectsettings.getValue("startSequenceAtZero", false);
-        fillHoles = projectsettings.getValue("fillholes", false);
-        currentHoleKernelSize = projectsettings.getValue("kernelSize", 1);
-        currentHoleFillIterations = projectsettings.getValue("holeIterations", 1);
-        
-        cam.loadCameraPosition();
+	if(ofFile::doesFileExist(currentCompositionFile)){
+		gui.loadFromFile(currentCompositionFile);
 	}
-    else{
+	else{
         loadDefaults();
     }
-    
+
     alignmentScrubber.setup();
 	alignmentScrubber.videoSequence = videoTrack;
 	alignmentScrubber.depthSequence = &depthSequence;
-    
-	timeline.loadTracksFromFolder(currentCompositionDirectory);
+
+	timeline.loadTracksFromFolder( currentCompositionDirectory );
     //fix up pairings file back into the main dir
     alignmentScrubber.setXMLFileName(selectedScene->scene.pairingsFile);
     alignmentScrubber.load();
@@ -1544,18 +1493,21 @@ bool testApp::loadComposition(string compositionDirectory){
 		timeline.setCurrentPage("Time Alignment");
 	}
 	
-    //    cout << "parings file is " << selectedScene->scene.pairingsFile << " ready? " << alignmentScrubber.ready() << endl;
 	cameraTrack->setup();
-    cameraTrack->load();
+	cameraTrack->load();
 	timeline.setCurrentTimeMillis(cameraTrack->getEarliestTime());
-	
+		
+	setCompositionButtonName();
     //turn off view comps
 	viewComps = false;
+	return true;
+}
+
+void testApp::setCompositionButtonName(){
     lastSavedDate = "Last Saved on " + ofToString(ofGetMonth() ) + "/" + ofToString( ofGetDay()) + " at " + ofToString(ofGetHours()) + ":" + ofToString( ofGetMinutes() )  + ":" + ofToString( ofGetSeconds() );
     
     //TODO: change widths to prevent font overflow
-    changeCompButton->setLabel(currentCompShortName + " -- " + lastSavedDate);
-	return true;
+    changeCompButton->setLabel(selectedScene->scene.name + "/" + currentCompShortName + " -- " + lastSavedDate);
 }
 
 void testApp::addCompToRenderQueue(CompButton* comp){
@@ -1578,8 +1530,6 @@ void testApp::addCompToRenderQueue(CompButton* comp){
 
 //--------------------------------------------------------------
 void testApp::populateRenderQueue(){
-    
-	//TODO: sort queue;
     
     int posx = ofGetWidth()-300;
     int posy = 50;
@@ -1633,11 +1583,7 @@ void testApp::finishRender(){
 
 //--------------------------------------------------------------
 void testApp::windowResized(int w, int h){
-    
     positionSceneButtons();
-    
-	//	timeline.setWidth(w);
-	//	timeline.setOffset(ofVec2f(0, ofGetHeight() - timeline.getDrawRect().height));
 }
 
 //--------------------------------------------------------------
