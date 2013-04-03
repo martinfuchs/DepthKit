@@ -144,7 +144,7 @@ void testApp::setup(){
 	gui.add(captureFramePair.setup("Set Color-Depth Time", ofParameter<bool>()));
 	
 	gui.add(renderObjectFiles.setup("Export .obj Files", ofParameter<bool>()));
-//	gui.add(renderRainbowVideo.setup("Export Combined Rainbow", ofParameter<bool>()));
+	gui.add(renderRainbowVideo.setup("Export Combined Rainbow", ofParameter<bool>()));
 	
 	gui.add(startSequenceAt0.setup("Start Sequence at 1", ofParameter<bool>()));
 	

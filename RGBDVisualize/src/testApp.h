@@ -205,6 +205,5 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	bool rendererDirty;
     ofNode renderedCameraPos;
     
-    
 	string pathDelim;	
 };
