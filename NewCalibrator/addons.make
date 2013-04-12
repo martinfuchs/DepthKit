@@ -1,2 +1,0 @@
-ofxCv
-ofxKinect

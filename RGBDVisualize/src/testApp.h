@@ -15,6 +15,7 @@
 #include "ofxDepthHoleFiller.h"
 #include "ofxRGBDScene.h"
 #include "ofxRGBDPlayer.h"
+#include "ofxRGBDVideoExporter.h"
 #include "ofxGui.h"
 #include "ofxObjLoader.h"
 
@@ -82,6 +83,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     void loadDefaults();
 	void saveComposition();
 	bool loadComposition(string compositionDirectory);
+	void setCompositionButtonName();
+	
 	bool loadAssetsForScene(SceneButton* scene);
     void resetCameraPosition();
     void checkReallocateFrameBuffers();
@@ -113,7 +116,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle drawMesh;
     ofxToggle selfOcclude;
     ofxToggle drawDOF;
-    
+	
     ofxToggle shouldResetCamera;
     ofxFloatSlider cameraSpeed;
     ofxFloatSlider cameraRollSpeed;
@@ -135,6 +138,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle captureFramePair;
 
     ofxToggle renderObjectFiles;
+	ofxToggle renderRainbowVideo;
     ofxToggle startSequenceAt0;
     bool currentRenderObjectFiles;
     bool firstRenderFrame;
@@ -174,6 +178,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     
     string currentCompShortName;
 	string currentCompositionDirectory;
+	string currentCompositionFile;
     string currentCompositionLabel;
 	string mediaBinFolder;
 	
@@ -189,7 +194,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxRGBDPlayer player;
 	ofxRGBDGPURenderer renderer;
     ofxRGBDCPURenderer meshBuilder;
-    
+    ofxRGBDVideoExporter rainbowExporter;
+	
 	ofxTLDepthImageSequence depthSequence;
 	ofxTLVideoDepthAlignmentScrubber alignmentScrubber;
 	ofxDepthHoleFiller holeFiller;
@@ -210,6 +216,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	string saveFolder;
 	string lastSavedDate;    
 
+	bool timelineElementsAdded;
 	bool currentlyRendering;
 	int currentRenderFrame;
     
@@ -219,9 +226,6 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	bool rendererDirty;
     ofNode renderedCameraPos;
     
-    
-	string pathDelim;
-    
-    
-    
+	string pathDelim;	
+
 };
