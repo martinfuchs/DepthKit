@@ -42,7 +42,6 @@
 		7d7ecd8dd8eb4244d7a87f40ba8c53cd /* ofxHotKeys_impl_mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2506aa6a6ef4e116e23a1c24c5fbd57f /* ofxHotKeys_impl_mac.mm */; };
 		7e769097de6561633305b24c2ad560e7 /* ofxEasingQuint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = fb8a50f8a34037bcd5dc10d0c3441a16 /* ofxEasingQuint.cpp */; };
 		80a6d051bb53a1425de78d5db4adfbc9 /* registration.c in Sources */ = {isa = PBXBuildFile; fileRef = 38605b4b6c277285d92cd4ec5fdbc49e /* registration.c */; };
-		8191164ff5037e676408c764c61326e1 /* ofxRGBDAlignment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = fa19bf681ce01a1ac0c016c0a9697584 /* ofxRGBDAlignment.cpp */; };
 		85a41526fdfa1a8cdaee81f79de999b7 /* ofxEasingQuart.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 882494db324414b7b31db11cc14948d9 /* ofxEasingQuart.cpp */; };
 		9119bfc53670a98106e367bbc1bd167a /* ofxMSATimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = b4ebe6922de4dcb97639b65f848e477b /* ofxMSATimer.cpp */; };
 		9266028e1aecbb027abf64d8cfab4b5f /* ofxEasing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26e160699149d8af609734a1b63d80e2 /* ofxEasing.cpp */; };
@@ -380,7 +379,6 @@
 		af79887042f8f3d0c65a477349c489ec /* loader.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = loader.h; path = ../../../addons/ofxKinect/libs/libfreenect/loader.h; sourceTree = SOURCE_ROOT; };
 		afcc811df430141d32bab3ebf9ba8734 /* ofxTLColors.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxTLColors.h; path = ../../../addons/ofxTimeline/src/ofxTLColors.h; sourceTree = SOURCE_ROOT; };
 		b07c508e7717e6c892502adf5fddc285 /* ofxEasingQuad.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxEasingQuad.h; path = ../../../addons/ofxTween/src/Easings/ofxEasingQuad.h; sourceTree = SOURCE_ROOT; };
-		b16a2d5707ea13128c87aead082b9515 /* ofxRGBDAlignment.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxRGBDAlignment.h; path = ../../../addons/ofxRGBDepth/src/ofxRGBDAlignment.h; sourceTree = SOURCE_ROOT; };
 		b21e7e5f548eea92f368040bb1aa2f69 /* tinyxml.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = tinyxml.h; path = ../../../addons/ofxXmlSettings/libs/tinyxml.h; sourceTree = SOURCE_ROOT; };
 		b44b81dd6ed4a8b3642789f16d3e1fb9 /* libfreenect.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = libfreenect.hpp; path = ../../../addons/ofxKinect/libs/libfreenect/libfreenect.hpp; sourceTree = SOURCE_ROOT; };
 		b4ebe6922de4dcb97639b65f848e477b /* ofxMSATimer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxMSATimer.cpp; path = ../../../addons/ofxMSATimer/src/ofxMSATimer.cpp; sourceTree = SOURCE_ROOT; };
@@ -416,7 +414,6 @@
 		ec09f970448422c45b6d1ebf77f17fde /* ofxTLTrackHeader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxTLTrackHeader.cpp; path = ../../../addons/ofxTimeline/src/ofxTLTrackHeader.cpp; sourceTree = SOURCE_ROOT; };
 		eecded794e5af3665ad59afc71d5cb55 /* ofxRGBDRenderer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxRGBDRenderer.cpp; path = ../../../addons/ofxRGBDepth/src/ofxRGBDRenderer.cpp; sourceTree = SOURCE_ROOT; };
 		f6e2c302207d61564228b7b1fa9ee346 /* usb_libusb10.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 30; name = usb_libusb10.c; path = ../../../addons/ofxKinect/libs/libfreenect/usb_libusb10.c; sourceTree = SOURCE_ROOT; };
-		fa19bf681ce01a1ac0c016c0a9697584 /* ofxRGBDAlignment.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxRGBDAlignment.cpp; path = ../../../addons/ofxRGBDepth/src/ofxRGBDAlignment.cpp; sourceTree = SOURCE_ROOT; };
 		fb8a50f8a34037bcd5dc10d0c3441a16 /* ofxEasingQuint.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxEasingQuint.cpp; path = ../../../addons/ofxTween/src/Easings/ofxEasingQuint.cpp; sourceTree = SOURCE_ROOT; };
 		fc5da1c87211d4f6377da7199d8c5a1e /* tinyxmlparser.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = tinyxmlparser.cpp; path = ../../../addons/ofxXmlSettings/libs/tinyxmlparser.cpp; sourceTree = SOURCE_ROOT; };
 		fc9b34c5cb5b0acaff02ed20e6f129e7 /* ofxEasing.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxEasing.h; path = ../../../addons/ofxTween/src/Easings/ofxEasing.h; sourceTree = SOURCE_ROOT; };
@@ -1332,8 +1329,6 @@
 				9b40be40c84e5d67791fa7ad4e053a8e /* ofxDepthImageRecorder.h */,
 				7630d72626ffb73c5e53c860d18184ec /* ofxDepthImageSequence.cpp */,
 				036ab46342f43ee69f00d63f77d699a2 /* ofxDepthImageSequence.h */,
-				fa19bf681ce01a1ac0c016c0a9697584 /* ofxRGBDAlignment.cpp */,
-				b16a2d5707ea13128c87aead082b9515 /* ofxRGBDAlignment.h */,
 				19cbf6cc25f2ce96fdd65c1caf6f9edf /* ofxRGBDPlayer.cpp */,
 				9c78617b2f4c123a60a351c9f94ea057 /* ofxRGBDPlayer.h */,
 				E7423DBC16EAA87A00646BAC /* ofxRGBDCPURenderer.cpp */,
@@ -1472,7 +1467,6 @@
 				fd5f9448224c4a570b50e8e333455c0c /* ofxDepthImageProvider.cpp in Sources */,
 				6e66e4e79dc3a781eda2580f68e61c80 /* ofxDepthImageRecorder.cpp in Sources */,
 				70f283eabf7bf907e216ee15d2d5949b /* ofxDepthImageSequence.cpp in Sources */,
-				8191164ff5037e676408c764c61326e1 /* ofxRGBDAlignment.cpp in Sources */,
 				cfe79fd5d8b8ba4c7b92482d00ddf2a9 /* ofxRGBDPlayer.cpp in Sources */,
 				bc3e3a36e29677ae1698ae901bae30d9 /* ofxRGBDRenderer.cpp in Sources */,
 				12021041ef5ed6ad2ef2362cd242013e /* ofxRGBDScene.cpp in Sources */,

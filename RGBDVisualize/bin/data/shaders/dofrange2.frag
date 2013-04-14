@@ -18,6 +18,6 @@ float LinearizeDepth(float zoverw){
 void main()
 {
     float depth = LinearizeDepth( texture2DRect(depthTex, gl_TexCoord[0].st).r ) * 20000.;
-    gl_FragColor = vec4(min( abs(depth  - focalDistance) / focalRange, 1.0) );
+    gl_FragColor = vec4(1.0 - min( abs(depth  - focalDistance) / focalRange, 1.0) );
     gl_FragColor.a = 1.0;
 }
