@@ -18,7 +18,7 @@
 #include "ofxRGBDVideoExporter.h"
 #include "ofxGui.h"
 #include "ofxObjLoader.h"
-
+#include "DepthParticleField.h"
 #include "ofxSPK.h"
 
 typedef struct {
@@ -90,6 +90,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     void checkReallocateFrameBuffers();
     void allocateFrameBuffers();
     
+	ofxToggle drawDepthParticles;
+	DepthParticleField depthParticleField;
     
     //SPARKSTUFF
     ofxToggle drawParticles;
@@ -116,6 +118,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle drawMesh;
     ofxToggle selfOcclude;
     ofxToggle drawDOF;
+
 	
     ofxToggle shouldResetCamera;
     ofxFloatSlider cameraSpeed;

@@ -125,11 +125,11 @@ void testApp::setup(){
     gui.add(drawWireframe.setup("Draw Wireframe",ofParameter<bool>()));
     gui.add(drawMesh.setup("Draw Mesh",ofParameter<bool>()));
     gui.add(drawParticles.setup("Draw Particles",ofParameter<bool>()));
+	gui.add(drawDepthParticles.setup("Draw Depth Particles",ofParameter<bool>()));
 	
     gui.add(selfOcclude.setup("Self Occlude", ofParameter<bool>()));
     gui.add(drawDOF.setup("Draw DOF", ofParameter<bool>()));
 
- 	
     gui.add( customWidth.setup("Frame Width", ofParameter<int>(), 320, 1920*2));
     gui.add( customHeight.setup("Frame Height", ofParameter<int>(), 240, 1080*2));
     gui.add( setCurrentSize.setup("Apply Custom Size", ofParameter<bool>()));
@@ -250,7 +250,11 @@ void testApp::populateTimelineElements(){
 	timeline.addCurves("X Texture Scale", currentCompositionDirectory + "XTextureScale.xml", ofRange(.90, 1.10), 1.0 );
 	timeline.addCurves("Y Texture Scale", currentCompositionDirectory + "YTextureScale.xml", ofRange(.90, 1.10), 1.0 );
 	
-    timeline.addPage("Ring Emitter Size", true);
+    timeline.addPage("Depth Particle Field", true);
+	timeline.addCurves("Depth Particle Alpha", currentCompositionDirectory + "DepthParticleAlpha.xml", ofRange(0, 1.0), 0.0 );
+	timeline.addCurves("Max Particles", currentCompositionDirectory + "MaxParticles.xml", ofRange(0, 4000), 50 );
+	
+	timeline.addPage("Ring Emitter Size", true);
 	timeline.addCurves("Ring Emitter Min Radius", currentCompositionDirectory + "RingEmitterMinRadius.xml", ofRange(0, 4000), 0.0 );
 	timeline.addCurves("Ring Emitter Width", currentCompositionDirectory + "RingEmitterWidth.xml", ofRange(0, 4000), 50 );
 	timeline.addCurves("Ring Emitter Z", currentCompositionDirectory + "RingEmitterZ.xml", ofRange(0, 10000), 0 );
@@ -338,24 +342,41 @@ void testApp::drawGeometry(){
 		
 		ofEnableBlendMode(blendMode);
 		
+		float thickness = timeline.getValue("Wireframe Thickness");
+		thickness *= thickness;
 		if(drawWireframe && wireAlpha > 0){
 			ofTranslate(0,0,-.5);
 			ofSetColor(255*wireAlpha);
-            float thickness = timeline.getValue("Wireframe Thickness");
-            thickness *= thickness;
 			ofSetLineWidth(thickness);
 			renderer.drawWireFrame();
 		}
 		
+		float pointSize = timeline.getValue("Point Size");
 		if(drawPointcloud && pointAlpha > 0){
 			
 			ofTranslate(0,0,-.5);
 			ofSetColor(255*pointAlpha);
-            float pointSize = timeline.getValue("Point Size");
-            glPointSize(pointSize*pointSize);
+			glPointSize(pointSize*pointSize);
 			renderer.drawPointCloud();
 		}
         
+		float depthAlpha = 	timeline.getValue("Depth Particle Alpha");
+		if(drawDepthParticles && depthAlpha > 0.0 ){
+			ofTranslate(0,0,-.5);
+			ofSetColor(255*depthAlpha);
+			renderer.bindRenderer();
+			
+			int maxParticles = timeline.getValue("Max Particles");
+			if(maxParticles != depthParticleField.getMaxParticles()){
+				depthParticleField.setMaxParticles(maxParticles);
+			}
+			ofSetLineWidth(thickness);			
+			glPointSize(pointSize*pointSize);
+			depthParticleField.mesh.drawVertices();
+
+			renderer.unbindRenderer();
+		}
+		
 		ofPopStyle();
 		ofPopMatrix();
         
@@ -378,7 +399,6 @@ void testApp::drawGeometry(){
             renderer.unbindRenderer();
             ofPopStyle();
         }
-		
 
 		cam.end();
 		fbo1.end();
@@ -650,6 +670,7 @@ void testApp::update(){
             
 			if(player.hasHighresVideo()){
 				player.useHiresVideo();
+				videoTrack->setPlayer(player.getVideoPlayer());
 				renderer.setRGBTexture(*player.getVideoPlayer());
 				meshBuilder.setRGBTexture(*player.getVideoPlayer());
 			}
@@ -818,6 +839,11 @@ void testApp::update(){
 	if(rendererNeedsUpdate){
 		updateRenderer();
 	}
+	
+	if(drawDepthParticles){
+		depthParticleField.update();
+	}
+
 }
 
 //--------------------------------------------------------------
@@ -835,7 +861,7 @@ void testApp::updateRenderer(){
     if(drawParticles){
         updateSpark();
     }
-    
+	
 	cameraTrack->setDampening(powf(timeline.getValue("Camera Dampen"),2.));
 	//used for temporal aligmnet nudging
 	currentDepthFrame = player.getDepthSequence()->getCurrentFrame();
@@ -1199,6 +1225,7 @@ bool testApp::loadAssetsForScene(SceneButton* sceneButton){
 
     renderer.setDepthImage(player.getDepthPixels());
     meshBuilder.setDepthImage(player.getDepthPixels());
+	depthParticleField.setup(player.getDepthPixels());
 	
 	depthSequence.setSequence(player.getDepthSequence());
 	videoTrack->setPlayer(player.getVideoPlayer());
