@@ -117,8 +117,10 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle captureFramePair;
 
     ofxToggle renderObjectFiles;
+	ofxToggle includeTextureMaps;
 	ofxToggle renderRainbowVideo;
     ofxToggle startSequenceAt0;
+	bool multisampleBufferAllocated;
     bool currentRenderObjectFiles;
     bool firstRenderFrame;
     bool startRenderMode;
@@ -204,7 +206,6 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	int currentVideoFrame;
 	bool rendererDirty;
     ofNode renderedCameraPos;
-    
     
 	string pathDelim;	
 };

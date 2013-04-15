@@ -29,6 +29,7 @@ void testApp::setup(){
 	cam.useArrowKeys = false;
 	cam.setFarClip(30000);
 	
+	multisampleBufferAllocated = false;
     lockTo720p = false;
     lockTo1080p = true;
     customWidth = 1920;
@@ -130,8 +131,8 @@ void testApp::setup(){
     gui.add( customWidth.setup("Frame Width", ofParameter<int>(), 320, 1920*2));
     gui.add( customHeight.setup("Frame Height", ofParameter<int>(), 240, 1080*2));
     gui.add( setCurrentSize.setup("Apply Custom Size", ofParameter<bool>()));
-    gui.add( lockTo720p.setup("720p", ofParameter<bool>()));
-    gui.add( lockTo1080p.setup("1080p",ofParameter<bool>()));
+    gui.add( lockTo720p.setup("Render 720p", ofParameter<bool>()));
+    gui.add( lockTo1080p.setup("Render 1080p",ofParameter<bool>()));
     
     gui.add(currentMirror.setup("Mirror", ofParameter<bool>()));
 //	gui.add(flipTexture.setup("Flip Texture", ofParameter<bool>()));
@@ -144,8 +145,9 @@ void testApp::setup(){
 	gui.add(captureFramePair.setup("Set Color-Depth Time", ofParameter<bool>()));
 	
 	gui.add(renderObjectFiles.setup("Export .obj Files", ofParameter<bool>()));
-//	gui.add(renderRainbowVideo.setup("Export Combined Rainbow", ofParameter<bool>()));
+	//gui.add(renderRainbowVideo.setup("Export Combined Rainbow", ofParameter<bool>()));
 	
+	gui.add(includeTextureMaps.setup("Include Texture Maps", ofParameter<bool>()));
 	gui.add(startSequenceAt0.setup("Start Sequence at 1", ofParameter<bool>()));
 	
     gui.loadFromFile("defaultGuiSettings.xml");
@@ -222,15 +224,15 @@ void testApp::populateTimelineElements(){
     timeline.addCurves("Z Rotate", currentCompositionDirectory + "meshZRot.xml", ofRange(-360,360), 0.);
 	
     timeline.addPage("Rendering", true);
-    timeline.addCurves("Point Alpha", currentCompositionDirectory + "pointAlpha.xml", ofRange(0,1.0) );
-    timeline.addCurves("Point Size", currentCompositionDirectory + "pointSize.xml", ofRange(1.0, sqrtf(20.0) ) );
-    timeline.addCurves("Wireframe Alpha", currentCompositionDirectory + "wireframeAlpha.xml", ofRange(0,1.0), 0.0 );
-    timeline.addCurves("Wireframe Thickness", currentCompositionDirectory + "wireframeThickness.xml", ofRange(0.0,sqrtf(20.0)) );
+    timeline.addCurves("Point Alpha", currentCompositionDirectory + "pointAlpha.xml", ofRange(0.0,1.0), 1.0 );
+    timeline.addCurves("Point Size", currentCompositionDirectory + "pointSize.xml", ofRange(0.0, sqrtf(10.0) ), 1.5 );
+    timeline.addCurves("Wireframe Alpha", currentCompositionDirectory + "wireframeAlpha.xml", ofRange(0,1.0), 1.0 );
+    timeline.addCurves("Wireframe Thickness", currentCompositionDirectory + "wireframeThickness.xml", ofRange(0.0,sqrtf(10.0)), 1.5 );
     timeline.addCurves("Mesh Alpha", currentCompositionDirectory + "meshAlpha.xml", ofRange(0,1.0), 1.0 );
 	
     timeline.addPage("Depth of Field", true);
     timeline.addCurves("DOF Distance", currentCompositionDirectory + "DOFDistance.xml", ofRange(0,sqrtf(1500.0)), 10 );
-    timeline.addCurves("DOF Range", currentCompositionDirectory + "DOFRange.xml", ofRange(10,sqrtf(1500.0)) );
+    timeline.addCurves("DOF Range", currentCompositionDirectory + "DOFRange.xml", ofRange(0,sqrtf(1500.0)) );
     timeline.addCurves("DOF Blur", currentCompositionDirectory + "DOFBlur.xml", ofRange(0,5.0) );
 	
 	timeline.addPage("Time Alignment", true);
@@ -239,10 +241,10 @@ void testApp::populateTimelineElements(){
 	timeline.addTrack("Alignment", &alignmentScrubber);
 	
 	timeline.addPage("Texture Alignment");
-	timeline.addCurves("X Texture Shift", currentCompositionDirectory + "XTextureShift.xml", ofRange(-.25, .25), 0.0 );
-	timeline.addCurves("Y Texture Shift", currentCompositionDirectory + "YTextureShift.xml", ofRange(-.25, .25), 0.0 );
-	timeline.addCurves("X Texture Scale", currentCompositionDirectory + "XTextureScale.xml", ofRange(.85, 1.15), 1.0 );
-	timeline.addCurves("Y Texture Scale", currentCompositionDirectory + "YTextureScale.xml", ofRange(.85, 1.15), 1.0 );
+	timeline.addCurves("X Texture Shift", currentCompositionDirectory + "XTextureShift.xml", ofRange(-.35, .35), 0.0 );
+	timeline.addCurves("Y Texture Shift", currentCompositionDirectory + "YTextureShift.xml", ofRange(-.35, .35), 0.0 );
+	timeline.addCurves("X Texture Scale", currentCompositionDirectory + "XTextureScale.xml", ofRange(.75, 1.25), 1.0 );
+	timeline.addCurves("Y Texture Scale", currentCompositionDirectory + "YTextureScale.xml", ofRange(.75, 1.25), 1.0 );
 	
 	timeline.setCurrentPage("Rendering");
 }
@@ -605,6 +607,7 @@ void testApp::update(){
             
 			if(player.hasHighresVideo()){
 				player.useHiresVideo();
+				videoTrack->setPlayer(*player.getVideoPlayer());
 				renderer.setRGBTexture(*player.getVideoPlayer());
 				meshBuilder.setRGBTexture(*player.getVideoPlayer());
 			}
@@ -811,6 +814,9 @@ void testApp::checkReallocateFrameBuffers(){
     else if(setCurrentSize && (fbo1.getWidth() != customWidth || fbo1.getHeight() != customHeight)){
         allocateFrameBuffers();
     }
+	else if( (drawDOF && multisampleBufferAllocated) || (!drawDOF && !multisampleBufferAllocated) ){
+		allocateFrameBuffers();
+	}
     setCurrentSize = false;
     
     lockTo720p  = fbo1.getWidth() == 1280 && fbo1.getHeight() == 720;
@@ -843,7 +849,9 @@ void testApp::allocateFrameBuffers(){
 	
 	
     swapFbo.allocate(fboWidth, fboHeight, GL_RGB);
-    fbo1.allocate(fboWidth, fboHeight, GL_RGBA, 4);
+    
+	fbo1.allocate(fboWidth, fboHeight, drawDOF ? GL_RGB : GL_RGBA, drawDOF ? 0 : 4);
+	multisampleBufferAllocated = !drawDOF;
 	
     fbo1.begin();
     ofClear(0,0,0,0);
@@ -919,16 +927,16 @@ void testApp::draw(){
 				}
                 sprintf(filename, "%s/save.%05d.png", saveFolder.c_str(), videoFrame);
 				
-				if(renderRainbowVideo){
-					rainbowExporter.setPlayer(&player);
-					rainbowExporter.setRenderer(&renderer);
-					rainbowExporter.maxDepth = renderer.farClip;
-					rainbowExporter.minDepth = 400;
-					rainbowExporter.inoutPoint.min = timeline.getInFrame();
-					rainbowExporter.inoutPoint.max = timeline.getOutFrame();
-					rainbowExporter.render(saveFolder, "save.");
-					currentRenderFrame = timeline.getOutFrame()+1;
-				}
+//				if(renderRainbowVideo){
+//					rainbowExporter.setPlayer(&player);
+//					rainbowExporter.setRenderer(&renderer);
+//					rainbowExporter.maxDepth = renderer.farClip;
+//					rainbowExporter.minDepth = 400;
+//					rainbowExporter.inoutPoint.min = timeline.getInFrame();
+//					rainbowExporter.inoutPoint.max = timeline.getOutFrame();
+//					rainbowExporter.render(saveFolder, "save.");
+//					currentRenderFrame = timeline.getOutFrame()+1;
+//				}
 
                 if(!firstRenderFrame){
                     if(renderObjectFiles){
@@ -936,21 +944,20 @@ void testApp::draw(){
                         sprintf(objFilename, "%s/save.%05d.obj", saveFolder.c_str(), videoFrame);
                         ofMesh reducedMesh = meshBuilder.getReducedMesh(true, ofVec3f(.001, -.001, .001), false, true);
                         ofxObjLoader::save(string(objFilename), reducedMesh);
-                        savingImage.setFromPixels(player.getVideoPlayer()->getPixelsRef());
+						if(includeTextureMaps){
+							savingImage.setFromPixels(player.getVideoPlayer()->getPixelsRef());
+							savingImage.saveImage(filename);
+						}
                     }
                     else{
                         fbo1.getTextureReference().readToPixels(savingImage.getPixelsRef());
-                        if(!renderObjectFiles){
-                            savingImage.mirror(true, false);
-                        }
-                    }
-                    
-					if(!renderRainbowVideo){
+						savingImage.mirror(true, false);
 						savingImage.saveImage(filename);
-					}
-                    
+                    }
+					
                     //cout << "   at save time its set to " << player.getVideoPlayer()->getCurrentFrame() << " time " << (player.getVideoPlayer()->getPosition() * player.getVideoPlayer()->getDuration() ) << endl;
                 }
+				
                 firstRenderFrame = false;
                 
 				///////frame debugging
@@ -1472,6 +1479,8 @@ bool testApp::loadComposition(string compositionDirectory){
     timeline.setCurrentPage(0);
     accumulatedPerlinOffset = 0;
 	if(ofFile::doesFileExist(currentCompositionFile)){
+//		cout << "loading file: " << currentCompositionFile << endl;
+//		cout << ofBufferFromFile(currentCompositionFile).getText() << endl;
 		gui.loadFromFile(currentCompositionFile);
 	}
 	else{

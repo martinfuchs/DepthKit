@@ -1,6 +1,6 @@
 RGBD Release TODO List:
 
-To create a release, the general strategy is to start with the last release and upate the files changed
+To create a release package, start with the last release package version and update only the files changed
 
 Building the release:
 Build new version for Windows and OS X.

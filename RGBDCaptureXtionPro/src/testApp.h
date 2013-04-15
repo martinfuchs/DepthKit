@@ -7,7 +7,6 @@
 #include "ofxTimeline.h"
 #include "ofxTLDepthImageSequence.h"
 #include "ofxGameCamera.h"
-#include "ofxRGBDAlignment.h"
 #include "ofxDepthImageProvider.h"
 #include "ofxRGBDCaptureGui.h"
 

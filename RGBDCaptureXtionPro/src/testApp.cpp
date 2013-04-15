@@ -5,7 +5,8 @@
 //--------------------------------------------------------------
 
 void testApp::setup(){
-
+	
+	ofSetEscapeQuitsApp(false);
 	ofEnableAlphaBlending();
 	ofSetFrameRate(30);
 	ofBackground(0);

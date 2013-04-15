@@ -61,7 +61,8 @@ void main()
         //sample the surrounding pixels and blend them into the total with the gaussian weight
         //if fast is off, we weight the blur amount by the focal difference from the center point
         //which helps make in focus items 'pop' and avoid color bleeding between focal depths
-        vec4 texel = texture2DRect( tex, gl_TexCoord[0].st + baseOffset + offset ) * (1. - abs( FocalValue(gl_TexCoord[0].st + baseOffset + offset)  - rangeTexel) );
+//        vec4 texel = texture2DRect( tex, gl_TexCoord[0].st + baseOffset + offset ) * (1. - abs( FocalValue(gl_TexCoord[0].st + baseOffset + offset)  - rangeTexel) );
+		vec4 texel = texture2DRect( tex, gl_TexCoord[0].st + baseOffset + offset * (1. - abs( FocalValue(gl_TexCoord[0].st + baseOffset + offset)  - rangeTexel) ) );
         sum += texel.rgb * weights[s];
 		offset += blurOffset;
 	}
