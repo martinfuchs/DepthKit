@@ -70,9 +70,6 @@
     <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxDepthImageSequence.cpp">
       <Filter>addons\ofxRGBDepth\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDAlignment.cpp">
-      <Filter>addons\ofxRGBDepth\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDPlayer.cpp">
       <Filter>addons\ofxRGBDepth\src</Filter>
     </ClCompile>
@@ -423,9 +420,6 @@
       <Filter>addons\ofxRGBDepth\src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxDepthImageSequence.h">
-      <Filter>addons\ofxRGBDepth\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDAlignment.h">
       <Filter>addons\ofxRGBDepth\src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDPlayer.h">
