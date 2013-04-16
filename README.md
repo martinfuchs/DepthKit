@@ -6,7 +6,6 @@
 
 **Version 005 for Mac OS X and Windows Released on April 16th 2013**
 
-
 ## Projects
 Curious what this is all about? Check out some project created using the toolkit
 
@@ -39,7 +38,7 @@ The Toolkit has been made possible by the ongoing and generous support of:
 * [NYU Interactive Telecommunications Program](http://itp.nyu.edu) 
 * [CLODUS Kickstarter](http://www.kickstarter.com/projects/1636630114/clouds-interactive-documentary)
 
-Very special thanks to the [Art && Code 3D](http://artandcode.com/3d/), Resonate Festival, and Eyeo Festival
+Very special thanks to the [Art && Code 3D](http://artandcode.com/3d/), [Resonate Festival](http://resonate.io/2013/), and [Eyeo Festival](http://eyeofestival.com/)
 
 ## Tutorials 
 The remainder of this readme is a tutorial, but we have a few other foramts
@@ -49,7 +48,7 @@ The remainder of this readme is a tutorial, but we have a few other foramts
 
 The current manual was written by [Jack Armitage](http://about.me/jarmitage)
 
-The original manual was graciously written by the wonderful and talented video artist (i.m klif)[http://vimeo.com/32631165] during our Resonate workshop in Belgrade, Serbia 
+The original manual was graciously written by the wonderful and talented video artist [i.m klif](http://vimeo.com/32631165) during our Resonate workshop in Belgrade, Serbia.
 
 =======
 
@@ -57,58 +56,41 @@ The original manual was graciously written by the wonderful and talented video a
 The RGBDToolkit is compatible with:
 
 ### OS X
- - [Asus Xtion pro LIVE](http://www.newegg.com/Product/Product.aspx?Item=N82E16826785030)
-	- Requires [Sensecast install drivers](http://sensecast.com/files/Sensecast.and.Libs.Installer.v.0.02.dmg)
- - [Microsoft Kinect Xbox 1414 or 1473](http://www.amazon.com/Kinect-Sensor-Adventures-Xbox-360/dp/B002BSA298/)
+ * [Asus Xtion pro LIVE](http://www.newegg.com/Product/Product.aspx?Item=N82E16826785030) (Requires [Sensecast install drivers](http://sensecast.com/files/Sensecast.and.Libs.Installer.v.0.02.dmg) )
+ * [Microsoft Kinect Xbox 1414 or 1473](http://www.amazon.com/Kinect-Sensor-Adventures-Xbox-360/dp/B002BSA298/)
 
 ### WINDOWS
- - Microsoft Xbox Kinect model number 1414
- - NOT CURRENTLY COMPATIBLE WITH Kinect for Windows
-
-* To use the Kinect run the RGBDCaptureKinect application
-* To use the Asus Xtion pro run the RGBDCaptureOpenNI Application
+ * Microsoft Xbox Kinect model number 1414
+ * NOT CURRENTLY COMPATIBLE WITH Kinect for Windows
 
 ## External HD Video Camera
 The RGBDToolkit can use any external HD video camera, including digital SLRs, Go-Pros, and even iPhones.
 
 ## Mounts
-The RGBDToolkit requires the use of some sort of mount to connect the external camera to the
-
-## RGB+D Toolkit Overview
-- RGBDToolkit Tutorial Part 1: Calibrate - update needed
-
-- RGBDToolkit Tutorial Part 2: Capture - update needed
-
-- RGBDToolkit Tutorial Part 3: Align
-
-- RGBDToolkit Tutorial Part 4: Visualise
-
-- RGBDToolkit Tutorial Part 5: Export
+The workflow requires the use of a hardware fixture to secure the external HD camera to the depth sensor. There 
 
 ### Part 1: Calibrate
 
 #### Introduction
 
-**Tutorial objective**
-
-Calibrate the video camera with the depth camera. This process matches the optical characteristics of sensors and lenses of the two cameras and determines their relative positions to one another.
-Setup
+**The objective of the Calibrate step is to determine the physical position of the two cameras relative to one another.**
 
 NOTE: Calibration requires some ambient infrared (IR) light. The sun is a good source, as are lights that emit heat, ie: halogen. Filtered sunlight through a living from window works best, but direct sunlight is too much. If you don’t have access to a room or a dry shaded outdoor area with plenty of sunlight (bear in mind that some office windows block sunlight with treated glass), you will need to use an IR light such as [this one](We recommend getting IR lights like [this one](http://www.amazon.com/dp/B0002J1JFE/).
 
-- RGBD hardware rig built and ready to go (see previous tutorial). You may want to tape your DSLR’s zoom ring to it’s widest position to prevent movement during calibration if this happens you will need to start again.
+Before you get started you'll need the RGBD hardware rig built and ready to go (see previous tutorial). You may want to tape your DSLR’s zoom ring to it’s widest position to prevent movement during calibration if this happens you will need to start again.
 
-- Print off checkerboard in exact dimensions (found in this repository) and mount to a hard surface such as wood, plexiglas or foamcore. During calibration this must be steady, flat and rigid.
+Print off checkerboard in exact dimensions (found in this repository) and mount to a hard surface such as wood, plexiglas or foamcore. During calibration this must be steady, flat and rigid.
 
-- Latest version of RGBDToolkit downloaded and unzipped. 
+Latest version of RGBDToolkit downloaded and unzipped. 
 
-
-- Something to diffuse the depth sensor’s IR laser projector on the depth camera for the calibration stage. We often use a square of tissue paper, cigarette rolling paper or handkerchief.
+Something to diffuse the depth sensor’s IR laser projector on the depth camera for the calibration stage. We often use a square of tissue paper, cigarette rolling paper or handkerchief.
 
 **Instructions**
-Open the RGBDCapture Application: Depending on which camera you are using, open the RGBDCaptureKinector RGBDCaptureXtionPro application:
+Open the RGBDCapture Application: 
 
-1. The software references a Working Directory, referenced by the text at the top off the window (the default text is depthframes, which is inside of your application folder. You’ll want to change this). Click on this area to define the location on your computer from which you wish to work from and store all project files. Observe that the software creates a ‘_calibration’ folder for you inside the project directory. Files are autosaved as you go, so relax your work will be saved.
+Depending on which camera you are using, open the RGBDCaptureKinector RGBDCaptureXtionPro application:
+
+The software references a Working Directory, referenced by the text at the top off the window (the default text is depthframes, which is inside of your application folder. You’ll want to change this). Click on this area to define the location on your computer from which you wish to work from and store all project files. Observe that the software creates a ‘_calibration’ folder for you inside the project directory. Files are autosaved as you go, so relax your work will be saved.
 
 The software has four views, selectable via the four tabs at the top. In this tutorial we are going to walk through the pre-shooting phase of lens calibration, using using the Calibrate Lenses and Calibrate Correspondence tabs. The Calibrate Lenses window should be displaying when you open the application for the first time. It is split in half horizontally; your depth camera stream, if connected via USB, should display on the left, and the right pane should be empty to begin with. If you don’t see the depth camera view, see the troubleshooting page.
 
@@ -398,7 +380,7 @@ Once you've selected all the compositions you wish to render, click the "Start R
 
 Render frames are 1920x1080 and saved into _RenderBin/ folder underneath the main MediaBin/ (right next to _calibration). Each folder is stamped with the scene, composition, and date so nothing will ever be overwritten.
 
-NOTE: each rendered comp *needs* a camera track. Weird stuff may happen if you render without one.
+NOTE: each rendered comp *needs* a camera track with camera points set
 
 
 README Edited by James, phew...
