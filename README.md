@@ -103,27 +103,28 @@ Calibration requires some ambient infrared (IR) light. The sun is a good source 
 
 **Lock off your zoom** to the widest setting and then lock it off with a piece of tape. Zooming after you've calibrated will disrupt the alignment, so it's good to disable it completely as not to hit it accidentally.
 
-#### RGBDCapture 
+#### Open RGBDCapture 
 
-**Open the right capture application** depending on which sensor you are using, open the RGBDCaptureKinector RGBDCaptureXtionPro application:
+**Plug in the sensor to your laptop and open the RGBDCapture application** depending on which sensor you are using, open the **RGBDCaptureKinector** **RGBDCaptureXtionPro** application.
 
-**Set your working directory** to a convenient place on your hard drive. All your footage will be stored here. Change it by clicking the text at the top off the RGBDCapture window. The default text is depthframes, which is inside of your application folder. You’ll definitely want to change this. Observe that the software creates a ‘_calibration’ folder for you inside the project directory. Files are autosaved as you go, so relax your work will be saved.
+**Set your working directory** to a convenient place on your hard drive. All your footage will be stored here. Change it by clicking the text at the top off the RGBDCapture window. The default directory is depthframes, which is inside of your application folder. You’ll definitely want to change this. Observe that the software creates a ‘_calibration’ folder for you inside the project directory. Files are autosaved as you go, so relax your work will be saved.
 
-The software has four views, selectable via the four tabs at the top. In this tutorial we are going to walk through the pre-shooting phase of lens calibration, using using the Calibrate Lenses and Calibrate Correspondence tabs. The Calibrate Lenses window should be displaying when you open the application for the first time. It is split in half horizontally; your depth camera stream, if connected via USB, should display on the left, and the right pane should be empty to begin with. If you don’t see the depth camera view, see the troubleshooting page.
+**Select Calibrate Lenses tab**, first of the four views on the capture application. This window is responsible for  window should be displaying when you open the application for the first time. It is split in half horizontally; your depth camera stream, if connected via USB, should display on the left, and the right pane should be empty to begin with. If you don’t see the depth camera view, see the troubleshooting page.
 
+**Note about Kinect model number** There are two version of RGBDCaptureKinect application on OS X, one for model #1414 and one for model #1473. Check the bottom of your Kinect to find the model number and open the corresponding capture application.
+<Kinect model number photo>
+	
+**Capture Lens Properties** In order to accurately calibrate the two cameras, RGBDToolkit needs to understand the subtleties of the camera lenses – imperfect manufacturing processes mean that every lens will be slightly different. These values are called _lens intrinsic parameters_ and describe image size, field of view, optical center of the lens, and any distortion found in the lens. To determine these values we capture and analyze images from both cameras.
 
-* Note about Kinect model number: There are two version of RGBDCaptureKinect, one for model #1414 and one for model #1473. Check the bottom of your Kinect to find the model number and open the corresponding capture application.
+**Calibrate Depth Camera** Aim your rig at an area of space which has plenty of ‘visible information’ – featuring different colours, contrasts and depths. Hit the _Self Calibrate Depth Camera_ button at the bottom of the left-hand pane. This will automatically analyze the incoming video stream (great!), and once complete should display results similar to the following results:
 
-2. Capture Lens Properties
-In order to accurately calibrate the two cameras, RGBDToolkit needs to understand the subtleties of the camera lenses – imperfect manufacturing processes mean that every lens will be slightly different. To achieve this, we capture test material from both cameras which is then analysed to detect inconsistencies:
-Aim your rig at an area of space which has plenty of ‘visible information’ – featuring different colours, contrasts and depths.
+<WELL CALIBRATED DEPTH CAM>
+	
+Note the the field of views are symmetrical, and that the principal point is at the center of the depth camera’s fixed 640x480 perspective.
 
-3. Connect your depth camera and select ‘Self Calibrate Depth Camera’ from the left-hand pane. This will automatically analyze the incoming video stream (great!), and once complete should display results similar to the following results:
+**Capture the external camera lens properties  takes a bit more effort and patience. Set your camera rig up on your tripod, and place your checkerboard in the centre of the DSLR’s shot, as in the image below (& video example). Make sure the checkerboard is in shot, the scene is exposed properly, the lens is focused and that both the environment and the checkerboard are evenly lit. Record a 1-3 second video of this shot.
 
-4. Note the the field of views are symmetrical, and that the principal point is at the center of the depth camera’s fixed 640x480 perspective.
-Calibrating your DSLR lens takes a bit more effort and patience. Set your camera rig up on your tripod, and place your checkerboard in the centre of the DSLR’s shot, as in the image below (& video example). Make sure the checkerboard is in shot, the scene is exposed properly, the lens is focused and that both the environment and the checkerboard are evenly lit. Record a 1-3 second video of this shot.
-
-5. Move the checkerboard further away from the camera so that it occupies approximately a quarter of the frame, making sure you refocus the camera at every distance. Record four more short videos with the checkerboard in each quadrant. Don’t worry if the checkerboard is not exactly horizontal or vertical, but do ensure that the entire checkerboard is in the frame, including the white border around the outside black squares.
+Move the checkerboard further away from the camera so that it occupies approximately a quarter of the frame, making sure you refocus the camera at every distance. Record four more short videos with the checkerboard in each quadrant. Don’t worry if the checkerboard is not exactly horizontal or vertical, but do ensure that the entire checkerboard is in the frame, including the white border around the outside black squares.
 
 6. Repeat this process at a distance where the checkerboard occupies around 1/9th of the frame.
 
