@@ -1,73 +1,62 @@
-	====================================================================================================
-	                       ___           ___                        _____                      
-	                      /  /\         /  /\         _____        /  /::\                     
-	                     /  /::\       /  /:/_       /  /::\      /  /:/\:\                    
-	                    /  /:/\:\     /  /:/ /\     /  /:/\:\    /  /:/  \:\                   
-	                   /  /:/~/:/    /  /:/_/::\   /  /:/~/::\  /__/:/ \__\:|                  
-	                  /__/:/ /:/___ /__/:/__\/\:\ /__/:/ /:/\:| \  \:\ /  /:/                  
-	                  \  \:\/:::::/ \  \:\ /~~/:/ \  \:\/:/~/:/  \  \:\  /:/                   
-	                   \  \::/~~~~   \  \:\  /:/   \  \::/ /:/    \  \:\/:/                    
-	                 ___\  \:\     ___\  \:\/:/     \  \:\/:/  ___ \  \::/                     
-	     ___        /  /\\  \:\   /  /\\  \::/       \  \::/  /__/| \__\/  ___           ___   
-	    /  /\      /  /::\\__\/  /  /::\\__\/         \__\/  |  |:|       /  /\         /  /\  
-	   /  /:/     /  /:/\:\     /  /:/\:\    ___     ___     |  |:|      /  /:/        /  /:/  
-	  /  /:/     /  /:/  \:\   /  /:/  \:\  /__/\   /  /\  __|  |:|     /__/::\       /  /:/   
-	 /  /::\    /__/:/ \__\:\ /__/:/ \__\:\ \  \:\ /  /:/ /__/\_|:|____ \__\/\:\__   /  /::\   
-	/__/:/\:\   \  \:\ /  /:/ \  \:\ /  /:/  \  \:\  /:/  \  \:\/:::::/    \  \:\/\ /__/:/\:\  
-	\__\/  \:\   \  \:\  /:/   \  \:\  /:/    \  \:\/:/    \  \::/~~~~      \__\::/ \__\/  \:\ 
-	     \  \:\   \  \:\/:/     \  \:\/:/      \  \::/      \  \:\          /__/:/       \  \:\
-	      \__\/    \  \::/       \  \::/        \__\/        \  \:\         \__\/         \__\/
-	                \__\/         \__\/                       \__\/
-	====================================================================================================
+![ RGBDToolkit](http://rgbdtoolkit.com/images/productshot_2.jpg)
 
-A software suite for filmmaking with Kinect paired with a Digital SLR Video camera.
+A software suite for experimenting with cinematic language of depth imaging.
 
 Watch the tutorials here:
 https://vimeo.com/album/1977644
-
-*********************************************************************************
-DOWNLOAD THE EXAMPLE MEDIA BIN AT: http://www.rgbdtoolkit.com/ExampleMediaBin.zip
-*********************************************************************************
 
 For an HTML formatted tutorial and video walkthroughs jump over to the website: http://rgbdtoolkit.com/tutorials.html
 
 http://www.rgbdtoolkit.com + http://rgbd.tumblr.com/
 
-RGBDToolkit is in prerelease v. 0041 for Mac OS X and Windows Released on January 3rd 2013
+RGBDToolkit is in prerelease v. 005 for Mac OS X and Windows Released on April 16th 2013
 
 RGBDToolkit is a labor of love by
 James George, developer http://www.jamesgeorge.org 
 Alexander Porter, experimental photographer http://www.alexanderporter.com
 Jonathan Minard, documentarian http://www.deepspeedmedia.com
 
-Development has been assisted by Kyle McDonald http://www.kylemcdonald.com and Elliot Woods http://www.kimchiandchips.com
+Development has been assisted by Elliot Woods http://www.kimchiandchips.com and Kyle McDonald http://www.kylemcdonald.com
 
-Supported by:
+Inspired by many authors, futurists, and theorists who think critically about the future of imaging in culture:
+Bruce Sterling, Vilem Flusser, Paul Virilio
 
-The Frank-Ratchye STUDIO for Creative Inquiry http://studioforcreativeinquiry.org/
+[Vision Machine](http://pdflibrary.files.wordpress.com/2008/05/paul-virilio-the-vision-machine.pdf) by [Paul Virilio](http://en.wikipedia.org/wiki/Paul_Virilio)
 
-Eyebeam Art+Technology center http://eyebeam.org
+[Towards a Philosophy of Photography](http://www.amazon.com/Towards-Philosophy-Photography-Vilem-Flusser/dp/1861890761)
 
-YCAM InterLab http://www.ycam.jp/en/interlab/
+Supported by generous residencies and fellowships at:
+[The Frank-Ratchye STUDIO for Creative Inquiry](http://studioforcreativeinquiry.org/)
 
-NYU Interactive Telecommunications Program
+[Eyebeam Art+Technology center](http://eyebeam.org)
+
+[YCAM InterLab](http://www.ycam.jp/en/interlab/)
+
+[NYU Interactive Telecommunications Program](http://itp.nyu.edu) 
 
 The original manual was graciously written by the wonderful and talented video artist i.m klif (http://vimeo.com/32631165) during our Resonate workshop in Belgrade, Serbia on March 16th 2012. Subsequent versions edited by James George.
 
-Very special thanks to the Resonate Festival, Eyeo Festival, and Art && Code conference.
+The updated manual written by Jack Armitage (http://about.me/jarmitage)
+
+Very special thanks to the Art && Code conference, Resonate Festival, and Eyeo Festival
+
 
 =======
 
 # SENSORS
+The RGBDToolkit is compatible with:
 
-The RGBDToolkit is compatible with the Microsoft XBOX Kinect and the Asus Xtion series on Mac OS X (http://www.newegg.com/Product/Product.aspx?Item=N82E16826785030)
+## OS X
+ - [Asus Xtion pro LIVE](http://www.newegg.com/Product/Product.aspx?Item=N82E16826785030)
+	- Requires [Sensecast install drivers](http://sensecast.com/files/Sensecast.and.Libs.Installer.v.0.02.dmg)
+ - [Microsoft Kinect Xbox 1414 or 1473](http://www.amazon.com/Kinect-Sensor-Adventures-Xbox-360/dp/B002BSA298/)
+
+## WINDOWS
+ - Microsoft Xbox Kinect model number 1414
+ - NOT CURRENTLY COMPATIBLE WITH Kinect for Windows
 
 * To use the Kinect run the RGBDCaptureKinect application
 * To use the Asus Xtion pro run the RGBDCaptureOpenNI Application
-
-To use the Asus Xtion sensor you must install the OpenNI drivers. The easiest way is to use the sensecast installer package: http://sensecast.com/files/Sensecast.and.Libs.Installer.v.0.02.dmg
-
-Or you can compile and install from source here: https://github.com/PrimeSense/Sensor
 
 # CALIBRATION
 
