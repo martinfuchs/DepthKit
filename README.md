@@ -141,7 +141,7 @@ The Square Size (cm) of the checkerboard should be set inside the application. F
 
 Select all of the video clips and drag them into the ‘Capture Lenses’ tab’s right-hand window pane. This should automatically start the calibration process. You may need to wait for a few seconds while this takes place; the application selects the middle frame from each video, converts it into a black and white .png (you can view these in your project folder) and then uses functions from the OpenCV library to determine the 3D location of the checkerboard.
 
-Once the analysis is complete, the software will display a ‘Total Error’ figure below the checkerboard images. This is the average error across all the calibration images. Alongside this, you can view the individual error margins for each image by ‘scrubbing’ the mouse from left to right across the calibration images. A ‘Total Error’ of < 0.200 is desirable. If your calibration has resulted in a larger average error than this, scrub through your image set and look for any ‘outlier’ images which have an error of > 0.400. Note the filename of any outliers. You can re-perform the analysis at any time simply by dragging the videos onto the window pane again – this time excluding the erroneous clips. This should improve your Total Error.
+Once the analysis is complete, the software will display a ‘Total Error’ figure below the checkerboard images. This is the average error across all the calibration images. Alongside this, you can view the individual error margins for each image by ‘scrubbing’ the mouse from left to right across the calibration images. A ‘Total Error’ of < 0.200 is desirable. If your calibration has resulted in a larger average error than this, scrub through your image set and look for any ‘outlier’ images which have an error of > 0.300. Note the filename of any outliers. You can re-perform the analysis at any time simply by dragging the videos onto the window pane again – this time excluding the erroneous clips. This should improve your Total Error.
 
 <GOOD TOTAL ERROR IMAGE>
 	
@@ -152,44 +152,59 @@ Congratulations, you've now sensed the actual structure of your camera lenses to
 #### RGBDCapture: Calibrate Correspondence
 Navigate to the second tab, labelled ‘Calibrate Correspondence’. Now that we have the lens models from the first tab, we can calculate the spatial relationship of the cameras. From this point onwards it is important to maintain the camera positions relative to each other (hence the fancy mounting system). With both cameras, we are going to capture the checkerboard at four varying depths.
 
-Adjust Before beginning, make sure your cameras are positioned such that you can see the checkerboard in each quadrant of both camera frames. You may need to adjust your hardware mount to achieve this position. Do this by looking at the live view on the camera and the capture application and comparing the edges until they match or at least the color information completely covers the depth. Depending on your lens you may find that your color information appears inside your depth camera’s field of view. There may be some compromises to be made here! The laser cut mounting solution 
+Adjust Before beginning, make sure your cameras are positioned such that you can see the checkerboard in each quadrant of both camera frames. You may need to adjust your hardware mount to achieve this position. Do this by looking at the live view on the camera and the capture application and comparing the edges until they match or at least the color information completely covers the depth. Depending on your lens you may find that your color information appears inside your depth camera’s field of view. There may be some compromises to be made here! The laser cut mounting solution allows for minute adjustment of the depth sensors angles using the pivot screws
 
 <TIGHT SHOT OF MOUNT ADJUSTMENT>
 
-With the checkerboard in each quadrant, you need to capture one short video clip, as before, and from the depth camera:
+Looking back at the capture page, with the checkerboard in each quadrant, you need to capture three images, _one short video clip from the video camera_, _one depth impression_ from the sensor, and one _infrared view of the checkerboard_ from the sensor. This is where the diffuse IR light is important, so make sure that is handy.
 
-One depth impression. In normal lighting conditions, click on the leftmost thumbnail preview to capture the image. 
-One IR impression. Hover your mouse over the second image, which will display it in the preview window on the right. Looks grainy, right? This is because of the IR projector on the depth camera. Place a piece of tissue paper / handkerchief / cigarette rolling paper over the IR projector. Observe that the graininess disappears from the camera preview, and red dots appear in the corners of the squares on the checkerboard. Click the second tile to capture an image whilst the red dots are in show – you may need extra hands at this point.
-Repeat this process with the checkerboard at four slightly different depths away from the camera pair. The idea is to create a ‘box’ of checkerboard points in space to best interpret the relationship between the two cameras that will hold up at all distances.
-Download the DSLR video clips into a new folder in your project, or the same one as before. One at a time, drag the video files into the corresponding rectangular tiles in the application, next to the corresponding depth and IR thumbnails taken from the device. 
-With four sets of three images ready, click ‘Generate RGB/Depth Correspondence’. This will either work first time, or a popup message will say “No Correspondence to Visualize”. This means the algorithm was unable to find an exact fit for the selected checkerboard pairs. 
-Just like last time, excluding images will help in this situation. Click ‘Ignore’ on all but one of the images, and attempt to Generate RGB/Depth Correspondence again. When you find an image that allows the process to complete successfully, try combining it with other images.
-There is some randomness in the algorithm, so it helps to try the same combinations a few times just to see if it “guesses” a better start place. This part can be very tricky.
-You should now have, in the right-hand window, a 3D scene which is a combination of the two camera data! 
-By pressing the left and right arrows you can preview the checkerboard calibrations. If it’s correct, you’ll see the checkerboard image data pixels (in black and white) mapped cleanly onto the depth model of the same image.  
-You’ll also see colored dots floating in space that correspond to the checkerboard depth planes.Dots are missing from the grid pattern if they are considered outliers from the model. An ideal calibration will contain mostly complete dot grids from three different sets of colors. It’s rare to get dots from all four correspondences included, but by cycling through all four tests the checkerboards should be visibly well aligned
+- Set the checkerboard centered, in front of the lens.
+- Focus the video camera and take a short clip.
+- In the RGBCapture app click the thumbnail of the depth image in the top right. This will capture a snapshot of the image from the sensor.
+- Diffuse the IR projector (farthest left circle of on the face of the sensor, the one with the red sparkles) using the rolling paper, tissue, or clothe. The red dots should show up in the preview and see the checkerboard clearerly in the second thumbnail. Observe that the graininess disappears from the camera preview, and red dots appear in the corners of the squares on the checkerboard. Click the second tile to capture an image whilst the red dots are in show – you may need extra hands at this point.
+
+Repeat this process with the checkerboard at four slightly different depths away from the camera pair. The idea is to fill up an imaginary box of checkerboard points in the 3D space in front of the camera. This helps to best interpret the relationship between the two cameras that will hold up at all distances from the lens.
+
+Once you've captured all four sets, download the video clips from the camera and drop them into a new folder the working directory you set before. One at a time, drag the video files into their corresponding rectangular tiles in the application next to the corresponding depth and IR thumbnails taken from the device. 
+
+With four triplets ready, click ‘Generate RGB/Depth Correspondence’. If you get an error, try excluding a few of the image sets as they may be throwing the model off. This means the algorithm was unable to find an exact fit for the selected checkerboard pairs.  Just like last time, excluding images will help in this situation. Click ‘Ignore’ on all but one of the images, and attempt to Generate RGB/Depth Correspondence again. When you find an image that allows the process to complete successfully, try combining it with other images.
+
+NOTE: There is some randomness in the algorithm, so it helps to try the same combinations a few times just to see if it “guesses” a better start place. This part can be very tricky.
+
+When the correspondence is successful, in the right hand window will appear a 3D scene which is a combination of the depth and color camera data! 
+
+By pressing the left and right arrows you can cycle through previews of the four checkerboard calibrations. If it’s correct, you’ll see the checkerboard image data pixels (in black and white) mapped cleanly onto the depth model of the same image. You’ll also see colored dots floating in space near corresponding to the checkerboard depth planes. Some dots are missing from the grid pattern, as they were removed as outliers while generating the calibration. An ideal calibration will contain mostly complete dot grids from at least three different sets of colors. It’s rare to get dots from all four correspondences included, but by cycling through all four tests the checkerboards should be visibly well aligned
 You can navigate the scene using the following controls:
 
-Input
-Action
-W
-Forward
-A
-Left
-S
-Backward
-D
-Right
-E
-Up
-C
-Down
-Up/Down
-Cycle through image types (?)
-Left/Right
-Cycle through calibration images
-Mouse
-Camera (click and drag)
+< Good CALIBRATION IMAGES >
+
+The camera is set up as a video-game style WASD first-person camera, using the following controls
+<table>
+    <tr>
+        <td style="font-weight:bold">Function</td><td style="font-weight:bold">Shortcut</td>
+    </tr>
+    <tr>
+        <td>Move Forward</td><td>w</td>	
+	</tr>
+    <tr>
+        <td>Move Backward</td><td>s</td>	
+	</tr>
+    <tr>
+        <td>Move Left</td><td>a</td>	
+	</tr>
+    <tr>
+        <td>Move Right</td><td>d</td>	
+	</tr>
+    <tr>
+        <td>Move Up</td><td>e</td>	
+	</tr>
+    <tr>
+        <td>Move Down</td><td>c</td>	
+	</tr>
+</table>
+
+Once you have a calibration where all the checkerboards depth and image data match up for all the levels, you can move onto recording! As long as your camera and depth sensor lenses stay in position, you won't have to go through the painstaking process again. Now you know why we like to have a trusty mount!
+
 
 
 Troubleshooting
