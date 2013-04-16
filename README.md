@@ -1,30 +1,26 @@
-# [RGBDToolkit](http://www.rgbdtoolkit.com)
+# [RGBDToolkit](http://www.rgbdtoolkit.com) beta 005
 
 ![ RGBDToolkit](http://rgbdtoolkit.com/images/productshot_2.jpg)
 
 **Software suite for experimenting with cinematic language of depth imaging.**
 
-## Tutorials 
- * [Video tutorials](http://vimeo.com/album/1977644) 
- * [HTML tutorial](http://rgbdtoolkit.com/tutorials.html)
- * This README!
+**Version 005 for Mac OS X and Windows Released on April 16th 2013**
+
 
 ## Projects
+Curious what this is all about? Check out some project created using the toolkit
+
  * [RGBD Tumblr](http://rgbd.tumblr.com/)
  * [RGBD Vimeo Channel](https://vimeo.com/album/2024049)
- * 
 
 ## Background
-RGBDToolkit is a 
-
-RGBDToolkit is in prerelease v. 005 for Mac OS X and Windows Released on April 16th 2013
-
-RGBDToolkit is a labor of love by
+RGBDToolkit is an ongoing labor of love:
 
 * [James George](http://www.jamesgeorge.org), developer 
 * [Alexander Porter](http://www.alexanderporter.com), experimental photographer 
 * [Jonathan Minard](http://www.deepspeedmedia.com), documentarian 
-
+* [Mike Heavers](http://mikeheavers.com/), web & design
+ 
 Development has been assisted by the expertise, guidance and advice of [Elliot Woods](http://www.kimchiandchips.com) and [Kyle McDonald](http://www.kylemcdonald.com)
 
 ## Inspiration
@@ -34,29 +30,26 @@ The Toolkit was inspired by many authors, futurists, and theorists who think cre
  * [Towards a Philosophy of Photography](http://www.amazon.com/Towards-Philosophy-Photography-Vilem-Flusser/dp/1861890761) by [Vilem Flusser](http://en.wikipedia.org/wiki/Vil%C3%A9m_Flusser)
  * [Vision Machine](http://pdflibrary.files.wordpress.com/2008/05/paul-virilio-the-vision-machine.pdf) by [Paul Virilio](http://en.wikipedia.org/wiki/Paul_Virilio)
 
-
 ## Support
-
 The Toolkit has been made possible by the ongoing and generous support of:
 
-[The Frank-Ratchye STUDIO for Creative Inquiry](http://studioforcreativeinquiry.org/)
+* [The Frank-Ratchye STUDIO for Creative Inquiry](http://studioforcreativeinquiry.org/)
+* [Eyebeam Art+Technology center](http://eyebeam.org)
+* [YCAM InterLab](http://www.ycam.jp/en/interlab/)
+* [NYU Interactive Telecommunications Program](http://itp.nyu.edu) 
+* [CLODUS Kickstarter](http://www.kickstarter.com/projects/1636630114/clouds-interactive-documentary)
 
-[Eyebeam Art+Technology center](http://eyebeam.org)
+Very special thanks to the [Art && Code 3D](http://artandcode.com/3d/), Resonate Festival, and Eyeo Festival
 
-[YCAM InterLab](http://www.ycam.jp/en/interlab/)
+## Tutorials 
+The remainder of this readme is a tutorial, but we have a few other foramts
 
-[NYU Interactive Telecommunications Program](http://itp.nyu.edu) 
+ * [Video tutorials](http://vimeo.com/album/1977644) 
+ * [HTML tutorial](http://rgbdtoolkit.com/tutorials.html)
 
-[CLODUS Kickstarter](http://www.kickstarter.com/projects/1636630114/clouds-interactive-documentary)
+The current manual was written by [Jack Armitage](http://about.me/jarmitage)
 
-## Tutorial
-
-The original manual was graciously written by the wonderful and talented video artist i.m klif (http://vimeo.com/32631165) during our Resonate workshop in Belgrade, Serbia on March 16th 2012. Subsequent versions edited by James George.
-
-The updated manual written by Jack Armitage (http://about.me/jarmitage)
-
-Very special thanks to the Art && Code conference, Resonate Festival, and Eyeo Festival
-
+The original manual was graciously written by the wonderful and talented video artist (i.m klif)[http://vimeo.com/32631165] during our Resonate workshop in Belgrade, Serbia 
 
 =======
 
@@ -407,3 +400,5 @@ Render frames are 1920x1080 and saved into _RenderBin/ folder underneath the mai
 
 NOTE: each rendered comp *needs* a camera track. Weird stuff may happen if you render without one.
 
+
+README Edited by James, phew...
