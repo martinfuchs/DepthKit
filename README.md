@@ -84,34 +84,35 @@ In the open source spirit, we've also made the plans available online to enable 
  * *Woodshop* a mount from angle cut angle iron
  * *Makerbot* print a mount using several community created MakerBot plans
 
+<MOUNTING IMAGES>
+
 #### Checkerboard
 Print out the A4 or A3 <LINK> checkerboard PDF's in black and white on matte paper. Mount them to something flat, like a board or foam core, looking out for wrinkles and bends. It also helps attach an angled bit to the back for hanging off of a stand.
 
 Once you have all the items in the check.
 
 ### 2) CALIBRATE
-**The next step is to connect and calibrate objective of the Calibrate step is to determine the physical position of the two cameras relative to one another.** This lets the software combine mash up the two data streams.
+**The next step is determine the physical position of the two cameras relative to one another mathematically.** This allows the software combine mash up the two data streams into one 3D scene.
 
 #### Pick the right setting to calibrate
 Calibration requires some ambient infrared (IR) light. The sun is a good source but can be too bright if it's direct. The best setting is a living room or studio with some large windows where you can get filtered sunlight without it being direct. Bear in mind that some windows block sunlight with treated glass. If that's not an option, having access to film lights that emit heat, such as halogen or tungsten, will work. We've also had good luck with IR light arrays such as [this one](We recommend getting IR lights like [this one](http://www.amazon.com/dp/B0002J1JFE/).
 
-#### Fix the cameras together
-
+#### Attach the cameras together
 **Mount the cameras** Using the mounting solution from above fix the HD camera to the depth sensor. Shooting requires that the cameras not be subject to move in relationship to one another not move at all after you've calibrated. So make sure everything's locked down tight.
 
-**Get an IR diffuser** You'll need Something to diffuse the depth sensor’s IR laser projector on the depth camera for the calibration stage. We often use a square of tissue paper, cigarette rolling paper or handkerchief.
+**Get a thin diffuser** You'll need something to diffuse the depth sensor’s IR laser projector for one step during calibration the depth camera for the calibration stage. We often use a square of tissue paper, cigarette rolling paper or handkerchief.
 
 **Lock off your zoom** to the widest setting and then lock it off with a piece of tape. Zooming after you've calibrated will disrupt the alignment, so it's good to disable it completely as not to hit it accidentally.
 
-#### Open RGBDCapture 
-
+#### RGBDCapture: Calibrate Lenses 
 **Plug in the sensor to your laptop and open the RGBDCapture application** depending on which sensor you are using, open the **RGBDCaptureKinector** **RGBDCaptureXtionPro** application.
 
 **Set your working directory** to a convenient place on your hard drive. All your footage will be stored here. Change it by clicking the text at the top off the RGBDCapture window. The default directory is depthframes, which is inside of your application folder. You’ll definitely want to change this. Observe that the software creates a ‘_calibration’ folder for you inside the project directory. Files are autosaved as you go, so relax your work will be saved.
 
-**Select Calibrate Lenses tab**, first of the four views on the capture application. This window is responsible for  window should be displaying when you open the application for the first time. It is split in half horizontally; your depth camera stream, if connected via USB, should display on the left, and the right pane should be empty to begin with. If you don’t see the depth camera view, see the troubleshooting page.
+**Select Calibrate Lenses tab**, first of the four views on the capture application. It is split in half horizontally; your depth camera stream, if connected via USB, should display on the left, and the right pane should be empty to begin with. If you don’t see the depth camera view, see the troubleshooting page.
 
 **Note about Kinect model number** There are two version of RGBDCaptureKinect application on OS X, one for model #1414 and one for model #1473. Check the bottom of your Kinect to find the model number and open the corresponding capture application.
+
 <Kinect model number photo>
 	
 **Capture Lens Properties** In order to accurately calibrate the two cameras, RGBDToolkit needs to understand the subtleties of the camera lenses – imperfect manufacturing processes mean that every lens will be slightly different. These values are called _lens intrinsic parameters_ and describe image size, field of view, optical center of the lens, and any distortion found in the lens. To determine these values we capture and analyze images from both cameras.
@@ -122,27 +123,41 @@ Calibration requires some ambient infrared (IR) light. The sun is a good source 
 	
 Note the the field of views are symmetrical, and that the principal point is at the center of the depth camera’s fixed 640x480 perspective.
 
-**Capture the external camera lens properties  takes a bit more effort and patience. Set your camera rig up on your tripod, and place your checkerboard in the centre of the DSLR’s shot, as in the image below (& video example). Make sure the checkerboard is in shot, the scene is exposed properly, the lens is focused and that both the environment and the checkerboard are evenly lit. Record a 1-3 second video of this shot.
+To **Capture the HD camera's lens properties** it takes a bit more effort and patience. Set your camera rig up on your tripod, and place your checkerboard in the centre of the DSLR’s shot, as in the image below (& video example). Make sure the checkerboard is in the frame, exposed properly and evenly lit, and that the lens is focused on it so the corners are crips. Record a 1-3 second video of this shot mindful of keeping the camera still.
 
-Move the checkerboard further away from the camera so that it occupies approximately a quarter of the frame, making sure you refocus the camera at every distance. Record four more short videos with the checkerboard in each quadrant. Don’t worry if the checkerboard is not exactly horizontal or vertical, but do ensure that the entire checkerboard is in the frame, including the white border around the outside black squares.
+Move the checkerboard further away from the camera so that it occupies approximately a quarter of the frame, making sure you refocus the camera at every distance. Record four more short videos with the checkerboard in each quadrant. Don’t worry if the checkerboard is not exactly horizontal or vertical, but do ensure that the entire checkerboard is in the frame, including the white border around the outside black squares. 
 
-6. Repeat this process at a distance where the checkerboard occupies around 1/9th of the frame.
+< ONE FOURTH AWAY DEMO >
 
-7. If you are happy with your 14 short videos, download them onto your computer and add them to your project’s working directory. It is helpful to add them to a new folder inside ‘_calibration’, called ‘slrCalibration’ or something similarly explanatory.
+Repeat this process at a distance where the checkerboard occupies around 1/9th of the frame, taking 9 images in total.
 
-8. The Square Size (cm) of the checkerboard should be 3.38 if you have used A3 sized checkerboard, and 2.54 if you used the A4 sized board. If yours is a different size, measure precisely and use that width instead.
+< ONE NINTH AWAY DEMO >
 
-9. Select all of the video clips and drag them into the ‘Capture Lenses’ tab’s right-hand window pane. This should automatically start the calibration process. You may need to wait for a few seconds while this takes place; the application selects the middle frame from each video, converts it into a black and white .PNG (you can view these in your project folder) and then uses functions from the OpenCV library to determine the 3D location of the checkerboard.
+If you are happy with your 14 short videos, download them onto your computer and add them to your project’s working directory that you set before. It is helpful to add them to a new folder inside ‘_calibration’, called ‘slrCalibration’ or something similarly explanatory.
 
-10. Once the analysis is complete, the software will display a ‘Total Error’ figure below the checkerboard images. This is the average error across all the calibration images. Alongside this, you can view the individual error margins for each image by ‘scrubbing’ the mouse from left to right across the calibration images.
-A ‘Total Error’ of < 0.200 is desirable. If your calibration has resulted in a larger average error than this, scrub through your image set and look for any ‘outlier’ images which have an error of > 0.400. Note the filename of any outliers. You can re-perform the analysis at any time simply by dragging the videos onto the window pane again – this time excluding the erroneous clips. This should improve your Total Error.
+The Square Size (cm) of the checkerboard should be set inside the application. For reference  3.38 if you have used A3 sized checkerboard, and 2.54 if you used the A4 sized board. If yours is a different size, measure precisely and use that width instead.
 
-11. If nearly all of your images have high error, you will need to reshoot them. Before you do this, look for elements in your environment which could have caused the error. Is there light streaking across your checkerboard? Check the troubleshooting section for more reasons why you may be getting high error.
+<IMAGE OF CHECKERBAORD SET>
 
-III: Capture Correspondence
-Navigate to the second tab, labelled ‘Capture Correspondence’. Now that we have the lens calibration data, we can calculate the spatial relationship of the cameras. From this point onwards it is important to maintain the camera positions relative to each other (hence the fancy mounting system). We are going to capture the checkerboard four more times – at four different depths away from the lens and with both cameras this time.
-Before beginning, make sure your cameras are positioned such that you can see the checkerboard in each quadrant of both camera frames. You may need to adjust your hardware mount to achieve this position. Do this by looking at the live view on the camera and the capture application and comparing the edges until they match or at least the color information completely covers the depth. Depending on your lens you may find that your color information appears inside your depth camera’s field of view. There may be some compromises to be made here!
+Select all of the video clips and drag them into the ‘Capture Lenses’ tab’s right-hand window pane. This should automatically start the calibration process. You may need to wait for a few seconds while this takes place; the application selects the middle frame from each video, converts it into a black and white .png (you can view these in your project folder) and then uses functions from the OpenCV library to determine the 3D location of the checkerboard.
+
+Once the analysis is complete, the software will display a ‘Total Error’ figure below the checkerboard images. This is the average error across all the calibration images. Alongside this, you can view the individual error margins for each image by ‘scrubbing’ the mouse from left to right across the calibration images. A ‘Total Error’ of < 0.200 is desirable. If your calibration has resulted in a larger average error than this, scrub through your image set and look for any ‘outlier’ images which have an error of > 0.400. Note the filename of any outliers. You can re-perform the analysis at any time simply by dragging the videos onto the window pane again – this time excluding the erroneous clips. This should improve your Total Error.
+
+<GOOD TOTAL ERROR IMAGE>
+	
+If nearly all of your images have high error, you will need to reshoot them. Before you do this, look for elements in your environment which could have caused the error. Is there light streaking across your checkerboard? Check the troubleshooting section for more reasons why you may be getting high error.
+
+Congratulations, you've now sensed the actual structure of your camera lenses to create a model. With this we can now determine the relationship between the two lenses. 
+
+#### RGBDCapture: Calibrate Correspondence
+Navigate to the second tab, labelled ‘Calibrate Correspondence’. Now that we have the lens models from the first tab, we can calculate the spatial relationship of the cameras. From this point onwards it is important to maintain the camera positions relative to each other (hence the fancy mounting system). With both cameras, we are going to capture the checkerboard at four varying depths.
+
+Adjust Before beginning, make sure your cameras are positioned such that you can see the checkerboard in each quadrant of both camera frames. You may need to adjust your hardware mount to achieve this position. Do this by looking at the live view on the camera and the capture application and comparing the edges until they match or at least the color information completely covers the depth. Depending on your lens you may find that your color information appears inside your depth camera’s field of view. There may be some compromises to be made here! The laser cut mounting solution 
+
+<TIGHT SHOT OF MOUNT ADJUSTMENT>
+
 With the checkerboard in each quadrant, you need to capture one short video clip, as before, and from the depth camera:
+
 One depth impression. In normal lighting conditions, click on the leftmost thumbnail preview to capture the image. 
 One IR impression. Hover your mouse over the second image, which will display it in the preview window on the right. Looks grainy, right? This is because of the IR projector on the depth camera. Place a piece of tissue paper / handkerchief / cigarette rolling paper over the IR projector. Observe that the graininess disappears from the camera preview, and red dots appear in the corners of the squares on the checkerboard. Click the second tile to capture an image whilst the red dots are in show – you may need extra hands at this point.
 Repeat this process with the checkerboard at four slightly different depths away from the camera pair. The idea is to create a ‘box’ of checkerboard points in space to best interpret the relationship between the two cameras that will hold up at all distances.
