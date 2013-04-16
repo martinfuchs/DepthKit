@@ -1,3 +1,5 @@
+# RGBDToolkit
+
 ![ RGBDToolkit](http://rgbdtoolkit.com/images/productshot_2.jpg)
 
 A software suite for experimenting with cinematic language of depth imaging.
@@ -43,22 +45,215 @@ Very special thanks to the Art && Code conference, Resonate Festival, and Eyeo F
 
 =======
 
-# SENSORS
+## SENSORS
 The RGBDToolkit is compatible with:
 
-## OS X
+### OS X
  - [Asus Xtion pro LIVE](http://www.newegg.com/Product/Product.aspx?Item=N82E16826785030)
 	- Requires [Sensecast install drivers](http://sensecast.com/files/Sensecast.and.Libs.Installer.v.0.02.dmg)
  - [Microsoft Kinect Xbox 1414 or 1473](http://www.amazon.com/Kinect-Sensor-Adventures-Xbox-360/dp/B002BSA298/)
 
-## WINDOWS
+### WINDOWS
  - Microsoft Xbox Kinect model number 1414
  - NOT CURRENTLY COMPATIBLE WITH Kinect for Windows
 
 * To use the Kinect run the RGBDCaptureKinect application
 * To use the Asus Xtion pro run the RGBDCaptureOpenNI Application
 
-# CALIBRATION
+RGBDToolkit Tutorial Content Update
+March 2013
+
+Tutorial homepage
+
+Tutorial videos (via JG on Vimeo)
+
+## RGB+D Toolkit Overview
+- RGBDToolkit Tutorial Part 1: Calibrate - update needed
+
+- RGBDToolkit Tutorial Part 2: Capture - update needed
+
+- RGBDToolkit Tutorial Part 3: Align
+
+- RGBDToolkit Tutorial Part 4: Visualise
+
+
+### Part 1: Calibrate
+
+#### Introduction
+
+**Tutorial objective**
+
+Calibrate the video camera with the depth camera. This process matches the optical characteristics of sensors and lenses of the two cameras and determines their relative positions to one another.
+Setup
+
+NOTE: Calibration requires some ambient infrared (IR) light. The sun is a good source, as are lights that emit heat, ie: halogen. Filtered sunlight through a living from window works best, but direct sunlight is too much. If you don’t have access to a room or a dry shaded outdoor area with plenty of sunlight (bear in mind that some office windows block sunlight with treated glass), you will need to use an IR light such as [this one](We recommend getting IR lights like [this one](http://www.amazon.com/dp/B0002J1JFE/).
+
+- RGBD hardware rig built and ready to go (see previous tutorial). You may want to tape your DSLR’s zoom ring to it’s widest position to prevent movement during calibration if this happens you will need to start again.
+
+- Print off checkerboard in exact dimensions (found in this repository) and mount to a hard surface such as wood, plexiglas or foamcore. During calibration this must be steady, flat and rigid.
+
+- Latest version of RGBDToolkit downloaded and unzipped. 
+
+
+- Something to diffuse the depth sensor’s IR laser projector on the depth camera for the calibration stage. We often use a square of tissue paper, cigarette rolling paper or handkerchief.
+
+**Instructions**
+Open the RGBDCapture Application: Depending on which camera you are using, open the RGBDCaptureKinector RGBDCaptureXtionPro application:
+
+1. The software references a Working Directory, referenced by the text at the top off the window (the default text is depthframes, which is inside of your application folder. You’ll want to change this). Click on this area to define the location on your computer from which you wish to work from and store all project files. Observe that the software creates a ‘_calibration’ folder for you inside the project directory. Files are autosaved as you go, so relax your work will be saved.
+
+The software has four views, selectable via the four tabs at the top. In this tutorial we are going to walk through the pre-shooting phase of lens calibration, using using the Calibrate Lenses and Calibrate Correspondence tabs. The Calibrate Lenses window should be displaying when you open the application for the first time. It is split in half horizontally; your depth camera stream, if connected via USB, should display on the left, and the right pane should be empty to begin with. If you don’t see the depth camera view, see the troubleshooting page.
+
+* Note about Kinect model number: There are two version of RGBDCaptureKinect, one for model #1414 and one for model #1473. Check the bottom of your Kinect to find the model number and open the corresponding capture application.
+
+2. Capture Lense Properties
+In order to accurately calibrate the two cameras, RGBDToolkit needs to understand the subtleties of the camera lenses – imperfect manufacturing processes mean that every lens will be slightly different. To achieve this, we capture test material from both cameras which is then analysed to detect inconsistencies:
+Aim your rig at an area of space which has plenty of ‘visible information’ – featuring different colours, contrasts and depths.
+
+3. Connect your depth camera and select ‘Self Calibrate Depth Camera’ from the left-hand pane. This will automatically analyze the incoming video stream (great!), and once complete should display results similar to the following results:
+
+4. Note the the field of views are symmetrical, and that the principal point is at the center of the depth camera’s fixed 640x480 perspective.
+Calibrating your DSLR lens takes a bit more effort and patience. Set your camera rig up on your tripod, and place your checkerboard in the centre of the DSLR’s shot, as in the image below (& video example). Make sure the checkerboard is in shot, the scene is exposed properly, the lens is focused and that both the environment and the checkerboard are evenly lit. Record a 1-3 second video of this shot.
+
+5. Move the checkerboard further away from the camera so that it occupies approximately a quarter of the frame, making sure you refocus the camera at every distance. Record four more short videos with the checkerboard in each quadrant. Don’t worry if the checkerboard is not exactly horizontal or vertical, but do ensure that the entire checkerboard is in the frame, including the white border around the outside black squares.
+
+6. Repeat this process at a distance where the checkerboard occupies around 1/9th of the frame.
+
+7. If you are happy with your 14 short videos, download them onto your computer and add them to your project’s working directory. It is helpful to add them to a new folder inside ‘_calibration’, called ‘slrCalibration’ or something similarly explanatory.
+
+8. The Square Size (cm) of the checkerboard should be 3.38 if you have used A3 sized checkerboard, and 2.54 if you used the A4 sized board. If yours is a different size, measure precisely and use that width instead.
+
+9. Select all of the video clips and drag them into the ‘Capture Lenses’ tab’s right-hand window pane. This should automatically start the calibration process. You may need to wait for a few seconds while this takes place; the application selects the middle frame from each video, converts it into a black and white .PNG (you can view these in your project folder) and then uses functions from the OpenCV library to determine the 3D location of the checkerboard.
+
+10. Once the analysis is complete, the software will display a ‘Total Error’ figure below the checkerboard images. This is the average error across all the calibration images. Alongside this, you can view the individual error margins for each image by ‘scrubbing’ the mouse from left to right across the calibration images.
+A ‘Total Error’ of < 0.200 is desirable. If your calibration has resulted in a larger average error than this, scrub through your image set and look for any ‘outlier’ images which have an error of > 0.400. Note the filename of any outliers. You can re-perform the analysis at any time simply by dragging the videos onto the window pane again – this time excluding the erroneous clips. This should improve your Total Error.
+
+11. If nearly all of your images have high error, you will need to reshoot them. Before you do this, look for elements in your environment which could have caused the error. Is there light streaking across your checkerboard? Check the troubleshooting section for more reasons why you may be getting high error.
+
+III: Capture Correspondence
+Navigate to the second tab, labelled ‘Capture Correspondence’. Now that we have the lens calibration data, we can calculate the spatial relationship of the cameras. From this point onwards it is important to maintain the camera positions relative to each other (hence the fancy mounting system). We are going to capture the checkerboard four more times – at four different depths away from the lens and with both cameras this time.
+Before beginning, make sure your cameras are positioned such that you can see the checkerboard in each quadrant of both camera frames. You may need to adjust your hardware mount to achieve this position. Do this by looking at the live view on the camera and the capture application and comparing the edges until they match or at least the color information completely covers the depth. Depending on your lens you may find that your color information appears inside your depth camera’s field of view. There may be some compromises to be made here!
+With the checkerboard in each quadrant, you need to capture one short video clip, as before, and from the depth camera:
+One depth impression. In normal lighting conditions, click on the leftmost thumbnail preview to capture the image. 
+One IR impression. Hover your mouse over the second image, which will display it in the preview window on the right. Looks grainy, right? This is because of the IR projector on the depth camera. Place a piece of tissue paper / handkerchief / cigarette rolling paper over the IR projector. Observe that the graininess disappears from the camera preview, and red dots appear in the corners of the squares on the checkerboard. Click the second tile to capture an image whilst the red dots are in show – you may need extra hands at this point.
+Repeat this process with the checkerboard at four slightly different depths away from the camera pair. The idea is to create a ‘box’ of checkerboard points in space to best interpret the relationship between the two cameras that will hold up at all distances.
+Download the DSLR video clips into a new folder in your project, or the same one as before. One at a time, drag the video files into the corresponding rectangular tiles in the application, next to the corresponding depth and IR thumbnails taken from the device. 
+With four sets of three images ready, click ‘Generate RGB/Depth Correspondence’. This will either work first time, or a popup message will say “No Correspondence to Visualize”. This means the algorithm was unable to find an exact fit for the selected checkerboard pairs. 
+Just like last time, excluding images will help in this situation. Click ‘Ignore’ on all but one of the images, and attempt to Generate RGB/Depth Correspondence again. When you find an image that allows the process to complete successfully, try combining it with other images.
+There is some randomness in the algorithm, so it helps to try the same combinations a few times just to see if it “guesses” a better start place. This part can be very tricky.
+You should now have, in the right-hand window, a 3D scene which is a combination of the two camera data! 
+By pressing the left and right arrows you can preview the checkerboard calibrations. If it’s correct, you’ll see the checkerboard image data pixels (in black and white) mapped cleanly onto the depth model of the same image.  
+You’ll also see colored dots floating in space that correspond to the checkerboard depth planes.Dots are missing from the grid pattern if they are considered outliers from the model. An ideal calibration will contain mostly complete dot grids from three different sets of colors. It’s rare to get dots from all four correspondences included, but by cycling through all four tests the checkerboards should be visibly well aligned
+You can navigate the scene using the following controls:
+
+Input
+Action
+W
+Forward
+A
+Left
+S
+Backward
+D
+Right
+E
+Up
+C
+Down
+Up/Down
+Cycle through image types (?)
+Left/Right
+Cycle through calibration images
+Mouse
+Camera (click and drag)
+
+
+Troubleshooting
+I
+The application will not launch / crashes / crashes my computer
+The minimum graphics capabilities suggested to run the application are X
+Make sure you have not moved the data/ folder in relationship to the RGBDCapture or RGBDVisualize applications
+If you are using the Asus Xtion Pro, make sure you’ve installed the Sensecast Libraries package.
+If you are still experiencing problems... search the RGBDToolkit Google Groups
+II
+My depth camera feed is not showing up in the Calibrate Lenses tab
+Restart the application
+Disconnect and reconnect your depth camera
+If you are using Kinect, make sure that  you are running the appropriate Kinect capture application, 1414 or 1473, based on the model number on the bottom of the device
+Occasionally fully restarting the computer has helped with sensors that fail to recognize 
+Launch the application and navigate to the Calibrate Lenses tab [screenshot]
+My depth camera’s field of view / principal point don’t match the figures given in the video
+If they are only slightly different, don’t worry!
+Try the process again from scratch by disconnecting devices and relaunching the application
+Is your lens clean?
+Make sure there is information in the scene that falls within the range visible to the sensor (3’–12’) and that there is variation in the scene; information in the foreground, middle and background.
+I’m getting bad error numbers when getting my RGB camera lens intrinsics
+Make sure that the exposure is set properly on the camera – if the whites of the checkerboards are too bright sometimes you need to shoot it again at a slightly darker exposure. 
+Make sure you refocused on the checkerboard at every stage and that your aperture is no too low, making the depth of field shallow. 
+Make sure there is no glare on the checkerboard from lights. Even one hot spot from a nearby light could throw off the reading
+Ensure that the checkerboard is flat and not moving, and well as the camera being firmly mounted to a tripod.
+The application crashes when I try to calibrate my DSLR lens
+Make sure your video files are compatible with the toolkit, H.264 or ProRes MOV’s.
+
+III - My 
+
+Outro
+Link to Part 2
+Link to project website etc
+
+
+Part 2: Capture
+
+Introduction
+Link to Part 1
+Note - this tutorial is for the latest version of RGBDToolkit
+Tutorial objectives
+Learn how to record a take using both cameras, and prepare the footage for visualisation
+Setup
+Hardware setup as explained in the Build tutorial
+Calibrated DSLR and depth camera as explained in the previous tutorial
+Space suitable for filming in.
+This stage is quite a bit easier with two people!
+
+Instructions
+I: Ready to Roll
+Here’s your pre-filming checklist:
+Navigate to the Record tab in the RGBDCapture application. If connected properly, you will be able to see a preview of your depth camera on the left. Your takes will show on the right side in the format ‘TAKE_00_00_00_00_00’, with the numbers corresponding to the time of capture (there will be none before you’ve saved your first take).
+If it’s still there from the last tutorial, remove the IR projector cover from your depth camera.
+When planning your shoot, note that your camera operator will not be able to move further from the computer than the depth camera’s USB cable will allow. This distance can be extended with an active USB extender if needed.
+Have someone (or yourself) ready to stand in front of the cameras and clap (or give any other clear visual clue) once rolling begins. You will do this for every take. This is important as it will allow you to fine tune the temporal alignment of both video streams later on.
+II: Rolling
+‘Rolling color...’ - hit record on your DSLR camera
+‘Rolling depth...’ - hit spacebar in the Record tab of the RGBDCapture application. Or click the Capture button. The depth camera preview window should display a red border to show that recording is taking place.
+Clap in front of the cameras to enable alignment later on.
+Make magic!
+Clap at the end of your take (optional) and hit spacebar again to finish recording. 
+III: Compositing
+In the application, you should see your take appear in the right side of the Record tab. As soon as you finish recording, the application will begin compressing the depth camera data. The progress of this process is shown as a grey bar overlaid on the take description, which will move all the way to the right when finished.
+In the meantime, open your working directory. You should see that a take folder has been created with the same timestamp as in the application. Navigate inside this folder and download your DSLR footage into the ‘color’ folder.
+You’re now ready to visualise your footage!
+
+Troubleshooting
+I can’t see the depth sensor preview image on the left
+Try disconnecting your camera and relaunching the application
+
+The bar below the capture window is blinking red. 
+You may need to cut your take and allow some images to process. This happens if you are at risk of skipping frames in the depth capture because your computer is overloaded or falling behind. 
+
+Outro
+Link to Part 3
+Link to project page etc.
+
+
+Rig Construction
+
+RGBDToolkit_Mount.ai
+
+Box cut on 5mm acrylic
+Arms and washers cut on 3mm acrylic
+
+
+## CALIBRATION 
 
 Calibration process "locks" the relationship between Kinect and the DSLR. This process matches the optical characteristics of sensors and lenses of the two cameras and determines their relative positions to one another. Once calibrated, you can use the same pair again and again without recalibrating, but the Kinect and SLR must not move in relationship to one another. For that reason we built the custom mounting rig for both cameras. You can order one from us or create your own from the instructions. You can also just put cameras on the table/shelf/floor but if they move even the slightest amount you'll need to redo the calibration.
 
