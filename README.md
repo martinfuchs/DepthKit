@@ -1,33 +1,44 @@
-# RGBDToolkit
+# [RGBDToolkit](http://www.rgbdtoolkit.com)
 
 ![ RGBDToolkit](http://rgbdtoolkit.com/images/productshot_2.jpg)
 
-A software suite for experimenting with cinematic language of depth imaging.
+**Software suite for experimenting with cinematic language of depth imaging.**
 
-Watch the tutorials here:
-https://vimeo.com/album/1977644
+## Tutorials 
+ * [Video tutorials](http://vimeo.com/album/1977644) 
+ * [HTML tutorial](http://rgbdtoolkit.com/tutorials.html)
+ * This README!
 
-For an HTML formatted tutorial and video walkthroughs jump over to the website: http://rgbdtoolkit.com/tutorials.html
+## Projects
+ * [RGBD Tumblr](http://rgbd.tumblr.com/)
+ * [RGBD Vimeo Channel](https://vimeo.com/album/2024049)
+ * 
 
-http://www.rgbdtoolkit.com + http://rgbd.tumblr.com/
+## Background
+RGBDToolkit is a 
 
 RGBDToolkit is in prerelease v. 005 for Mac OS X and Windows Released on April 16th 2013
 
 RGBDToolkit is a labor of love by
-James George, developer http://www.jamesgeorge.org 
-Alexander Porter, experimental photographer http://www.alexanderporter.com
-Jonathan Minard, documentarian http://www.deepspeedmedia.com
 
-Development has been assisted by Elliot Woods http://www.kimchiandchips.com and Kyle McDonald http://www.kylemcdonald.com
+* [James George](http://www.jamesgeorge.org), developer 
+* [Alexander Porter](http://www.alexanderporter.com), experimental photographer 
+* [Jonathan Minard](http://www.deepspeedmedia.com), documentarian 
 
-Inspired by many authors, futurists, and theorists who think critically about the future of imaging in culture:
-Bruce Sterling, Vilem Flusser, Paul Virilio
+Development has been assisted by the expertise, guidance and advice of [Elliot Woods](http://www.kimchiandchips.com) and [Kyle McDonald](http://www.kylemcdonald.com)
 
-[Vision Machine](http://pdflibrary.files.wordpress.com/2008/05/paul-virilio-the-vision-machine.pdf) by [Paul Virilio](http://en.wikipedia.org/wiki/Paul_Virilio)
+## Inspiration
+The Toolkit was inspired by many authors, futurists, and theorists who think creatively about the future of imaging, technology and culture:
 
-[Towards a Philosophy of Photography](http://www.amazon.com/Towards-Philosophy-Photography-Vilem-Flusser/dp/1861890761)
+ * [Shaping Things](http://www.amazon.com/Shaping-Things-Mediaworks-Pamphlets-Sterling/dp/0262693267) by [Bruce Sterling](http://www.wired.com/beyond_the_beyond/)
+ * [Towards a Philosophy of Photography](http://www.amazon.com/Towards-Philosophy-Photography-Vilem-Flusser/dp/1861890761) by [Vilem Flusser](http://en.wikipedia.org/wiki/Vil%C3%A9m_Flusser)
+ * [Vision Machine](http://pdflibrary.files.wordpress.com/2008/05/paul-virilio-the-vision-machine.pdf) by [Paul Virilio](http://en.wikipedia.org/wiki/Paul_Virilio)
 
-Supported by generous residencies and fellowships at:
+
+## Support
+
+The Toolkit has been made possible by the ongoing and generous support of:
+
 [The Frank-Ratchye STUDIO for Creative Inquiry](http://studioforcreativeinquiry.org/)
 
 [Eyebeam Art+Technology center](http://eyebeam.org)
@@ -35,6 +46,10 @@ Supported by generous residencies and fellowships at:
 [YCAM InterLab](http://www.ycam.jp/en/interlab/)
 
 [NYU Interactive Telecommunications Program](http://itp.nyu.edu) 
+
+[CLODUS Kickstarter](http://www.kickstarter.com/projects/1636630114/clouds-interactive-documentary)
+
+## Tutorial
 
 The original manual was graciously written by the wonderful and talented video artist i.m klif (http://vimeo.com/32631165) during our Resonate workshop in Belgrade, Serbia on March 16th 2012. Subsequent versions edited by James George.
 
@@ -60,12 +75,11 @@ The RGBDToolkit is compatible with:
 * To use the Kinect run the RGBDCaptureKinect application
 * To use the Asus Xtion pro run the RGBDCaptureOpenNI Application
 
-RGBDToolkit Tutorial Content Update
-March 2013
+## External HD Video Camera
+The RGBDToolkit can use any external HD video camera, including digital SLRs, Go-Pros, and even iPhones.
 
-Tutorial homepage
-
-Tutorial videos (via JG on Vimeo)
+## Mounts
+The RGBDToolkit requires the use of some sort of mount to connect the external camera to the
 
 ## RGB+D Toolkit Overview
 - RGBDToolkit Tutorial Part 1: Calibrate - update needed
@@ -76,6 +90,7 @@ Tutorial videos (via JG on Vimeo)
 
 - RGBDToolkit Tutorial Part 4: Visualise
 
+- RGBDToolkit Tutorial Part 5: Export
 
 ### Part 1: Calibrate
 
