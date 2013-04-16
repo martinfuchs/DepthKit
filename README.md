@@ -36,43 +36,51 @@ The Toolkit has been made possible by the ongoing and generous support of:
 * [Eyebeam Art+Technology center](http://eyebeam.org)
 * [YCAM InterLab](http://www.ycam.jp/en/interlab/)
 * [NYU Interactive Telecommunications Program](http://itp.nyu.edu) 
-* [CLODUS Kickstarter](http://www.kickstarter.com/projects/1636630114/clouds-interactive-documentary)
+* [CLOUDS Kickstarter](http://www.kickstarter.com/projects/1636630114/clouds-interactive-documentary)
 
 Very special thanks to the [Art && Code 3D](http://artandcode.com/3d/), [Resonate Festival](http://resonate.io/2013/), and [Eyeo Festival](http://eyeofestival.com/)
 
-## Tutorials 
-The remainder of this readme is a tutorial, but we have a few other foramts
+## Getting Started 
+The remainder of this README is a guide on how to get started, but we have a few other formats
 
  * [Video tutorials](http://vimeo.com/album/1977644) 
  * [HTML tutorial](http://rgbdtoolkit.com/tutorials.html)
 
-The current manual was written by [Jack Armitage](http://about.me/jarmitage)
-
-The original manual was graciously written by the wonderful and talented video artist [i.m klif](http://vimeo.com/32631165) during our Resonate workshop in Belgrade, Serbia.
+The current manual was written by [Jack Armitage](http://about.me/jarmitage) and edited by the team.
 
 =======
 
-## SENSORS
-The RGBDToolkit is compatible with:
+## 1) GET THE HARDWARE
+To use the RGBDToolkit you'll need
+
+ * A Windows or Mac OS X computer with modern graphics
+ * An HD video camera
+ * A depth sensor
+ * A method of mounting the cameras together securely
+ * The black and white checkerboard printed on a flat surface 
+
+The RGBDToolkit is compatible with the following operating system and sensor combinations
 
 ### OS X
  * [Asus Xtion pro LIVE](http://www.newegg.com/Product/Product.aspx?Item=N82E16826785030) (Requires [Sensecast install drivers](http://sensecast.com/files/Sensecast.and.Libs.Installer.v.0.02.dmg) )
- * [Microsoft Kinect Xbox 1414 or 1473](http://www.amazon.com/Kinect-Sensor-Adventures-Xbox-360/dp/B002BSA298/)
+ * [Microsoft Xbox Kinect](http://www.amazon.com/Kinect-Sensor-Adventures-Xbox-360/dp/B002BSA298/)
 
 ### WINDOWS
- * Microsoft Xbox Kinect model number 1414
- * NOT CURRENTLY COMPATIBLE WITH Kinect for Windows
+ * Microsoft Xbox Kinect (Only compatible with the older model number 1414)
 
-## External HD Video Camera
+### External Video Camera
 The RGBDToolkit can use any external HD video camera, including digital SLRs, Go-Pros, and even iPhones.
 
-## Mounts
-The workflow requires the use of a hardware fixture to secure the external HD camera to the depth sensor. There 
+### Mounts
+The workflow requires the use of a hardware fixture to secure the external HD camera to the depth sensor. The simplest approach is to lash them up with zip ties and rubber bands, but we've designed a few other options
 
-### Part 1: Calibrate
+ * *Laser Cutter* Download the laser cut mount plans
+ * *Woodshop* a mount from angle cut angle iron
+ * 
+
+## Part 1: Calibrate
 
 #### Introduction
-
 **The objective of the Calibrate step is to determine the physical position of the two cameras relative to one another.**
 
 NOTE: Calibration requires some ambient infrared (IR) light. The sun is a good source, as are lights that emit heat, ie: halogen. Filtered sunlight through a living from window works best, but direct sunlight is too much. If you don’t have access to a room or a dry shaded outdoor area with plenty of sunlight (bear in mind that some office windows block sunlight with treated glass), you will need to use an IR light such as [this one](We recommend getting IR lights like [this one](http://www.amazon.com/dp/B0002J1JFE/).
@@ -96,7 +104,7 @@ The software has four views, selectable via the four tabs at the top. In this tu
 
 * Note about Kinect model number: There are two version of RGBDCaptureKinect, one for model #1414 and one for model #1473. Check the bottom of your Kinect to find the model number and open the corresponding capture application.
 
-2. Capture Lense Properties
+2. Capture Lens Properties
 In order to accurately calibrate the two cameras, RGBDToolkit needs to understand the subtleties of the camera lenses – imperfect manufacturing processes mean that every lens will be slightly different. To achieve this, we capture test material from both cameras which is then analysed to detect inconsistencies:
 Aim your rig at an area of space which has plenty of ‘visible information’ – featuring different colours, contrasts and depths.
 
