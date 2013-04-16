@@ -50,9 +50,10 @@ The current manual was written by [Jack Armitage](http://about.me/jarmitage) and
 
 =======
 
-## 1) GET THE HARDWARE
+### 1) GET THE HARDWARE
 To use the RGBDToolkit you'll need
 
+ * The RGBDToolkit software downloaded and unzipped
  * A Windows or Mac OS X computer with modern graphics
  * An HD video camera
  * A depth sensor
@@ -61,46 +62,55 @@ To use the RGBDToolkit you'll need
 
 The RGBDToolkit is compatible with the following operating system and sensor combinations
 
-### OS X
+#### OS X
  * [Asus Xtion pro LIVE](http://www.newegg.com/Product/Product.aspx?Item=N82E16826785030) (Requires [Sensecast install drivers](http://sensecast.com/files/Sensecast.and.Libs.Installer.v.0.02.dmg) )
  * [Microsoft Xbox Kinect](http://www.amazon.com/Kinect-Sensor-Adventures-Xbox-360/dp/B002BSA298/)
 
-### WINDOWS
- * Microsoft Xbox Kinect (Only compatible with the older model number 1414)
+We recommend the Asus sensors over the Kinect because they feature the same resolution, but are smaller in size and don't require wall power.
 
-### External Video Camera
-The RGBDToolkit can use any external HD video camera, including digital SLRs, Go-Pros, and even iPhones.
+#### WINDOWS
+ * Microsoft Xbox Kinect (Only compatible with the older model number, 1414)
 
-### Mounts
+#### External Video Camera
+The RGBDToolkit can use any external HD video camera, including digital SLRs, Go-Pros, and even iPhones. We'll be using to use Digital SLR's like the Canon 5D for the purposes of the tutorials.
+
+#### Mounts
 The workflow requires the use of a hardware fixture to secure the external HD camera to the depth sensor. The simplest approach is to lash them up with zip ties and rubber bands, but we've designed a few other options
+If you'd like to buy a mount from us you can order one through our Paypal store <LINK> or buy one of the Asus mounts from Shapeways <LINK>
+
+In the open source spirit, we've also made the plans available online to enable you to make your own mount if you have access to the tools: 
 
  * *Laser Cutter* Download the laser cut mount plans
  * *Woodshop* a mount from angle cut angle iron
- * 
+ * *Makerbot* print a mount using several community created MakerBot plans
 
-## Part 1: Calibrate
+#### Checkerboard
+Print out the A4 or A3 <LINK> checkerboard PDF's in black and white on matte paper. Mount them to something flat, like a board or foam core, looking out for wrinkles and bends. It also helps attach an angled bit to the back for hanging off of a stand.
 
-#### Introduction
-**The objective of the Calibrate step is to determine the physical position of the two cameras relative to one another.**
+Once you have all the items in the check.
 
-NOTE: Calibration requires some ambient infrared (IR) light. The sun is a good source, as are lights that emit heat, ie: halogen. Filtered sunlight through a living from window works best, but direct sunlight is too much. If you don’t have access to a room or a dry shaded outdoor area with plenty of sunlight (bear in mind that some office windows block sunlight with treated glass), you will need to use an IR light such as [this one](We recommend getting IR lights like [this one](http://www.amazon.com/dp/B0002J1JFE/).
+### 2) CALIBRATE
+**The next step is to connect and calibrate objective of the Calibrate step is to determine the physical position of the two cameras relative to one another.** This lets the software combine mash up the two data streams.
 
-Before you get started you'll need the RGBD hardware rig built and ready to go (see previous tutorial). You may want to tape your DSLR’s zoom ring to it’s widest position to prevent movement during calibration if this happens you will need to start again.
+#### Pick the right setting to calibrate
+Calibration requires some ambient infrared (IR) light. The sun is a good source but can be too bright if it's direct. The best setting is a living room or studio with some large windows where you can get filtered sunlight without it being direct. Bear in mind that some windows block sunlight with treated glass. If that's not an option, having access to film lights that emit heat, such as halogen or tungsten, will work. We've also had good luck with IR light arrays such as [this one](We recommend getting IR lights like [this one](http://www.amazon.com/dp/B0002J1JFE/).
 
-Print off checkerboard in exact dimensions (found in this repository) and mount to a hard surface such as wood, plexiglas or foamcore. During calibration this must be steady, flat and rigid.
+#### Fix the cameras together
 
-Latest version of RGBDToolkit downloaded and unzipped. 
+**Mount the cameras** Using the mounting solution from above fix the HD camera to the depth sensor. Shooting requires that the cameras not be subject to move in relationship to one another not move at all after you've calibrated. So make sure everything's locked down tight.
 
-Something to diffuse the depth sensor’s IR laser projector on the depth camera for the calibration stage. We often use a square of tissue paper, cigarette rolling paper or handkerchief.
+**Get an IR diffuser** You'll need Something to diffuse the depth sensor’s IR laser projector on the depth camera for the calibration stage. We often use a square of tissue paper, cigarette rolling paper or handkerchief.
 
-**Instructions**
-Open the RGBDCapture Application: 
+**Lock off your zoom** to the widest setting and then lock it off with a piece of tape. Zooming after you've calibrated will disrupt the alignment, so it's good to disable it completely as not to hit it accidentally.
 
-Depending on which camera you are using, open the RGBDCaptureKinector RGBDCaptureXtionPro application:
+#### RGBDCapture 
 
-The software references a Working Directory, referenced by the text at the top off the window (the default text is depthframes, which is inside of your application folder. You’ll want to change this). Click on this area to define the location on your computer from which you wish to work from and store all project files. Observe that the software creates a ‘_calibration’ folder for you inside the project directory. Files are autosaved as you go, so relax your work will be saved.
+**Open the right capture application** depending on which sensor you are using, open the RGBDCaptureKinector RGBDCaptureXtionPro application:
+
+**Set your working directory** to a convenient place on your hard drive. All your footage will be stored here. Change it by clicking the text at the top off the RGBDCapture window. The default text is depthframes, which is inside of your application folder. You’ll definitely want to change this. Observe that the software creates a ‘_calibration’ folder for you inside the project directory. Files are autosaved as you go, so relax your work will be saved.
 
 The software has four views, selectable via the four tabs at the top. In this tutorial we are going to walk through the pre-shooting phase of lens calibration, using using the Calibrate Lenses and Calibrate Correspondence tabs. The Calibrate Lenses window should be displaying when you open the application for the first time. It is split in half horizontally; your depth camera stream, if connected via USB, should display on the left, and the right pane should be empty to begin with. If you don’t see the depth camera view, see the troubleshooting page.
+
 
 * Note about Kinect model number: There are two version of RGBDCaptureKinect, one for model #1414 and one for model #1473. Check the bottom of your Kinect to find the model number and open the corresponding capture application.
 
