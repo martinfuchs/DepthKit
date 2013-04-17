@@ -210,24 +210,24 @@ Ready to Roll? Navigate to the Record tab in the RGBDCapture application. If con
 
 **Tethered** When planning your shoot, be aware that your camera operator will not be able to move further from the computer than the depth camera’s USB cable will allow. This distance can be extended with an active USB extender if needed. If you are shooting with an Asus Xtion and a laptop you can go mobile!
 
-**Clap** Each take requires a visual signal to sync the two data streams together. Have someone (or yourself) ready to stand in front of the cameras and clap at the beginning of the each take. It may feel silly at the time, but it is important to will allow you to fine tune the temporal alignment of both video streams later on.
+**Clap** Each take requires a visual signal to sync the two data streams together. Have someone (or yourself) ready to stand in front of the RGBD rig and clap at the beginning of the each take. It may feel silly at the time, but it is important – it allows you to fine tune the temporal alignment between the video and depth streams later on.
 
 **Rolling**
 We follow this convention when on set:
 
- - DP announces ‘Rolling color...’ and hits record on the camera.
- - Data DP announces ‘Rolling depth...’ - and hits **spacebar** in the Record tab of the RGBDCapture application. (Alternatively hit the Toggle Record button). The depth camera preview window should display a red border with a flashing record button to show that recording is taking place.
+ - RGB DP announces ‘Rolling color...’ and starts recording on the video camera.
+ - Data DP announces ‘Rolling depth...’ - and hits **spacebar** in the Record tab of the RGBDCapture application. (Alternatively hit the Toggle Record button). The depth camera preview window should display a red border with a flashing Record button to show that recording is taking place.
  - Clap in front of the cameras to enable alignment later on.
  - __Make magic__
  - hit space bar again to stop recording
 
-Warning: if you see the Toggle Record button starting to fill with red, it means the images are failing to save. This usually happens when the hard drive is nearly full. If this happens, stop recording as soon as possible and wait for the red bar to go away, ensuring that all the footage is written to the drive. If you're recording to an external drive, make sure it's FireWire, USB 3.0, or Thunderbolt.
+Warning: if you see the Toggle Record button starting to fill with red, it means that some images are failing to save. This usually happens when the hard drive is nearly full. If this happens, stop recording as soon as possible and wait for the red bar to go away, ensuring that all the footage is written to the drive. If you're recording to an external drive, make sure it's FireWire, USB 3.0, or Thunderbolt.
 
 < RECORD BAR FULL IMAGE >
 
-When you stop recording you should see your take appear in the right side of the Record tab. As soon as you finish recording, the application will begin compressing the raw depth camera data behind the scenes. The progress of this process is shown as a grey bar overlaid on the take description, which will move all the way to the right when finished. In the meantime, open your working directory. You should see that a take folder has been created with the same timestamp as in the application. Navigate inside this folder and download your DSLR footage into the ‘color’ folder.
+When you stop recording you should see your Take appear in the right side of the Record tab. As soon as you finish recording, the application will begin compressing the raw depth data in the background. The progress of this process is shown as a grey bar overlaid on the Take description on the top right. It will move all the way to the right when finished. In the meantime, open your working directory. You should see that a Take folder has been created with the same timestamp as in the application. Navigate inside this folder and download your DSLR footage into the ‘color’ folder.
 
-It's possible to **preview the recorded depth data** inside of the capture application. In the playback tab, select a take and hit space bar to play the timeline. Use the same controls from the calibration step to navigate the point cloud as it plays back.
+It's possible to **preview the recorded depth data** inside of the capture application. In the playback tab, select a Take and hit space bar to play the timeline. Use the same controls from the calibration step to navigate the point cloud as it plays back your capture.
 
 #### MEDIA BIN PREPARATION 
 
@@ -249,44 +249,42 @@ The folder structure for the media bin looks like this:
  		TakeTwo/
  			...
 
-The toolkit allows for the option of having a smaller preview, sometimes referred to as 'offline', version of the video to make visualization fast while keeping export quality top notch. To create an offline video we recommend [MPEG Streamclip](http://www.squared5.com/) or Quicktime Pro 7 to create a 640x360 (assuming you shot in 16:9 aspect ratio) MJPEG @50% speed and remember to include sound. This is the clip that RGBDVisualize will load for preview, and it will automatically be swapped out automatically when rendering.
+The toolkit allows for the option of having a smaller preview, sometimes referred to as 'offline', version of the video to make visualization fast while keeping export quality top notch. To create an offline video we recommend [MPEG Streamclip](http://www.squared5.com/) or Quicktime Pro 7 to create a 640x360 (assuming you shot in 16:9 aspect ratio) MJPEG @50% speed and remember to include sound. Add _small.mov to the end of the filename and put in the Color folder. This is the clip that RGBDVisualize will load for preview, it will be swapped out automatically when rendering.
 
-Once your files are in place inside their color folders, you’re ready to Visualize
+Once your files are in place inside their color folders, you’re ready to Visualize.
 
 #### VISUALIZATION
 
-**Launch RGBDVisualize** and you should see the list of takes you just recorded. Only takes with color folders show up, so if you don't see one make sure it's fill out all the way. Select the take you'd like to visualize and click 'Create new Composition with this Scene'
+**Launch RGBDVisualize** You should see the list of takes you just recorded. Only takes with color folders show up, so if you don't see one make sure your folders are complete. Select the take you'd like to visualize and click 'Create new Composition with this Scene.'
 
-Assuming it's the first time loading this scene we need to **create a temporal alignment** between the two data streams. You'll be glad you clapped while shooting! On the timeline on the bottom you should see two rows of thumbnails, color and depth. Scrub through them both by clicking on the thumbnails and dr. You'll see the 3d wireframe changing as well as the preview thumbnails to the right. You can use the arrow keys until you find the clap in both Depth and Color. The depth and color should roughly line up. This takes a bit of practice to get just right distinguish the depth from the color image. Once you got it right, press "Set Color-Depth Time". Scrub through the timeline by clicking on the bar with the yellow tickers. You should see the footage playing back in 3d with matched temporal and depth alignment
+Assuming it's the first time loading this scene we need to **create a temporal alignment** by synchronizing the two data streams. You'll be glad you clapped while shooting! On the timeline on the bottom you should see two rows of thumbnails, color and depth. Scrub through them each by clicking on the line of thumbnails and dragging left or right. You'll see previews of the depth data and the RGB video as thumbnails on the top right. With your mouse over the respective timelines can use the arrow keys until you find the clap in both Depth and Color. Once you have the precise moment of the clap selected in both, press "Set Color-Depth Time" on the left. Scrub through the timeline by clicking on the bar with the yellow tickers at the bottom of the main preview pane. You should see the footage playing back with matched temporal synced.
 
-Now skip to the Texture Alignment tab to tweak the X and Y shift and scale to get it perfect, accounting for calibration errors.
+Now navigate to the Texture Alignment tab to tweak the X and Y Shift & Scale to align the depth and color information to perfect your alignment. 
 
-Just like in the calibrate step, clicking and dragging the mouse rotates the camera. WASD moves you like a first person video game. E and C boom up and down in space while R+Q rotate. Use the "Reset view" button helps when you get lost.
+Just like in the calibrate step, clicking and dragging the mouse rotates the camera. WASD moves you like a first person video game. E and C boom up and down in space while R+Q rotate. Use the "Reset view" button when you get lost in space.
 
 #### COMPOSING 
 
-Each Scene can have any number of compositions. A composition let's you render a scene in a different way, with a different in and out point, changing camera perspectives and different rendering styles.
+Each Take can have any number of compositions. A composition let's you render the scene in a different way, with a different in and out point, changing camera perspectives and different rendering styles.
 
 A few tips
 
-- To create more contrast between positive and negative space, change the 'Simplify' level.
-- To clean the background away from clips, change the Z-threshold 
-- The rendering styles are screen-blended onto one another. So you can get a lot of mileage out of combining points,wires, and meshes together and varying opacities.
+- To create more contrast between positive and negative space, change the 'Simplify' level in the Geometry tab.
+- To subtract the background from clips, change the Z-threshold.
+- The rendering styles are screen-blended onto one another. So you can get a lot of mileage out of combining points, wireframes and meshes together and varying opacities.
 - If your interface is getting crowded you can nudge the timeline widths by pulling on the green stripes at the bottom. Shrink them up and the interface will snap back to the bottom giving your render window some more room.
 
-To create a camera track, move the camera to where you'd like to look at the scene and scrub to the point in time you'd like to view. Press "Set camera point" on the GUI or press SHIFT+T.  You'll notice a blue marker appear on the Camera timeline. You can then move the timeline and the camera to a new location and press SHIFT+T again. By selecting "Lock to Track" or pressing SHIFT+L the camera will move along this path and is no longer free floating.
+To create a camera track, move the camera to where you'd like to look at the scene and scrub to the point in time you'd like it to be there. Press "Set camera point" on the GUI or press SHIFT+T. You'll notice a blue marker appear on the Camera timeline. You can then move the timeline and the camera to a new location and press SHIFT+T again. By selecting "Lock to Track" or pressing SHIFT+L the camera will travel along this path using your first camera point as an 'in point' and your last as an 'out point.'
 
-You can click and drag the camera points to change their location in time. You can delete them as well with the Delete or backspace key. By clicking on the beginning or end triangle and hitting the up and down arrows you can have the cameras ease in or out (represented by the curved arc), or cut (represented by the small)
+You can click and drag the camera points to change their location in time. You can delete them with the Delete or backspace key. By clicking on the triangles to the left or right of the marker and pressing the up or down arrows you can have the camera movement ease in or out represented by a curved arc, or cut (blocky steps.)
 
-Play around with rendering points, lines and mesh, as well as the different distortion amounts.
-
-The Depth of Field effect is most convincing for creating a virtual camera language. When Draw DOF is selected in the GUI. By setting the Depth Range you can select which distance is in focus. Tweak the range and blur to achieve the desired effect. Depth of field keyframes matched to camera moves can create really cool convincing rack focus effects. The white rectangle on the top left assists you in focusing. The geometry in focus shows up in black, while everything out of focus is white.
+The Depth of Field effect can be convincing for simulating a virtual camera language. When Draw DOF is selected in the GUI. By setting the Depth Range you can select which distance is in focus. Tweak the range and blur to achieve the desired effect. Depth of field keyframes matched to camera moves can create really cool convincing rack focus effects. The white rectangle on the top left assists you in focusing. The geometry in focus shows up in black, while everything out of focus is white.
 
 Save the composition when you are ready to export or want to experiment with something else. To switch compositions, click the name of the composition at the top and select a new scene.
 
 #### EXPORTING
 
-Exporting works by rendering the a given composition's camera track into a series of PNG frames that can be compiled into a movie using quicktime or after effects.
+Exporting works by rendering a given composition's camera track into a series of PNG frames that can be compiled into a movie using quicktime or after effects.
 
 To export, click on the composition name to view all the scenes. Selecting a scene will show all the compositions in that scene, each of which has a small 'R' button next to it. This stands for Render, and by toggling it on you will add this composition to the render queue.
 
