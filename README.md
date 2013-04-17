@@ -149,9 +149,9 @@ If nearly all of your images have high error, you will need to reshoot them. Bef
 Congratulations, you've now sensed the actual structure of your camera lenses to create a model. With this we can now determine the relationship between the two lenses. 
 
 #### RGBDCapture: Calibrate Correspondence
-**Navigate to the second tab, labelled Calibrate Correspondence** Now that we have the lens models from the first tab, we can determine the spatial relationship between the cameras. If you are using the laser cut mount, you can to pivot the sensor up and down in order to match the field of view (FoV) to the video camera's lens. Ideally the video camera will be able to see everything the depth sensor can see, with a little bit of margin on the top and bottom. Set the checkerboard a few feet away from the camera. Using a live preview mode on your video camera – note that the viewfinder and the live preview may differ on some DSLRs if you are shooting in a wide format – position the top of the board flush with the top of the camera's FoV. Next, while looking at the capture application, adjust the sensor's angle on the mount until the view matches, err on the low side to allow the color camera to see a bit more than what the sensor sees. Depending on your lens you may find that your color information appears inside your depth camera’s field of view. There may be some compromises to be made here! The laser cut mounting solution allows for minute adjustment of the depth sensor's angles by loosening the pivot (upper) screws. Lock down the mount again, and know that from this point onwards it is important to maintain the camera positions relative to each other (hence the fancy mounting system!).
+**Navigate to the second tab, labelled Calibrate Correspondence** Now that we have the lens models from the first tab, we can determine the spatial relationship between the cameras. If you are using the laser cut mount, you can to pivot the sensor up and down in order to match the field of view (FoV) to the video camera's lens. Ideally the video camera will be able to see everything the depth sensor can see, with a little bit of margin on the top and bottom. Set the checkerboard a few feet away from the camera. Using a live preview mode on your video camera – note that the viewfinder and the live preview may differ on some DSLRs if you are shooting in a wide format – position the top of the board flush with the top of the camera's FoV. Next, while looking at the capture application, adjust the sensor's angle on the mount until the view matches, err on the low side to allow the color camera to see a bit more than what the sensor sees. Depending on your lens you may find that your color information appears inside your depth camera’s field of view. There may be some compromises to be made here! The laser cut mounting solution allows for minute adjustment of the depth sensor's angles by loosening the locking (upper) screws. Tighten the upper screws to lock the mount angle – know that from this point onwards it is important to maintain the camera positions relative to each other (hence the fancy mounting system!).
 
-< TIGHT SHOT OF MOUNT ADJUSTMENT >
+![Mount Adjustment](https://www.dropbox.com/s/3ljauwdgxyikuvj/illus_diffuse.png)
 
 Now that we've matched the views, we need to take corresponding images of the checkerboard from the two cameras to determine how they sit. Looking back at the capture page, with the checkerboard in each quadrant, you need to capture three images, _one short video clip from the video camera_, _one depth impression_ from the sensor, and one _infrared view of the checkerboard_ from the sensor. This is where the IR light diffuser is important, so make sure that is handy before beginning. A second pair of hands is helpful at this step too.
 
@@ -239,10 +239,10 @@ The folder structure for the media bin looks like this:
 				6x .yml files generated from the calibration step
  		TakeOne/
 			depth/
- 				frame_000_millis_00000.png //compressed depth frame, first number is frame # second is millsecond
+ 				frame_000_millis_00000.png //compressed depth frame, first number is frame # second is millisecond
  				....
 			color/
- 				MyClip.mov //the movie clip that corresponds to this
+ 				MyClip.mov //the movie clip that corresponds to this Take
   				MySLRCLip_Small.mov //optional small version that will be used for offline editing
  		TakeTwo/
  			...
