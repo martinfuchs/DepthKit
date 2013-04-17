@@ -209,21 +209,24 @@ We follow this convention when on set:
  - DP announces ‘Rolling color...’ and hits record on the camera.
  - Data DP announces ‘Rolling depth...’ - and hits **spacebar** in the Record tab of the RGBDCapture application. (Alternatively hit the Toggle Record button). The depth camera preview window should display a red border with a flashing record button to show that recording is taking place.
  - Clap in front of the cameras to enable alignment later on.
+ - __Make magic__
+ - hit space bar again to stop recording
 
-__Make magic__
+Warning: if you see the Toggle Record button starting to fill with red, it means the images are failing to save. This usually happens when the hard drive is nearly full. If this happens, stop recording as soon as possible and wait for the red bar to go away, ensuring that all the footage is written to the drive. If you're recording to an external drive, make sure it's FireWire, USB 3.0, or Thunderbolt.
 
+< RECORD BAR FULL IMAGE >
 
-#### RGBDCapture: Playback
-In the application, you should see your take appear in the right side of the Record tab. As soon as you finish recording, the application will begin compressing the depth camera data. The progress of this process is shown as a grey bar overlaid on the take description, which will move all the way to the right when finished. In the meantime, open your working directory. You should see that a take folder has been created with the same timestamp as in the application. Navigate inside this folder and download your DSLR footage into the ‘color’ folder.
+When you stop recording you should see your take appear in the right side of the Record tab. As soon as you finish recording, the application will begin compressing the raw depth camera data behind the scenes. The progress of this process is shown as a grey bar overlaid on the take description, which will move all the way to the right when finished. In the meantime, open your working directory. You should see that a take folder has been created with the same timestamp as in the application. Navigate inside this folder and download your DSLR footage into the ‘color’ folder.
 
+It's possible to **preview the recorded depth data** inside of the capture application. In the playback tab, select a take and hit space bar to play the timeline. Use the same controls from the calibration step to navigate the point cloud as it plays back.
 
 #### MEDIA BIN PREPARATION 
 
-After filming we need to add the RGB recordings to the MediaBin.
+After a shoot, you'll need to copy the video files into the working directory. For each file you recorded, find the corresponding TAKE folder. Having the camera's clock set correctly is helpful so you can match the time stamps. Within the take directory, put the video file into the color/ folder.
 
 The folder structure for the media bin looks like this:
 
-	MediaBin/
+	WorkingFolder/
 		_calibration/
 			_matrices/
 				6x .yml files generated from the calibration step
@@ -233,32 +236,27 @@ The folder structure for the media bin looks like this:
  				....
 			color/
  				MyClip.mov //the movie clip that corresponds to this
-  				MySLRCLip_Small.mov //optional downresed version that will be used for offline editing
+  				MySLRCLip_Small.mov //optional small version that will be used for offline editing
  		TakeTwo/
  			...
 
-- copy each recorded clip into the color/ folder for that take. 
-- You can have both on online and offline version of our video so visualization is performant. Download mpeg stream clip (or use something like Quicktime Pro or Compressor to batch conversion program). Convert the clip to to a 640x360 (assuming you shot in 16:9 aspect ratio) MJPEG @50% speed and remember to include sound. This is the clip that RGBDVisualize will load for preview, which it will then be swapped out automatically for rendering.
+The toolkit allows for the option of having a smaller preview, sometimes referred to as 'offline', version of the video to make visualization fast while keeping export quality top notch. To create an offline video we recommend [MPEG Streamclip](http://www.squared5.com/) or Quicktime Pro 7 to create a 640x360 (assuming you shot in 16:9 aspect ratio) MJPEG @50% speed and remember to include sound. This is the clip that RGBDVisualize will load for preview, and it will automatically be swapped out automatically when rendering.
 
-You’re now ready to visualize your footage!
+Once your files are in place inside their color folders, you’re ready to Visualize
 
 #### VISUALIZATION
 
-Once you've copied the movies into the media bin you can begin creating compositions.
+**Launch RGBDVisualize** and you should see the list of takes you just recorded. Only takes with color folders show up, so if you don't see one make sure it's fill out all the way. Select the take you'd like to visualize and click 'Create new Composition with this Scene'
 
-- Launch RGBDVisualize 
-- Select the MediaBin directory (the same folder that you selected in the Capture application) by clicking the button at the top
-- You should see a list of the scenes you shot. Select one and then click 'Create new Composition with this Scene'
-- Assuming it's the first time loading this scene we need to create a temporal alignment between the two. You'll be glad you clapped while shooting!
-- On the timeline on the bottom you should see two rows of thumbnails. Scrub through them both by clicking on the thumb nails. You'll see the 3d wireframe changing as well as the preview thumbnails to the right.
-- You can use the arrow keys until you find the clap in both Depth and Color. The depth and color should roughly line up. This takes a bit of practice and perceptive training to start to distinguish the depth from the color image.
+Assuming it's the first time loading this scene we need to **create a temporal alignment** between the two data streams. You'll be glad you clapped while shooting! On the timeline on the bottom you should see two rows of thumbnails, color and depth. Scrub through them both by clicking on the thumbnails and dr. You'll see the 3d wireframe changing as well as the preview thumbnails to the right.
+- You can use the arrow keys until you find the clap in both Depth and Color. The depth and color should roughly line up. This takes a bit of practice to get just right distinguish the depth from the color image.
 - Once you got it right, press "Set Color-Depth Time"
 	- scrub through the timeline by clicking on the bar with the yellow tickers. You should see the footage playing back in 3d with matched temporal and depth alignment
 - Now you'll want to adjust the X and Y shift to tweak the alignment to get it perfect.
 
-Clicking and dragging the mouse rotates the camera. ASDW moves you like a first person video game. E and C boom up and down in space. R+Q rotate. "Reset view" button helps when you mess it up or get lost.
+Just like in the calibrate step, clicking and dragging the mouse rotates the camera. WASD moves you like a first person video game. E and C boom up and down in space while R+Q rotate. Use the "Reset view" button helps when you get lost.
 
-# COMPOSING
+#### COMPOSING
 
 Each Scene can have any number of compositions. A composition let's you render a scene in a different way, with a different in and out point, different camera moves, and different rendering styles.
 
@@ -278,7 +276,7 @@ The Depth of Field effect is most convincing for creating a virtual camera langu
 
 Save the composition when you are ready to export or want to experiment with something else. To switch compositions, click the name of the composition at the top and select a new scene.
 
-# EXPORTING
+#### EXPORTING
 
 Exporting works by rendering the a given composition's camera track into a series of PNG frames that can be compiled into a movie using quicktime or after effects.
 
