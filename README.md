@@ -116,7 +116,7 @@ Calibration requires some ambient infrared light in the room. The sun is a good 
 
 **Note about Kinect model number** There are two version of RGBDCaptureKinect application on OS X, one for model #1414 and one for model #1473. Check the bottom of your Kinect to find the model number and open the corresponding capture application.
 
-<Kinect model number photo>
+![Kinect Model No.](https://dl.dropboxusercontent.com/u/5367022/xRGBD/illus_Kinect_modelNo.png)
 	
 **Capture Lens Properties** In order to accurately calibrate the two cameras, RGBDToolkit needs to understand the subtleties of the camera lenses – imperfect manufacturing processes mean that every lens will be slightly different. These values are called _lens intrinsic parameters_ and describe image size, field of view, optical center of the lens, and any distortion found in the lens. To determine these values we capture and analyze images from both cameras.
 
@@ -149,9 +149,13 @@ If nearly all of your images have high error, you will need to reshoot them. Bef
 Congratulations, you've now sensed the actual structure of your camera lenses to create a model. With this we can now determine the relationship between the two lenses. 
 
 #### RGBDCapture: Calibrate Correspondence
-**Navigate to the second tab, labelled Calibrate Correspondence** Now that we have the lens models from the first tab, we can determine the spatial relationship between the cameras. If you are using the laser cut mount, you can to pivot the sensor up and down in order to match the field of view (FoV) to the video camera's lens. Ideally the video camera will be able to see everything the depth sensor can see, with a little bit of margin on the top and bottom. Set the checkerboard a few feet away from the camera. Using a live preview mode on your video camera – note that the viewfinder and the live preview may differ on some DSLRs if you are shooting in a wide format – position the top of the board flush with the top of the camera's FoV. Next, while looking at the capture application, adjust the sensor's angle on the mount until the view matches, err on the low side to allow the color camera to see a bit more than what the sensor sees. Depending on your lens you may find that your color information appears inside your depth camera’s field of view. There may be some compromises to be made here! The laser cut mounting solution allows for minute adjustment of the depth sensor's angles by loosening the locking (upper) screws. Tighten the upper screws to lock the mount angle – know that from this point onwards it is important to maintain the camera positions relative to each other (hence the fancy mounting system!).
+**Navigate to the second tab, labelled Calibrate Correspondence** Now that we have the lens models from the first tab, we can determine the spatial relationship between the cameras. 
 
-![Mount Adjustment](https://dl.dropboxusercontent.com/u/5367022/xRGBD/illus_diffuse.png)
+If you are using the laser cut mount, you can to pivot the sensor up and down in order to match the field of view (FoV) to the video camera's lens. Ideally the video camera will be able to see everything the depth sensor can see, with a little bit of margin on the top and bottom. 
+-Set the checkerboard a few feet away from the camera. Using a live preview mode on your video camera position the top of the board flush with the top of the camera's FoV. Note that the viewfinder and the live preview may differ on some DSLRs if you are shooting wide format. 
+-Next, while looking at the capture application, adjust the sensor's angle on the mount until the view matches, err on the low side to allow the color camera to see a bit more than what the sensor sees. Depending on your lens you may find that your color information appears inside your depth camera’s field of view. There may be some compromises to be made here! The laser cut mounting solution allows for minute adjustment of the depth sensor's angles by loosening the locking (upper) screws. Tighten the upper screws to lock the mount angle – know that from this point onwards it is important to maintain the camera positions relative to each other (hence the fancy mounting system!).
+
+![FoV Adjust](https://dl.dropboxusercontent.com/u/5367022/xRGBD/Side_Sensor_Asus_Cam_Close.png)
 
 Now that we've matched the views, we need to take corresponding images of the checkerboard from the two cameras to determine how they sit. Looking back at the capture page, with the checkerboard in each quadrant, you need to capture three images, _one short video clip from the video camera_, _one depth impression_ from the sensor, and one _infrared view of the checkerboard_ from the sensor. This is where the IR light diffuser is important, so make sure that is handy before beginning. A second pair of hands is helpful at this step too.
 
@@ -160,6 +164,8 @@ Now that we've matched the views, we need to take corresponding images of the ch
 - Being very careful not to move the rig at all, go back to the RGBCapture app and click the thumbnail of the depth image on the left. This will capture a snapshot of the image for correspondence to the video clip you just took.
 - Diffuse the IR projector with the paper or cloth, its the farthest left lens of on the face of the sensor, the one with the red sparkles coming out. Observe that the graininess disappears from the camera preview, and red dots appear in the corners of the squares on the checkerboard in the preview. Click the second tile to capture an image whilst the red dots are showing.
 - If the checkerboard is too dark or no red dots appear, it means you need more ambient IR light. Get closer to the window, or shine a hot light on it from far away. It's important that the board is illuminated evenly and sufficiently.
+
+![IR diffuse](https://dl.dropboxusercontent.com/u/5367022/xRGBD/illus_diffuse.png)
 
 Repeat this process with the checkerboard at four different depths away from the cameras, making sure to refocus at every plane. The idea is to fill up an imaginary box of checkerboard points in the 3D space in front of the camera. This helps to best interpret the relationship between the two cameras that will work at all distances from the lens. Once you've captured all four sets, download the video clips from the camera and drop them into a new folder in the working directory you set before. One at a time, drag the video files into their corresponding rectangular tiles in the application next to the corresponding depth and IR thumbnails taken from the device. 
 
