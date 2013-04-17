@@ -26,11 +26,11 @@ Development has been assisted by the expertise, guidance and advice of [Elliot W
 ## Inspiration
 The Toolkit was inspired by many authors, futurists, and theorists who think creatively about the future of imaging, technology and culture:
 
- * [Shaping Things](http://www.amazon.com/Shaping-Things-Mediaworks-Pamphlets-Sterling/dp/0262693267) by [Bruce Sterling](http://www.wired.com/beyond_the_beyond/)
  * [Towards a Philosophy of Photography](http://www.amazon.com/Towards-Philosophy-Photography-Vilem-Flusser/dp/1861890761) by [Vilem Flusser](http://en.wikipedia.org/wiki/Vil%C3%A9m_Flusser)
+ * [Shaping Things](http://www.amazon.com/Shaping-Things-Mediaworks-Pamphlets-Sterling/dp/0262693267) by [Bruce Sterling](http://www.wired.com/beyond_the_beyond/)
  * [Vision Machine](http://pdflibrary.files.wordpress.com/2008/05/paul-virilio-the-vision-machine.pdf) by [Paul Virilio](http://en.wikipedia.org/wiki/Paul_Virilio)
 
-## Support
+## Support for the Toolkit
 The Toolkit has been made possible by the ongoing and generous support of:
 
 * [The Frank-Ratchye STUDIO for Creative Inquiry](http://studioforcreativeinquiry.org/)
@@ -41,7 +41,8 @@ The Toolkit has been made possible by the ongoing and generous support of:
 
 Very special thanks to the [Art && Code 3D](http://artandcode.com/3d/), [Resonate Festival](http://resonate.io/2013/), and [Eyeo Festival](http://eyeofestival.com/)
 
-## Getting Started 
+### 1) Getting started
+
 The remainder of this README is a guide on how to get started, but we have a few other formats
 
  * [Video tutorials](http://vimeo.com/album/1977644) 
@@ -49,9 +50,6 @@ The remainder of this README is a guide on how to get started, but we have a few
 
 The current manual was written by [Jack Armitage](http://about.me/jarmitage) and edited by the team.
 
-=======
-
-### 1) Getting started
 To use the RGBDToolkit you'll need
 
  * The RGBDToolkit software downloaded and unzipped
@@ -243,7 +241,7 @@ The folder structure for the media bin looks like this:
 				6x .yml files generated from the calibration step
  		TakeOne/
 			depth/
- 				frame_000_millis_00000.png
+ 				frame_000_millis_00000.png //compressed depth frame, first number is frame # second is millsecond
  				....
 			color/
  				MyClip.mov //the movie clip that corresponds to this
@@ -295,7 +293,6 @@ Once you've selected all the compositions you wish to render, click the "Start R
 Render frames are 1920x1080 and saved into _RenderBin/ folder underneath the main MediaBin/ (right next to _calibration). Each folder is stamped with the scene, composition, and date so nothing will ever be overwritten.
 
 NOTE: each rendered comp *needs* a camera track with camera points set
-
 
 ## Troubleshooting
 **The application will not launch / crashes / crashes my computer**
