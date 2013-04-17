@@ -71,16 +71,18 @@ We recommend the Asus sensors over the Kinect because they feature the same reso
  * Microsoft Xbox Kinect (Only compatible with the older model number, 1414)
 
 #### External Video Camera
-The RGBDToolkit can use any external HD video camera, including digital SLRs, GoPros and even newer iPhones. We'll be using to use DSLR's like the Canon 5D MkII for the purposes of the tutorials.
+The RGBDToolkit can use any HD video camera, including digital SLRs, GoPros, even newer iPhones. We'll be using DSLR's like the Canon 5D MkII for the purposes of the tutorials, but feel free to use what you have. 
+
+#### Lens Choice
+In order to match the field of view between your camera and sensor so that the color information covers the depth we recommend a ~24mm lens on a full frame sensor. A ~16mm lens is adequate coverage for an APS-C sensor like an entry-level Canon DSLR. If you aren't familiar with these terms you should be able to find your [crop factor](http://en.wikipedia.org/wiki/Crop_factor) in the specifications section of your camera manual and you can look up your conversion [here](http://www.digicamhelp.com/accessories/dslr-accessories/crop-factor-conversion-chart/). 
 	
 #### Mounts
-The workflow requires the use of a hardware fixture to secure the external HD camera to the depth sensor. The simplest approach is to lash them up with zip ties and rubber bands, but we've designed a few other options
-If you'd like to buy a mount from us you can order one through our store <LINK> or buy one of our Asus mounts from Shapeways <LINK>. We currently recommend the mounts we're selling or something that is similarly adjustable for both Kinect or Asus. 
+The workflow requires the use of a hardware to bind the video camera and the depth sensor together. If you'd like to buy a mount from us you can order one for Asus or Kinect through our store <LINK> or buy one of our 3D printed Asus mounts from Shapeways <LINK>. We recommend the lasercut and aluminum mounts we're selling or something that is similarly robust and adjustable for Kinect and Asus.
 
 In the open source spirit, we've also made the plans available online to enable you to make your own mount if you have access to the tools: 
 
- * **Laser Cutter** Download the laser cutter mount plans for Asus or Kinect <ADD LINKED FILES>
- * **Home Workshop** A mount made from angle aluminum with basic tools
+ * **Laser Cutter** Download the laser cutter mount plans for Asus or Kinect <ADD LINK&FILES>
+ * **Home Workshop** A [mount](http://www.instructables.com/id/RGBD-Toolkit-Aluminum-Mount-for-Kinect-DSLRvide/) made from angle aluminum with basic tools
  * **Home 3D Printing** Print a mount using [community created files](http://www.thingiverse.com/search?q=RGBDToolkit)
 
 Please add your own mounting solutions and designs – however simple – to [Instructables](http://www.instructables.com/tag/type-id/?sort=none&q=RGBDToolkit) or your 3D printable models to [Thingiverse](http://www.thingiverse.com/search?q=RGBDToolkit) and tag them with "RGBDToolkit." For recommendations about designing your own mounts see the FAQ. <LINK FAQ>
@@ -93,20 +95,20 @@ Print out the [A4](https://github.com/downloads/obviousjim/RGBDToolkit/chessboar
 Once you have all the items in the checklist, you're ready to calibrate the cameras!
 
 ### 2) Calibrate
-**The next step is determine the physical position of the two cameras relative to one another mathematically.** This allows the software combine mash up the two data streams into one 3D scene.
+The next step is determine the physical position of the two cameras relative to one another mathematically. This allows the software combine mash up the two data streams into one 3D scene.
 
-#### Pick the right setting to calibrate
-Calibration requires some ambient infrared light in the room. The sun is a good source but can be too bright if it's direct. The best setting is a living room or studio with some large windows where you can get filtered sunlight without it being direct. Bear in mind that some windows block sunlight with treated glass. If that's not an option, having access to film lights that emit heat, such as halogen or tungsten, will work. We've also had good luck with IR light arrays such as [this one](We recommend getting IR lights like [this one](http://www.amazon.com/dp/B0002J1JFE/).
+#### Pick the right environment to calibrate
+Calibration requires some ambient infrared light in the room. The sun is a good source but can be too bright if it's direct. The best setting is a living room or studio with large windows where you can get filtered sunlight without it being direct. Bear in mind that windows in newer buildings are often treated with IR-blocking coatings. If neither of those are an option, having access to 'hot lights' that emit heat, such as halogen or tungsten, will work. We've also had good luck with [IR lights](http://www.amazon.com/dp/B0002J1JFE/).
 
 #### Attach the cameras together
-**Mount the cameras** Using the mounting solution from above fix the HD camera to the depth sensor. Shooting requires that the cameras not be subject to move in relationship to one another not move at all after you've calibrated. So make sure everything's locked down tight.
+**Mount the cameras** Using the mounting solution you chose from above, affix the HD camera to the depth sensor. Shooting requires that the two cameras be securely bound together and not subject to *any* movement in relation to eachother. Make sure everything is locked down tight including the safety catch on your quickrelease!
 
-**Get a thin diffuser** You'll need something to diffuse the depth sensor’s IR laser projector for one step during calibration the depth camera for the calibration stage. We often use a square of tissue paper, cigarette rolling paper or handkerchief.
+**Get an IR diffuser** You'll need something to diffuse the depth sensor’s IR laser projector for one step during calibration the depth camera for the calibration stage. We often use a square of tissue paper, cigarette rolling paper or handkerchief.
 
-**Lock off your zoom** to the widest setting and then lock it off with a piece of tape. Zooming after you've calibrated will disrupt the alignment, so it's good to disable it completely as not to hit it accidentally.
+**Lock of your zoom** to the widest setting and put a piece of tape over both the zoom ring and the lens body to prevent accidentally zooming later. Zooming after you've calibrated will nullify the calibration.
 
 #### RGBDCapture: Calibrate Lenses 
-**Plug in the sensor to your laptop and open the RGBDCapture application** depending on which sensor you are using, open the **RGBDCaptureKinector** **RGBDCaptureXtionPro** application.
+**Plug in the sensor to your computer and open the RGBDCapture application** depending on which sensor you are using, open the **RGBDCaptureKinect** or **RGBDCaptureXtionPro** application.
 
 **Set your working directory** to a convenient place on your hard drive. All your footage will be stored here. Change it by clicking the text at the top off the RGBDCapture window. The default directory is depthframes, which is inside of your application folder. You’ll definitely want to change this. Observe that the software creates a ‘_calibration’ folder for you inside the project directory. Files are autosaved as you go, so relax your work will be saved.
 
