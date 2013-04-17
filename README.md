@@ -16,7 +16,7 @@ Curious what this is all about? Check out some project created using the toolkit
 RGBDToolkit is an ongoing labor of love:
 
 * [James George](http://www.jamesgeorge.org), developer 
-* [Alexander Porter](http://www.alexanderporter.com), experimental photographer 
+* [Alexander Porter](http://www.alexanderporter.net), experimental photographer 
 * [Jonathan Minard](http://www.deepspeedmedia.com), documentarian 
 * [Mike Heavers](http://mikeheavers.com/), web & design
 * [Jack Armitage], documentation and tutorial videos
@@ -253,7 +253,7 @@ The toolkit allows for the option of having a smaller preview, sometimes referre
 
 Once your files are in place inside their color folders, you’re ready to Visualize.
 
-#### VISUALIZATION
+### VISUALIZATION
 
 **Launch RGBDVisualize** You should see the list of takes you just recorded. Only takes with color folders show up, so if you don't see one make sure your folders are complete. Select the take you'd like to visualize and click 'Create new Composition with this Scene.'
 
@@ -278,21 +278,19 @@ To create a camera track, move the camera to where you'd like to look at the sce
 
 You can click and drag the camera points to change their location in time. You can delete them with the Delete or backspace key. By clicking on the triangles to the left or right of the marker and pressing the up or down arrows you can have the camera movement ease in or out represented by a curved arc, or cut (blocky steps.)
 
-The Depth of Field effect can be convincing for simulating a virtual camera language. When Draw DOF is selected in the GUI. By setting the Depth Range you can select which distance is in focus. Tweak the range and blur to achieve the desired effect. Depth of field keyframes matched to camera moves can create really cool convincing rack focus effects. The white rectangle on the top left assists you in focusing. The geometry in focus shows up in black, while everything out of focus is white.
+The Depth of Field effect can be convincing for simulating a camera language. Draw DOF is selected in the GUI. By setting the Depth Range you can select here the focus plane is in relation to the camera – think of this like turning the focus ring on your camera. Tweak the range and blur to achieve the desired effect. Depth of field keyframes matched to camera moves can create really cool convincing effects simulation racking or tracking focus. The white rectangle on the top left acts as a focus assist by marking the area in focus in black.
 
 Save the composition when you are ready to export or want to experiment with something else. To switch compositions, click the name of the composition at the top and select a new scene.
 
-#### EXPORTING
+### EXPORTING
 
-Exporting works by rendering a given composition's camera track into a series of PNG frames that can be compiled into a movie using quicktime or after effects.
+Exporting works by rendering a given composition from the perspective chosen in the camera track into a series of PNG frames that can be compiled into a movie using Quicktime, After Effects or MPEG Streamclip. It uses the first camera point as an 'in point' and the last as an 'outpoint.'
 
-To export, click on the composition name to view all the scenes. Selecting a scene will show all the compositions in that scene, each of which has a small 'R' button next to it. This stands for Render, and by toggling it on you will add this composition to the render queue.
+To export, click on the composition name to view all the scenes. Selecting a scene will show all the compositions in that scene, each of which has a small 'R' button next to it. This stands for Render, and by clicking it you will add this composition to the render queue. If you make changes to that comp you will have to re-add the comp to the qeue by clicking the Take in the render qeue and re-adding the comp.
 
-Once you've selected all the compositions you wish to render, click the "Start Render Batch >>" button and sit back and relax as all the compositions you've selected render.
+Once you've selected all the compositions you wish to render, click the "Start Render Batch >>" button and sit back and relax as all the compositions you've qeued up begin to render. Be careful not to press the spacebar – it cancels your render. 
 
 Render frames are 1920x1080 and saved into _RenderBin/ folder underneath the main MediaBin/ (right next to _calibration). Each folder is stamped with the scene, composition, and date so nothing will ever be overwritten.
-
-NOTE: each rendered comp *needs* a camera track with camera points set
 
 ## Troubleshooting
 **The application will not launch / crashes / crashes my computer**
