@@ -210,102 +210,14 @@ We follow this convention when on set:
  - Data DP announces ‘Rolling depth...’ - and hits **spacebar** in the Record tab of the RGBDCapture application. (Alternatively hit the Toggle Record button). The depth camera preview window should display a red border with a flashing record button to show that recording is taking place.
  - Clap in front of the cameras to enable alignment later on.
 
-__Make magic!__
+__Make magic__
 
 
-In the application, you should see your take appear in the right side of the Record tab. As soon as you finish recording, the application will begin compressing the depth camera data. The progress of this process is shown as a grey bar overlaid on the take description, which will move all the way to the right when finished.
-In the meantime, open your working directory. You should see that a take folder has been created with the same timestamp as in the application. Navigate inside this folder and download your DSLR footage into the ‘color’ folder.
-You’re now ready to visualise your footage!
-
-Troubleshooting
-I can’t see the depth sensor preview image on the left
-Try disconnecting your camera and relaunching the application
-
-The bar below the capture window is blinking red. 
-You may need to cut your take and allow some images to process. This happens if you are at risk of skipping frames in the depth capture because your computer is overloaded or falling behind. 
-
-Outro
-Link to Part 3
-Link to project page etc.
-
-
-Rig Construction
-
-RGBDToolkit_Mount.ai
-
-Box cut on 5mm acrylic
-Arms and washers cut on 3mm acrylic
+#### RGBDCapture: Playback
+In the application, you should see your take appear in the right side of the Record tab. As soon as you finish recording, the application will begin compressing the depth camera data. The progress of this process is shown as a grey bar overlaid on the take description, which will move all the way to the right when finished. In the meantime, open your working directory. You should see that a take folder has been created with the same timestamp as in the application. Navigate inside this folder and download your DSLR footage into the ‘color’ folder.
 
 
-## CALIBRATION 
-
-Calibration process "locks" the relationship between Kinect and the DSLR. This process matches the optical characteristics of sensors and lenses of the two cameras and determines their relative positions to one another. Once calibrated, you can use the same pair again and again without recalibrating, but the Kinect and SLR must not move in relationship to one another. For that reason we built the custom mounting rig for both cameras. You can order one from us or create your own from the instructions. You can also just put cameras on the table/shelf/floor but if they move even the slightest amount you'll need to redo the calibration.
-
-Calibration process requires fair amount of IR light. The easier and cheapest way to get good IR light is to calibrate outside in the sun. If that's not an option you can use external led IR lights or bright film lights. LED panels and incandescent bulbs wont' work because they contain very little IR light.
-
-We recommend getting IR lights like this one:
-http://www.amazon.com/dp/B0002J1JFE/ref=asc_df_B0002J1JFE2056409?smid=ATVPDKIKX0DER&tag=hyprod-20&linkCode=asn&creative=395093&creativeASIN=B0002J1JFE&hvpos=1o1&hvexid=&hvnetw=g&hvrand=991063428382228515&hvpone=&hvptwo=&hvqmt=
-
-
-To create a calibration we take pairs of images from each camera looking at a checkerboard. Shooting is done so that we capture pairs of images using Kinect and DSLR. It is important to remember that we need to shoot in video mode on DSLR and not in photo mode. If you forget this calibration will not work. Zoom on the DSLR should be at the widest setting, and it is not bad idea to put little piece of tape on zoom ring so that you make sure it will not move. If you accidentally move the ring you'll need to redo the calibration process.
-
-Print and mount this checkerboard (https://github.com/downloads/obviousjim/RGBDToolkit/chessboard_a4.pdf) to hard wood or plexi. It is very important to use this particular checkerboard image as the algorithm is searching for exactly that number of corners. It also needs to be completely flat and rigid. During calibration place mount the board to a sturdy stand. It can not be hand held by hand.
-
-Typically it takes between 13 and 19 pairs of images to get good calibration. We shoot 3 depths: the close one (30-40cm from the lens) takes only one exposure (checkerboard almost fills the frame), middle (80-90cm from the lens) and far (150-200cm from the lens). At each distance other than close, pan the tripod ones take 9 exposures each: Top left, top right, top left, middle right, centered ... all the way to bottom right.
-
-You can move the checkerboard or the camera. It doesn't matter which one you move as long as you don't mess the relationship between Kinect and the camera (this is VERY important, so we will repeat this over and over).
-
-Here is a step by step process to create the calibration
-
-## Preparation
-- Attach the Kinect to the SLR using the quick release bracket and mount and place the pair on a video tripod with a fluid head.
-- Cover Kinect IR laser emitter
-- Plug your Kinect into your computer.
-- Launch RGBDCapture program.
-- Click on the big top left button to set the working directory. All your calibration files will go into a subfolder called calibration/ and the footage into a folder called takes/ .
-- Make sure you've highlighted the CALIBRATION tab on the top left. You should see the raw IR image (as opposed to the depth map) in the preview window.
-- Switch on the DSLR and set it to live view video mode.
-- position the checkerboard in the center of the view of the SLR camera. Using the small screws on the bottom of the mount, adjust the tilt of the Kinect until the checkerboard also appears in the center of the Kinect view. Ideally the SLR's frame will cover more than the Kinect's view, thus providing color data for the entirety of the depth image.
-- Under proper lightning, you should see the array of evenly spaced red dots on the checkerboard. If any of them are off the grid or wiggling due to video noise it indicates the light is either too strong or too weak or the checkerboard is too far. 
-- FOCUS your DSLR on the checkerboard, again being careful not to touch the zoom.
-- Begin capturing pairs
-
-## Pair Capturing
-
-At each checkerboard position record one very short video and capture one calibration image from the Kinect in RGBDCapture using the spacebar. The calibration image from kinect appears on the bottom of the screen. Make sure to keep the SLR clips short as we will just be extracting single frames from them. Wait a second after pressing record to hit space bar on the computer, as inevitably shake the rig a little bit when you press record on the DSLR. You may also consider using the Canon software utility to trigger recording or a physical remote. 
-
-Repeat this process for every position of the checkerboard. As you capture images, pay attention to the reprojection error above the each calibration image inside of RGBDCapture. The value should be between 0.0 and 0.3 - the lower the value the better the calibration. If you get a high number in there (most likely due to bad lighting or the board being too far away), adjust the board slightly position and reshoot the same position. It's super important that every time you capture a calibration image on the software you also shoot a short clip on the SLR, this way the number of takes will be the same and it will be much easier to pair them in the next step. It's also a good idea to match the time on a DSLR to the time on a computer as accurate as possible. That way pairs will have the same creation time.
-
-REMEMBER TO REFOCUS when you change the position of the checkerboard.
-
-## RGB Calibration Frame extraction
-
-The next step is to extract single PNG images from every large video file for us in the calibration.
-
-- Click on the "Load RGB Calibration Movies" button
-- When prompted select the folder where you placed DSLR footage containing the calibration clips.
-- Wait while the script runs to extract a PNG from each calibration clip. The interface will update with a row of images below the kinect calibration images
-- Make sure that you have the same number of images in both rows. If not, go into the _calibration folder in the MediabBin working directory and match them up. The images are stored in depthCalibration and colorCalibration respectively.
-- After the pairs are matched click "Regenerate Calibration" and it will calculate all the error parameters.
-- You may get images that go red, indicating the checkerboard was not found in that image. Select these pairs and delete them by clicking on the pair (it will highlight in red outline) and press delete.
-- Check for pairs with high error values (anything greater than 0.3). Select those pairs and erase them as well.
-- After deleting all the missed checkerboards and images with high error, click "Regenerate Calibration" again and then press "Save Calibration". the _calibration folder is then populated with a _matrices
-- When all the high error frames have been removed, click "Save Calibration" which will save the series of .yml files into your selected working directory. it will also copy the images that were used for the calibration there too so there too which you should back up.
-
-Congratulations, you're finished with the calibration process. It's time to shoot!
-
-# RECORDING
-
-- in the RGBDCapture app switch to the middle tab: Record.
-- *Make sure you've remove the cover from the IR projector*
-- To begin capturing footage press space bar on the computer and start the recording on DSLR.
-- Since the recordings will never begin at the same time we need to create some sort of distinct gesture to synchronize them later. We tend to have our subject or someone from the crew clap their hands firmly and quickly.
-- Make magic moments happen in front of the rig. Space, color, and time are your playground.
-- When you finish stop both recordings (press space bar on computer). It's good to get a finishing synchronization clap as well to check against.
-- NOTE: if you see the RECORD bar underneath the application flashing or filling red it indicates there are frames in the buffer that are not saving. This can result in dropped frames or lost footage. To avoid this write to a fast hard drive and make sure all other applications are closed, that you have plenty of hard drive space. If you are writing to an external hard drive we recommend FireWire over USB
-- When not filming the application is compressing the depth frames in the background to preserve disk space. This is indicated by the gray bar below each Take button. Keep the app open until all the clips have been converted.
-
-# MEDIA BIN PREPARATION 
+#### MEDIA BIN PREPARATION 
 
 After filming we need to add the RGB recordings to the MediaBin.
 
@@ -328,7 +240,9 @@ The folder structure for the media bin looks like this:
 - copy each recorded clip into the color/ folder for that take. 
 - You can have both on online and offline version of our video so visualization is performant. Download mpeg stream clip (or use something like Quicktime Pro or Compressor to batch conversion program). Convert the clip to to a 640x360 (assuming you shot in 16:9 aspect ratio) MJPEG @50% speed and remember to include sound. This is the clip that RGBDVisualize will load for preview, which it will then be swapped out automatically for rendering.
 
-# VISUALIZATION
+You’re now ready to visualize your footage!
+
+#### VISUALIZATION
 
 Once you've copied the movies into the media bin you can begin creating compositions.
 
@@ -380,6 +294,77 @@ NOTE: each rendered comp *needs* a camera track with camera points set
 README Edited by James, phew...
 
 
+Outro
+Link to Part 3
+Link to project page etc.
+
+
+Rig Construction
+
+RGBDToolkit_Mount.ai
+
+Box cut on 5mm acrylic
+Arms and washers cut on 3mm acrylic
+
+
+## CALIBRATION 
+
+Calibration process "locks" the relationship between Kinect and the DSLR. This process matches the optical characteristics of sensors and lenses of the two cameras and determines their relative positions to one another. Once calibrated, you can use the same pair again and again without recalibrating, but the Kinect and SLR must not move in relationship to one another. For that reason we built the custom mounting rig for both cameras. You can order one from us or create your own from the instructions. You can also just put cameras on the table/shelf/floor but if they move even the slightest amount you'll need to redo the calibration.
+
+Calibration process requires fair amount of IR light. The easier and cheapest way to get good IR light is to calibrate outside in the sun. If that's not an option you can use external led IR lights or bright film lights. LED panels and incandescent bulbs wont' work because they contain very little IR light.
+
+We recommend getting IR lights like this one:
+http://www.amazon.com/dp/B0002J1JFE/ref=asc_df_B0002J1JFE2056409?smid=ATVPDKIKX0DER&tag=hyprod-20&linkCode=asn&creative=395093&creativeASIN=B0002J1JFE&hvpos=1o1&hvexid=&hvnetw=g&hvrand=991063428382228515&hvpone=&hvptwo=&hvqmt=
+
+To create a calibration we take pairs of images from each camera looking at a checkerboard. Shooting is done so that we capture pairs of images using Kinect and DSLR. It is important to remember that we need to shoot in video mode on DSLR and not in photo mode. If you forget this calibration will not work. Zoom on the DSLR should be at the widest setting, and it is not bad idea to put little piece of tape on zoom ring so that you make sure it will not move. If you accidentally move the ring you'll need to redo the calibration process.
+
+Print and mount this checkerboard (https://github.com/downloads/obviousjim/RGBDToolkit/chessboard_a4.pdf) to hard wood or plexi. It is very important to use this particular checkerboard image as the algorithm is searching for exactly that number of corners. It also needs to be completely flat and rigid. During calibration place mount the board to a sturdy stand. It can not be hand held by hand.
+
+Typically it takes between 13 and 19 pairs of images to get good calibration. We shoot 3 depths: the close one (30-40cm from the lens) takes only one exposure (checkerboard almost fills the frame), middle (80-90cm from the lens) and far (150-200cm from the lens). At each distance other than close, pan the tripod ones take 9 exposures each: Top left, top right, top left, middle right, centered ... all the way to bottom right.
+
+You can move the checkerboard or the camera. It doesn't matter which one you move as long as you don't mess the relationship between Kinect and the camera (this is VERY important, so we will repeat this over and over).
+
+Here is a step by step process to create the calibration
+
+## Preparation
+- Attach the Kinect to the SLR using the quick release bracket and mount and place the pair on a video tripod with a fluid head.
+- Cover Kinect IR laser emitter
+- Plug your Kinect into your computer.
+- Launch RGBDCapture program.
+- Click on the big top left button to set the working directory. All your calibration files will go into a subfolder called calibration/ and the footage into a folder called takes/ .
+- Make sure you've highlighted the CALIBRATION tab on the top left. You should see the raw IR image (as opposed to the depth map) in the preview window.
+- Switch on the DSLR and set it to live view video mode.
+- position the checkerboard in the center of the view of the SLR camera. Using the small screws on the bottom of the mount, adjust the tilt of the Kinect until the checkerboard also appears in the center of the Kinect view. Ideally the SLR's frame will cover more than the Kinect's view, thus providing color data for the entirety of the depth image.
+- Under proper lightning, you should see the array of evenly spaced red dots on the checkerboard. If any of them are off the grid or wiggling due to video noise it indicates the light is either too strong or too weak or the checkerboard is too far. 
+- FOCUS your DSLR on the checkerboard, again being careful not to touch the zoom.
+- Begin capturing pairs
+
+## Pair Capturing
+
+At each checkerboard position record one very short video and capture one calibration image from the Kinect in RGBDCapture using the spacebar. The calibration image from kinect appears on the bottom of the screen. Make sure to keep the SLR clips short as we will just be extracting single frames from them. Wait a second after pressing record to hit space bar on the computer, as inevitably shake the rig a little bit when you press record on the DSLR. You may also consider using the Canon software utility to trigger recording or a physical remote. 
+
+Repeat this process for every position of the checkerboard. As you capture images, pay attention to the reprojection error above the each calibration image inside of RGBDCapture. The value should be between 0.0 and 0.3 - the lower the value the better the calibration. If you get a high number in there (most likely due to bad lighting or the board being too far away), adjust the board slightly position and reshoot the same position. It's super important that every time you capture a calibration image on the software you also shoot a short clip on the SLR, this way the number of takes will be the same and it will be much easier to pair them in the next step. It's also a good idea to match the time on a DSLR to the time on a computer as accurate as possible. That way pairs will have the same creation time.
+
+REMEMBER TO REFOCUS when you change the position of the checkerboard.
+
+## RGB Calibration Frame extraction
+
+The next step is to extract single PNG images from every large video file for us in the calibration.
+
+- Click on the "Load RGB Calibration Movies" button
+- When prompted select the folder where you placed DSLR footage containing the calibration clips.
+- Wait while the script runs to extract a PNG from each calibration clip. The interface will update with a row of images below the kinect calibration images
+- Make sure that you have the same number of images in both rows. If not, go into the _calibration folder in the MediabBin working directory and match them up. The images are stored in depthCalibration and colorCalibration respectively.
+- After the pairs are matched click "Regenerate Calibration" and it will calculate all the error parameters.
+- You may get images that go red, indicating the checkerboard was not found in that image. Select these pairs and delete them by clicking on the pair (it will highlight in red outline) and press delete.
+- Check for pairs with high error values (anything greater than 0.3). Select those pairs and erase them as well.
+- After deleting all the missed checkerboards and images with high error, click "Regenerate Calibration" again and then press "Save Calibration". the _calibration folder is then populated with a _matrices
+- When all the high error frames have been removed, click "Save Calibration" which will save the series of .yml files into your selected working directory. it will also copy the images that were used for the calibration there too so there too which you should back up.
+
+Congratulations, you're finished with the calibration process. It's time to shoot!
+
+
+
 Troubleshooting
 I
 The application will not launch / crashes / crashes my computer
@@ -406,3 +391,10 @@ Make sure there is no glare on the checkerboard from lights. Even one hot spot f
 Ensure that the checkerboard is flat and not moving, and well as the camera being firmly mounted to a tripod.
 The application crashes when I try to calibrate my DSLR lens
 Make sure your video files are compatible with the toolkit, H.264 or ProRes MOV’s.
+
+Troubleshooting
+I can’t see the depth sensor preview image on the left
+Try disconnecting your camera and relaunching the application
+
+The bar below the capture window is blinking red. 
+You may need to cut your take and allow some images to process. This happens if you are at risk of skipping frames in the depth capture because your computer is overloaded or falling behind. 
