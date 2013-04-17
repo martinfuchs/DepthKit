@@ -72,7 +72,7 @@ We recommend the Asus sensors over the Kinect because they feature the same reso
  * Microsoft Xbox Kinect (Only compatible with the older model number, 1414)
 
 #### External Video Camera
-The RGBDToolkit can use any external HD video camera, including digital SLRs, Go-Pros, and even iPhones. We'll be using to use Digital SLR's like the Canon 5D for the purposes of the tutorials.
+The RGBDToolkit can use any external HD video camera, including digital SLRs, GoPros and even newer iPhones. We'll be using to use DSLR's like the Canon 5D MkII for the purposes of the tutorials.
 
 #### Mounts
 The workflow requires the use of a hardware fixture to secure the external HD camera to the depth sensor. The simplest approach is to lash them up with zip ties and rubber bands, but we've designed a few other options
@@ -81,13 +81,15 @@ If you'd like to buy a mount from us you can order one through our Paypal store 
 In the open source spirit, we've also made the plans available online to enable you to make your own mount if you have access to the tools: 
 
  * **Laser Cutter** Download the laser cut mount plans
- * **Woodshop** a mount from angle cut angle iron
- * **Makerbot** print a mount using several community created MakerBot plans
+ * **Home Workshop** A mount made from angle aluminum with basic tools
+ * **Home 3D Printing** Print a mount using [community created files](http://www.thingiverse.com/search?q=RGBDToolkit).
+
+Please add your mounting solutions however simple to [Instructables](http://www.instructables.com/tag/type-id/?sort=none&q=RGBDToolkit) or your 3D printable models to [Thingiverse](http://www.thingiverse.com/search?q=RGBDToolkit) and tag them with "RGBDToolkit."
 
 <MOUNTING IMAGES>
 
 #### Checkerboard
-Print out the A4 or A3 <LINK> checkerboard PDF's in black and white on matte paper. Mount them to something flat, like a board or foam core, looking out for wrinkles and bends. It also helps attach an angled bit to the back for hanging off of a stand.
+Print out the [A4](https://github.com/downloads/obviousjim/RGBDToolkit/chessboard_a4.pdf) or [A3](https://github.com/obviousjim/RGBDToolkit/blob/master/chessboard_a3.pdf) calibration checkerboard PDF in black and white on matte paper. Mount them to something flat and rigid like a wood or foamcore. It helps attach a bracket or some way to attach it to a stand or the wall bit to the back for hanging off of a stand.
 
 Once you have all the items in the checklist, you're ready to calibrate the cameras!
 
