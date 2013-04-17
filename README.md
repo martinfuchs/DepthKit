@@ -280,21 +280,24 @@ The Depth of Field effect can be convincing for simulating a camera language. Dr
 
 Save the composition when you are ready to export or want to experiment with something else. To switch compositions, click the name of the composition at the top and select a new scene.
 
-### EXPORTING
+### EXPORT
 Currently you can export out of RGBDVisualize as a PNG image sequences with or without alpha transparency or as a series of textured .OBJ files for use in other programs like Maya, Blender or Cinema 4D.
 
 To export, click on the composition name to view all the scenes. Selecting a scene will show all the compositions in that scene, each of which has a small 'R' button next to it. This stands for Render, and by clicking it you will add this composition to the render queue. If you make changes to that comp you will have to re-add the comp to the qeue by clicking the Take in the render qeue and re-adding the comp.
 
 Once you've selected all the compositions you wish to render, click the "Start Render Batch >>" button and sit back and relax as all the compositions you've qeued up begin to render. Be careful not to press the spacebar – it cancels your render.
 
-#### Exporting as Image Sequence
+#### Export as Image Sequence
 The application exports an image sequence by default. Exporting works by rendering a given composition from the perspective chosen in the camera track (what you see in "Lock to Track mode) into a series of PNG frames. The renderer uses the first camera point as an 'in point' and the last as an 'outpoint.'
 
-Render frames are 1920x1080 as default but can be changed on the left-hand side of the app by toggling the Frame Width & Frame Height Sliders. There are presets for 720P & 1080P built in below the sliders. Frames are saved into the _RenderBin/ folder underneath the main MediaBin/ (right next to _calibration). Each folder is stamped with the scene, composition, and date of export so nothing will ever be overwritten.
+Render frames are 1920x1080 by default but can be changed on the left-hand side of the app by changing the Frame Width & Frame Height Sliders. There are presets for 720P & 1080P built in below the sliders. Frames are saved into the _RenderBin/ folder underneath the main MediaBin/ (right next to _calibration). Each folder is stamped with the scene, composition and date of export so nothing will ever be overwritten.
 
-The image sequences will be rendered with the black background as transparent using an Alpha channel for compositing. Except when "Draw DoF" is checked it will remain black. 
+The image sequences will be rendered out with the black background as transparent using an Alpha channel for compositing. Except when "Draw DoF" is checked it will remain black. 
 
-#### Exporting as OBJ Sequence
+#### Export as OBJ Sequence
+https://vimeo.com/56143282
+In order to export textured OBJ files select Export .obj Files on the left hand panel. This will render out a sequential series of .obj files and matching .png frames. There are no accompanying .mtl files included but they can be imported in to Maya. There is a tutorial and import script [here](http://mayapy.wordpress.com/2011/12/19/obj-sequence-importer-for-maya/). Keep in mind that there is no camera tracking or perspective information embedded in these sequences, but it does use your first and last camera points as in & out points for the render. 
+
 
 ## Troubleshooting
 **The application will not launch / crashes / crashes my computer**
@@ -302,24 +305,23 @@ The image sequences will be rendered with the black background as transparent us
  - Maybe your system doesn't support the toolkit. You'll need a computer with accelerated graphics no more than 4 or 5 years old
  - Make sure you have not moved the data/ folder in relationship to the RGBDCapture or RGBDVisualize applications
  - If you are using the Asus Xtion Pro, make sure you’ve installed the [Sensecast drivers](http://sensecast.com/files/Sensecast.and.Libs.Installer.v.0.02.dmg) )
- - If you are still experiencing problems... search the [RGBDToolkit Google Groups](https://groups.google.com/forum/#!forum/rgbdtoolkit)
+ - If you are still experiencing problems... search the [RGBDToolkit Forum](https://groups.google.com/forum/#!forum/rgbdtoolkit)
 
 **My depth camera feed is not showing up in the Calibrate Lenses tab**
  
- - Try disconnecting and reconnecting your depth camera restarting the application
- - If you are using Kinect, make sure that you are running the appropriate Kinect capture application, (1414 or 1473), based on the model number on the bottom of the device
+ - Try disconnecting and reconnecting your depth camera, then restarting the application
+ - If you are using Kinect, make sure that you are running the appropriate Kinect capture application (1414 vs 1473), based on the model number on the bottom of the device
  - Occasionally fully restarting the computer has helped with sensors that fail to pick up
 
 **My depth camera’s field of view / principal point don’t match the figures given in the video**
 
  - If they are only slightly different, don’t worry!
  - Try the process again from scratch by disconnecting devices and relaunching the application
- - Is your lens clean?
- - Make sure there is information in the scene that falls within the range visible to the sensor (3’–12’) and that there is variation in the scene; information in the foreground, middle and background.
+ - Make sure there is information in the scene that falls within the range visible to the sensor (~3’–12’). Check that there is variation in the scene; information in the foreground, middle and background.
 
 **I’m getting high error numbers on the calibrate lenses page**
 
- - High error may occur when the checkerboard is too close or too faraway. Make sure your depth
+ - High error may occur when the checkerboard is too close or too far away.
  - Make sure there is no glare on the checkerboard from lights. Even one hot spot from a nearby light could throw off the reading.
  - Make sure that the exposure is set properly on the camera – if the whites of the checkerboards are too bright sometimes you need to shoot it again at a slightly darker exposure. 
  - Make sure you refocused on the checkerboard at every stage and that your aperture is no too low, making the depth of field shallow. 
@@ -328,12 +330,11 @@ The image sequences will be rendered with the black background as transparent us
 
  - Confirm that you have a low error on the first stage.
  - Make sure that your set up is totally stable when capturing the correspondence images. A wobbling checkerboard or camera tripod will throw things off.
- - Often if there is not enough ambient IR light, get closer to a window 
+ - Often this will happen if there is not enough ambient IR light, get closer to a window 
  - Conversely if there is too much or uneven lighting it'll also blow out your checkerboard
- - Try different depths from the camera, being weary of too close or too far.
+ - Try different depths from the camera, being wary moving it too close or too far.
 
 **My recordings are dropping frames**
 
- - Ensure that the checkerboard is flat and not moving, and well as the camera being firmly mounted to a tripod.
- - The application crashes when I try to calibrate my DSLR lens
+**The application crashes when I try to calibrate my DSLR lens
  - Make sure your video files are compatible with the toolkit, H.264 or ProRes MOV’s.
