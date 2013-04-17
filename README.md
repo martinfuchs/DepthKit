@@ -122,13 +122,13 @@ Calibration requires some ambient infrared light in the room. The sun is a good 
 
 **Calibrate Depth Camera** Aim your rig at an area of space which has plenty of ‘visible information’ – featuring different colors, contrasts and depths. Hit the _Self Calibrate Depth Camera_ button at the bottom of the left-hand pane. This will automatically analyze the incoming video stream (great!), and once complete should display results similar to the following results:
 
-<WELL CALIBRATED DEPTH CAM>
+![Self Calibrated Depth](http://rgbdtoolkit.com/images/readme/calibrated_depth_camera.png)
 	
 Note the the field of views are symmetrical, and that the principal point is at the center of the depth camera’s fixed 640x480 perspective.
 
 To **Capture the HD camera's lens properties** it takes a bit more effort and patience since we don't have a direct software connection to the camera. First, set your camera rig up on a tripod and place your checkerboard on a stand in front, a distance form the camera so that it occupies approximately 1/4 of the frame. Place the board in the top left quadrant, focus, and record a short video from this perspective. Don’t worry if the checkerboard is not exactly horizontal or vertical, but do ensure that the entire checkerboard is in the frame, including the white border around the outside black squares.  Make sure the board is exposed well, evenly lit, and that the lens is focused on it so the corners are crisp. Record a 1-3 second video of this, mindful of keeping the camera very still.
 
-< ONE FOURTH AWAY DEMO >
+![Four Up](http://rgbdtoolkit.com/images/readme/intrinsics_four_up.gif)
 
 **Repeat this process** at a distance where the checkerboard occupies around 1/9th of the frame, taking 9 more images, making 13 in total.
 
