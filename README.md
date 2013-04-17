@@ -41,7 +41,8 @@ The Toolkit has been made possible by the ongoing and generous support of:
 
 Very special thanks to the [Art && Code 3D](http://artandcode.com/3d/), [Resonate Festival](http://resonate.io/2013/), and [Eyeo Festival](http://eyeofestival.com/)
 
-### 1) Getting started
+
+## 1) Getting started
 
 The remainder of this README is a guide on how to get started, but we have a few other formats
 
@@ -74,10 +75,10 @@ We recommend the Asus sensors over the Kinect because they feature the same reso
 The RGBDToolkit can use any HD video camera, including digital SLRs, GoPros, even newer iPhones. We'll be using the Canon 5D MkII DSLR for the purposes of the tutorials, but feel free to use what you have.
 
 #### Lens Choice
-In order to match the field of view between your camera and sensor so that the color information adequately covers the depth information we recommend a ~24mm lens on a full frame sensor. A ~16mm lens is adequate coverage for an APS-C sensor like an entry-level Canon DSLR. If you aren't familiar with these terms you should be able to find your [crop factor](http://en.wikipedia.org/wiki/Crop_factor) in the specifications section of your camera manual and you can look up the conversion to full-frame [here](http://www.digicamhelp.com/accessories/dslr-accessories/crop-factor-conversion-chart/).
+In order to match the field of view between your camera and sensor so that the color information adequately covers the depth information we recommend a ~24mm lens on a full frame sensor. A ~16mm lens is adequate coverage for an APS-C sensor like an entry-level Canon DSLR. If you aren't familiar with these terms you should be able to find your [crop factor](http://en.wikipedia.org/wiki/Crop_factor) in the specifications section of your camera manual and you can look up the conversion to full-frame [here](http://www.digicamhelp.com/accessories/dslr-accessories/crop-factor-conversion-chart/). When in doubt, set your zoom lens to its widest setting. Use a wide prime lens for best results. 
 	
 #### Mounts
-The workflow requires the use of hardware to bind the video camera and the depth sensor together. If you'd like to buy a mount from us you can order one for Asus or Kinect through our store <LINK> or buy one of our 3D printed Asus mounts from our [Shapeways store](http://www.shapeways.com/shops/rgbd). We recommend the lasercut acrylic and aluminum mounts we're selling or something that is similarly robust and adjustable for both Kinect and Asus.
+The workflow requires the use of hardware to bind the video camera and the depth sensor together. If you'd like to buy a mount from us you can order one for Asus or Kinect through our store <LINK> or buy one of our 3D printed Asus mounts from our [Shapeways store](http://www.shapeways.com/shops/rgbd). For both Kinect and Asus we recommend our lasercut acrylic and aluminum mounts or something that is similarly robust and adjustable.
 
 In the open source spirit, we've also made the plans available online to enable you to make your own mount if you have access to the tools: 
 
@@ -94,7 +95,8 @@ Print out the [A4](https://github.com/downloads/obviousjim/RGBDToolkit/chessboar
 
 Once you have all the items in the checklist, you're ready to calibrate the cameras!
 
-### 2) Calibrate
+
+## 2) CALIBRATE
 The next step is determine the physical position of the two cameras relative to one another mathematically. This allows the software combine mash up the two data streams into one 3D scene.
 
 #### Pick the right environment to calibrate
@@ -140,7 +142,7 @@ Download the clips onto your computer into your project’s working directory, w
 
 Drag all of the video clips them into the **‘Capture Lenses’** tab’s right-hand window pane. This should automatically start the calibration process. You may need to wait for a few seconds while this takes place; the application selects the middle frame from each video, converts it into a black and white .png  which is stored in your working folder's _calibration directory. It uses OpenCV library to determine the checkerboard corners to create a model of the lens.
 
-Once the analysis is complete, the software will display a **‘Total Error’** figure below the checkerboard images. This is the average error across all the calibration images. Alongside this, you can view the individual error margins for each image by scrubbing the mouse from left to right across the calibration image window. A ‘Total Error’ of < 0.200 is desirable. If your calibration has resulted in a larger average error than this, scrub through your image set and look for any outlier images which have an error of > 0.300. Note the filename of any outliers. You can re-perform the analysis at any time simply by dragging the videos onto the window pane again – this time excluding the erroneous clips. This should improve your Total Error.
+Once the analysis is complete, the software will display a **‘Total Error’** figure below the checkerboard images. This is the average error across all the calibration images. Alongside this, you can view the individual error margins for each image by scrubbing the mouse from left to right across the calibration image window. A ‘Total Error’ of < 0.200 is desirable. If your calibration has resulted in a larger average error than this, scrub through your image set and look for any outlier images which have an error of > 0.300. Note the filename of any outliers. You can re-perform the analysis at any time, simply by dragging the videos onto the window pane again – this time excluding the erroneous clips. This should improve your Total Error.
 
 ![good intrinsics](http://rgbdtoolkit.com/images/readme/good_intrinsics.png)
 	
@@ -211,7 +213,7 @@ The camera is set up as a video game style WASD first-person camera, using the f
 
 Once you have a calibration where all the checkerboards depth and image data match up for all the levels, you can move onto recording! As long as your camera and depth sensor lenses stay in position, you won't have to go through the painstaking process again. Phew!
 
-#### RGBDCapture: Record
+## 3) CAPTURE
 **Pre-filming checklist**
 Ready to Roll? Navigate to the Record tab in the RGBDCapture application. If connected properly, you will be able to see a preview of your depth camera on the left. Your takes will show on the right side in the format ‘TAKE_MM_DD_HH_MM_SS’, with the numbers corresponding to the time of capture (there will be none before you’ve saved your first take). If it’s still there from the last tutorial, remove the IR projector cover from your depth camera.
 
@@ -236,7 +238,7 @@ When you stop recording you should see your Take appear in the right side of the
 
 It's possible to **preview the recorded depth data** inside of the capture application. In the playback tab, select a Take and hit space bar to play the timeline. Use the same controls from the calibration step to navigate the point cloud as it plays back your capture.
 
-#### MEDIA BIN PREPARATION 
+#### Media Bin Preparation 
 
 After a shoot, you'll need to copy the video files into the working directory. For each file you recorded, find the corresponding TAKE folder. Having the camera's clock set correctly is helpful so you can match the time stamps. Within the take directory, put the video file into the color/ folder.
 
@@ -260,7 +262,7 @@ The toolkit allows for the option of having a smaller preview, sometimes referre
 
 Once your files are in place inside their color folders, you’re ready to Visualize.
 
-### VISUALIZATION
+## 4) VISUALIZE
 
 **Launch RGBDVisualize** You should see the list of takes you just recorded. Only takes with color folders show up, so if you don't see one make sure your folders are complete. Select the take you'd like to visualize and click 'Create new Composition with this Scene.'
 
@@ -289,7 +291,8 @@ The Depth of Field effect can be convincing for simulating a camera language. Dr
 
 Save the composition when you are ready to export or want to experiment with something else. To switch compositions, click the name of the composition at the top and select a new scene.
 
-### EXPORT
+
+## 5) EXPORT
 Currently you can export out of RGBDVisualize as a PNG image sequences with or without alpha transparency or as a series of textured .OBJ files for use in other programs like Maya, Blender or Cinema 4D.
 
 To export, click on the composition name to view all the scenes. Selecting a scene will show all the compositions in that scene, each of which has a small 'R' button next to it. This stands for Render, and by clicking it you will add this composition to the render queue. If you make changes to that comp you will have to re-add the comp to the qeue by clicking the Take in the render qeue and re-adding the comp.
