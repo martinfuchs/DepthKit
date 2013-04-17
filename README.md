@@ -296,6 +296,7 @@ The image sequences will be rendered out with the black background as transparen
 
 #### Export as OBJ Sequence
 https://vimeo.com/56143282
+
 In order to export textured OBJ files select Export .obj Files on the left hand panel. This will render out a sequential series of .obj files and matching .png frames. There are no accompanying .mtl files included but they can be imported in to Maya. There is a tutorial and import script [here](http://mayapy.wordpress.com/2011/12/19/obj-sequence-importer-for-maya/). Keep in mind that there is no camera tracking or perspective information embedded in these sequences, but it does use your first and last camera points as in & out points for the render. 
 
 
