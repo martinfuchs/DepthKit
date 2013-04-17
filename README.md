@@ -167,7 +167,7 @@ Repeat this process with the checkerboard at four different depths away from the
 
 With four sets of three images complete, click ‘Generate RGB/Depth Correspondence’. If you get an error it means the algorithm was unable to find an exact fit for the selected checkerboard pairs. Try hitting 'ignore' to excluding a few of the image sets – 'bad apples' may be throwing off the model calculation. Just like before, excluding images may help in this situation. Click ‘Ignore’ on all but one of the images, and attempt to Generate RGB/Depth Correspondence again. When you find an image that allows the process to complete successfully, try combining it with other images. There is some randomness in the algorithm, so it helps to try the same combinations a few times just to see if it “guesses” a better starting place.
 
-< Good CALIBRATION IMAGES >
+![Good Calibration](http://rgbdtoolkit.com/images/readme/good_calibration.png)
 
 By pressing the left and right arrows you can cycle through previews of the four checkerboard calibration sets. If it’s correct, you’ll see the checkerboard image data pixels (in black and white) mapped cleanly onto the depth model of the same image. You’ll also see corresponding colored dots floating in space near corresponding to the checkerboard depth planes. Some dots are missing from the grid pattern, as they were removed as outliers while generating the calibration. An ideal calibration will contain dots from at least three different sets of colors. By cycling through all tests checkerboards sets, the checkerboard image should be visibly well aligned to the depth data.
 
