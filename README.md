@@ -71,13 +71,13 @@ We recommend the Asus sensors over the Kinect because they feature the same reso
  * Microsoft Xbox Kinect (Only compatible with the older model number, 1414)
 
 #### External Video Camera
-The RGBDToolkit can use any HD video camera, including digital SLRs, GoPros, even newer iPhones. We'll be using DSLR's like the Canon 5D MkII for the purposes of the tutorials, but feel free to use what you have. 
+The RGBDToolkit can use any HD video camera, including digital SLRs, GoPros, even newer iPhones. We'll be using the Canon 5D MkII DSLR for the purposes of the tutorials, but feel free to use what you have.
 
 #### Lens Choice
-In order to match the field of view between your camera and sensor so that the color information covers the depth we recommend a ~24mm lens on a full frame sensor. A ~16mm lens is adequate coverage for an APS-C sensor like an entry-level Canon DSLR. If you aren't familiar with these terms you should be able to find your [crop factor](http://en.wikipedia.org/wiki/Crop_factor) in the specifications section of your camera manual and you can look up your conversion [here](http://www.digicamhelp.com/accessories/dslr-accessories/crop-factor-conversion-chart/). 
+In order to match the field of view between your camera and sensor so that the color information adequately covers the depth information we recommend a ~24mm lens on a full frame sensor. A ~16mm lens is adequate coverage for an APS-C sensor like an entry-level Canon DSLR. If you aren't familiar with these terms you should be able to find your [crop factor](http://en.wikipedia.org/wiki/Crop_factor) in the specifications section of your camera manual and you can look up the conversion to full-frame [here](http://www.digicamhelp.com/accessories/dslr-accessories/crop-factor-conversion-chart/).
 	
 #### Mounts
-The workflow requires the use of a hardware to bind the video camera and the depth sensor together. If you'd like to buy a mount from us you can order one for Asus or Kinect through our store <LINK> or buy one of our 3D printed Asus mounts from Shapeways <LINK>. We recommend the lasercut and aluminum mounts we're selling or something that is similarly robust and adjustable for Kinect and Asus.
+The workflow requires the use of hardware to bind the video camera and the depth sensor together. If you'd like to buy a mount from us you can order one for Asus or Kinect through our store <LINK> or buy one of our 3D printed Asus mounts from our [Shapeways store](http://www.shapeways.com/shops/rgbd). We recommend the lasercut acrylic and aluminum mounts we're selling or something that is similarly robust and adjustable for both Kinect and Asus.
 
 In the open source spirit, we've also made the plans available online to enable you to make your own mount if you have access to the tools: 
 
@@ -85,7 +85,7 @@ In the open source spirit, we've also made the plans available online to enable 
  * **Home Workshop** A [mount](http://www.instructables.com/id/RGBD-Toolkit-Aluminum-Mount-for-Kinect-DSLRvide/) made from angle aluminum with basic tools
  * **Home 3D Printing** Print a mount using [community created files](http://www.thingiverse.com/search?q=RGBDToolkit)
 
-Please add your own mounting solutions and designs – however simple – to [Instructables](http://www.instructables.com/tag/type-id/?sort=none&q=RGBDToolkit) or your 3D printable models to [Thingiverse](http://www.thingiverse.com/search?q=RGBDToolkit) and tag them with "RGBDToolkit." For recommendations about designing your own mounts see the FAQ. <LINK FAQ>
+Please add your own mounting solutions and designs – however simple or rudimentary – to [Instructables](http://www.instructables.com/tag/type-id/?sort=none&q=RGBDToolkit) or your 3D printable models to [Thingiverse](http://www.thingiverse.com/search?q=RGBDToolkit) and tag them with "RGBDToolkit." For recommendations about designing your own mounts see the FAQ. <LINK FAQ>
 
 <MOUNTING IMAGES>
 
@@ -297,7 +297,7 @@ The image sequences will be rendered out with the black background as transparen
 #### Export as OBJ Sequence
 https://vimeo.com/56143282
 
-In order to export textured OBJ files select Export .obj Files on the left hand panel. This will render out a sequential series of .obj files and matching .png frames. There are no accompanying .mtl files included but they can be imported in to Maya. There is a tutorial and import script [here](http://mayapy.wordpress.com/2011/12/19/obj-sequence-importer-for-maya/). Keep in mind that there is no camera tracking or perspective information embedded in these sequences, but it does use your first and last camera points as in & out points for the render. 
+In order to export textured OBJ files toggle Export .obj Files on the left-hand panel. This will render out a sequential series of .OBJ files and matching .PNG frames to the _RenderBin/ folder. There will be no accompanying .mtl files included but they can be imported in to Maya. There is a tutorial and import script [here](http://mayapy.wordpress.com/2011/12/19/obj-sequence-importer-for-maya/). Keep in mind that there is no camera tracking or perspective information embedded in these sequences as they are simply texturable 3D files, but it does still use your first and last camera points as in & out points for the render. 
 
 
 ## Troubleshooting
