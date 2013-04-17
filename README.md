@@ -63,10 +63,10 @@ To use the RGBDToolkit you'll need
 The RGBDToolkit is compatible with the following operating system and sensor combinations
 
 #### Mac OS X
- * [Asus Xtion pro LIVE](http://www.newegg.com/Product/Product.aspx?Item=N82E16826785030) (Requires [Sensecast install drivers](http://sensecast.com/files/Sensecast.and.Libs.Installer.v.0.02.dmg) )
+ * [Asus Xtion pro LIVE](http://www.newegg.com/Product/Product.aspx?Item=N82E16826785030) (Requires [Sensecast drivers installed](http://sensecast.com/files/Sensecast.and.Libs.Installer.v.0.02.dmg) )
  * [Microsoft Xbox Kinect](http://www.amazon.com/Kinect-Sensor-Adventures-Xbox-360/dp/B002BSA298/)
 
-We recommend the Asus sensors over the Kinect because they feature the same resolution, but are smaller in size and don't require wall power.
+We recommend the Asus sensors over the Kinect because they feature the same resolution, but are smaller in size and don't require wall power allowing for more portability.
 
 #### Microsoft Windows 7
  * Microsoft Xbox Kinect (Only compatible with the older model number, 1414)
