@@ -195,39 +195,24 @@ You can navigate the scene using the following controls:The camera is set up as 
 
 Once you have a calibration where all the checkerboards depth and image data match up for all the levels, you can move onto recording! As long as your camera and depth sensor lenses stay in position, you won't have to go through the painstaking process again. Phew!
 
+#### RGBDCapture: Record
+**Pre-filming checklist**
+Ready to Roll? Navigate to the Record tab in the RGBDCapture application. If connected properly, you will be able to see a preview of your depth camera on the left. Your takes will show on the right side in the format ‘TAKE_MM_DD_HH_MM_SS’, with the numbers corresponding to the time of capture (there will be none before you’ve saved your first take). If it’s still there from the last tutorial, remove the IR projector cover from your depth camera.
+
+**Tethered** When planning your shoot, be aware that your camera operator will not be able to move further from the computer than the depth camera’s USB cable will allow. This distance can be extended with an active USB extender if needed. If you are shooting with an Asus Xtion and a laptop you can go mobile!
+
+**Clap** Each take requires a visual signal to sync the two data streams together. Have someone (or yourself) ready to stand in front of the cameras and clap at the beginning of the each take. It may feel silly at the time, but it is important to will allow you to fine tune the temporal alignment of both video streams later on.
+
+**Rolling**
+We follow this convention when on set:
+
+ - DP announces ‘Rolling color...’ and hits record on the camera.
+ - Data DP announces ‘Rolling depth...’ - and hits **spacebar** in the Record tab of the RGBDCapture application. (Alternatively hit the Toggle Record button). The depth camera preview window should display a red border with a flashing record button to show that recording is taking place.
+ - Clap in front of the cameras to enable alignment later on.
+
+__Make magic!__
 
 
-Link to Part 2
-Link to project website etc
-
-
-Part 2: Capture
-
-Introduction
-Link to Part 1
-Note - this tutorial is for the latest version of RGBDToolkit
-Tutorial objectives
-Learn how to record a take using both cameras, and prepare the footage for visualisation
-Setup
-Hardware setup as explained in the Build tutorial
-Calibrated DSLR and depth camera as explained in the previous tutorial
-Space suitable for filming in.
-This stage is quite a bit easier with two people!
-
-Instructions
-I: Ready to Roll
-Here’s your pre-filming checklist:
-Navigate to the Record tab in the RGBDCapture application. If connected properly, you will be able to see a preview of your depth camera on the left. Your takes will show on the right side in the format ‘TAKE_00_00_00_00_00’, with the numbers corresponding to the time of capture (there will be none before you’ve saved your first take).
-If it’s still there from the last tutorial, remove the IR projector cover from your depth camera.
-When planning your shoot, note that your camera operator will not be able to move further from the computer than the depth camera’s USB cable will allow. This distance can be extended with an active USB extender if needed.
-Have someone (or yourself) ready to stand in front of the cameras and clap (or give any other clear visual clue) once rolling begins. You will do this for every take. This is important as it will allow you to fine tune the temporal alignment of both video streams later on.
-II: Rolling
-‘Rolling color...’ - hit record on your DSLR camera
-‘Rolling depth...’ - hit spacebar in the Record tab of the RGBDCapture application. Or click the Capture button. The depth camera preview window should display a red border to show that recording is taking place.
-Clap in front of the cameras to enable alignment later on.
-Make magic!
-Clap at the end of your take (optional) and hit spacebar again to finish recording. 
-III: Compositing
 In the application, you should see your take appear in the right side of the Record tab. As soon as you finish recording, the application will begin compressing the depth camera data. The progress of this process is shown as a grey bar overlaid on the take description, which will move all the way to the right when finished.
 In the meantime, open your working directory. You should see that a take folder has been created with the same timestamp as in the application. Navigate inside this folder and download your DSLR footage into the ‘color’ folder.
 You’re now ready to visualise your footage!
