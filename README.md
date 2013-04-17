@@ -152,8 +152,11 @@ Congratulations, you've now sensed the actual structure of your camera lenses to
 **Navigate to the second tab, labelled Calibrate Correspondence** Now that we have the lens models from the first tab, we can determine the spatial relationship between the cameras. 
 
 If you are using the laser cut mount, you can to pivot the sensor up and down in order to match the field of view (FoV) to the video camera's lens. Ideally the video camera will be able to see everything the depth sensor can see, with a little bit of margin on the top and bottom. 
--Set the checkerboard a few feet away from the camera. Using a live preview mode on your video camera position the top of the board flush with the top of the camera's FoV. Note that the viewfinder and the live preview may differ on some DSLRs if you are shooting wide format. 
--Next, while looking at the capture application, adjust the sensor's angle on the mount until the view matches, err on the low side to allow the color camera to see a bit more than what the sensor sees. Depending on your lens you may find that your color information appears inside your depth camera’s field of view. There may be some compromises to be made here! The laser cut mounting solution allows for minute adjustment of the depth sensor's angles by loosening the locking (upper) screws. Tighten the upper screws to lock the mount angle – know that from this point onwards it is important to maintain the camera positions relative to each other (hence the fancy mounting system!).
+
+* Set the checkerboard a few feet away from the camera. 
+* Using a live preview mode on your video camera position the top of the board flush with the top of the camera's FoV. Note that the viewfinder and the live preview may differ on some DSLRs if you are shooting wide format. 
+* While looking at the capture application, adjust the sensor's angle on the mount until the view matches, err on the low side to allow the color camera to see a bit more than what the sensor sees. Depending on your lens you may find that your color information appears inside your depth camera’s field of view. There may be some compromises to be made here! The laser cut mounting solution allows for minute adjustment of the depth sensor's angles by loosening the locking (upper) screws. 
+* Tighten the upper screws to lock the mount angle – know that from this point onwards it is important to maintain the camera positions relative to each other (hence the fancy mounting system!).
 
 ![FoV Adjust](https://dl.dropboxusercontent.com/u/5367022/xRGBD/Side_Sensor_Kinect_Cam_Close.png)
 
