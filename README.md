@@ -283,14 +283,20 @@ The Depth of Field effect can be convincing for simulating a camera language. Dr
 Save the composition when you are ready to export or want to experiment with something else. To switch compositions, click the name of the composition at the top and select a new scene.
 
 ### EXPORTING
-
-Exporting works by rendering a given composition from the perspective chosen in the camera track into a series of PNG frames that can be compiled into a movie using Quicktime, After Effects or MPEG Streamclip. It uses the first camera point as an 'in point' and the last as an 'outpoint.'
+Currently you can export out of RGBDVisualize as a PNG image sequences with or without alpha transparency or as a series of textured .OBJ files for use in other programs like Maya, Blender or Cinema 4D.
 
 To export, click on the composition name to view all the scenes. Selecting a scene will show all the compositions in that scene, each of which has a small 'R' button next to it. This stands for Render, and by clicking it you will add this composition to the render queue. If you make changes to that comp you will have to re-add the comp to the qeue by clicking the Take in the render qeue and re-adding the comp.
 
-Once you've selected all the compositions you wish to render, click the "Start Render Batch >>" button and sit back and relax as all the compositions you've qeued up begin to render. Be careful not to press the spacebar – it cancels your render. 
+Once you've selected all the compositions you wish to render, click the "Start Render Batch >>" button and sit back and relax as all the compositions you've qeued up begin to render. Be careful not to press the spacebar – it cancels your render.
 
-Render frames are 1920x1080 and saved into _RenderBin/ folder underneath the main MediaBin/ (right next to _calibration). Each folder is stamped with the scene, composition, and date so nothing will ever be overwritten.
+#### Exporting as Image Sequence
+The application exports an image sequence by default. Exporting works by rendering a given composition from the perspective chosen in the camera track (what you see in "Lock to Track mode) into a series of PNG frames. The renderer uses the first camera point as an 'in point' and the last as an 'outpoint.'
+
+Render frames are 1920x1080 as default but can be changed on the left-hand side of the app by toggling the Frame Width & Frame Height Sliders. There are presets for 720P & 1080P built in below the sliders. Frames are saved into the _RenderBin/ folder underneath the main MediaBin/ (right next to _calibration). Each folder is stamped with the scene, composition, and date of export so nothing will ever be overwritten.
+
+The image sequences will be rendered with the black background as transparent using an Alpha channel for compositing. Except when "Draw DoF" is checked it will remain black. 
+
+#### Exporting as OBJ Sequence
 
 ## Troubleshooting
 **The application will not launch / crashes / crashes my computer**
