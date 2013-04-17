@@ -110,7 +110,7 @@ Calibration requires some ambient infrared light in the room. The sun is a good 
 #### RGBDCapture: Calibrate Lenses 
 **Plug in the sensor to your computer and open the RGBDCapture application** depending on which sensor you are using, open the **RGBDCaptureKinect** or **RGBDCaptureXtionPro** application.
 
-**Set your working directory** to a convenient place on your hard drive. All your footage will be stored here. Change it by clicking the text at the top off the RGBDCapture window. The default directory is depthframes, which is inside of your application folder. You’ll definitely want to change this. Observe that the software creates a ‘_calibration’ folder for you inside the project directory. Files are autosaved as you go, so relax your work will be saved.
+**Set your working directory** to a convenient place on your hard drive. All your footage will be stored here. Change it by clicking the text at the top off the RGBDCapture window. The default directory is depthframes, which is inside of your application folder. You’ll definitely want to change this. Observe that the software creates a ‘_calibration’ folder for you inside the project directory. Files are autosaved as you go – so relax, your work will be saved.
 
 **Select Calibrate Lenses tab**, first of the four views on the capture application. It is split in half horizontally; your depth camera stream, if connected via USB, should display on the left, and the right pane should be empty to begin with. If you don’t see the depth camera view, see the troubleshooting page.
 
@@ -120,7 +120,7 @@ Calibration requires some ambient infrared light in the room. The sun is a good 
 	
 **Capture Lens Properties** In order to accurately calibrate the two cameras, RGBDToolkit needs to understand the subtleties of the camera lenses – imperfect manufacturing processes mean that every lens will be slightly different. These values are called _lens intrinsic parameters_ and describe image size, field of view, optical center of the lens, and any distortion found in the lens. To determine these values we capture and analyze images from both cameras.
 
-**Calibrate Depth Camera** Aim your rig at an area of space which has plenty of ‘visible information’ – featuring different colours, contrasts and depths. Hit the _Self Calibrate Depth Camera_ button at the bottom of the left-hand pane. This will automatically analyze the incoming video stream (great!), and once complete should display results similar to the following results:
+**Calibrate Depth Camera** Aim your rig at an area of space which has plenty of ‘visible information’ – featuring different colors, contrasts and depths. Hit the _Self Calibrate Depth Camera_ button at the bottom of the left-hand pane. This will automatically analyze the incoming video stream (great!), and once complete should display results similar to the following results:
 
 <WELL CALIBRATED DEPTH CAM>
 	
@@ -138,7 +138,7 @@ Download the clips onto your computer into your project’s working directory, w
 
 < FOLDER STRUCTURE SCREENSHOT >
 
-Set the **Square Size** (cm) of the checkerboard should be set inside the application. For reference, use 3.38 if you have used A3 sized checkerboard and 2.54 if you used the A4 sized board. If yours is a different size, measure precisely and use that width.
+**Set the Square Size (cm)** of the checkerboard inside the application. For reference, use 3.38 if you have used A3 sized checkerboard and 2.54 if you used the A4 sized board. If yours is a different size, measure one square precisely and use that width.
 
 Drag all of the video clips them into the **‘Capture Lenses’** tab’s right-hand window pane. This should automatically start the calibration process. You may need to wait for a few seconds while this takes place; the application selects the middle frame from each video, converts it into a black and white .png  which is stored in your working folder's _calibration directory. It uses OpenCV library to determine the checkerboard corners to create a model of the lens.
 
@@ -151,7 +151,7 @@ If nearly all of your images have high error, you will need to reshoot them. Bef
 Congratulations, you've now sensed the actual structure of your camera lenses to create a model. With this we can now determine the relationship between the two lenses. 
 
 #### RGBDCapture: Calibrate Correspondence
-**Navigate to the second tab, labelled Calibrate Correspondence**. Now that we have the lens models from the first tab, we can determine the spatial relationship between the cameras. With both cameras we are going to capture the checkerboard at four varying depths. If you are using the laser cut mount, you can able to pivot the sensor up and down in order to match the field if view to the video camera's lens. Ideally the video camera will be able to see everything the depth sensor can see, with a little bit of margin on the top and bottom, and to the sides. Set the checkerboard a few feet away from the camera, using the view finder, position the top of the board flush with the top of the view. Next, while looking at the capture application, adjust the sensor's angle on the mount until the view matches, error on the low side to allow for color camera to see a bit above what the sensor sees.  Depending on your lens you may find that your color information appears inside your depth camera’s field of view. There may be some compromises to be made here! The laser cut mounting solution allows for minute adjustment of the depth sensors angles using the pivot screws Lock down the mount again, and know that from this point onwards it is important to maintain the camera positions relative to each other (hence the fancy mounting system!).
+**Navigate to the second tab, labelled Calibrate Correspondence** Now that we have the lens models from the first tab, we can determine the spatial relationship between the cameras. If you are using the laser cut mount, you can to pivot the sensor up and down in order to match the field of view (FoV) to the video camera's lens. Ideally the video camera will be able to see everything the depth sensor can see, with a little bit of margin on the top and bottom. Set the checkerboard a few feet away from the camera. Using a live preview mode on your video camera – note that the viewfinder and the live preview may differ on some DSLRs if you are shooting in a wide format – position the top of the board flush with the top of the camera's FoV. Next, while looking at the capture application, adjust the sensor's angle on the mount until the view matches, err on the low side to allow the color camera to see a bit more than what the sensor sees. Depending on your lens you may find that your color information appears inside your depth camera’s field of view. There may be some compromises to be made here! The laser cut mounting solution allows for minute adjustment of the depth sensor's angles by loosening the pivot (upper) screws. Lock down the mount again, and know that from this point onwards it is important to maintain the camera positions relative to each other (hence the fancy mounting system!).
 
 <TIGHT SHOT OF MOUNT ADJUSTMENT>
 
@@ -159,19 +159,19 @@ Now that we've matched the views, we need to take corresponding images of the ch
 
 - First, set the checkerboard centered, in front of the lens.
 - Focus the video camera on the board and take a short clip.
-- Being very careful not to move the rig at all, go back to the RGBCapture app and click the thumbnail of the depth image. This will capture a snapshot of the image for correspondence to the video clip you just took.
-- Diffuse the IR projector with the paper or cloth, its the farthest left lens of on the face of the sensor, the one with the red sparkles coming out. Observe that the graininess disappears from the camera preview, and red dots appear in the corners of the squares on the checkerboard in the preview. Click the second tile to capture an image whilst the red dots are in show.
-- If the checkerboard is too dark, it means you need more ambient IR light. Get closer to the window, or shine a hot light on it from far away. It's important that the board is illuminated evenly.
+- Being very careful not to move the rig at all, go back to the RGBCapture app and click the thumbnail of the depth image on the left. This will capture a snapshot of the image for correspondence to the video clip you just took.
+- Diffuse the IR projector with the paper or cloth, its the farthest left lens of on the face of the sensor, the one with the red sparkles coming out. Observe that the graininess disappears from the camera preview, and red dots appear in the corners of the squares on the checkerboard in the preview. Click the second tile to capture an image whilst the red dots are showing.
+- If the checkerboard is too dark or no red dots appear, it means you need more ambient IR light. Get closer to the window, or shine a hot light on it from far away. It's important that the board is illuminated evenly and sufficiently.
 
-Repeat this process with the checkerboard at four different depths away from the cameras. The idea is to fill up an imaginary box of checkerboard points in the 3D space in front of the camera. This helps to best interpret the relationship between the two cameras that will work at all distances from the lens. Once you've captured all four sets, download the video clips from the camera and drop them into a new folder in the working directory you set before. One at a time, drag the video files into their corresponding rectangular tiles in the application next to the corresponding depth and IR thumbnails taken from the device. 
+Repeat this process with the checkerboard at four different depths away from the cameras, making sure to refocus at every plane. The idea is to fill up an imaginary box of checkerboard points in the 3D space in front of the camera. This helps to best interpret the relationship between the two cameras that will work at all distances from the lens. Once you've captured all four sets, download the video clips from the camera and drop them into a new folder in the working directory you set before. One at a time, drag the video files into their corresponding rectangular tiles in the application next to the corresponding depth and IR thumbnails taken from the device. 
 
-With four sets of three images complete, click ‘Generate RGB/Depth Correspondence’. If you get an error it means the algorithm was unable to find an exact fit for the selected checkerboard pairs try hitting 'ignore' to excluding a few of the image sets as bad apples may be throwing model calculation off. Just like before, excluding images may help in this situation. Click ‘Ignore’ on all but one of the images, and attempt to Generate RGB/Depth Correspondence again. When you find an image that allows the process to complete successfully, try combining it with other images. There is some randomness in the algorithm, so it helps to try the same combinations a few times just to see if it “guesses” a better start place.
+With four sets of three images complete, click ‘Generate RGB/Depth Correspondence’. If you get an error it means the algorithm was unable to find an exact fit for the selected checkerboard pairs. Try hitting 'ignore' to excluding a few of the image sets – 'bad apples' may be throwing off the model calculation. Just like before, excluding images may help in this situation. Click ‘Ignore’ on all but one of the images, and attempt to Generate RGB/Depth Correspondence again. When you find an image that allows the process to complete successfully, try combining it with other images. There is some randomness in the algorithm, so it helps to try the same combinations a few times just to see if it “guesses” a better starting place.
 
 < Good CALIBRATION IMAGES >
 
-By pressing the left and right arrows you can cycle through previews of the four checkerboard calibrations. If it’s correct, you’ll see the checkerboard image data pixels (in black and white) mapped cleanly onto the depth model of the same image. You’ll also see corresponding colored dots floating in space near corresponding to the checkerboard depth planes. Some dots are missing from the grid pattern, as they were removed as outliers while generating the calibration. An ideal calibration will contain dots from at least three different sets of colors. By cycling through all tests checkerboards sets, the checkerboard image should be visibly well aligned to the depth data.
+By pressing the left and right arrows you can cycle through previews of the four checkerboard calibration sets. If it’s correct, you’ll see the checkerboard image data pixels (in black and white) mapped cleanly onto the depth model of the same image. You’ll also see corresponding colored dots floating in space near corresponding to the checkerboard depth planes. Some dots are missing from the grid pattern, as they were removed as outliers while generating the calibration. An ideal calibration will contain dots from at least three different sets of colors. By cycling through all tests checkerboards sets, the checkerboard image should be visibly well aligned to the depth data.
 
-You can navigate the scene using the following controls:The camera is set up as a video-game style WASD first-person camera, using the following controls
+The camera is set up as a video game style WASD first-person camera, using the following controls:
 <table>
     <tr>
         <td style="font-weight:bold">Function</td><td style="font-weight:bold">Shortcut</td>
@@ -193,6 +193,12 @@ You can navigate the scene using the following controls:The camera is set up as 
 	</tr>
     <tr>
         <td>Move Down</td><td>c</td>	
+	</tr>
+	  <tr>
+        <td>Rotate Counterclockwise</td><td>q</td>	
+	</tr>
+	  <tr>
+        <td>Rotate Clockwise</td><td>r</td>	
 	</tr>
 </table>
 
