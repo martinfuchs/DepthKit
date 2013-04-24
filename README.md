@@ -130,7 +130,7 @@ Calibration requires some ambient infrared light in the room. The sun is a good 
 
 **Note about Kinect model number** There are two version of RGBDCaptureKinect application on OS X, one for model #1414 and one for model #1473. Check the bottom of your Kinect to find the model number and open the corresponding capture application.
 
-![Kinect Model No.](https://dl.dropboxusercontent.com/u/5367022/xRGBD/illus_Kinect_modelNo.png)
+![Kinect Model No.](http://www.rgbdtoolkit.com/images/readme/illus_Kinect_modelNo.jpg)
 	
 **Capture Lens Properties** In order to accurately calibrate the two cameras, RGBDToolkit needs to understand the subtleties of the camera lenses – imperfect manufacturing processes mean that every lens will be slightly different. These values are called _lens intrinsic parameters_ and describe image size, field of view, optical center of the lens, and any distortion found in the lens. To determine these values we capture and analyze images from both cameras.
 
@@ -138,7 +138,7 @@ Calibration requires some ambient infrared light in the room. The sun is a good 
 
 ![Self Calibrated Depth](http://rgbdtoolkit.com/images/readme/calibrated_depth_camera.png)
 	
-Note the the field of views are symmetrical, and that the principal point is at the center of the depth camera’s fixed 640x480 perspective.
+Note the the field of views are symmetrical, and that the principal point is at the center of the depth camera’s fixed 640x480 frame.
 
 To **Capture the HD camera's lens properties** it takes a bit more effort and patience since we don't have a direct software connection to the camera. First, set your camera rig up on a tripod and place your checkerboard on a stand in front, a distance form the camera so that it occupies approximately 1/4 of the frame. Place the board in the top left quadrant, focus, and record a short video from this perspective. Don’t worry if the checkerboard is not exactly horizontal or vertical, but do ensure that the entire checkerboard is in the frame, including the white border around the outside black squares.  Make sure the board is exposed well, evenly lit, and that the lens is focused on it so the corners are crisp. Record a 1-3 second video of this, mindful of keeping the camera very still.
 
@@ -148,11 +148,9 @@ To **Capture the HD camera's lens properties** it takes a bit more effort and pa
 
 Download the clips onto your computer into your project’s working directory, wherever you set it in the first step. It is helpful to add them to a new folder inside ‘_calibration’, called ‘slrIntrinsics’ or something similarly explanatory.
 
-![structure](http://rgbdtoolkit.com/images/readme/folder_structure.png)
-
 **Set the Square Size (cm)** of the checkerboard inside the application. For reference, use 3.38 if you have used A3 sized checkerboard and 2.54 if you used the A4 sized board. If yours is a different size, measure one square precisely and use that width.
 
-Drag all of the video clips them into the **‘Capture Lenses’** tab’s right-hand window pane. This should automatically start the calibration process. You may need to wait for a few seconds while this takes place; the application selects the middle frame from each video, converts it into a black and white .png  which is stored in your working folder's _calibration directory. It uses OpenCV library to determine the checkerboard corners to create a model of the lens.
+Drag all of the video clips them into the **‘Capture Lenses’** tab’s right-hand window pane. This should automatically start the calibration process. You may need to wait for a few seconds while this takes place; the application selects the middle frame from each video, converts it into a black and white .png which is stored in your working folder's _calibration directory. It uses OpenCV library to determine the checkerboard corners to create a model of the lens.
 
 Once the analysis is complete, the software will display a **‘Total Error’** figure below the checkerboard images. This is the average error across all the calibration images. Alongside this, you can view the individual error margins for each image by scrubbing the mouse from left to right across the calibration image window. A ‘Total Error’ of < 0.200 is desirable. If your calibration has resulted in a larger average error than this, scrub through your image set and look for any outlier images which have an error of > 0.300. Note the filename of any outliers. You can re-perform the analysis at any time, simply by dragging the videos onto the window pane again – this time excluding the erroneous clips. This should improve your Total Error.
 
@@ -163,16 +161,16 @@ If nearly all of your images have high error, you will need to reshoot them. Bef
 Congratulations, you've now sensed the actual structure of your camera lenses to create a model. With this we can now determine the relationship between the two lenses. 
 
 #### RGBDCapture: Calibrate Correspondence
-**Navigate to the second tab, labelled Calibrate Correspondence** Now that we have the lens models from the first tab, we can determine the spatial relationship between the cameras. 
+**Navigate to the second tab, labeled Calibrate Correspondence** Now that we have the lens models from the first tab, we can determine the spatial relationship between the cameras. 
 
 If you are using the laser cut mount, you can to pivot the sensor up and down in order to match the field of view (FoV) to the video camera's lens. Ideally the video camera will be able to see everything the depth sensor can see, with a little bit of margin on the top and bottom. 
 
 * Set the checkerboard a few feet away from the camera. 
-* Using a live preview mode on your video camera position the top of the board flush with the top of the camera's FoV. Note that the viewfinder and the live preview may differ on some DSLRs if you are shooting wide format. 
+* Using a live preview mode on your video camera position the top of the board flush with the top of the camera's FoV. Note that the viewfinder and the live preview may differ on some cameras if you are shooting wide format. 
 * While looking at the capture application, adjust the sensor's angle on the mount until the view matches, err on the low side to allow the color camera to see a bit more than what the sensor sees. Depending on your lens you may find that your color information appears inside your depth camera’s field of view. There may be some compromises to be made here! The laser cut mounting solution allows for minute adjustment of the depth sensor's angles by loosening the locking (upper) screws. 
 * Tighten the upper screws to lock the mount angle – know that from this point onwards it is important to maintain the camera positions relative to each other (hence the fancy mounting system!).
 
-![FoV Adjust](https://dl.dropboxusercontent.com/u/5367022/xRGBD/Side_Sensor_Kinect_Cam_Close.png)
+![FoV Adjust](http://www.rgbdtoolkit.com/images/readme/Side_Sensor_Kinect_Cam_Close.png)
 
 Now that we've matched the views, we need to take corresponding images of the checkerboard from the two cameras to determine how they sit. Looking back at the capture page, with the checkerboard in each quadrant, you need to capture three images, _one short video clip from the video camera_, _one depth impression_ from the sensor, and one _infrared view of the checkerboard_ from the sensor. This is where the IR light diffuser is important, so make sure that is handy before beginning. A second pair of hands is helpful at this step too.
 
@@ -182,7 +180,7 @@ Now that we've matched the views, we need to take corresponding images of the ch
 - Diffuse the IR projector with the paper or cloth, its the farthest left lens of on the face of the sensor, the one with the red sparkles coming out. Observe that the graininess disappears from the camera preview, and red dots appear in the corners of the squares on the checkerboard in the preview. Click the second tile to capture an image whilst the red dots are showing.
 - If the checkerboard is too dark or no red dots appear, it means you need more ambient IR light. Get closer to the window, or shine a hot light on it from far away. It's important that the board is illuminated evenly and sufficiently.
 
-![IR diffuse](https://dl.dropboxusercontent.com/u/5367022/xRGBD/illus_diffuse.png)
+![IR diffuse](http://www.rgbdtoolkit.com/images/readme/illus_diffuse.png)
 
 Repeat this process with the checkerboard at four different depths away from the cameras, making sure to refocus at every plane. The idea is to fill up an imaginary box of checkerboard points in the 3D space in front of the camera. This helps to best interpret the relationship between the two cameras that will work at all distances from the lens. Once you've captured all four sets, download the video clips from the camera and drop them into a new folder in the working directory you set before. One at a time, drag the video files into their corresponding rectangular tiles in the application next to the corresponding depth and IR thumbnails taken from the device. 
 
@@ -227,7 +225,7 @@ Once you have a calibration where all the checkerboards depth and image data mat
 
 ## 3) CAPTURE
 **Pre-filming checklist**
-Ready to Roll? Navigate to the Record tab in the RGBDCapture application. If connected properly, you will be able to see a preview of your depth camera on the left. Your takes will show on the right side in the format ‘TAKE_MM_DD_HH_MM_SS’, with the numbers corresponding to the time of capture (there will be none before you’ve saved your first take). If it’s still there from the last tutorial, remove the IR projector cover from your depth camera.
+Ready to Roll? Navigate to the Record tab in the RGBDCapture application. If connected properly, you will be able to see a preview of your depth camera on the left. Your takes will show on the right side in the format ‘TAKE_MO_DD_HH_MI_SS’, with the numbers corresponding to the time of capture (there will be none before you’ve saved your first take). If it’s still there from the last tutorial, remove the IR projector cover from your depth camera.
 
 **Tethered** When planning your shoot, be aware that your camera operator will not be able to move further from the computer than the depth camera’s USB cable will allow. This distance can be extended with an active USB extender if needed. If you are shooting with an Asus Xtion and a laptop you can go mobile!
 
@@ -240,13 +238,13 @@ We follow this convention when on set:
  - Data DP announces ‘Rolling depth...’ - and hits **spacebar** in the Record tab of the RGBDCapture application. (Alternatively hit the Toggle Record button). The depth camera preview window should display a red border with a flashing Record button to show that recording is taking place.
  - Clap in front of the cameras to enable alignment later on.
  - __Make magic__
- - hit space bar again to stop recording
+ - hit space bar again to stop recording.
 
-Warning: if you see the Toggle Record button starting to fill with red, it means that some images are failing to save. This usually happens when the hard drive is nearly full. If this happens, stop recording as soon as possible and wait for the red bar to go away, ensuring that all the footage is written to the drive. If you're recording to an external drive, make sure it's FireWire, USB 3.0, or Thunderbolt.
+Warning: if you see the 'Toggle Record' button starting to fill with a red bar, it means that some images are failing to save. This usually occurs when the hard drive is nearly full. If this happens, stop recording as soon as possible and wait for the red bar to go down, ensuring that all the footage is written to the drive. If you're recording to an external drive, make sure it's FireWire, USB 3.0, or Thunderbolt.
 
-< RECORD BAR FULL IMAGE >
+![unsaved frames](http://rgbdtoolkit.com/images/readme/unsaved_frames.png)
 
-When you stop recording you should see your Take appear in the right side of the Record tab. As soon as you finish recording, the application will begin compressing the raw depth data in the background. The progress of this process is shown as a gray bar overlaid on the Take description on the top right. It will move all the way to the right when finished. In the meantime, open your working directory. You should see that a Take folder has been created with the same timestamp as in the application. Navigate inside this folder and download your DSLR footage into the ‘color’ folder.
+When you stop recording you should see your Take appear in the right side of the Record tab. As soon as you finish recording, the application will begin compressing the raw depth data in the background. The progress of this process is shown as a gray bar overlaid on the TAKE description on the top right. It will move all the way to the right when finished. In the meantime, open your working directory. You should see that a TAKE folder has been created with the same timestamp as in the application. Navigate inside this folder and download your DSLR footage into the ‘color’ folder.
 
 It's possible to **preview the recorded depth data** inside of the capture application. In the playback tab, select a Take and hit space bar to play the timeline. Use the same controls from the calibration step to navigate the point cloud as it plays back your capture.
 
@@ -280,13 +278,17 @@ Once your files are in place inside their color folders, you’re ready to Visua
 
 Assuming it's the first time loading this scene we need to **create a temporal alignment** by synchronizing the two data streams. You'll be glad you clapped while shooting! On the timeline on the bottom you should see two rows of thumbnails, color and depth. Scrub through them each by clicking on the line of thumbnails and dragging left or right. You'll see previews of the depth data and the RGB video as thumbnails on the top right. With your mouse over the respective timelines can use the arrow keys until you find the clap in both Depth and Color. Once you have the precise moment of the clap selected in both, press "Set Color-Depth Time" on the left. Scrub through the timeline by clicking on the bar with the yellow tickers at the bottom of the main preview pane. You should see the footage playing back with matched temporal synced.
 
-Now navigate to the Texture Alignment tab to tweak the X and Y Shift & Scale to align the depth and color information to perfect your alignment. 
+If you make a mistake and find that the time alignment is off, you can highlight the blue marker on the 3rd track of the 'Time Alignment' tab and press DELETE to start over. It's never necessary to set multiple time alignments, so delete the existing ones before the 
+
+![time align](http://www.rgbdtoolkit.com/images/readme/time_alignt.jpg)
+
+Now navigate to the Texture Alignment tab to tweak the X and Y Shift & Scale to align the depth and color information to perfect your alignment.
 
 Just like in the calibrate step, clicking and dragging the mouse rotates the camera. WASD moves you like a first person video game. E and C boom up and down in space while R+Q rotate. Use the "Reset view" button when you get lost in space.
 
 #### COMPOSING 
 
-Each Take can have any number of compositions. A composition let's you render the scene in a different way, with a different in and out point, changing camera perspectives and different rendering styles.
+Each Take can have any number of compositions. A composition lets you render the scene in a different way, with a different in and out point, changing camera perspectives and different rendering styles.
 
 A few tips
 
@@ -307,9 +309,9 @@ Save the composition when you are ready to export or want to experiment with som
 ## 5) EXPORT
 Currently you can export out of RGBDVisualize as a PNG image sequences with or without alpha transparency or as a series of textured .OBJ files for use in other programs like Maya, Blender or Cinema 4D.
 
-To export, click on the composition name to view all the scenes. Selecting a scene will show all the compositions in that scene, each of which has a small 'R' button next to it. This stands for Render, and by clicking it you will add this composition to the render queue. If you make changes to that comp you will have to re-add the comp to the qeue by clicking the Take in the render qeue and re-adding the comp.
+To export, click on the composition name to view all the scenes. Selecting a scene will show all the compositions in that scene, each of which has a small 'R' button next to it. This stands for Render, and by clicking it you will add this composition to the render queue. If you make changes to that comp you will have to re-add the comp to the queue by clicking the Take in the render queue and re-adding the comp.
 
-Once you've selected all the compositions you wish to render, click the "Start Render Batch >>" button and sit back and relax as all the compositions you've qeued up begin to render. Be careful not to press the spacebar – it cancels your render.
+Once you've selected all the compositions you wish to render, click the "Start Render Batch >>" button and sit back and relax as all the compositions you've queued up begin to render. Be careful not to press the spacebar – it cancels your render.
 
 #### Export as Image Sequence
 The application exports an image sequence by default. Exporting works by rendering a given composition from the perspective chosen in the camera track (what you see in "Lock to Track mode) into a series of PNG frames. The renderer uses the first camera point as an 'in point' and the last as an 'outpoint.'
@@ -361,5 +363,31 @@ In order to export textured OBJ files toggle Export .obj Files on the left-hand 
 
 **My recordings are dropping frames**
 
-**The application crashes when I try to calibrate my DSLR lens
+ - Close any other apps.
+ - Make sure you are plugged into wall power
+ - If writing to an external hard drive make sure it's USB 3.0 or FireWire 800
+
+**The application crashes when I try to load movie files from the HD camera
+
  - Make sure your video files are compatible with the toolkit, H.264 or ProRes MOV’s.
+ - Make sure you have the latest version of Quicktime installed
+ - Make sure you are running the application from a location where you have write access
+
+**My texture alignment is way off**
+
+ - Try using the X & Y shift and Scale in the Texture Alignment tab to accommodate for slight inaccuracies 
+ - You may want to recalibrate, which is fine to do after you've shot as long as the relationship with the camera is still fixed
+
+**My time alignment is way off**
+ 
+ - Delete any markers on the 3rd "Alignment" track on the timeline to start over.
+ - Look for a very decisive temporal moment to align to, meaning that there is a specific fast movement which allows for precisely selecting a depth and video frame from close times. Because the cameras have different frame rates and clocks, the alignment will never be perfect but should not drift over time.
+
+ Send any questions to the [RGBDToolkit Google Group](https://groups.google.com/forum/?fromgroups#!forum/rgbdtoolkit)
+
+
+
+
+
+
+
