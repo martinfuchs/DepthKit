@@ -82,7 +82,6 @@ The RGBDToolkit can use any HD video camera, including digital SLRs, GoPros, eve
 In order to match the field of view between your camera and sensor so that the color information adequately covers the depth information we recommend a ~24mm lens on a full frame sensor. A ~16mm lens is adequate coverage for an APS-C sensor like an entry-level Canon DSLR. If you aren't familiar with these terms you should be able to find your [crop factor](http://en.wikipedia.org/wiki/Crop_factor) in the specifications section of your camera manual and you can look up the conversion to full-frame [here](http://www.digicamhelp.com/accessories/dslr-accessories/crop-factor-conversion-chart/). When in doubt, set your zoom lens to its widest setting. Use a wide prime lens for best results. 
 	
 #### Mounts
-<<<<<<< HEAD
 
 ![mounts with camera](http://www.rgbdtoolkit.com/images/readme/mounts_with_camera.jpg)
 
@@ -280,7 +279,7 @@ Assuming it's the first time loading this scene we need to **create a temporal a
 
 If you make a mistake and find that the time alignment is off, you can highlight the blue marker on the 3rd track of the 'Time Alignment' tab and press DELETE to start over. It's never necessary to set multiple time alignments, so delete the existing ones before the 
 
-![time align](http://www.rgbdtoolkit.com/images/readme/time_alignt.jpg)
+![time align](http://www.rgbdtoolkit.com/images/readme/time_align.jpg)
 
 Now navigate to the Texture Alignment tab to tweak the X and Y Shift & Scale to align the depth and color information to perfect your alignment.
 
