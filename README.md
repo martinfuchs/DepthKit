@@ -2,24 +2,28 @@
 
 ![ RGBDToolkit](http://rgbdtoolkit.com/images/productshot_2.jpg)
 
-**Software suite for experimenting with cinematic language of depth imaging.**
+**Software for experimenting with cinematic language of depth imaging.**
 
 **Version 005 for Mac OS X and Windows Released on April 16th 2013**
 
+The RGBDToolkit is an experiment in a possible future of film making, where photographic data captured in 3-dimensions will allow for deciding camera angles after the fact, combining the languages of photography and data visualization. This hybrid computer graphics and video would allow for a storytelling medium at once imaginary and photo real.  The RGBDToolkit is a software work flow for augmenting high definition video with 3D scans from a depth sensor, such as an Xbox Kinect, to create a hybrid video and computer graphics. First a recording application allows you to calibrate a high definition video camera to the depth sensor, allowing their data streams to be merged. Secondly a visualization application allows for viewing the combined footage and applying different 3D rendering styles, camera moves, and exporting sequences. 
+
+This software is a science fiction, a seed of a potential future functional just to the point of allowing a community, you, to share in imagining the possibilities.
+
 ## Projects
-Curious what this is all about? Check out some project created using the toolkit
+Curious what this looks like? Check out some project created using the toolkit:
 
  * [RGBD Tumblr](http://rgbd.tumblr.com/)
  * [RGBD Vimeo Channel](https://vimeo.com/album/2024049)
 
 ## Background
-RGBDToolkit is an ongoing labor of love:
+RGBDToolkit is an ongoing labor of love by the main developers:
 
 * [James George](http://www.jamesgeorge.org), developer 
 * [Alexander Porter](http://www.alexanderporter.net), experimental photographer 
 * [Jonathan Minard](http://www.deepspeedmedia.com), documentarian 
 * [Mike Heavers](http://mikeheavers.com/), web & design
-* [Jack Armitage], documentation and tutorial videos
+* Jack Armitage, documentation and tutorial videos
 
 Development has been assisted by the expertise, guidance and advice of [Elliot Woods](http://www.kimchiandchips.com) and [Kyle McDonald](http://www.kylemcdonald.com)
 
@@ -77,7 +81,10 @@ The RGBDToolkit can use any HD video camera, including digital SLRs, GoPros, eve
 In order to match the field of view between your camera and sensor so that the color information covers the depth we recommend a ~24mm lens on a full frame sensor. A ~16mm lens is adequate coverage for an APS-C sensor like an entry-level Canon DSLR. If you aren't familiar with these terms you should be able to find your [crop factor](http://en.wikipedia.org/wiki/Crop_factor) in the specifications section of your camera manual and you can look up your conversion [here](http://www.digicamhelp.com/accessories/dslr-accessories/crop-factor-conversion-chart/). 
 	
 #### Mounts
-The workflow requires the use of a hardware to bind the video camera and the depth sensor together. If you'd like to buy a mount from us you can order one for Asus or Kinect through our store <LINK> or buy one of our 3D printed Asus mounts from Shapeways <LINK>. We recommend the lasercut and aluminum mounts we're selling or something that is similarly robust and adjustable for Kinect and Asus.
+
+![mounts with camera](http://www.rgbdtoolkit.com/images/readme/mounts_with_camera.jpg)
+
+The workflow requires the use of a hardware to bind the video camera and the depth sensor together. If you'd like to buy a mount from us you can order one for Asus or Kinect through our store <LINK> or buy one of our 3D printed [Asus mounts from Shapeways](http://www.shapeways.com/shops/rgbd). We recommend the laser cut and aluminum mounts we're selling or something that is similarly robust and adjustable for Kinect and Asus. 
 
 In the open source spirit, we've also made the plans available online to enable you to make your own mount if you have access to the tools: 
 
@@ -85,11 +92,14 @@ In the open source spirit, we've also made the plans available online to enable 
  * **Home Workshop** A [mount](http://www.instructables.com/id/RGBD-Toolkit-Aluminum-Mount-for-Kinect-DSLRvide/) made from angle aluminum with basic tools
  * **Home 3D Printing** Print a mount using [community created files](http://www.thingiverse.com/search?q=RGBDToolkit)
 
-Please add your own mounting solutions and designs – however simple – to [Instructables](http://www.instructables.com/tag/type-id/?sort=none&q=RGBDToolkit) or your 3D printable models to [Thingiverse](http://www.thingiverse.com/search?q=RGBDToolkit) and tag them with "RGBDToolkit." For recommendations about designing your own mounts see the FAQ. <LINK FAQ>
+Please share your own mounting solutions and designs – however simple – on [Instructables](http://www.instructables.com/tag/type-id/?sort=none&q=RGBDToolkit) or your 3D printable models to [Thingiverse](http://www.thingiverse.com/search?q=RGBDToolkit) and tag them with "RGBDToolkit." For recommendations about designing your own mounts see the FAQ.
 
-<MOUNTING IMAGES>
+![mounts with camera](http://www.rgbdtoolkit.com/images/readme/mounts_without_camera.jpg)
+
+If you'd rather just buy a kit, we have a stock pile of the above mounts and are happy to sell one to you. Just email me [at] alexanderporter [dot] com to order one. We accept paypal and ship anywhere!
 
 #### Checkerboard
+
 Print out the [A4](https://github.com/downloads/obviousjim/RGBDToolkit/chessboard_a4.pdf) or [A3](https://github.com/obviousjim/RGBDToolkit/blob/master/chessboard_a3.pdf) calibration checkerboard PDF in black and white on matte paper. Glue or otherwise mount it to something flat and rigid like wood or foamcore. This can be done easily at most print shops – if you do it at home look out for bubbling or warping. It helps to attach a bracket or some way to put it to a stand or the wall.
 
 Once you have all the items in the checklist, you're ready to calibrate the cameras!
@@ -101,7 +111,7 @@ The next step is determine the physical position of the two cameras relative to 
 Calibration requires some ambient infrared light in the room. The sun is a good source but can be too bright if it's direct. The best setting is a living room or studio with large windows where you can get filtered sunlight without it being direct. Bear in mind that windows in newer buildings are often treated with IR-blocking coatings. If neither of those are an option, having access to 'hot lights' that emit heat, such as halogen or tungsten, will work. We've also had good luck with [IR lights](http://www.amazon.com/dp/B0002J1JFE/).
 
 #### Attach the cameras together
-**Mount the cameras** Using the mounting solution you chose from above, affix the HD camera to the depth sensor. Shooting requires that the two cameras be securely bound together and not subject to *any* movement in relation to eachother. Make sure everything is locked down tight including the safety catch on your quickrelease!
+**Mount the cameras** Using the mounting solution you chose from above, affix the HD camera to the depth sensor. Shooting requires that the two cameras be securely bound together and not subject to *any* movement in relation to each other. Make sure everything is locked down tight, including the safety catch on your quick release!
 
 **Get an IR diffuser** You'll need something to diffuse the depth sensor’s IR laser projector for one step during calibration the depth camera for the calibration stage. We often use a square of tissue paper, cigarette rolling paper or handkerchief.
 
@@ -223,7 +233,7 @@ Warning: if you see the Toggle Record button starting to fill with red, it means
 
 < RECORD BAR FULL IMAGE >
 
-When you stop recording you should see your Take appear in the right side of the Record tab. As soon as you finish recording, the application will begin compressing the raw depth data in the background. The progress of this process is shown as a grey bar overlaid on the Take description on the top right. It will move all the way to the right when finished. In the meantime, open your working directory. You should see that a Take folder has been created with the same timestamp as in the application. Navigate inside this folder and download your DSLR footage into the ‘color’ folder.
+When you stop recording you should see your Take appear in the right side of the Record tab. As soon as you finish recording, the application will begin compressing the raw depth data in the background. The progress of this process is shown as a gray bar overlaid on the Take description on the top right. It will move all the way to the right when finished. In the meantime, open your working directory. You should see that a Take folder has been created with the same timestamp as in the application. Navigate inside this folder and download your DSLR footage into the ‘color’ folder.
 
 It's possible to **preview the recorded depth data** inside of the capture application. In the playback tab, select a Take and hit space bar to play the timeline. Use the same controls from the calibration step to navigate the point cloud as it plays back your capture.
 
