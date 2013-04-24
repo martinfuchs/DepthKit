@@ -45,7 +45,8 @@ The Toolkit has been made possible by the ongoing and generous support of:
 
 Very special thanks to the [Art && Code 3D](http://artandcode.com/3d/), [Resonate Festival](http://resonate.io/2013/), and [Eyeo Festival](http://eyeofestival.com/)
 
-### 1) Getting started
+
+## 1) Getting started
 
 The remainder of this README is a guide on how to get started, but we have a few other formats
 
@@ -66,25 +67,26 @@ To use the RGBDToolkit you'll need
 The RGBDToolkit is compatible with the following operating system and sensor combinations
 
 #### Mac OS X
- * [Asus Xtion pro LIVE](http://www.newegg.com/Product/Product.aspx?Item=N82E16826785030) (Requires [Sensecast install drivers](http://sensecast.com/files/Sensecast.and.Libs.Installer.v.0.02.dmg) )
+ * [Asus Xtion pro LIVE](http://www.newegg.com/Product/Product.aspx?Item=N82E16826785030) (Requires [Sensecast drivers installed](http://sensecast.com/files/Sensecast.and.Libs.Installer.v.0.02.dmg) )
  * [Microsoft Xbox Kinect](http://www.amazon.com/Kinect-Sensor-Adventures-Xbox-360/dp/B002BSA298/)
 
-We recommend the Asus sensors over the Kinect because they feature the same resolution, but are smaller in size and don't require wall power.
+We recommend the Asus sensors over the Kinect because they feature the same resolution, but are smaller in size and don't require wall power allowing for more portability.
 
 #### Microsoft Windows 7
  * Microsoft Xbox Kinect (Only compatible with the older model number, 1414)
 
 #### External Video Camera
-The RGBDToolkit can use any HD video camera, including digital SLRs, GoPros, even newer iPhones. We'll be using DSLR's like the Canon 5D MkII for the purposes of the tutorials, but feel free to use what you have. 
+The RGBDToolkit can use any HD video camera, including digital SLRs, GoPros, even newer iPhones. We'll be using the Canon 5D MkII DSLR for the purposes of the tutorials, but feel free to use what you have.
 
 #### Lens Choice
-In order to match the field of view between your camera and sensor so that the color information covers the depth we recommend a ~24mm lens on a full frame sensor. A ~16mm lens is adequate coverage for an APS-C sensor like an entry-level Canon DSLR. If you aren't familiar with these terms you should be able to find your [crop factor](http://en.wikipedia.org/wiki/Crop_factor) in the specifications section of your camera manual and you can look up your conversion [here](http://www.digicamhelp.com/accessories/dslr-accessories/crop-factor-conversion-chart/). 
+In order to match the field of view between your camera and sensor so that the color information adequately covers the depth information we recommend a ~24mm lens on a full frame sensor. A ~16mm lens is adequate coverage for an APS-C sensor like an entry-level Canon DSLR. If you aren't familiar with these terms you should be able to find your [crop factor](http://en.wikipedia.org/wiki/Crop_factor) in the specifications section of your camera manual and you can look up the conversion to full-frame [here](http://www.digicamhelp.com/accessories/dslr-accessories/crop-factor-conversion-chart/). When in doubt, set your zoom lens to its widest setting. Use a wide prime lens for best results. 
 	
 #### Mounts
+<<<<<<< HEAD
 
 ![mounts with camera](http://www.rgbdtoolkit.com/images/readme/mounts_with_camera.jpg)
 
-The workflow requires the use of a hardware to bind the video camera and the depth sensor together. If you'd like to buy a mount from us you can order one for Asus or Kinect through our store <LINK> or buy one of our 3D printed [Asus mounts from Shapeways](http://www.shapeways.com/shops/rgbd). We recommend the laser cut and aluminum mounts we're selling or something that is similarly robust and adjustable for Kinect and Asus. 
+The workflow requires the use of hardware to bind the video camera and the depth sensor together. If you'd like to buy a mount from us you can order one for Asus or Kinect through our store <LINK> or buy one of our 3D printed Asus mounts from our [Shapeways store](http://www.shapeways.com/shops/rgbd). For both Kinect and Asus we recommend our lasercut acrylic and aluminum mounts or something that is similarly robust and adjustable.
 
 In the open source spirit, we've also made the plans available online to enable you to make your own mount if you have access to the tools: 
 
@@ -92,9 +94,10 @@ In the open source spirit, we've also made the plans available online to enable 
  * **Home Workshop** A [mount](http://www.instructables.com/id/RGBD-Toolkit-Aluminum-Mount-for-Kinect-DSLRvide/) made from angle aluminum with basic tools
  * **Home 3D Printing** Print a mount using [community created files](http://www.thingiverse.com/search?q=RGBDToolkit)
 
-Please share your own mounting solutions and designs – however simple – on [Instructables](http://www.instructables.com/tag/type-id/?sort=none&q=RGBDToolkit) or your 3D printable models to [Thingiverse](http://www.thingiverse.com/search?q=RGBDToolkit) and tag them with "RGBDToolkit." For recommendations about designing your own mounts see the FAQ.
+Please add your own mounting solutions and designs – however simple or rudimentary – to [Instructables](http://www.instructables.com/tag/type-id/?sort=none&q=RGBDToolkit) or your 3D printable models to [Thingiverse](http://www.thingiverse.com/search?q=RGBDToolkit) and tag them with "RGBDToolkit." For recommendations about designing your own mounts see the FAQ. <LINK FAQ>
 
 ![mounts with camera](http://www.rgbdtoolkit.com/images/readme/mounts_without_camera.jpg)
+
 
 If you'd rather just buy a kit, we have a stock pile of the above mounts and are happy to sell one to you. Just email me [at] alexanderporter [dot] com to order one. We accept paypal and ship anywhere!
 
@@ -104,7 +107,8 @@ Print out the [A4](https://github.com/downloads/obviousjim/RGBDToolkit/chessboar
 
 Once you have all the items in the checklist, you're ready to calibrate the cameras!
 
-### 2) Calibrate
+
+## 2) CALIBRATE
 The next step is determine the physical position of the two cameras relative to one another mathematically. This allows the software combine mash up the two data streams into one 3D scene.
 
 #### Pick the right environment to calibrate
@@ -126,7 +130,7 @@ Calibration requires some ambient infrared light in the room. The sun is a good 
 
 **Note about Kinect model number** There are two version of RGBDCaptureKinect application on OS X, one for model #1414 and one for model #1473. Check the bottom of your Kinect to find the model number and open the corresponding capture application.
 
-<Kinect model number photo>
+![Kinect Model No.](https://dl.dropboxusercontent.com/u/5367022/xRGBD/illus_Kinect_modelNo.png)
 	
 **Capture Lens Properties** In order to accurately calibrate the two cameras, RGBDToolkit needs to understand the subtleties of the camera lenses – imperfect manufacturing processes mean that every lens will be slightly different. These values are called _lens intrinsic parameters_ and describe image size, field of view, optical center of the lens, and any distortion found in the lens. To determine these values we capture and analyze images from both cameras.
 
@@ -150,7 +154,7 @@ Download the clips onto your computer into your project’s working directory, w
 
 Drag all of the video clips them into the **‘Capture Lenses’** tab’s right-hand window pane. This should automatically start the calibration process. You may need to wait for a few seconds while this takes place; the application selects the middle frame from each video, converts it into a black and white .png  which is stored in your working folder's _calibration directory. It uses OpenCV library to determine the checkerboard corners to create a model of the lens.
 
-Once the analysis is complete, the software will display a **‘Total Error’** figure below the checkerboard images. This is the average error across all the calibration images. Alongside this, you can view the individual error margins for each image by scrubbing the mouse from left to right across the calibration image window. A ‘Total Error’ of < 0.200 is desirable. If your calibration has resulted in a larger average error than this, scrub through your image set and look for any outlier images which have an error of > 0.300. Note the filename of any outliers. You can re-perform the analysis at any time simply by dragging the videos onto the window pane again – this time excluding the erroneous clips. This should improve your Total Error.
+Once the analysis is complete, the software will display a **‘Total Error’** figure below the checkerboard images. This is the average error across all the calibration images. Alongside this, you can view the individual error margins for each image by scrubbing the mouse from left to right across the calibration image window. A ‘Total Error’ of < 0.200 is desirable. If your calibration has resulted in a larger average error than this, scrub through your image set and look for any outlier images which have an error of > 0.300. Note the filename of any outliers. You can re-perform the analysis at any time, simply by dragging the videos onto the window pane again – this time excluding the erroneous clips. This should improve your Total Error.
 
 ![good intrinsics](http://rgbdtoolkit.com/images/readme/good_intrinsics.png)
 	
@@ -159,9 +163,16 @@ If nearly all of your images have high error, you will need to reshoot them. Bef
 Congratulations, you've now sensed the actual structure of your camera lenses to create a model. With this we can now determine the relationship between the two lenses. 
 
 #### RGBDCapture: Calibrate Correspondence
-**Navigate to the second tab, labelled Calibrate Correspondence** Now that we have the lens models from the first tab, we can determine the spatial relationship between the cameras. If you are using the laser cut mount, you can to pivot the sensor up and down in order to match the field of view (FoV) to the video camera's lens. Ideally the video camera will be able to see everything the depth sensor can see, with a little bit of margin on the top and bottom. Set the checkerboard a few feet away from the camera. Using a live preview mode on your video camera – note that the viewfinder and the live preview may differ on some DSLRs if you are shooting in a wide format – position the top of the board flush with the top of the camera's FoV. Next, while looking at the capture application, adjust the sensor's angle on the mount until the view matches, err on the low side to allow the color camera to see a bit more than what the sensor sees. Depending on your lens you may find that your color information appears inside your depth camera’s field of view. There may be some compromises to be made here! The laser cut mounting solution allows for minute adjustment of the depth sensor's angles by loosening the pivot (upper) screws. Lock down the mount again, and know that from this point onwards it is important to maintain the camera positions relative to each other (hence the fancy mounting system!).
+**Navigate to the second tab, labelled Calibrate Correspondence** Now that we have the lens models from the first tab, we can determine the spatial relationship between the cameras. 
 
-< TIGHT SHOT OF MOUNT ADJUSTMENT >
+If you are using the laser cut mount, you can to pivot the sensor up and down in order to match the field of view (FoV) to the video camera's lens. Ideally the video camera will be able to see everything the depth sensor can see, with a little bit of margin on the top and bottom. 
+
+* Set the checkerboard a few feet away from the camera. 
+* Using a live preview mode on your video camera position the top of the board flush with the top of the camera's FoV. Note that the viewfinder and the live preview may differ on some DSLRs if you are shooting wide format. 
+* While looking at the capture application, adjust the sensor's angle on the mount until the view matches, err on the low side to allow the color camera to see a bit more than what the sensor sees. Depending on your lens you may find that your color information appears inside your depth camera’s field of view. There may be some compromises to be made here! The laser cut mounting solution allows for minute adjustment of the depth sensor's angles by loosening the locking (upper) screws. 
+* Tighten the upper screws to lock the mount angle – know that from this point onwards it is important to maintain the camera positions relative to each other (hence the fancy mounting system!).
+
+![FoV Adjust](https://dl.dropboxusercontent.com/u/5367022/xRGBD/Side_Sensor_Kinect_Cam_Close.png)
 
 Now that we've matched the views, we need to take corresponding images of the checkerboard from the two cameras to determine how they sit. Looking back at the capture page, with the checkerboard in each quadrant, you need to capture three images, _one short video clip from the video camera_, _one depth impression_ from the sensor, and one _infrared view of the checkerboard_ from the sensor. This is where the IR light diffuser is important, so make sure that is handy before beginning. A second pair of hands is helpful at this step too.
 
@@ -170,6 +181,8 @@ Now that we've matched the views, we need to take corresponding images of the ch
 - Being very careful not to move the rig at all, go back to the RGBCapture app and click the thumbnail of the depth image on the left. This will capture a snapshot of the image for correspondence to the video clip you just took.
 - Diffuse the IR projector with the paper or cloth, its the farthest left lens of on the face of the sensor, the one with the red sparkles coming out. Observe that the graininess disappears from the camera preview, and red dots appear in the corners of the squares on the checkerboard in the preview. Click the second tile to capture an image whilst the red dots are showing.
 - If the checkerboard is too dark or no red dots appear, it means you need more ambient IR light. Get closer to the window, or shine a hot light on it from far away. It's important that the board is illuminated evenly and sufficiently.
+
+![IR diffuse](https://dl.dropboxusercontent.com/u/5367022/xRGBD/illus_diffuse.png)
 
 Repeat this process with the checkerboard at four different depths away from the cameras, making sure to refocus at every plane. The idea is to fill up an imaginary box of checkerboard points in the 3D space in front of the camera. This helps to best interpret the relationship between the two cameras that will work at all distances from the lens. Once you've captured all four sets, download the video clips from the camera and drop them into a new folder in the working directory you set before. One at a time, drag the video files into their corresponding rectangular tiles in the application next to the corresponding depth and IR thumbnails taken from the device. 
 
@@ -212,7 +225,7 @@ The camera is set up as a video game style WASD first-person camera, using the f
 
 Once you have a calibration where all the checkerboards depth and image data match up for all the levels, you can move onto recording! As long as your camera and depth sensor lenses stay in position, you won't have to go through the painstaking process again. Phew!
 
-#### RGBDCapture: Record
+## 3) CAPTURE
 **Pre-filming checklist**
 Ready to Roll? Navigate to the Record tab in the RGBDCapture application. If connected properly, you will be able to see a preview of your depth camera on the left. Your takes will show on the right side in the format ‘TAKE_MM_DD_HH_MM_SS’, with the numbers corresponding to the time of capture (there will be none before you’ve saved your first take). If it’s still there from the last tutorial, remove the IR projector cover from your depth camera.
 
@@ -237,7 +250,7 @@ When you stop recording you should see your Take appear in the right side of the
 
 It's possible to **preview the recorded depth data** inside of the capture application. In the playback tab, select a Take and hit space bar to play the timeline. Use the same controls from the calibration step to navigate the point cloud as it plays back your capture.
 
-#### MEDIA BIN PREPARATION 
+#### Media Bin Preparation 
 
 After a shoot, you'll need to copy the video files into the working directory. For each file you recorded, find the corresponding TAKE folder. Having the camera's clock set correctly is helpful so you can match the time stamps. Within the take directory, put the video file into the color/ folder.
 
@@ -249,10 +262,10 @@ The folder structure for the media bin looks like this:
 				6x .yml files generated from the calibration step
  		TakeOne/
 			depth/
- 				frame_000_millis_00000.png //compressed depth frame, first number is frame # second is millsecond
+ 				frame_000_millis_00000.png //compressed depth frame, first number is frame # second is millisecond
  				....
 			color/
- 				MyClip.mov //the movie clip that corresponds to this
+ 				MyClip.mov //the movie clip that corresponds to this Take
   				MySLRCLip_Small.mov //optional small version that will be used for offline editing
  		TakeTwo/
  			...
@@ -261,7 +274,7 @@ The toolkit allows for the option of having a smaller preview, sometimes referre
 
 Once your files are in place inside their color folders, you’re ready to Visualize.
 
-### VISUALIZATION
+## 4) VISUALIZE
 
 **Launch RGBDVisualize** You should see the list of takes you just recorded. Only takes with color folders show up, so if you don't see one make sure your folders are complete. Select the take you'd like to visualize and click 'Create new Composition with this Scene.'
 
@@ -290,15 +303,26 @@ The Depth of Field effect can be convincing for simulating a camera language. Dr
 
 Save the composition when you are ready to export or want to experiment with something else. To switch compositions, click the name of the composition at the top and select a new scene.
 
-### EXPORTING
 
-Exporting works by rendering a given composition from the perspective chosen in the camera track into a series of PNG frames that can be compiled into a movie using Quicktime, After Effects or MPEG Streamclip. It uses the first camera point as an 'in point' and the last as an 'outpoint.'
+## 5) EXPORT
+Currently you can export out of RGBDVisualize as a PNG image sequences with or without alpha transparency or as a series of textured .OBJ files for use in other programs like Maya, Blender or Cinema 4D.
 
 To export, click on the composition name to view all the scenes. Selecting a scene will show all the compositions in that scene, each of which has a small 'R' button next to it. This stands for Render, and by clicking it you will add this composition to the render queue. If you make changes to that comp you will have to re-add the comp to the qeue by clicking the Take in the render qeue and re-adding the comp.
 
-Once you've selected all the compositions you wish to render, click the "Start Render Batch >>" button and sit back and relax as all the compositions you've qeued up begin to render. Be careful not to press the spacebar – it cancels your render. 
+Once you've selected all the compositions you wish to render, click the "Start Render Batch >>" button and sit back and relax as all the compositions you've qeued up begin to render. Be careful not to press the spacebar – it cancels your render.
 
-Render frames are 1920x1080 and saved into _RenderBin/ folder underneath the main MediaBin/ (right next to _calibration). Each folder is stamped with the scene, composition, and date so nothing will ever be overwritten.
+#### Export as Image Sequence
+The application exports an image sequence by default. Exporting works by rendering a given composition from the perspective chosen in the camera track (what you see in "Lock to Track mode) into a series of PNG frames. The renderer uses the first camera point as an 'in point' and the last as an 'outpoint.'
+
+Render frames are 1920x1080 by default but can be changed on the left-hand side of the app by changing the Frame Width & Frame Height Sliders. There are presets for 720P & 1080P built in below the sliders. Frames are saved into the _RenderBin/ folder underneath the main MediaBin/ (right next to _calibration). Each folder is stamped with the scene, composition and date of export so nothing will ever be overwritten.
+
+The image sequences will be rendered out with the black background as transparent using an Alpha channel for compositing. Except when "Draw DoF" is checked it will remain black. 
+
+#### Export as OBJ Sequence
+https://vimeo.com/56143282
+
+In order to export textured OBJ files toggle Export .obj Files on the left-hand panel. This will render out a sequential series of .OBJ files and matching .PNG frames to the _RenderBin/ folder. There will be no accompanying .mtl files included but they can be imported in to Maya. There is a tutorial and import script [here](http://mayapy.wordpress.com/2011/12/19/obj-sequence-importer-for-maya/). Keep in mind that there is no camera tracking or perspective information embedded in these sequences as they are simply texturable 3D files, but it does still use your first and last camera points as in & out points for the render. 
+
 
 ## Troubleshooting
 **The application will not launch / crashes / crashes my computer**
@@ -306,24 +330,23 @@ Render frames are 1920x1080 and saved into _RenderBin/ folder underneath the mai
  - Maybe your system doesn't support the toolkit. You'll need a computer with accelerated graphics no more than 4 or 5 years old
  - Make sure you have not moved the data/ folder in relationship to the RGBDCapture or RGBDVisualize applications
  - If you are using the Asus Xtion Pro, make sure you’ve installed the [Sensecast drivers](http://sensecast.com/files/Sensecast.and.Libs.Installer.v.0.02.dmg) )
- - If you are still experiencing problems... search the [RGBDToolkit Google Groups](https://groups.google.com/forum/#!forum/rgbdtoolkit)
+ - If you are still experiencing problems... search the [RGBDToolkit Forum](https://groups.google.com/forum/#!forum/rgbdtoolkit)
 
 **My depth camera feed is not showing up in the Calibrate Lenses tab**
  
- - Try disconnecting and reconnecting your depth camera restarting the application
- - If you are using Kinect, make sure that you are running the appropriate Kinect capture application, (1414 or 1473), based on the model number on the bottom of the device
+ - Try disconnecting and reconnecting your depth camera, then restarting the application
+ - If you are using Kinect, make sure that you are running the appropriate Kinect capture application (1414 vs 1473), based on the model number on the bottom of the device
  - Occasionally fully restarting the computer has helped with sensors that fail to pick up
 
 **My depth camera’s field of view / principal point don’t match the figures given in the video**
 
  - If they are only slightly different, don’t worry!
  - Try the process again from scratch by disconnecting devices and relaunching the application
- - Is your lens clean?
- - Make sure there is information in the scene that falls within the range visible to the sensor (3’–12’) and that there is variation in the scene; information in the foreground, middle and background.
+ - Make sure there is information in the scene that falls within the range visible to the sensor (~3’–12’). Check that there is variation in the scene; information in the foreground, middle and background.
 
 **I’m getting high error numbers on the calibrate lenses page**
 
- - High error may occur when the checkerboard is too close or too faraway. Make sure your depth
+ - High error may occur when the checkerboard is too close or too far away.
  - Make sure there is no glare on the checkerboard from lights. Even one hot spot from a nearby light could throw off the reading.
  - Make sure that the exposure is set properly on the camera – if the whites of the checkerboards are too bright sometimes you need to shoot it again at a slightly darker exposure. 
  - Make sure you refocused on the checkerboard at every stage and that your aperture is no too low, making the depth of field shallow. 
@@ -332,12 +355,11 @@ Render frames are 1920x1080 and saved into _RenderBin/ folder underneath the mai
 
  - Confirm that you have a low error on the first stage.
  - Make sure that your set up is totally stable when capturing the correspondence images. A wobbling checkerboard or camera tripod will throw things off.
- - Often if there is not enough ambient IR light, get closer to a window 
+ - Often this will happen if there is not enough ambient IR light, get closer to a window 
  - Conversely if there is too much or uneven lighting it'll also blow out your checkerboard
- - Try different depths from the camera, being weary of too close or too far.
+ - Try different depths from the camera, being wary moving it too close or too far.
 
 **My recordings are dropping frames**
 
- - Ensure that the checkerboard is flat and not moving, and well as the camera being firmly mounted to a tripod.
- - The application crashes when I try to calibrate my DSLR lens
+**The application crashes when I try to calibrate my DSLR lens
  - Make sure your video files are compatible with the toolkit, H.264 or ProRes MOV’s.
