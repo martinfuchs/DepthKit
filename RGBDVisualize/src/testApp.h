@@ -15,9 +15,9 @@
 #include "ofxDepthHoleFiller.h"
 #include "ofxRGBDScene.h"
 #include "ofxRGBDPlayer.h"
-#include "ofxRGBDVideoExporter.h"
 #include "ofxGui.h"
 #include "ofxObjLoader.h"
+#include "ofxRGBDCombinedVideoExporter.h"
 
 typedef struct {
 	ofxRGBDScene scene;
@@ -120,6 +120,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxToggle includeTextureMaps;
 	ofxToggle renderRainbowVideo;
     ofxToggle startSequenceAt0;
+	
 	bool multisampleBufferAllocated;
     bool currentRenderObjectFiles;
     bool firstRenderFrame;
@@ -175,7 +176,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxRGBDPlayer player;
 	ofxRGBDGPURenderer renderer;
     ofxRGBDCPURenderer meshBuilder;
-    ofxRGBDVideoExporter rainbowExporter;
+    ofxRGBDCombinedVideoExporter rainbowExporter;
+	ofTexture combinedVideoTexture;
 	
 	ofxTLDepthImageSequence depthSequence;
 	ofxTLVideoDepthAlignmentScrubber alignmentScrubber;
@@ -196,7 +198,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofImage savingImage;
 	string saveFolder;
 	string lastSavedDate;    
-
+	
+	int rainbowVideoFrame;
 	bool timelineElementsAdded;
 	bool currentlyRendering;
 	int currentRenderFrame;

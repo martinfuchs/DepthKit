@@ -145,7 +145,7 @@ void testApp::setup(){
 	gui.add(captureFramePair.setup("Set Color-Depth Time", ofParameter<bool>()));
 	
 	gui.add(renderObjectFiles.setup("Export .obj Files", ofParameter<bool>()));
-	//gui.add(renderRainbowVideo.setup("Export Combined Rainbow", ofParameter<bool>()));
+	gui.add(renderRainbowVideo.setup("Export Combined Video", ofParameter<bool>()));
 	
 	gui.add(includeTextureMaps.setup("Include Texture Maps", ofParameter<bool>()));
 	gui.add(startSequenceAt0.setup("Start Sequence at 1", ofParameter<bool>()));
@@ -216,7 +216,8 @@ void testApp::populateTimelineElements(){
     timeline.addCurves("Simplify X", currentCompositionDirectory + "simplifyx.xml", ofRange(1, 8), 2);
     timeline.addCurves("Simplify Y", currentCompositionDirectory + "simplifyy.xml", ofRange(1, 8), 2);
     timeline.addCurves("Edge Clip", currentCompositionDirectory + "edgeClip.xml", ofRange(1.0, 2000), 2000 );
-    timeline.addCurves("Z Threshold", currentCompositionDirectory + "zThreshold.xml", ofRange(1.0, sqrtf(6000)), sqrtf(6000) );
+    timeline.addCurves("Z Threshold Max", currentCompositionDirectory + "zThreshold.xml", ofRange(1.0, sqrtf(6000)), sqrtf(6000) );
+    timeline.addCurves("Z Threshold Min", currentCompositionDirectory + "zThresholdMin.xml", ofRange(0, sqrtf(2000)), 0 );
     
     timeline.addPage("Rotation", true);
 	timeline.addCurves("X Rotate", currentCompositionDirectory + "meshXRot.xml", ofRange(-360,360), 0.);
@@ -550,6 +551,11 @@ void testApp::update(){
     }
     
 	
+	if(renderRainbowVideo && renderObjectFiles){
+		ofSystemAlertDialog("Select either object files or combined video for custom export");
+		renderRainbowVideo = false;
+	}
+	
 	renderBatch->enabled = viewComps && (renderQueue.size() > 0);
 	
     changeCompButton->enabled = isSceneLoaded;
@@ -727,7 +733,9 @@ void testApp::update(){
         currentRenderObjectFiles = renderObjectFiles;
     }
 	
-	float currentFarClip = powf(timeline.getValue("Z Threshold"), 2.0);
+	float currentFarClip = powf(timeline.getValue("Z Threshold Max"), 2.0);
+	float currentNearClip = powf(timeline.getValue("Z Threshold Min"), 2.0);
+	
 	if(timeline.getValue("X Texture Shift") != renderer.shift.x ||
 	   timeline.getValue("Y Texture Shift") != renderer.shift.y ||
        timeline.getValue("X Texture Scale") != renderer.scale.x ||
@@ -737,7 +745,8 @@ void testApp::update(){
 	   fillHoles != holeFiller.enable ||
 	   currentHoleKernelSize != holeFiller.getKernelSize() ||
        currentHoleFillIterations != holeFiller.getIterations()||
-	   currentFarClip != renderer.farClip )
+	   currentFarClip != renderer.farClip ||
+	   currentNearClip != renderer.nearClip)
 	{
 		renderer.shift.x = timeline.getValue("X Texture Shift");
 		renderer.shift.y = timeline.getValue("Y Texture Shift");
@@ -745,6 +754,7 @@ void testApp::update(){
         renderer.scale.y = timeline.getValue("Y Texture Scale");
 		renderer.mirror = currentMirror;
 		renderer.farClip = currentFarClip;
+		renderer.nearClip = currentNearClip;
         renderer.edgeClip = timeline.getValue("Edge Clip");
         
         meshBuilder.mirror = currentMirror;
@@ -754,6 +764,7 @@ void testApp::update(){
         meshBuilder.scale.y = timeline.getValue("Y Texture Scale");
 		
 		meshBuilder.farClip = currentFarClip;
+		meshBuilder.nearClip = currentNearClip;
         meshBuilder.edgeClip = renderer.edgeClip;
         
 		holeFiller.enable = fillHoles;
@@ -767,11 +778,15 @@ void testApp::update(){
 		rendererDirty = true;
     }
 	
+	if(renderRainbowVideo && rainbowVideoFrame != currentVideoFrame){
+		rendererNeedsUpdate = true;
+	}
 	if(temporalAlignmentMode &&
 	   (currentDepthFrame != player.getDepthSequence()->getCurrentFrame() ||
-		currentVideoFrame != videoTrack->getPlayer()->getCurrentFrame())){
+		currentVideoFrame != videoTrack->getPlayer()->getCurrentFrame()))
+	{
 		   rendererNeedsUpdate = true;
-	   }
+	}
 	
 	if(rendererNeedsUpdate){
 		updateRenderer();
@@ -786,9 +801,26 @@ void testApp::updateRenderer(){
     }
     
     renderer.update();
-    if(currentlyRendering && renderObjectFiles){
+    if((currentlyRendering && renderObjectFiles) || renderRainbowVideo ){
+		if(renderRainbowVideo){
+			meshBuilder.setSimplification(ofVec2f(1,1));
+		}
+		else{
+			meshBuilder.setSimplification(renderer.getSimplification());
+		}
         meshBuilder.update();
     }
+	
+	if(renderRainbowVideo){
+		rainbowVideoFrame = currentVideoFrame;
+		rainbowExporter.minDepth = meshBuilder.nearClip;
+		rainbowExporter.maxDepth = meshBuilder.farClip;
+		rainbowExporter.updatePixels(meshBuilder, *player.getVideoPlayer());
+		if(!combinedVideoTexture.isAllocated()){
+			combinedVideoTexture.allocate(rainbowExporter.getPixels());
+		}
+		combinedVideoTexture.loadData(rainbowExporter.getPixels());
+	}
 	
 	cameraTrack->setDampening(powf(timeline.getValue("Camera Dampen"),2.));
 	//used for temporal aligmnet nudging
@@ -886,18 +918,27 @@ void testApp::draw(){
 			fboRectangle.y = 50;
 			
 			ofRectangle colorAssistRenderArea = ofRectangle(0,0,ofGetWidth() - fboRectangle.getMaxX(),timeline.getDrawRect().y - 50);
-			colorAlignAssistRect = naturalVideoRect;
-			colorAlignAssistRect.scaleTo(colorAssistRenderArea);
-			colorAlignAssistRect.x = fboRectangle.getMaxX();
-			colorAlignAssistRect.y = fboRectangle.getMinY();
-			colorAssistRenderArea.height -= colorAlignAssistRect.height;
-			
-			depthAlignAssistRect =  ofRectangle(0,0,640,480);
-            depthAlignAssistRect.scaleTo(colorAssistRenderArea);
-			depthAlignAssistRect.y = colorAlignAssistRect.getMaxY();
-			depthAlignAssistRect.x = colorAlignAssistRect.getX();
-			
-            drawGeometry();
+			if(!renderRainbowVideo){
+				colorAlignAssistRect = naturalVideoRect;
+				colorAlignAssistRect.scaleTo(colorAssistRenderArea);
+				colorAlignAssistRect.x = fboRectangle.getMaxX();
+				colorAlignAssistRect.y = fboRectangle.getMinY();
+				colorAssistRenderArea.height -= colorAlignAssistRect.height;
+				
+				depthAlignAssistRect =  ofRectangle(0,0,640,480);
+				depthAlignAssistRect.scaleTo(colorAssistRenderArea);
+				depthAlignAssistRect.y = colorAlignAssistRect.getMaxY();
+				depthAlignAssistRect.x = colorAlignAssistRect.getX();
+			}
+			else if(renderRainbowVideo){
+				ofRectangle combinedVideoRect(0,0,rainbowExporter.getPixels().getWidth(),rainbowExporter.getPixels().getHeight());
+				combinedVideoRect.scaleTo(colorAssistRenderArea, OF_ASPECT_RATIO_KEEP);
+				combinedVideoRect.x = fboRectangle.getMaxX();
+				combinedVideoRect.y = fboRectangle.getMinY();
+				combinedVideoTexture.draw(combinedVideoRect);
+			}
+
+			drawGeometry();
             
 			if(temporalAlignmentMode){
                 player.getVideoPlayer()->draw(colorAlignAssistRect);
@@ -926,18 +967,12 @@ void testApp::draw(){
 					videoFrame -= timeline.getInFrame();
 				}
                 sprintf(filename, "%s/save.%05d.png", saveFolder.c_str(), videoFrame);
-				
-//				if(renderRainbowVideo){
-//					rainbowExporter.setPlayer(&player);
-//					rainbowExporter.setRenderer(&renderer);
-//					rainbowExporter.maxDepth = renderer.farClip;
-//					rainbowExporter.minDepth = 400;
-//					rainbowExporter.inoutPoint.min = timeline.getInFrame();
-//					rainbowExporter.inoutPoint.max = timeline.getOutFrame();
-//					rainbowExporter.render(saveFolder, "save.");
-//					currentRenderFrame = timeline.getOutFrame()+1;
-//				}
 
+				if(firstRenderFrame){
+					rainbowExporter.minDepth = meshBuilder.nearClip;
+					rainbowExporter.maxDepth = meshBuilder.farClip;
+				}
+				
                 if(!firstRenderFrame){
                     if(renderObjectFiles){
                         char objFilename[512];
@@ -949,6 +984,10 @@ void testApp::draw(){
 							savingImage.saveImage(filename);
 						}
                     }
+					else if(renderRainbowVideo){
+						rainbowExporter.updatePixels(meshBuilder, *player.getVideoPlayer());
+						ofSaveImage(rainbowExporter.getPixels(), filename);
+					}
                     else{
                         fbo1.getTextureReference().readToPixels(savingImage.getPixelsRef());
 						savingImage.mirror(true, false);
@@ -1505,7 +1544,9 @@ bool testApp::loadComposition(string compositionDirectory){
 	cameraTrack->setup();
 	cameraTrack->load();
 	timeline.setCurrentTimeMillis(cameraTrack->getEarliestTime());
-		
+	
+	rainbowVideoFrame = -1;
+	
 	setCompositionButtonName();
     //turn off view comps
 	viewComps = false;
