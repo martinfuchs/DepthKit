@@ -1,8 +1,9 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxRGBDRenderer.h"
-#include "ofxRGBDMeshBuilder.h"
+
+#include "ofxRGBDCPURenderer.h"
+#include "ofxRGBDGPURenderer.h"
 #include "ofxRGBDVideoDepthSequence.h"
 #include "ofxGameCamera.h"
 #include "ofxTimeline.h"
@@ -14,6 +15,7 @@
 #include "ofxDepthHoleFiller.h"
 #include "ofxRGBDScene.h"
 #include "ofxRGBDPlayer.h"
+#include "ofxRGBDVideoExporter.h"
 #include "ofxGui.h"
 #include "ofxObjLoader.h"
 
@@ -67,6 +69,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxXmlSettings projectsettings;
 	void loadNewMediaBin();
 	void populateScenes();
+    void positionSceneButtons();
+    
     void populateCompositionsForScene();
     void populateRenderQueue();
 
@@ -77,6 +81,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     void loadDefaults();
 	void saveComposition();
 	bool loadComposition(string compositionDirectory);
+	void setCompositionButtonName();
+	
 	bool loadAssetsForScene(SceneButton* scene);
     void resetCameraPosition();
     void checkReallocateFrameBuffers();
@@ -89,7 +95,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle drawMesh;
     ofxToggle selfOcclude;
     ofxToggle drawDOF;
-    
+	
     ofxToggle shouldResetCamera;
     ofxFloatSlider cameraSpeed;
     ofxFloatSlider cameraRollSpeed;
@@ -111,7 +117,10 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle captureFramePair;
 
     ofxToggle renderObjectFiles;
+	ofxToggle includeTextureMaps;
+	ofxToggle renderRainbowVideo;
     ofxToggle startSequenceAt0;
+	bool multisampleBufferAllocated;
     bool currentRenderObjectFiles;
     bool firstRenderFrame;
     bool startRenderMode;
@@ -150,6 +159,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     
     string currentCompShortName;
 	string currentCompositionDirectory;
+	string currentCompositionFile;
     string currentCompositionLabel;
 	string mediaBinFolder;
 	
@@ -163,9 +173,10 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxTLVideoTrack* videoTrack;
 	
 	ofxRGBDPlayer player;
-	ofxRGBDRenderer renderer;
-    ofxRGBDMeshBuilder meshBuilder;
-    
+	ofxRGBDGPURenderer renderer;
+    ofxRGBDCPURenderer meshBuilder;
+    ofxRGBDVideoExporter rainbowExporter;
+	
 	ofxTLDepthImageSequence depthSequence;
 	ofxTLVideoDepthAlignmentScrubber alignmentScrubber;
 	ofxDepthHoleFiller holeFiller;
@@ -176,7 +187,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 
     ofShader dofRange;
     ofShader dofBlur;
-
+    ofVboMesh dofQuad;
+    
 	ofFbo fbo1;
     ofFbo swapFbo; //used for temp drawing
     ofFbo dofBuffer; //used to get a solid depth texture
@@ -185,6 +197,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	string saveFolder;
 	string lastSavedDate;    
 
+	bool timelineElementsAdded;
 	bool currentlyRendering;
 	int currentRenderFrame;
     

@@ -22,11 +22,24 @@
 **** CHANGELOG
 ===============================
 
-Known Issues:
-- When selecting a media bin folder in the Capture app, you'll need to restart for it to reload the calibration
-- Rendering compositions with no camera track will cause weird behavior
 
 =======
+005 - April 15th 2013
+ - New, more accurate calibration workflow
+ - Support for 1473 Kinect on OS X
+ - Fixed mesh winding order on object exporter
+ - Fixed bug timeline stopped updating while rendering with online/offline videos
+ - Option to just export objects without texture
+ - Faster Depth of Field
+ - Texture stretch parameter zooms from center
+ - Window size is fit to screen on start up
+ - Moved rotation to its own timeline page
+ - Load scene buttons will resize when s
+ - If composition creation fails the user is notified
+ - If the user cancels "Copy to New" the current composition is retained
+ - Fixed depth data appearing off the end of the track
+ - Fixed bug with duplicated entries in depth data
+ - Escape no longer quits apps
 
 0041 - January 3rd 2013
  - Fixed crash in OS X version of RGBDCaptureKinect
@@ -77,15 +90,16 @@ Known Issues:
 - Depth of Field shader added
 
 001 - March 16th 2012
-First release for Resonate Festival
+- First release for Resonate Festival
 
 ******
 
 RGBDToolkit is a labor of love by James George http://www.jamesgeorge.org
-Collaborators Alexander Porter and Jonathan Minard
-Development has been pushed and inspired by Kyle McDonald (http://kylemcdonald.net) and Elliot Woods (http://kimchiandchips.com)
+Collaborators Alexander Porter, Jonathan Minard, Mike Heavers
+Development has been pushed and inspired by Elliot Woods (http://kimchiandchips.com) and Kyle McDonald (http://kylemcdonald.net)
 
 Supported by:
 The Frank-Ratchye Studio for Creative Inquiry http://studioforcreativeinquiry.org/
 Eyebeam Art+Technology center http://eyebeam.org
 YCAM InterLab http://www.ycam.jp/en/interlab/
+NYU Interactive Telecommunications Program http://itp.nyu.edu

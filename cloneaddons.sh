@@ -30,11 +30,3 @@ ${PREFIX}YCAMInterlab/ofxTimecode
 ${PREFIX}YCAMInterlab/ofxTimeline
 ${PREFIX}obviousjim/ofxObjLoader		
 
-cd ofxCv/
-git checkout opencv-2.3
-cd ..
-
-# you also need to replace ofxOpenCv/libs/opencv with this link:
-# https://github.com/kylemcdonald/ofxCv/downloads
-# opencv-2.3.-osx.zip — OpenCV 2.3 library 
-#=======

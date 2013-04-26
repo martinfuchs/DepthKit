@@ -9,7 +9,6 @@ uniform float focalRange;
 
 float weights[21];
 
-
 //converts depth value to normalized, linear, between near and far plane
 float LinearizeDepth(float zoverw){
     //todo: take near and far as uniforms
@@ -51,7 +50,7 @@ void main()
 	weights[20] = 0.00916792765601138;
 
 	vec3 sum = vec3(0.0, 0.0, 0.0);
-    float rangeTexel = FocalValue( gl_TexCoord[1].st);
+    float rangeTexel = FocalValue( gl_TexCoord[0].st);
     vec2 blurOffset = sampleOffset * rangeTexel;
 	vec2 baseOffset = -10.0 * blurOffset;
 	vec2 offset = vec2( 0.0, 0.0 );
@@ -62,7 +61,8 @@ void main()
         //sample the surrounding pixels and blend them into the total with the gaussian weight
         //if fast is off, we weight the blur amount by the focal difference from the center point
         //which helps make in focus items 'pop' and avoid color bleeding between focal depths
-        vec4 texel = texture2DRect( tex, gl_TexCoord[0].st + baseOffset + offset ) * (1. - abs( FocalValue(gl_TexCoord[1].st + baseOffset + offset)  - rangeTexel) );
+//        vec4 texel = texture2DRect( tex, gl_TexCoord[0].st + baseOffset + offset ) * (1. - abs( FocalValue(gl_TexCoord[0].st + baseOffset + offset)  - rangeTexel) );
+		vec4 texel = texture2DRect( tex, gl_TexCoord[0].st + baseOffset + offset * (1. - abs( FocalValue(gl_TexCoord[0].st + baseOffset + offset)  - rangeTexel) ) );
         sum += texel.rgb * weights[s];
 		offset += blurOffset;
 	}
