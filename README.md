@@ -366,7 +366,7 @@ In order to export textured OBJ files toggle Export .obj Files on the left-hand 
  - Make sure you are plugged into wall power
  - If writing to an external hard drive make sure it's USB 3.0 or FireWire 800
 
-**The application crashes when I try to load movie files from the HD camera
+**The application crashes when I try to load movie files from the HD camera**
 
  - Make sure your video files are compatible with the toolkit, H.264 or ProRes MOV’s.
  - Make sure you have the latest version of Quicktime installed
