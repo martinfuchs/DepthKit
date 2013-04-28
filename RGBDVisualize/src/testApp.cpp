@@ -959,7 +959,7 @@ void testApp::draw(){
 															 -colorAlignAssistRect.height));
                 dofRange.end();
             }
-            
+            			
 			if(currentlyRendering){
 				char filename[512];
 				int videoFrame = player.getVideoPlayer()->getCurrentFrame();
@@ -969,6 +969,23 @@ void testApp::draw(){
                 sprintf(filename, "%s/save.%05d.png", saveFolder.c_str(), videoFrame);
 
 				if(firstRenderFrame){
+					ofxXmlSettings depthProjectionSettings;
+					depthProjectionSettings.addTag("depth");
+					depthProjectionSettings.pushTag("depth");
+					
+					depthProjectionSettings.addValue("fovx", meshBuilder.depthFOV.x);
+					depthProjectionSettings.addValue("fovx", meshBuilder.depthFOV.y);
+					depthProjectionSettings.addValue("ppx", meshBuilder.depthPrincipalPoint.x);
+					depthProjectionSettings.addValue("ppy", meshBuilder.depthPrincipalPoint.y);
+					depthProjectionSettings.addValue("width", meshBuilder.depthImageSize.width);
+					depthProjectionSettings.addValue("height", meshBuilder.depthImageSize.height);
+					depthProjectionSettings.addValue("minDepth", meshBuilder.nearClip);
+					depthProjectionSettings.addValue("maxDepth", meshBuilder.farClip);
+					
+					depthProjectionSettings.popTag();
+					
+					depthProjectionSettings.saveFile(saveFolder + "/_depthProperties.xml" );
+		
 					rainbowExporter.minDepth = meshBuilder.nearClip;
 					rainbowExporter.maxDepth = meshBuilder.farClip;
 				}
