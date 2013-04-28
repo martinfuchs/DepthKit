@@ -101,6 +101,17 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxFloatSlider cameraRollSpeed;
     ofxToggle shouldSaveCameraPoint;
     ofxToggle currentLockCamera; 
+	ofxToggle drawScanlinesVertical;
+	ofxToggle drawScanlinesHorizontal;
+	bool currentDrawScanlinesVertical;
+	bool currentDrawScanlinesHorizontal;
+	float currentScanlineStepVertical;
+	float currentScanlineStepHorizontal;
+	
+	ofMesh verticalScanlineMesh;
+	ofMesh horizontalScanlineMesh;
+	
+	void generateScanlineMesh(bool verticalScanline, bool horizontalScanline);
 	
     ofxToggle currentMirror;
 	ofxToggle flipTexture; //Debug for some grphx cards
@@ -120,7 +131,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxToggle includeTextureMaps;
 	ofxToggle renderRainbowVideo;
     ofxToggle startSequenceAt0;
-	
+
 	bool multisampleBufferAllocated;
     bool currentRenderObjectFiles;
     bool firstRenderFrame;

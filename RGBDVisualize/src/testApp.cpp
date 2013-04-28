@@ -125,6 +125,10 @@ void testApp::setup(){
 	gui.add(drawPointcloud.setup("Draw Pointcloud",ofParameter<bool>()));
     gui.add(drawWireframe.setup("Draw Wireframe",ofParameter<bool>()));
     gui.add(drawMesh.setup("Draw Mesh",ofParameter<bool>()));
+	
+	gui.add(drawScanlinesVertical.setup("Vertical Scanlines", ofParameter<bool>()));
+	gui.add(drawScanlinesHorizontal.setup("Horizontal Scanlines", ofParameter<bool>()));
+	
     gui.add(selfOcclude.setup("Self Occlude", ofParameter<bool>()));
     gui.add(drawDOF.setup("Draw DOF", ofParameter<bool>()));
  	
@@ -134,8 +138,7 @@ void testApp::setup(){
     gui.add( lockTo720p.setup("Render 720p", ofParameter<bool>()));
     gui.add( lockTo1080p.setup("Render 1080p",ofParameter<bool>()));
     
-    gui.add(currentMirror.setup("Mirror", ofParameter<bool>()));
-//	gui.add(flipTexture.setup("Flip Texture", ofParameter<bool>()));
+    gui.add( currentMirror.setup("Mirror", ofParameter<bool>()));
 	
     gui.add(fillHoles.setup("Fill Holes", ofParameter<bool>()));
     gui.add(currentHoleKernelSize.setup("Hole Kernel Size", ofParameter<int>(), 1, 10));
@@ -231,6 +234,12 @@ void testApp::populateTimelineElements(){
     timeline.addCurves("Wireframe Thickness", currentCompositionDirectory + "wireframeThickness.xml", ofRange(0.0,sqrtf(10.0)), 1.5 );
     timeline.addCurves("Mesh Alpha", currentCompositionDirectory + "meshAlpha.xml", ofRange(0,1.0), 1.0 );
 	
+	timeline.addPage("Scan Lines", true);
+	timeline.addCurves("Horizontal Scanline Alpha", currentCompositionDirectory + "horizontalScanlineAlpha.xml", ofRange(0.0, 1.0), 1.0 );
+	timeline.addCurves("Horizontal Scanline Thickness", currentCompositionDirectory + "horizontalScalineThickness.xml", ofRange(1.0, 10.0), 2.0 );
+	timeline.addCurves("Vertical Scanline Alpha", currentCompositionDirectory + "verticalScanlineAlpha.xml", ofRange(0.0, 1.0), 1.0 );
+	timeline.addCurves("Vertical Scanline Thickness", currentCompositionDirectory + "verticalScalineThickness.xml", ofRange(1.0, 10.0), 2.0 );
+	
     timeline.addPage("Depth of Field", true);
     timeline.addCurves("DOF Distance", currentCompositionDirectory + "DOFDistance.xml", ofRange(0,sqrtf(1500.0)), 10 );
     timeline.addCurves("DOF Range", currentCompositionDirectory + "DOFRange.xml", ofRange(0,sqrtf(1500.0)) );
@@ -322,6 +331,23 @@ void testApp::drawGeometry(){
             thickness *= thickness;
 			ofSetLineWidth(thickness);
 			renderer.drawWireFrame();
+		}
+		
+		if(drawScanlinesVertical || drawScanlinesHorizontal){
+			ofTranslate(0,0,-.5);
+			renderer.bindRenderer();
+			if(drawScanlinesVertical){
+				ofSetLineWidth( timeline.getValue("Vertical Scanline Thickness") );
+				ofSetColor( timeline.getValue("Vertical Scanline Alpha")*255);
+				verticalScanlineMesh.draw();
+			}
+		
+			if(drawScanlinesHorizontal){
+				ofSetLineWidth( timeline.getValue("Horizontal Scanline Thickness") );
+				ofSetColor( timeline.getValue("Horizontal Scanline Alpha")*255);
+				horizontalScanlineMesh.draw();
+			}
+			renderer.unbindRenderer();
 		}
 		
 		if(drawPointcloud && pointAlpha > 0){
@@ -719,9 +745,8 @@ void testApp::update(){
 	renderer.worldRotation.x = timeline.getValue("X Rotate");
     renderer.worldRotation.y = timeline.getValue("Y Rotate");
     renderer.worldRotation.z = timeline.getValue("Z Rotate");
-	renderer.flipTexture = flipTexture;
+
     ofVec2f simplification = ofVec2f( timeline.getValue("Simplify X"), timeline.getValue("Simplify Y") );
-	
 	if(renderer.getSimplification().x != simplification.x || renderer.getSimplification().y != simplification.y){
     	renderer.setSimplification(simplification);
         meshBuilder.setSimplification(simplification);
@@ -732,6 +757,21 @@ void testApp::update(){
         rendererNeedsUpdate = true;
         currentRenderObjectFiles = renderObjectFiles;
     }
+	
+	if(drawScanlinesHorizontal != currentDrawScanlinesHorizontal ||
+	   drawScanlinesVertical != currentDrawScanlinesVertical ||
+	   renderer.getSimplification().x != currentScanlineStepHorizontal ||
+	   renderer.getSimplification().y != currentScanlineStepVertical)
+	{
+		generateScanlineMesh(drawScanlinesVertical, drawScanlinesHorizontal);
+		
+		currentScanlineStepVertical = drawScanlinesVertical;
+		currentDrawScanlinesHorizontal = drawScanlinesHorizontal;
+		currentScanlineStepVertical = renderer.getSimplification().x;
+		currentScanlineStepHorizontal = renderer.getSimplification().y;
+		rendererNeedsUpdate = true;
+	}
+	
 	
 	float currentFarClip = powf(timeline.getValue("Z Threshold Max"), 2.0);
 	float currentNearClip = powf(timeline.getValue("Z Threshold Min"), 2.0);
@@ -791,6 +831,33 @@ void testApp::update(){
 	if(rendererNeedsUpdate){
 		updateRenderer();
 	}
+}
+
+void testApp::generateScanlineMesh(bool verticalScanline, bool horizontalScanline)
+{
+	horizontalScanlineMesh.clear();
+	verticalScanlineMesh.clear();
+	horizontalScanlineMesh.setMode(OF_PRIMITIVE_LINES);
+	verticalScanlineMesh.setMode(OF_PRIMITIVE_LINES);
+
+	if(verticalScanline){
+		for(float x = 0; x < 640; x += renderer.getSimplification().x){
+			for(float y = 0; y < 480; y += renderer.getSimplification().y){
+				verticalScanlineMesh.addVertex(ofVec3f(x,y,0));
+				verticalScanlineMesh.addVertex(ofVec3f(x,y+renderer.getSimplification().y,0));
+			}
+		}
+	}
+	
+	if(horizontalScanline){
+		for(float y = 0; y < 480; y+=renderer.getSimplification().y){
+			for(float x = 0; x < 640; x+=renderer.getSimplification().x){
+				horizontalScanlineMesh.addVertex(ofVec3f(x,y,0));
+				horizontalScanlineMesh.addVertex(ofVec3f(x+renderer.getSimplification().x,y,0));
+			}
+		}
+	}
+	
 }
 
 //--------------------------------------------------------------
@@ -1319,6 +1386,9 @@ void testApp::loadDefaults(){
 	drawWireframe = false;
 	drawMesh = true;
     
+	drawScanlinesVertical = false;
+	drawScanlinesHorizontal = false;
+
 	selfOcclude = false;
 	drawDOF = false;
 	
