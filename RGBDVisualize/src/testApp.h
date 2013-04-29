@@ -103,6 +103,10 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle currentLockCamera; 
 	ofxToggle drawScanlinesVertical;
 	ofxToggle drawScanlinesHorizontal;
+	
+	ofxToggle sinDistort;
+	ofVec2f sinPosition;
+	
 	bool currentDrawScanlinesVertical;
 	bool currentDrawScanlinesHorizontal;
 	float currentScanlineStepVertical;

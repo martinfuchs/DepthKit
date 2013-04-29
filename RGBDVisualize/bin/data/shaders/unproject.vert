@@ -4,23 +4,33 @@
 uniform vec2 dim;
 uniform vec2 textureScale;
 
+// CORRECTION
 uniform vec2 shift;
 uniform vec2 scale;
 
+// DEPTH
 uniform sampler2DRect depthTex;
 uniform vec2 principalPoint;
 uniform vec2 fov;
 uniform float farClip;
+uniform float nearClip;
 uniform float edgeClip;
-uniform float xsimplify;
-uniform float ysimplify;
-uniform int useTexture;
+uniform vec2 simplify;
+
+//COLOR INTRINSICS
 uniform mat3 colorRotate;
 uniform vec3 colorTranslate;
 uniform vec2 colorFOV;
 uniform vec2 colorPP;
 uniform vec3 dK;
 uniform vec2 dP;
+
+//DISTORTION
+uniform vec2 sinAmp;
+uniform vec2 sinFreq;
+uniform vec2 sinPos;
+
+uniform int useTexture;
 
 varying float VZPositionValid0;
 
@@ -31,14 +41,14 @@ void main(void)
     //align to texture
     vec2 halfvec = vec2(.5,.5);
     float depth = texture2DRect(depthTex, floor(gl_Vertex.xy) + halfvec).r * 65535.;
-    float right = texture2DRect(depthTex, floor(gl_Vertex.xy  + vec2(xsimplify,0.0)) + halfvec ).r * 65535.;
-    float down  = texture2DRect(depthTex, floor(gl_Vertex.xy  + vec2(0.0,ysimplify)) + halfvec ).r * 65535.;
-    float left  = texture2DRect(depthTex, floor(gl_Vertex.xy + vec2(-xsimplify,0.0)) + halfvec ).r * 65535.;
-    float up    = texture2DRect(depthTex, floor(gl_Vertex.xy + vec2(0.0,-ysimplify)) + halfvec ).r * 65535.;
-    float bl    = texture2DRect(depthTex, vec2(floor(gl_Vertex.x - xsimplify),floor( gl_Vertex.y + ysimplify)) + halfvec ).r * 65535.;
-    float ur    = texture2DRect(depthTex, vec2(floor(gl_Vertex.x  + xsimplify),floor(gl_Vertex.y - ysimplify)) + halfvec ).r * 65535.;
+    float right = texture2DRect(depthTex, floor(gl_Vertex.xy + vec2(simplify.x,0.0)) + halfvec ).r * 65535.;
+    float down  = texture2DRect(depthTex, floor(gl_Vertex.xy + vec2(0.0,simplify.y)) + halfvec ).r * 65535.;
+    float left  = texture2DRect(depthTex, floor(gl_Vertex.xy + vec2(-simplify.x,0.0)) + halfvec ).r * 65535.;
+    float up    = texture2DRect(depthTex, floor(gl_Vertex.xy + vec2(0.0,-simplify.y)) + halfvec ).r * 65535.;
+    float bl    = texture2DRect(depthTex, vec2(floor(gl_Vertex.x - simplify.x),floor( gl_Vertex.y + simplify.y)) + halfvec ).r * 65535.;
+    float ur    = texture2DRect(depthTex, vec2(floor(gl_Vertex.x  + simplify.x),floor(gl_Vertex.y - simplify.y)) + halfvec ).r * 65535.;
 
-    //TODO: make uniform var
+
     float nearClip = 20.0;
     //cull invalid verts
     VZPositionValid0 = (depth < farClip &&
@@ -69,12 +79,12 @@ void main(void)
 	vec4 pos = vec4((gl_Vertex.x - principalPoint.x) * depth / fov.x,
                     (gl_Vertex.y - principalPoint.y) * depth / fov.y, depth, 1.0);
 
+	
     //projective texture on the geometry
     if(useTexture == 1){
         vec4 texCd;
 		//http://opencv.willowgarage.com/documentation/camera_calibration_and_3d_reconstruction.html
 		vec3 projection = colorRotate * pos.xyz + colorTranslate + vec3(shift*dim / textureScale,0);
-		//vec3 projection = pos.xyz + colorTranslate + vec3(shift*dim,0);
 		if(projection.z != 0.0) {
 
 			vec2 xyp = projection.xy / projection.z;
@@ -91,6 +101,12 @@ void main(void)
         gl_TexCoord[0] = texCd;
     }
     
+	//EFFECTS --
+	if(sinAmp.x > 0.0 || sinAmp.y > 0.0){
+		vec2 sinOffset = sin(gl_Vertex.xy * sinFreq + sinPos.xy) * sinAmp;
+		pos.z += sinOffset.x + sinOffset.y;
+	}
+
     gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * pos;
     gl_FrontColor = gl_Color;
 }

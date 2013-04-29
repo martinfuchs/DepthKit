@@ -38,7 +38,7 @@ void testApp::setup(){
 	cam.maximumY =  120;
 	cam.minimumY = -120;
 	cameraRollSpeed = cam.rollSpeed = 1;
-	
+
     selectedScene = NULL;
     selectedComp = NULL;
     loadedScene = NULL;
@@ -129,10 +129,11 @@ void testApp::setup(){
 	gui.add(drawScanlinesVertical.setup("Vertical Scanlines", ofParameter<bool>()));
 	gui.add(drawScanlinesHorizontal.setup("Horizontal Scanlines", ofParameter<bool>()));
 	
-    gui.add(selfOcclude.setup("Self Occlude", ofParameter<bool>()));
-    gui.add(drawDOF.setup("Draw DOF", ofParameter<bool>()));
- 	
-    gui.add( customWidth.setup("Frame Width", ofParameter<int>(), 320, 1920*2));
+    gui.add( selfOcclude.setup("Self Occlude", ofParameter<bool>()));
+    gui.add( drawDOF.setup("Draw DOF", ofParameter<bool>()));
+ 	gui.add( sinDistort.setup("Sine Waves", ofParameter<bool>()));
+	
+	gui.add( customWidth.setup("Frame Width", ofParameter<int>(), 320, 1920*2));
     gui.add( customHeight.setup("Frame Height", ofParameter<int>(), 240, 1080*2));
     gui.add( setCurrentSize.setup("Apply Custom Size", ofParameter<bool>()));
     gui.add( lockTo720p.setup("Render 720p", ofParameter<bool>()));
@@ -221,7 +222,7 @@ void testApp::populateTimelineElements(){
     timeline.addCurves("Edge Clip", currentCompositionDirectory + "edgeClip.xml", ofRange(1.0, 2000), 2000 );
     timeline.addCurves("Z Threshold Max", currentCompositionDirectory + "zThreshold.xml", ofRange(1.0, sqrtf(6000)), sqrtf(6000) );
     timeline.addCurves("Z Threshold Min", currentCompositionDirectory + "zThresholdMin.xml", ofRange(0, sqrtf(2000)), 0 );
-    
+    		
     timeline.addPage("Rotation", true);
 	timeline.addCurves("X Rotate", currentCompositionDirectory + "meshXRot.xml", ofRange(-360,360), 0.);
     timeline.addCurves("Y Rotate", currentCompositionDirectory + "meshYRot.xml", ofRange(-360,360), 0.);
@@ -240,6 +241,14 @@ void testApp::populateTimelineElements(){
 	timeline.addCurves("Vertical Scanline Alpha", currentCompositionDirectory + "verticalScanlineAlpha.xml", ofRange(0.0, 1.0), 1.0 );
 	timeline.addCurves("Vertical Scanline Thickness", currentCompositionDirectory + "verticalScalineThickness.xml", ofRange(1.0, 10.0), 2.0 );
 	
+	timeline.addPage("Sine Waves", true);
+    timeline.addCurves("X Sin Amplitude", currentCompositionDirectory + "XSinAmp.xml", ofRange(0,sqrtf(200.)), .5 );
+	timeline.addCurves("X Sin Speed", currentCompositionDirectory + "XSinSpeed.xml", ofRange(0,sqrtf(3.0)), 0.3 );
+	timeline.addCurves("X Sin Frequency", currentCompositionDirectory + "XSinFreq.xml", ofRange(0,sqrtf(3.0)), .3 );
+    timeline.addCurves("Y Sin Amplitude", currentCompositionDirectory + "YSinAmp.xml", ofRange(0,sqrtf(200.0)), 2 );
+	timeline.addCurves("Y Sin Speed", currentCompositionDirectory + "YSinSpeed.xml", ofRange(0,sqrtf(3.0)), .3 );
+	timeline.addCurves("Y Sin Frequency", currentCompositionDirectory + "YSinFreq.xml", ofRange(0,sqrtf(3.0)), .3 );
+
     timeline.addPage("Depth of Field", true);
     timeline.addCurves("DOF Distance", currentCompositionDirectory + "DOFDistance.xml", ofRange(0,sqrtf(1500.0)), 10 );
     timeline.addCurves("DOF Range", currentCompositionDirectory + "DOFRange.xml", ofRange(0,sqrtf(1500.0)) );
@@ -271,7 +280,7 @@ void testApp::drawGeometry(){
         meshAlpha = 1.0;
     }
 	
-	if(!drawPointcloud && !drawWireframe && !drawMesh){
+	if(!drawPointcloud && !drawWireframe && !drawMesh && !drawScanlinesVertical && !drawScanlinesHorizontal){
 		drawMesh = true;
 	}
 	
@@ -300,6 +309,26 @@ void testApp::drawGeometry(){
 		ofPushMatrix();
 		ofPushStyle();
 		ofEnableAlphaBlending();
+		ofVec2f sinAmp = ofVec2f(powf(timeline.getValue("X Sin Amplitude"),2.0),
+								 powf(timeline.getValue("Y Sin Amplitude"),2.0));
+		
+		if(sinDistort && (sinAmp.x > 0 || sinAmp.y > 0)){
+			ofVec2f sinFreq = ofVec2f(powf(timeline.getValue("X Sin Frequency"), 2.0),
+									 powf(timeline.getValue("Y Sin Frequency"), 2.0));
+			ofVec2f sinPosDelta = ofVec2f(powf(timeline.getValue("X Sin Speed"), 2.0),
+										  powf(timeline.getValue("Y Sin Speed"), 2.0));
+			sinPosition += sinPosDelta;
+			renderer.getShader().begin();
+			renderer.getShader().setUniform2f("sinAmp", sinAmp.x, sinAmp.y);
+			renderer.getShader().setUniform2f("sinFreq", sinFreq.x, sinFreq.y);
+			renderer.getShader().setUniform2f("sinPos", sinPosition.x, sinPosition.y);
+			renderer.getShader().end();
+		}
+		else{
+			renderer.getShader().begin();
+			renderer.getShader().setUniform2f("sinAmp", 0, 0);
+			renderer.getShader().end();
+		}
 		
 		bool usedDepth = false;
 		if(selfOcclude){
@@ -1180,6 +1209,8 @@ bool testApp::loadAssetsForScene(SceneButton* sceneButton){
 		return false;
 	}
 	
+	timeline.setFrameRate(1.0*player.getVideoPlayer()->getTotalNumFrames()/player.getVideoPlayer()->getDuration());
+	timeline.setDurationInSeconds(player.getVideoPlayer()->getDuration() );
 	timeline.setWorkingFolder(currentCompositionDirectory);
 	
 	if(!timelineElementsAdded){
@@ -1201,10 +1232,9 @@ bool testApp::loadAssetsForScene(SceneButton* sceneButton){
 	depthSequence.setSequence(player.getDepthSequence());
 	videoTrack->setPlayer(player.getVideoPlayer());
 	alignmentScrubber.setPairSequence(player.getVideoDepthAligment());
-	
+	timeline.setDurationInSeconds(MAX(depthSequence.getDurationInMillis()/1000.0, player.getVideoPlayer()->getDuration()) );
+
 	timeline.setTimecontrolTrack(videoTrack);
-	timeline.setFrameRate(1.0*videoTrack->getPlayer()->getTotalNumFrames()/videoTrack->getPlayer()->getDuration());
-	timeline.setDurationInSeconds(MAX(depthSequence.getDurationInMillis()/1000.0, videoTrack->getPlayer()->getDuration()) );
 	
     //trick to help if there is no pairing file
     if(!alignmentScrubber.ready()){
