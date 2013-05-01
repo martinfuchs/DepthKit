@@ -18,6 +18,7 @@ uniform float edgeClip;
 uniform vec2 simplify;
 
 //COLOR INTRINSICS
+uniform mat4 extrinsics;
 uniform mat3 colorRotate;
 uniform vec3 colorTranslate;
 uniform vec2 colorFOV;
@@ -82,7 +83,9 @@ void main(void)
     if(useTexture == 1){
         vec4 texCd;
 		//http://opencv.willowgarage.com/documentation/camera_calibration_and_3d_reconstruction.html
-		vec3 projection = colorRotate * pos.xyz + colorTranslate + vec3(shift*dim / textureScale,0);
+		//vec3 projection = colorRotate * pos.xyz + colorTranslate + vec3(shift*dim / textureScale,0);
+		vec4 projection = extrinsics * pos + vec4(shift*dim / textureScale,0,0);
+		
 		if(projection.z != 0.0) {
 
 			vec2 xyp = projection.xy / projection.z;

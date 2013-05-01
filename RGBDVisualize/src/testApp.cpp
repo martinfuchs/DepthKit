@@ -277,7 +277,12 @@ void testApp::populateTimelineElements(){
 	timeline.addCurves("Y Texture Shift", currentCompositionDirectory + "YTextureShift.xml", ofRange(-.35, .35), 0.0 );
 	timeline.addCurves("X Texture Scale", currentCompositionDirectory + "XTextureScale.xml", ofRange(.75, 1.25), 1.0 );
 	timeline.addCurves("Y Texture Scale", currentCompositionDirectory + "YTextureScale.xml", ofRange(.75, 1.25), 1.0 );
-	
+
+	timeline.addCurves("X Texture Matrix Rotate", currentCompositionDirectory + "XTextureMatrixRotate.xml", ofRange(-10, 10), 0.0 );
+	timeline.addCurves("Y Texture Matrix Rotate", currentCompositionDirectory + "YTextureMatrixRotate.xml", ofRange(-10, 10), 0.0 );
+	timeline.addCurves("X Texture Matrix Translate", currentCompositionDirectory + "XTextureMatrixTranslate.xml", ofRange(-10, 10), 0.0 );
+	timeline.addCurves("Y Texture Matrix Translate", currentCompositionDirectory + "YTextureMatrixTranslate.xml", ofRange(-10, 10), 0.0 );
+
 	timeline.setCurrentPage("Rendering");
 }
 
@@ -856,6 +861,12 @@ void testApp::update(){
 	   timeline.getValue("Y Texture Shift") != renderer.shift.y ||
        timeline.getValue("X Texture Scale") != renderer.scale.x ||
        timeline.getValue("Y Texture Scale") != renderer.scale.y ||
+	  
+	   timeline.getValue("X Texture Matrix Rotate") != renderer.colorMatrixRotate.x ||
+	   timeline.getValue("Y Texture Matrix Rotate") != renderer.colorMatrixRotate.y ||
+       timeline.getValue("X Texture Matrix Translate") != renderer.colorMatrixTranslate.x ||
+       timeline.getValue("Y Texture Matrix Translate") != renderer.colorMatrixTranslate.y ||
+	   
 	   timeline.getValue("Edge Clip") != renderer.edgeClip ||
 	   currentMirror != renderer.mirror ||
 	   fillHoles != holeFiller.enable ||
@@ -868,6 +879,12 @@ void testApp::update(){
 		renderer.shift.y = timeline.getValue("Y Texture Shift");
         renderer.scale.x = timeline.getValue("X Texture Scale");
         renderer.scale.y = timeline.getValue("Y Texture Scale");
+		
+		renderer.colorMatrixRotate.x = timeline.getValue("X Texture Matrix Rotate");
+		renderer.colorMatrixRotate.y = timeline.getValue("Y Texture Matrix Rotate");
+		renderer.colorMatrixTranslate.x = timeline.getValue("X Texture Matrix Translate");
+		renderer.colorMatrixTranslate.y = timeline.getValue("Y Texture Matrix Translate");
+		
 		renderer.mirror = currentMirror;
 		renderer.farClip = currentFarClip;
 		renderer.nearClip = currentNearClip;
@@ -878,6 +895,11 @@ void testApp::update(){
 		meshBuilder.shift.y = timeline.getValue("Y Texture Shift");
         meshBuilder.scale.x = timeline.getValue("X Texture Scale");
         meshBuilder.scale.y = timeline.getValue("Y Texture Scale");
+		
+		meshBuilder.colorMatrixRotate.x = timeline.getValue("X Texture Matrix Rotate");
+		meshBuilder.colorMatrixRotate.y = timeline.getValue("Y Texture Matrix Rotate");
+		meshBuilder.colorMatrixTranslate.x = timeline.getValue("X Texture Matrix Translate");
+		meshBuilder.colorMatrixTranslate.y = timeline.getValue("Y Texture Matrix Translate");
 		
 		meshBuilder.farClip = currentFarClip;
 		meshBuilder.nearClip = currentNearClip;

@@ -98,7 +98,7 @@ Please add your own mounting solutions and designs – however simple or rudimen
 ![mounts with camera](http://www.rgbdtoolkit.com/images/readme/mounts_without_camera.jpg)
 
 
-If you'd rather just buy a kit, we have a stock pile of the above mounts and are happy to sell one to you. Just email me [at] alexanderporter [dot] com to order one. We accept paypal and ship anywhere!
+If you'd rather just buy a kit, we have a stock pile of the above mounts and are happy to sell one to you. Just email me [at] alexanderporter [dot] net to order one. We accept paypal and ship anywhere!
 
 #### Checkerboard
 
