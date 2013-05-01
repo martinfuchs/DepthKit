@@ -116,19 +116,22 @@ void testApp::setup(){
 
 	
 	gui.setup("Settings");
-	gui.add(cameraSpeed.setup("Camera Speed", ofParameter<float>(), 0, 40));
-    gui.add(cameraRollSpeed.setup("Cam Roll Speed", ofParameter<float>(), .0, 4));
-    gui.add(shouldResetCamera.setup("Reset Camera", ofParameter<bool>()));
-	gui.add(currentLockCamera.setup("Lock to Track", ofParameter<bool>()));
-    gui.add(shouldSaveCameraPoint.setup("Set Camera Point", ofParameter<bool>()));
+	gui.add( cameraSpeed.setup("Camera Speed", ofParameter<float>(), 0, 40));
+    gui.add( cameraRollSpeed.setup("Cam Roll Speed", ofParameter<float>(), .0, 4));
+    gui.add( shouldResetCamera.setup("Reset Camera", ofParameter<bool>()));
+	gui.add( currentLockCamera.setup("Lock to Track", ofParameter<bool>()));
+    gui.add( shouldSaveCameraPoint.setup("Set Camera Point", ofParameter<bool>()));
 	
-	gui.add(drawPointcloud.setup("Draw Pointcloud",ofParameter<bool>()));
-    gui.add(drawWireframe.setup("Draw Wireframe",ofParameter<bool>()));
-    gui.add(drawMesh.setup("Draw Mesh",ofParameter<bool>()));
+	gui.add( drawPointcloud.setup("Draw Pointcloud",ofParameter<bool>()));
+    gui.add( drawWireframe.setup("Draw Wireframe",ofParameter<bool>()));
+    gui.add( drawMesh.setup("Draw Mesh",ofParameter<bool>()));
 	
-	gui.add(drawScanlinesVertical.setup("Vertical Scanlines", ofParameter<bool>()));
-	gui.add(drawScanlinesHorizontal.setup("Horizontal Scanlines", ofParameter<bool>()));
+	gui.add( drawScanlinesVertical.setup("Vertical Scanlines", ofParameter<bool>()));
+	gui.add( drawScanlinesHorizontal.setup("Horizontal Scanlines", ofParameter<bool>()));
 	
+	gui.add( drawShape.setup("Draw Shape", ofParameter<bool>()));
+	gui.add( shapeVerts.setup("Shape Verts", ofParameter<int>(),3, 10));
+
     gui.add( selfOcclude.setup("Self Occlude", ofParameter<bool>()));
     gui.add( drawDOF.setup("Draw DOF", ofParameter<bool>()));
  	gui.add( sinDistort.setup("Sine Waves", ofParameter<bool>()));
@@ -141,15 +144,15 @@ void testApp::setup(){
     
     gui.add( currentMirror.setup("Mirror", ofParameter<bool>()));
 	
-    gui.add(fillHoles.setup("Fill Holes", ofParameter<bool>()));
-    gui.add(currentHoleKernelSize.setup("Hole Kernel Size", ofParameter<int>(), 1, 10));
-    gui.add(currentHoleFillIterations.setup("Hole Fill Iterations", ofParameter<int>(), 1, 20));
+    gui.add( fillHoles.setup("Fill Holes", ofParameter<bool>()));
+    gui.add( currentHoleKernelSize.setup("Hole Kernel Size", ofParameter<int>(), 1, 10));
+    gui.add( currentHoleFillIterations.setup("Hole Fill Iterations", ofParameter<int>(), 1, 20));
 	
-    gui.add(temporalAlignmentMode.setup("Temporal Alignment", ofParameter<bool>()));
-	gui.add(captureFramePair.setup("Set Color-Depth Time", ofParameter<bool>()));
+    gui.add( temporalAlignmentMode.setup("Temporal Alignment", ofParameter<bool>()));
+	gui.add( captureFramePair.setup("Set Color-Depth Time", ofParameter<bool>()));
 	
-	gui.add(renderObjectFiles.setup("Export .obj Files", ofParameter<bool>()));
-	gui.add(renderRainbowVideo.setup("Export Combined Video", ofParameter<bool>()));
+	gui.add( renderObjectFiles.setup("Export .obj Files", ofParameter<bool>()));
+	gui.add( renderRainbowVideo.setup("Export Combined Video", ofParameter<bool>()));
 	
 	gui.add(includeTextureMaps.setup("Include Texture Maps", ofParameter<bool>()));
 	gui.add(startSequenceAt0.setup("Start Sequence at 1", ofParameter<bool>()));
@@ -211,9 +214,10 @@ void testApp::populateTimelineElements(){
 	cameraTrack->lockCameraToTrack = false;
 
 	timeline.addTrack("Camera", cameraTrack);
-	timeline.addCurves("Camera Dampen", ofRange(0,1.0), .3);
+	timeline.addCurves("Camera Dampen", currentCompositionDirectory + "CameraDampen.xml", ofRange(0,1.0), .3);
 	videoTrack = new ofxTLVideoTrack();
 	timeline.addTrack("Video", videoTrack);
+	timeline.addColors("Background Color", currentCompositionDirectory + "backgroundColor.xml");
 	
     //rendering
     timeline.addPage("Geometry", true);
@@ -249,6 +253,15 @@ void testApp::populateTimelineElements(){
 	timeline.addCurves("Y Sin Speed", currentCompositionDirectory + "YSinSpeed.xml", ofRange(0,sqrtf(3.0)), .3 );
 	timeline.addCurves("Y Sin Frequency", currentCompositionDirectory + "YSinFreq.xml", ofRange(0,sqrtf(3.0)), .3 );
 
+	timeline.addPage("Shape", true);
+	timeline.addCurves("Shape X", currentCompositionDirectory + "ShapeX.xml", ofRange(-1000,1000), 0 );
+	timeline.addCurves("Shape Y", currentCompositionDirectory + "ShapeY.xml", ofRange(-1000,1000), 0 );
+	timeline.addCurves("Shape Z", currentCompositionDirectory + "ShapeZ.xml", ofRange(0,2000), 0 );
+	timeline.addCurves("Shape Scale", currentCompositionDirectory + "ShapeScale.xml", ofRange(0,sqrtf(2000)), 0 );
+	timeline.addCurves("Shape Rotate", currentCompositionDirectory + "ShapeRotate.xml", ofRange(0,360*4), 0 );
+	timeline.addCurves("Shape Line Width", currentCompositionDirectory + "ShapeLineWidth.xml", ofRange(0,7), 0 );
+	timeline.addColors("Shape Color", currentCompositionDirectory + "ShapeColor.xml");
+	
     timeline.addPage("Depth of Field", true);
     timeline.addCurves("DOF Distance", currentCompositionDirectory + "DOFDistance.xml", ofRange(0,sqrtf(1500.0)), 10 );
     timeline.addCurves("DOF Range", currentCompositionDirectory + "DOFRange.xml", ofRange(0,sqrtf(1500.0)) );
@@ -298,7 +311,15 @@ void testApp::drawGeometry(){
 		
         ofBlendMode blendMode = OF_BLENDMODE_SCREEN;
 		fbo1.begin();
-		ofClear(0,0,0,0);
+		ofColor backgroundColor = timeline.getColor("Background Color");
+		if(backgroundColor == ofColor(0,0,0)){
+			ofClear(0,0,0,0);
+		}
+		else{
+			ofClear(backgroundColor);
+		}
+		
+//		ofClear(backgroundColor)
 		
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_LINE_SMOOTH);
@@ -388,6 +409,19 @@ void testApp::drawGeometry(){
 			renderer.drawPointCloud();
 		}
 		
+		if(drawShape){
+			ofRotate(timeline.getValue("Shape Rotate"), 0, 0, 1);
+			float scale = powf(timeline.getValue("Shape Scale"),2);
+			ofScale(scale, scale);
+			ofTranslate(timeline.getValue("Shape X"),
+						timeline.getValue("Shape Y"),
+						timeline.getValue("Shape Z"));
+			ofSetColor(timeline.getColor("Shape Color"));
+			ofSetLineWidth(timeline.getValue("Shape Line Width"));
+			generateShapeMesh();
+			shapeMesh.draw();
+			
+		}
 		ofPopStyle();
 		ofPopMatrix();
 		
@@ -401,7 +435,14 @@ void testApp::drawGeometry(){
             
             //render DOF
             dofBuffer.begin();
-            ofClear(0,0,0,0);
+            //ofClear(0,0,0,0);
+			if(backgroundColor == ofColor(0,0,0)){
+				ofClear(0,0,0,0);
+			}
+			else{
+				ofClear(backgroundColor);
+			}
+
             cam.begin(renderFboRect);
             glEnable(GL_DEPTH_TEST);
             renderer.drawMesh();
@@ -417,7 +458,7 @@ void testApp::drawGeometry(){
             
             //composite
             swapFbo.begin();
-            ofClear(0.0,0.0,0.0,0.0);
+//            ofClear(0.0,0.0,0.0,0.0);
             
             ofPushStyle();
             ofEnableBlendMode(blendMode);
@@ -441,7 +482,13 @@ void testApp::drawGeometry(){
             swapFbo.end();
             
             fbo1.begin();
-            ofClear(0.0,0.0,0.0,0.0);
+//            ofClear(0.0,0.0,0.0,0.0);
+			if(backgroundColor == ofColor(0,0,0)){
+				ofClear(0,0,0,0);
+			}
+			else{
+				ofClear(backgroundColor);
+			}
             
             ofPushStyle();
             
@@ -862,6 +909,7 @@ void testApp::update(){
 	}
 }
 
+//--------------------------------------------------------------
 void testApp::generateScanlineMesh(bool verticalScanline, bool horizontalScanline)
 {
 	horizontalScanlineMesh.clear();
@@ -886,7 +934,21 @@ void testApp::generateScanlineMesh(bool verticalScanline, bool horizontalScanlin
 			}
 		}
 	}
+}
+
+//--------------------------------------------------------------
+void testApp::generateShapeMesh(){
+	shapeMesh.clear();
 	
+	float angleStep = 360./shapeVerts;
+
+	for(int i = 0; i < shapeVerts; i++){
+		ofVec3f vert = ofVec3f(0,1,0).getRotated( i*angleStep, ofVec3f(0,0,1) );
+		shapeMesh.addVertex(vert);
+	}
+
+	
+	shapeMesh.setMode(OF_PRIMITIVE_LINE_LOOP);
 }
 
 //--------------------------------------------------------------
@@ -1297,7 +1359,7 @@ void testApp::populateScenes(){
         sceneButton.button->fontReference = &timeline.getFont();
         sceneButton.button->setup();
         sceneButton.button->setDelegate(this);
-        sceneButton.button->setLabel(sceneButton.scene.name);
+        sceneButton.button->setLabel(sceneButton.scene.name + " " + ofToString(sceneButton.scene.getCompositions().size()));
         setButtonColors(sceneButton.button);
         scenes.push_back( sceneButton );
 	}

@@ -125,6 +125,11 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxIntSlider customHeight;
     ofxToggle setCurrentSize;
 
+	ofxToggle drawShape;
+	ofxIntSlider shapeVerts;
+	ofMesh shapeMesh;
+	void generateShapeMesh();
+	
     ofxToggle fillHoles;
     ofxIntSlider currentHoleKernelSize;
     ofxIntSlider currentHoleFillIterations;

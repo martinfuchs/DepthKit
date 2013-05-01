@@ -48,8 +48,6 @@ void main(void)
     float bl    = texture2DRect(depthTex, vec2(floor(gl_Vertex.x - simplify.x),floor( gl_Vertex.y + simplify.y)) + halfvec ).r * 65535.;
     float ur    = texture2DRect(depthTex, vec2(floor(gl_Vertex.x  + simplify.x),floor(gl_Vertex.y - simplify.y)) + halfvec ).r * 65535.;
 
-
-    float nearClip = 20.0;
     //cull invalid verts
     VZPositionValid0 = (depth < farClip &&
                         right < farClip &&
