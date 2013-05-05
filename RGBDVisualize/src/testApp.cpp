@@ -125,7 +125,6 @@ void testApp::setup(){
 	gui.add( cameraSpeed.setup("Camera Speed", ofParameter<float>(), 0, 40));
     gui.add( cameraRollSpeed.setup("Cam Roll Speed", ofParameter<float>(), .0, 4));
 
-
     gui.add( shouldResetCamera.setup("Reset Camera", ofParameter<bool>()));
 	gui.add( currentLockCamera.setup("Lock to Track", ofParameter<bool>()));
     gui.add( shouldSaveCameraPoint.setup("Set Camera Point", ofParameter<bool>()));
@@ -133,9 +132,11 @@ void testApp::setup(){
 	gui.add( drawPointcloud.setup("Draw Pointcloud",ofParameter<bool>()));
     gui.add( drawWireframe.setup("Draw Wireframe",ofParameter<bool>()));
     gui.add( drawMesh.setup("Draw Mesh",ofParameter<bool>()));
-	
+
 	gui.add( drawScanlinesVertical.setup("Vertical Scanlines", ofParameter<bool>()));
 	gui.add( drawScanlinesHorizontal.setup("Horizontal Scanlines", ofParameter<bool>()));
+	
+	gui.add( affectPointsPerlin.setup("Affect Points Perlin", ofParameter<bool>()));
 	
 	gui.add( drawShape.setup("Draw Shape", ofParameter<bool>()));
 	gui.add( shapeVerts.setup("Shape Verts", ofParameter<int>(),3, 10));
@@ -147,6 +148,7 @@ void testApp::setup(){
 	gui.add( customWidth.setup("Frame Width", ofParameter<int>(), 320, 1920*2));
     gui.add( customHeight.setup("Frame Height", ofParameter<int>(), 240, 1080*2));
     gui.add( setCurrentSize.setup("Apply Custom Size", ofParameter<bool>()));
+	
     gui.add( lockTo720p.setup("Render 720p", ofParameter<bool>()));
     gui.add( lockTo1080p.setup("Render 1080p",ofParameter<bool>()));
     
@@ -263,6 +265,12 @@ void testApp::populateTimelineElements(){
 	timeline.addCurves("Y Sin Speed", currentCompositionDirectory + "YSinSpeed.xml", ofRange(0,sqrtf(3.0)), .3 );
 	timeline.addCurves("Y Sin Frequency", currentCompositionDirectory + "YSinFreq.xml", ofRange(0,sqrtf(3.0)), .3 );
 
+	timeline.addPage("Perlin Points", true);
+    timeline.addCurves("Noise Amplitude", currentCompositionDirectory + "NoiseAmplitude.xml", ofRange(0,sqrtf(200.)), .5 );
+	timeline.addCurves("Noise Density", currentCompositionDirectory + "NoiseDensity.xml", ofRange(0,2000), 0.3 );
+	timeline.addCurves("Noise Speed", currentCompositionDirectory + "NoiseSpeed.xml", ofRange(0,.5), .3 );
+	
+	
 	timeline.addPage("Shape", true);
 	timeline.addCurves("Shape X", currentCompositionDirectory + "ShapeX.xml", ofRange(-1000,1000), 0 );
 	timeline.addCurves("Shape Y", currentCompositionDirectory + "ShapeY.xml", ofRange(-1000,1000), 0 );
@@ -339,6 +347,7 @@ void testApp::drawGeometry(){
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_LINE_SMOOTH);
 		glEnable(GL_POINT_SMOOTH);
+		glEnable(GL_VERTEX_PROGRAM_POINT_SIZE_ARB);	// allows per-point size
 		
 		cam.begin(renderFboRect);
 		
@@ -363,6 +372,19 @@ void testApp::drawGeometry(){
 		else{
 			renderer.getShader().begin();
 			renderer.getShader().setUniform2f("sinAmp", 0, 0);
+			renderer.getShader().end();
+		}
+		
+		if(affectPointsPerlin){
+			float noiseAmplitude = powf(timeline.getValue("Noise Amplitude"), 2.0);
+			float noiseDensity = timeline.getValue("Noise Density");
+			float noiseSpeed = timeline.getValue("Noise Speed");
+			accumulatedPerlinOffset += noiseSpeed;
+			
+			renderer.getShader().begin();
+			renderer.getShader().setUniform1f("noiseAmp", noiseAmplitude);
+			renderer.getShader().setUniform1f("noiseDensity", noiseDensity);
+			renderer.getShader().setUniform1f("noisePosition", accumulatedPerlinOffset);
 			renderer.getShader().end();
 		}
 		
@@ -999,6 +1021,7 @@ void testApp::updateRenderer(){
 		holeFiller.close(player.getDepthPixels());
     }
     
+	
     renderer.update();
     if((currentlyRendering && renderObjectFiles) || renderRainbowVideo ){
 		if(renderRainbowVideo){

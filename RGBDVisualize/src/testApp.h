@@ -145,6 +145,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxToggle renderRainbowVideo;
     ofxToggle startSequenceAt0;
 
+	ofxToggle affectPointsPerlin;
+	
 	bool multisampleBufferAllocated;
     bool currentRenderObjectFiles;
     bool firstRenderFrame;
