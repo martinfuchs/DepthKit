@@ -11,7 +11,7 @@ void testApp::setup(){
     ofSetEscapeQuitsApp(false); //for Allison
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
-	ofBackground(22);
+	ofBackground(44);
 	ofxTimeline::removeCocoaMenusFromGlut("RGBDVisualize");
 	
 #ifdef TARGET_WIN32
@@ -67,7 +67,12 @@ void testApp::setup(){
     
 	timeline.setup();
 	timeline.setMinimalHeaders(true);
-	timeline.setOffset(ofVec2f(0, ofGetHeight() - 200));
+//	timeline.setOffset(ofVec2f(0, ofGetHeight() - 200));
+	timeline.setLockWidthToWindow(false);
+	timeline.setOffset(ofVec2f(15, ofGetHeight() - 200));
+	timeline.setWidth(ofGetWidth()-30);
+	
+	
 	timeline.setPageName("Main");
 	timeline.setDurationInFrames(300); //base duration
     timeline.setMovePlayheadOnDrag(false);
@@ -116,8 +121,11 @@ void testApp::setup(){
 
 	
 	gui.setup("Settings");
+	gui.add( videoVolume.setup("Video Volume", ofParameter<float>(), 0, 1.0));
 	gui.add( cameraSpeed.setup("Camera Speed", ofParameter<float>(), 0, 40));
     gui.add( cameraRollSpeed.setup("Cam Roll Speed", ofParameter<float>(), .0, 4));
+
+
     gui.add( shouldResetCamera.setup("Reset Camera", ofParameter<bool>()));
 	gui.add( currentLockCamera.setup("Lock to Track", ofParameter<bool>()));
     gui.add( shouldSaveCameraPoint.setup("Set Camera Point", ofParameter<bool>()));
@@ -154,6 +162,8 @@ void testApp::setup(){
 	gui.add( renderObjectFiles.setup("Export .obj Files", ofParameter<bool>()));
 	gui.add( renderRainbowVideo.setup("Export Combined Video", ofParameter<bool>()));
 	
+	gui.add( renderStillFrame.setup("Render Still Frame", ofParameter<bool>()));
+			
 	gui.add(includeTextureMaps.setup("Include Texture Maps", ofParameter<bool>()));
 	gui.add(startSequenceAt0.setup("Start Sequence at 1", ofParameter<bool>()));
 	
@@ -441,12 +451,7 @@ void testApp::drawGeometry(){
             //render DOF
             dofBuffer.begin();
             //ofClear(0,0,0,0);
-			if(backgroundColor == ofColor(0,0,0)){
-				ofClear(0,0,0,0);
-			}
-			else{
-				ofClear(backgroundColor);
-			}
+			ofClear(0,0,0,0);
 
             cam.begin(renderFboRect);
             glEnable(GL_DEPTH_TEST);
@@ -463,7 +468,7 @@ void testApp::drawGeometry(){
             
             //composite
             swapFbo.begin();
-//            ofClear(0.0,0.0,0.0,0.0);
+             ofClear(0.0,0.0,0.0,0.0);
             
             ofPushStyle();
             ofEnableBlendMode(blendMode);
@@ -487,14 +492,9 @@ void testApp::drawGeometry(){
             swapFbo.end();
             
             fbo1.begin();
-//            ofClear(0.0,0.0,0.0,0.0);
-			if(backgroundColor == ofColor(0,0,0)){
-				ofClear(0,0,0,0);
-			}
-			else{
-				ofClear(backgroundColor);
-			}
-            
+            ofClear(0.0,0.0,0.0,0.0);
+//			ofClear(0,0,0,0);
+             
             ofPushStyle();
             
             ofSetColor(255, 255, 255, 255);
@@ -657,7 +657,6 @@ void testApp::update(){
     	renderQueue[i].remove->enabled = viewComps;
     }
     
-	
 	if(renderRainbowVideo && renderObjectFiles){
 		ofSystemAlertDialog("Select either object files or combined video for custom export");
 		renderRainbowVideo = false;
@@ -729,10 +728,15 @@ void testApp::update(){
             
             cameraTrack->setTimelineInOutToTrack();
             timeline.setCurrentTimeToInPoint();
-			player.getVideoPlayer()->setPosition(timeline.getPercentComplete());
-			player.getVideoPlayer()->update();
-            
-            timeline.setPercentComplete(player.getVideoPlayer()->getPosition());
+			if(!renderStillFrame){
+				player.getVideoPlayer()->setPosition(timeline.getPercentComplete());
+				player.getVideoPlayer()->update();
+				timeline.setPercentComplete(player.getVideoPlayer()->getPosition());
+			}
+			else{
+				//timeline.setPercentComplete(timeline.getInOutRange().min);
+			}
+
 //            cout << "setting current time to " << timeline.getPercentComplete() << " seconds: " << timeline.getCurrentTime() << " video: " << player.getVideoPlayer()->getCurrentFrame() << " sec: " <<     (player.getVideoPlayer()->getPosition() * player.getVideoPlayer()->getDuration()) << endl;
             
             currentLockCamera = cameraTrack->lockCameraToTrack = true;
@@ -746,6 +750,15 @@ void testApp::update(){
         checkReallocateFrameBuffers();
     }
     
+	if(renderStillFrame && timeline.getTimecontrolTrack() != NULL){
+		timeline.setTimecontrolTrack(NULL);
+		videoTrack->setPlayAlongToTimeline(false);
+	}
+	else if(!renderStillFrame && timeline.getTimecontrolTrack() == NULL){
+		timeline.setTimecontrolTrack(videoTrack);
+		videoTrack->setPlayAlongToTimeline(true);
+	}
+	
 	//if we don't have good pairings, force pages on timeline + gui
 	if(!alignmentScrubber.ready()){
 		videoTrack->setInFrame(0);
@@ -770,11 +783,17 @@ void testApp::update(){
 	
 	cam.applyRotation = !cameraTrack->lockCameraToTrack;
 	cam.applyTranslation = !cameraTrack->lockCameraToTrack;
-    
+    player.getVideoPlayer()->setVolume(videoVolume);
+	
 	if(currentlyRendering){
 		
-		currentRenderFrame = player.getVideoPlayer()->getCurrentFrame();
-		timeline.setPercentComplete(player.getVideoPlayer()->getPosition());
+		if(renderStillFrame){
+			currentRenderFrame = timeline.getCurrentFrame();
+		}
+		else{
+			currentRenderFrame = player.getVideoPlayer()->getCurrentFrame();
+			timeline.setPercentComplete(player.getVideoPlayer()->getPosition());
+		}
 		
 		//		cout << "would have set hi res frame to " << currentRenderFrame % hiResPlayer->getTotalNumFrames() << endl;
 		//		cout << "instead set it to " << hiResPlayer->getCurrentFrame() << endl;
@@ -1087,7 +1106,7 @@ void testApp::draw(){
 		if(!viewComps){
             
 			if(!ofGetMousePressed(0)){
-				timeline.setOffset(ofVec2f(0, ofGetHeight() - timeline.getDrawRect().height));
+				timeline.setOffset(ofVec2f(15, ofGetHeight() - timeline.getDrawRect().height - 15));
 			}
             
 			ofRectangle fboRenderArea = ofRectangle(0,0,ofGetWidth()-220-300, timeline.getDrawRect().y - 50);
@@ -1143,6 +1162,9 @@ void testApp::draw(){
 			if(currentlyRendering){
 				char filename[512];
 				int videoFrame = player.getVideoPlayer()->getCurrentFrame();
+				if(renderStillFrame){
+					videoFrame = timeline.getCurrentFrame();
+				}
 				if(startSequenceAt0){
 					videoFrame -= timeline.getInFrame();
 				}
@@ -1210,9 +1232,14 @@ void testApp::draw(){
 				}
 				else{
 					//					cout << "advancing video frame from " << player.getVideoPlayer()->getCurrentFrame() << " with timeline time " << timeline.getCurrentFrame() << " current render frame: " << currentRenderFrame << endl;
-					player.getVideoPlayer()->nextFrame();
-					player.getVideoPlayer()->update();
-					timeline.setPercentComplete(player.getVideoPlayer()->getPosition());
+					if(renderStillFrame){
+						timeline.setCurrentFrame(timeline.getCurrentFrame()+1);
+					}
+					else{
+						player.getVideoPlayer()->nextFrame();
+						player.getVideoPlayer()->update();
+						timeline.setPercentComplete(player.getVideoPlayer()->getPosition());
+					}
 					//					cout << " to " << player.getVideoPlayer()->getCurrentFrame() << endl;
 				}
 			}
@@ -1496,6 +1523,8 @@ void testApp::clearRenderQueue(){
 //--------------------------------------------------------------
 void testApp::loadDefaults(){
     
+	videoVolume = 1.0;
+	shapeVerts = 3;
 	drawPointcloud = false;
 	drawWireframe = false;
 	drawMesh = true;
@@ -1517,7 +1546,7 @@ void testApp::loadDefaults(){
     currentHoleFillIterations = 2;
 	
     currentMirror = false;
-    
+
     customWidth = 1920;
     customHeight = 1080;
     lockTo1080p = true;
@@ -1526,6 +1555,7 @@ void testApp::loadDefaults(){
     renderObjectFiles = false;
 	renderRainbowVideo = false;
     startSequenceAt0 = false;
+	renderStillFrame = false;
 	
     resetCameraPosition();
 	
@@ -1580,6 +1610,10 @@ void testApp::saveComposition(){
     
     timeline.save();
     gui.saveToFile(currentCompositionFile);
+	ofBuffer videoFrameFile;
+	videoFrameFile.append(ofToString(videoTrack->getPlayer()->getCurrentFrame()));
+	ofBufferToFile(currentVideoFrameFile, videoFrameFile);
+	
 	setCompositionButtonName();
 }
 
@@ -1698,6 +1732,7 @@ bool testApp::loadComposition(string compositionDirectory){
 	string oldCompFile = currentCompositionFile;
 	currentCompositionDirectory = compositionDirectory;
     currentCompositionFile = currentCompositionDirectory+"compositionsettings.xml";
+	currentVideoFrameFile = currentCompositionDirectory+"videoframe.txt";
 	
     if(loadedScene != selectedScene){
         isSceneLoaded = loadAssetsForScene(selectedScene);
@@ -1722,11 +1757,18 @@ bool testApp::loadComposition(string compositionDirectory){
 //		cout << "loading file: " << currentCompositionFile << endl;
 //		cout << ofBufferFromFile(currentCompositionFile).getText() << endl;
 		gui.loadFromFile(currentCompositionFile);
+		
 	}
 	else{
         loadDefaults();
     }
 
+	if(ofFile::doesFileExist(currentVideoFrameFile)){
+		int savedVideoFrame = ofToInt( ofBufferFromFile(currentVideoFrameFile).getText() );
+		cout << "loading video frame " << savedVideoFrame << endl;
+		videoTrack->getPlayer()->setFrame( savedVideoFrame );
+	}
+	
     alignmentScrubber.setup();
 	alignmentScrubber.videoSequence = videoTrack;
 	alignmentScrubber.depthSequence = &depthSequence;
@@ -1823,7 +1865,7 @@ void testApp::finishRender(){
     //render is done
 	renderer.setRGBTexture(*player.getVideoPlayer());
 	meshBuilder.setRGBTexture(*player.getVideoPlayer());
-	player.getVideoPlayer()->setVolume(1.0);
+	player.getVideoPlayer()->setVolume(videoVolume);
     
 	videoTrack->setPlayer(player.getVideoPlayer());
 	player.getVideoPlayer()->setFrame(timeline.getInFrame());
@@ -1834,6 +1876,10 @@ void testApp::finishRender(){
 
 //--------------------------------------------------------------
 void testApp::windowResized(int w, int h){
+	
+	timeline.setOffset(ofVec2f(15, ofGetHeight() - 200));
+	timeline.setWidth(w-30);
+	
     positionSceneButtons();
 }
 

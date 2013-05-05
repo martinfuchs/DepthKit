@@ -89,7 +89,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     void allocateFrameBuffers();
     
     ofxPanel gui;
-    
+    ofxFloatSlider videoVolume;
     ofxToggle drawPointcloud;
     ofxToggle drawWireframe;
     ofxToggle drawMesh;
@@ -103,6 +103,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle currentLockCamera; 
 	ofxToggle drawScanlinesVertical;
 	ofxToggle drawScanlinesHorizontal;
+	
+	ofxToggle renderStillFrame;
 	
 	ofxToggle sinDistort;
 	ofVec2f sinPosition;
@@ -125,6 +127,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxIntSlider customHeight;
     ofxToggle setCurrentSize;
 
+	
+	
 	ofxToggle drawShape;
 	ofxIntSlider shapeVerts;
 	ofMesh shapeMesh;
@@ -182,6 +186,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	string currentCompositionDirectory;
 	string currentCompositionFile;
     string currentCompositionLabel;
+	string currentVideoFrameFile;
 	string mediaBinFolder;
 	
     bool viewComps;
