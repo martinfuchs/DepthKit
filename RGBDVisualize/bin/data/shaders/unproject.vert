@@ -35,7 +35,9 @@ uniform vec2 sinPos;
 uniform float noiseAmp;
 uniform float noiseDensity;
 uniform float noisePosition;
+uniform vec3 noiseShape;
 
+//POINT AFFECT
 uniform float pointMin;
 uniform float pointMax;
 
@@ -254,9 +256,9 @@ void main(void)
 		pos.z += sinOffset.x + sinOffset.y;
 	}
 
-	float noiseDistort = snoise(vec4(pos.xyz / noiseDensity, noisePosition));
+	float noiseDistort = snoise(vec4(noiseShape * pos.xyz / noiseDensity, noisePosition));
 	pos.z -= noiseDistort * noiseAmp;
-	gl_PointSize = pow(map(noiseDistort, -1.0, 1.0, pointMin, pointMax), 2.0);
+	gl_PointSize = max(2.0,pow(map(noiseDistort, -1.0, 1.0, pointMin, pointMax), 2.0));
 
 //	if(noiseAmp > 0.0){
 //		vec3 noiseDistort = vec3(snoise(vec4(pos.xyz / noiseDensity, noisePosition)),

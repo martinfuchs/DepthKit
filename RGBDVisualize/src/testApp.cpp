@@ -188,6 +188,7 @@ void testApp::setup(){
     meshBuilder.cacheValidVertices = true;
 	
     accumulatedPerlinOffset = 0;
+	sinPosition = ofVec2f(0,0);
 	
     ofxXmlSettings defaultBin;
     if(defaultBin.loadFile("defaultBin.xml")){
@@ -271,15 +272,20 @@ void testApp::populateTimelineElements(){
 	timeline.addCurves("Y Sin Speed", currentCompositionDirectory + "YSinSpeed.xml", ofRange(0,sqrtf(3.0)), .3 );
 	timeline.addCurves("Y Sin Frequency", currentCompositionDirectory + "YSinFreq.xml", ofRange(0,sqrtf(3.0)), .3 );
 	
-	timeline.addPage("Perlin Points", true);
+	timeline.addPage("Perlin Noise", true);
     timeline.addCurves("Noise Amplitude", currentCompositionDirectory + "NoiseAmplitude.xml", ofRange(0,sqrtf(200.)), .5 );
-	timeline.addCurves("Noise Density", currentCompositionDirectory + "NoiseDensity.xml", ofRange(0,2000), 0.3 );
+	timeline.addCurves("Noise Density", currentCompositionDirectory + "NoiseDensity.xml", ofRange(0,sqrt(2000.)), 0.3 );
 	timeline.addCurves("Noise Speed", currentCompositionDirectory + "NoiseSpeed.xml", ofRange(0,.1), .05 );
-	
+
+	timeline.addPage("Perlin Shape", true);
+    timeline.addCurves("X Perlin Stretch", currentCompositionDirectory + "XPerlinStretch.xml", ofRange(0., 1.0), 1.0 );
+	timeline.addCurves("Y Perlin Stretch", currentCompositionDirectory + "YPerlinStretch.xml", ofRange(0., 1.0), 1.0 );
+	timeline.addCurves("Z Perlin Stretch", currentCompositionDirectory + "ZPerlinStretch.xml", ofRange(0., 1.0), 1.0 );
+
 	timeline.addPage("Random Points", true);
 	timeline.addCurves("Random Point Amount", currentCompositionDirectory + "PointSizeMin.xml", ofRange(0,640*480*2), 8000 );
 	timeline.addCurves("Point Size Max", currentCompositionDirectory + "PointSizeMin.xml", ofRange(-10,10), 3 );
-	timeline.addCurves("Point Size Min", currentCompositionDirectory + "PointSizeMin.xml", ofRange(-10,10), 1 );
+	timeline.addCurves("Point Size Min", currentCompositionDirectory + "PointSizeMax.xml", ofRange(-10,10), 1 );
 
 	timeline.addPage("Fade To Color", true);
 	timeline.addCurves("Fade Amount", currentCompositionDirectory + "FadeAmount.xml", ofRange(0,1.0), 0 );
@@ -399,7 +405,7 @@ void testApp::drawGeometry(){
 		}
 		
 		float noiseAmplitude = powf(timeline.getValue("Noise Amplitude"), 2.0);
-		float noiseDensity = timeline.getValue("Noise Density");
+		float noiseDensity = powf(timeline.getValue("Noise Density"), 2.0);
 		float noiseSpeed = timeline.getValue("Noise Speed");
 		accumulatedPerlinOffset += noiseSpeed;
 		renderer.getShader().begin();
@@ -411,6 +417,13 @@ void testApp::drawGeometry(){
 		}
 		renderer.getShader().setUniform1f("noiseDensity", noiseDensity);
 		renderer.getShader().setUniform1f("noisePosition", accumulatedPerlinOffset);
+		
+
+		renderer.getShader().setUniform3f("noiseShape",
+										  timeline.getValue("X Perlin Stretch"),
+										  timeline.getValue("Y Perlin Stretch"),
+										  timeline.getValue("Z Perlin Stretch"));
+		
 		renderer.getShader().setUniform1f("pointMin", timeline.getValue("Point Size Min"));
 		renderer.getShader().setUniform1f("pointMax", timeline.getValue("Point Size Max"));
 		renderer.getShader().setUniform1f("fadeAmount", timeline.getValue("Fade Amount"));
@@ -475,7 +488,6 @@ void testApp::drawGeometry(){
             glPointSize(pointSize);
 			renderer.drawPointCloud();
 		}
-		
 		
 		if(drawRandomMesh){
 			ofTranslate(0,0,-.5);
@@ -1838,6 +1850,7 @@ bool testApp::loadComposition(string compositionDirectory){
 	
     timeline.setCurrentPage(0);
     accumulatedPerlinOffset = 0;
+	sinPosition = ofVec2f(0,0);
 	if(ofFile::doesFileExist(currentCompositionFile)){
 //		cout << "loading file: " << currentCompositionFile << endl;
 //		cout << ofBufferFromFile(currentCompositionFile).getText() << endl;
