@@ -134,6 +134,12 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofMesh shapeMesh;
 	void generateShapeMesh();
 	
+	ofxToggle drawRandomMesh;
+	ofMesh randomMesh;
+	ofxIntSlider numRandomPoints;
+	ofxToggle alwaysRegenerateRandomPoints;
+	void generateRandomMesh(int numPoints);
+	
     ofxToggle fillHoles;
     ofxIntSlider currentHoleKernelSize;
     ofxIntSlider currentHoleFillIterations;

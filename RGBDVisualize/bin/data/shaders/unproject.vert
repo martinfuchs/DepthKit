@@ -36,6 +36,9 @@ uniform float noiseAmp;
 uniform float noiseDensity;
 uniform float noisePosition;
 
+uniform float pointMin;
+uniform float pointMax;
+
 uniform int useTexture;
 
 varying float VZPositionValid0;
@@ -251,16 +254,14 @@ void main(void)
 		pos.z += sinOffset.x + sinOffset.y;
 	}
 
+	float noiseDistort = snoise(vec4(pos.xyz / noiseDensity, noisePosition));
+	pos.z -= noiseDistort * noiseAmp;
+	gl_PointSize = pow(map(noiseDistort, -1.0, 1.0, pointMin, pointMax), 2.0);
+
 //	if(noiseAmp > 0.0){
 //		vec3 noiseDistort = vec3(snoise(vec4(pos.xyz / noiseDensity, noisePosition)),
 //								 snoise(vec4(pos.yzx / noiseDensity, noisePosition)),
 //								 snoise(vec4(pos.zxy / noiseDensity, noisePosition))) * noiseAmp;
-
-		float noiseDistort = snoise(vec4(pos.xyz / vec3(noiseDensity,noiseDensity*.5,noiseDensity), noisePosition));
-
-		pos.z -= noiseDistort * noiseAmp;
-//		gl_PointSize = (1.0 + noiseDistort*.5)*10.0;
-	gl_PointSize = (1.0 + noiseDistort*.5)*noiseAmp
 //	}
 
     gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * pos;

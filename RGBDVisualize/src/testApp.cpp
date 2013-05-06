@@ -135,15 +135,21 @@ void testApp::setup(){
 
 	gui.add( drawScanlinesVertical.setup("Vertical Scanlines", ofParameter<bool>()));
 	gui.add( drawScanlinesHorizontal.setup("Horizontal Scanlines", ofParameter<bool>()));
+	gui.add( drawRandomMesh.setup("Draw Random Points", ofParameter<bool>()) );
+	//gui.add( alwaysRegenerateRandomPoints.setup("Always Refresh Random Points",ofParameter<bool>()) );
 	
+//	gui.add( numRandomPoints.setup("Num Random Points", ofParameter<int>(), 2000, 640*480) );
+			
+	gui.add( sinDistort.setup("Sine Waves", ofParameter<bool>()));
 	gui.add( affectPointsPerlin.setup("Affect Points Perlin", ofParameter<bool>()));
+ 	
 	
 	gui.add( drawShape.setup("Draw Shape", ofParameter<bool>()));
 	gui.add( shapeVerts.setup("Shape Verts", ofParameter<int>(),3, 10));
 
     gui.add( selfOcclude.setup("Self Occlude", ofParameter<bool>()));
     gui.add( drawDOF.setup("Draw DOF", ofParameter<bool>()));
- 	gui.add( sinDistort.setup("Sine Waves", ofParameter<bool>()));
+
 	
 	gui.add( customWidth.setup("Frame Width", ofParameter<int>(), 320, 1920*2));
     gui.add( customHeight.setup("Frame Height", ofParameter<int>(), 240, 1080*2));
@@ -264,12 +270,21 @@ void testApp::populateTimelineElements(){
     timeline.addCurves("Y Sin Amplitude", currentCompositionDirectory + "YSinAmp.xml", ofRange(0,sqrtf(200.0)), 2 );
 	timeline.addCurves("Y Sin Speed", currentCompositionDirectory + "YSinSpeed.xml", ofRange(0,sqrtf(3.0)), .3 );
 	timeline.addCurves("Y Sin Frequency", currentCompositionDirectory + "YSinFreq.xml", ofRange(0,sqrtf(3.0)), .3 );
-
+	
 	timeline.addPage("Perlin Points", true);
     timeline.addCurves("Noise Amplitude", currentCompositionDirectory + "NoiseAmplitude.xml", ofRange(0,sqrtf(200.)), .5 );
 	timeline.addCurves("Noise Density", currentCompositionDirectory + "NoiseDensity.xml", ofRange(0,2000), 0.3 );
-	timeline.addCurves("Noise Speed", currentCompositionDirectory + "NoiseSpeed.xml", ofRange(0,.5), .3 );
+	timeline.addCurves("Noise Speed", currentCompositionDirectory + "NoiseSpeed.xml", ofRange(0,.1), .05 );
 	
+	timeline.addPage("Random Points", true);
+	timeline.addCurves("Random Point Amount", currentCompositionDirectory + "PointSizeMin.xml", ofRange(0,640*480*2), 8000 );
+	timeline.addCurves("Point Size Max", currentCompositionDirectory + "PointSizeMin.xml", ofRange(-10,10), 3 );
+	timeline.addCurves("Point Size Min", currentCompositionDirectory + "PointSizeMin.xml", ofRange(-10,10), 1 );
+
+	timeline.addPage("Fade To Color", true);
+	timeline.addCurves("Fade Amount", currentCompositionDirectory + "FadeAmount.xml", ofRange(0,1.0), 0 );
+	ofxTLColorTrack* color = timeline.addColors("Fade Color", currentCompositionDirectory + "FadeColor.xml");
+	color->setDefaultColor(ofColor::white);
 	
 	timeline.addPage("Shape", true);
 	timeline.addCurves("Shape X", currentCompositionDirectory + "ShapeX.xml", ofRange(-1000,1000), 0 );
@@ -316,7 +331,13 @@ void testApp::drawGeometry(){
         meshAlpha = 1.0;
     }
 	
-	if(!drawPointcloud && !drawWireframe && !drawMesh && !drawScanlinesVertical && !drawScanlinesHorizontal){
+	if(!drawPointcloud &&
+	   !drawWireframe &&
+	   !drawMesh &&
+	   !drawScanlinesVertical &&
+	   !drawScanlinesHorizontal &&
+	   !drawRandomMesh)
+	{
 		drawMesh = true;
 	}
 	
@@ -351,6 +372,8 @@ void testApp::drawGeometry(){
 		
 		cam.begin(renderFboRect);
 		
+		ofFloatColor fadeToColor = timeline.getColor("Fade Color");
+		
 		ofPushMatrix();
 		ofPushStyle();
 		ofEnableAlphaBlending();
@@ -375,18 +398,25 @@ void testApp::drawGeometry(){
 			renderer.getShader().end();
 		}
 		
+		float noiseAmplitude = powf(timeline.getValue("Noise Amplitude"), 2.0);
+		float noiseDensity = timeline.getValue("Noise Density");
+		float noiseSpeed = timeline.getValue("Noise Speed");
+		accumulatedPerlinOffset += noiseSpeed;
+		renderer.getShader().begin();
 		if(affectPointsPerlin){
-			float noiseAmplitude = powf(timeline.getValue("Noise Amplitude"), 2.0);
-			float noiseDensity = timeline.getValue("Noise Density");
-			float noiseSpeed = timeline.getValue("Noise Speed");
-			accumulatedPerlinOffset += noiseSpeed;
-			
-			renderer.getShader().begin();
 			renderer.getShader().setUniform1f("noiseAmp", noiseAmplitude);
-			renderer.getShader().setUniform1f("noiseDensity", noiseDensity);
-			renderer.getShader().setUniform1f("noisePosition", accumulatedPerlinOffset);
-			renderer.getShader().end();
 		}
+		else{
+			renderer.getShader().setUniform1f("noiseAmp", 0.0);
+		}
+		renderer.getShader().setUniform1f("noiseDensity", noiseDensity);
+		renderer.getShader().setUniform1f("noisePosition", accumulatedPerlinOffset);
+		renderer.getShader().setUniform1f("pointMin", timeline.getValue("Point Size Min"));
+		renderer.getShader().setUniform1f("pointMax", timeline.getValue("Point Size Max"));
+		renderer.getShader().setUniform1f("fadeAmount", timeline.getValue("Fade Amount"));
+		renderer.getShader().setUniform4f("fadeColor", fadeToColor.r,fadeToColor.g,fadeToColor.b, 1.0);
+		
+		renderer.getShader().end();
 		
 		bool usedDepth = false;
 		if(selfOcclude){
@@ -441,9 +471,18 @@ void testApp::drawGeometry(){
 			
 			ofTranslate(0,0,-.5);
 			ofSetColor(255*pointAlpha);
-            float pointSize = timeline.getValue("Point Size");
-            glPointSize(pointSize*pointSize);
+            float pointSize = powf(timeline.getValue("Point Size"), 2.0);
+            glPointSize(pointSize);
 			renderer.drawPointCloud();
+		}
+		
+		
+		if(drawRandomMesh){
+			ofTranslate(0,0,-.5);
+			ofSetColor(255*pointAlpha);			
+			renderer.bindRenderer();
+			randomMesh.draw();
+			renderer.unbindRenderer();
 		}
 		
 		if(drawShape){
@@ -894,6 +933,10 @@ void testApp::update(){
 		rendererNeedsUpdate = true;
 	}
 	
+	int numRandomPoints = timeline.getValue("Random Point Amount");
+	if(drawRandomMesh && numRandomPoints != randomMesh.getNumVertices()){
+		generateRandomMesh(numRandomPoints);
+	}
 	
 	float currentFarClip = powf(timeline.getValue("Z Threshold Max"), 2.0);
 	float currentNearClip = powf(timeline.getValue("Z Threshold Min"), 2.0);
@@ -1012,6 +1055,23 @@ void testApp::generateShapeMesh(){
 
 	
 	shapeMesh.setMode(OF_PRIMITIVE_LINE_LOOP);
+}
+
+//--------------------------------------------------------------
+void testApp::generateRandomMesh(int numPoints){
+	//
+
+	if(numPoints == 0){
+		randomMesh.clear();
+	}
+	else if(numPoints < randomMesh.getNumVertices() ){
+		randomMesh.getVertices().erase(randomMesh.getVertices().begin(), randomMesh.getVertices().begin() + (randomMesh.getNumVertices() - numPoints) );
+	}
+	while(numPoints > randomMesh.getNumVertices()){
+		randomMesh.addVertex(ofVec3f(ofRandom(640),ofRandom(480),0));
+	}
+	
+	randomMesh.setMode(OF_PRIMITIVE_POINTS);
 }
 
 //--------------------------------------------------------------
@@ -1560,6 +1620,7 @@ void testApp::loadDefaults(){
 	
 	captureFramePair = false;
 	temporalAlignmentMode = true;
+	numRandomPoints = 2000;
 	
     cam.speed = 20;
 	cam.rollSpeed = 0;
@@ -1579,6 +1640,7 @@ void testApp::loadDefaults(){
 	renderRainbowVideo = false;
     startSequenceAt0 = false;
 	renderStillFrame = false;
+	alwaysRegenerateRandomPoints = false;
 	
     resetCameraPosition();
 	
