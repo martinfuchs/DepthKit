@@ -29,4 +29,4 @@ ${PREFIX}obviousjim/ofxMSATimer
 ${PREFIX}YCAMInterlab/ofxTimecode
 ${PREFIX}YCAMInterlab/ofxTimeline
 ${PREFIX}obviousjim/ofxObjLoader		
-
+${PREFIX}obviousjim/ofxGui

@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
-	<string>RGBD.icns</string>
+	<string>RGBD</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.RGBDToolkit.RGBDVisualize</string>
 	<key>CFBundleInfoDictionaryVersion</key>
