@@ -1265,7 +1265,7 @@ void testApp::draw(){
 				}
                 sprintf(filename, "%s/save.%05d.png", saveFolder.c_str(), videoFrame);
 
-				if(firstRenderFrame){
+				if(firstRenderFrame && renderRainbowVideo){
 					ofxXmlSettings depthProjectionSettings;
 					depthProjectionSettings.addTag("depth");
 					depthProjectionSettings.pushTag("depth");

@@ -258,7 +258,7 @@ void main(void)
 
 	float noiseDistort = snoise(vec4(noiseShape * pos.xyz / noiseDensity, noisePosition));
 	pos.z -= noiseDistort * noiseAmp;
-	gl_PointSize = max(2.0,pow(map(noiseDistort, -1.0, 1.0, pointMin, pointMax), 2.0));
+	gl_PointSize = pow(map(noiseDistort, -1.0, 1.0, pointMin, pointMax), 2.0);
 
 //	if(noiseAmp > 0.0){
 //		vec3 noiseDistort = vec3(snoise(vec4(pos.xyz / noiseDensity, noisePosition)),
