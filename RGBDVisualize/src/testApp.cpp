@@ -151,8 +151,8 @@ void testApp::setup(){
     gui.add( drawDOF.setup("Draw DOF", ofParameter<bool>()));
 
 	
-	gui.add( customWidth.setup("Frame Width", ofParameter<int>(), 320, 1920*2));
-    gui.add( customHeight.setup("Frame Height", ofParameter<int>(), 240, 1080*2));
+	gui.add( customWidth.setup("Frame Width", ofParameter<int>(), 320, 1920*4));
+    gui.add( customHeight.setup("Frame Height", ofParameter<int>(), 240, 1080*4));
     gui.add( setCurrentSize.setup("Apply Custom Size", ofParameter<bool>()));
 	
     gui.add( lockTo720p.setup("Render 720p", ofParameter<bool>()));
@@ -1154,8 +1154,8 @@ void testApp::allocateFrameBuffers(){
     int fboWidth = customWidth;
     int fboHeight = customHeight;
 	
-    fboWidth  = ofClamp(fboWidth,  320, 1920*2);
-    fboHeight = ofClamp(fboHeight, 240, 1080*2);
+    fboWidth  = ofClamp(fboWidth,  320, 1920*4);
+    fboHeight = ofClamp(fboHeight, 240, 1080*4);
 	
 	savingImage.allocate(fboWidth,fboHeight,OF_IMAGE_COLOR);
 	savingImage.setUseTexture(false);
