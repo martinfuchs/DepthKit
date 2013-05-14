@@ -101,6 +101,8 @@
     <ClCompile Include="..\..\..\addons\ofxRGBDepth\couples\ofxKinect\ofxDepthImageProviderFreenect.cpp" />
     <ClCompile Include="..\..\..\addons\ofxRGBDepth\couples\ofxTimeline\ofxTLDepthImageSequence.cpp" />
     <ClCompile Include="..\..\..\addons\ofxRGBDepth\gui\ofxRGBDCaptureGui.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDCPURenderer.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDGPURenderer.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\testApp.cpp" />
     <ClCompile Include="..\..\..\addons\ofxCv\libs\ofxCv\src\Calibration.cpp" />
@@ -122,8 +124,6 @@
     <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxDepthImageProvider.cpp" />
     <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxDepthImageRecorder.cpp" />
     <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxDepthImageSequence.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDAlignment.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDMeshBuilder.cpp" />
     <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDPlayer.cpp" />
     <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDRenderer.cpp" />
     <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDScene.cpp" />
@@ -180,6 +180,8 @@
     <ClInclude Include="..\..\..\addons\ofxRGBDepth\couples\ofxKinect\ofxDepthImageProviderFreenect.h" />
     <ClInclude Include="..\..\..\addons\ofxRGBDepth\couples\ofxTimeline\ofxTLDepthImageSequence.h" />
     <ClInclude Include="..\..\..\addons\ofxRGBDepth\gui\ofxRGBDCaptureGui.h" />
+    <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDCPURenderer.h" />
+    <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDGPURenderer.h" />
     <ClInclude Include="src\testApp.h" />
     <ClInclude Include="..\..\..\addons\ofxCv\src\ofxCv.h" />
     <ClInclude Include="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\Calibration.h" />
@@ -204,8 +206,6 @@
     <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxDepthImageProvider.h" />
     <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxDepthImageRecorder.h" />
     <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxDepthImageSequence.h" />
-    <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDAlignment.h" />
-    <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDMeshBuilder.h" />
     <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDPlayer.h" />
     <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDRenderer.h" />
     <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDScene.h" />

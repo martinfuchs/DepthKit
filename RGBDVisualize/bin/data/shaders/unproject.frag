@@ -4,6 +4,9 @@
 uniform sampler2DRect colorTex;
 uniform int useTexture;
 uniform vec2 dim;
+uniform float fadeAmount;
+uniform vec4 fadeColor;
+
 varying float VZPositionValid0;
 const float epsilon = 1e-6;
 
@@ -18,7 +21,7 @@ void main()
         vec4 col = texture2DRect(colorTex, gl_TexCoord[0].st);
 		//enable visualize texture coordinates
 		//col = vec4(gl_TexCoord[0].s / dim.x, gl_TexCoord[0].t / dim.y, 0.0, 1.0);
-        gl_FragColor = col * gl_Color;
+        gl_FragColor = mix(col, vec4(fadeColor), fadeAmount) * gl_Color;
     }
     else{
         gl_FragColor = vec4(0);
@@ -26,4 +29,5 @@ void main()
 	
 	//enable visualize clipping values
     //gl_FragColor = vec4(VZPositionValid0);
+	//gl_FragColor = fadeColor;
 }

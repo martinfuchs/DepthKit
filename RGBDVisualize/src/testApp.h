@@ -15,11 +15,13 @@
 #include "ofxDepthHoleFiller.h"
 #include "ofxRGBDScene.h"
 #include "ofxRGBDPlayer.h"
-#include "ofxRGBDVideoExporter.h"
 #include "ofxGui.h"
 #include "ofxObjLoader.h"
+
 #include "DepthParticleField.h"
 #include "ofxSPK.h"
+#include "ofxRGBDCombinedVideoExporter.h"
+
 
 typedef struct {
 	ofxRGBDScene scene;
@@ -112,7 +114,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     //END TEST DRAWING SYSTEM
     
     ofxPanel gui;
-    
+    ofxFloatSlider videoVolume;
     ofxToggle drawPointcloud;
     ofxToggle drawWireframe;
     ofxToggle drawMesh;
@@ -125,6 +127,23 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxFloatSlider cameraRollSpeed;
     ofxToggle shouldSaveCameraPoint;
     ofxToggle currentLockCamera; 
+	ofxToggle drawScanlinesVertical;
+	ofxToggle drawScanlinesHorizontal;
+	
+	ofxToggle renderStillFrame;
+	
+	ofxToggle sinDistort;
+	ofVec2f sinPosition;
+	
+	bool currentDrawScanlinesVertical;
+	bool currentDrawScanlinesHorizontal;
+	float currentScanlineStepVertical;
+	float currentScanlineStepHorizontal;
+	
+	ofMesh verticalScanlineMesh;
+	ofMesh horizontalScanlineMesh;
+	
+	void generateScanlineMesh(bool verticalScanline, bool horizontalScanline);
 	
     ofxToggle currentMirror;
 	ofxToggle flipTexture; //Debug for some grphx cards
@@ -134,6 +153,19 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxIntSlider customHeight;
     ofxToggle setCurrentSize;
 
+	
+	
+	ofxToggle drawShape;
+	ofxIntSlider shapeVerts;
+	ofMesh shapeMesh;
+	void generateShapeMesh();
+	
+	ofxToggle drawRandomMesh;
+	ofMesh randomMesh;
+	ofxIntSlider numRandomPoints;
+	ofxToggle alwaysRegenerateRandomPoints;
+	void generateRandomMesh(int numPoints);
+	
     ofxToggle fillHoles;
     ofxIntSlider currentHoleKernelSize;
     ofxIntSlider currentHoleFillIterations;
@@ -141,8 +173,13 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle captureFramePair;
 
     ofxToggle renderObjectFiles;
+	ofxToggle includeTextureMaps;
 	ofxToggle renderRainbowVideo;
     ofxToggle startSequenceAt0;
+
+	ofxToggle affectPointsPerlin;
+	
+	bool multisampleBufferAllocated;
     bool currentRenderObjectFiles;
     bool firstRenderFrame;
     bool startRenderMode;
@@ -183,6 +220,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	string currentCompositionDirectory;
 	string currentCompositionFile;
     string currentCompositionLabel;
+	string currentVideoFrameFile;
 	string mediaBinFolder;
 	
     bool viewComps;
@@ -197,7 +235,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxRGBDPlayer player;
 	ofxRGBDGPURenderer renderer;
     ofxRGBDCPURenderer meshBuilder;
-    ofxRGBDVideoExporter rainbowExporter;
+    ofxRGBDCombinedVideoExporter rainbowExporter;
+	ofTexture combinedVideoTexture;
 	
 	ofxTLDepthImageSequence depthSequence;
 	ofxTLVideoDepthAlignmentScrubber alignmentScrubber;
@@ -218,7 +257,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofImage savingImage;
 	string saveFolder;
 	string lastSavedDate;    
-
+	
+	int rainbowVideoFrame;
 	bool timelineElementsAdded;
 	bool currentlyRendering;
 	int currentRenderFrame;

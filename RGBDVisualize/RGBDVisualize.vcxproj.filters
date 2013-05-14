@@ -91,12 +91,6 @@
     <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxDepthImageSequence.cpp">
       <Filter>addons\ofxRGBDepth\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDAlignment.cpp">
-      <Filter>addons\ofxRGBDepth\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDMeshBuilder.cpp">
-      <Filter>addons\ofxRGBDepth\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDPlayer.cpp">
       <Filter>addons\ofxRGBDepth\src</Filter>
     </ClCompile>
@@ -255,6 +249,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\addons\ofxRGBDepth\couples\ofxTimeline\ofxTLVideoDepthAlignmentScrubber.cpp">
       <Filter>addons\ofxRGBDepth\ofxTimeline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDCPURenderer.cpp">
+      <Filter>addons\ofxRGBDepth\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDGPURenderer.cpp">
+      <Filter>addons\ofxRGBDepth\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDVideoExporter.cpp">
+      <Filter>addons\ofxRGBDepth\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -476,12 +479,6 @@
     <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxDepthImageSequence.h">
       <Filter>addons\ofxRGBDepth\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDAlignment.h">
-      <Filter>addons\ofxRGBDepth\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDMeshBuilder.h">
-      <Filter>addons\ofxRGBDepth\src</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDPlayer.h">
       <Filter>addons\ofxRGBDepth\src</Filter>
     </ClInclude>
@@ -634,6 +631,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxRGBDepth\couples\ofxTimeline\ofxTLVideoDepthAlignmentScrubber.h">
       <Filter>addons\ofxRGBDepth\ofxTimeline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDCPURenderer.h">
+      <Filter>addons\ofxRGBDepth\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDGPURenderer.h">
+      <Filter>addons\ofxRGBDepth\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDVideoExporter.h">
+      <Filter>addons\ofxRGBDepth\src</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

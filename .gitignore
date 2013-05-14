@@ -28,3 +28,5 @@ ipch/
 *.bak
 *.pdb
 *.sys
+/RGBDCaptureXtionPro/bin/data/depthframes/
+/RGBDCaptureKinect/bin/data/depthframes/
