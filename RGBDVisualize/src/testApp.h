@@ -152,7 +152,18 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxIntSlider customWidth;
     ofxIntSlider customHeight;
     ofxToggle setCurrentSize;
-
+	
+	ofxToggle drawlightDebug;
+	
+    //NORMAL ADDITION
+    void loadNormals(string directory);
+    string normalsDirectory;
+    ofxToggle loadNormalDir;
+    ofxToggle useNormals;
+    bool normalsLoaded;
+    map<int,string> normalMaps;
+    ofImage normalImage;
+    int normalFrameOffset;
 	
 	
 	ofxToggle drawShape;
@@ -221,6 +232,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	string currentCompositionFile;
     string currentCompositionLabel;
 	string currentVideoFrameFile;
+	string currentNormalsDirectoryFile;
+	
 	string mediaBinFolder;
 	
     bool viewComps;

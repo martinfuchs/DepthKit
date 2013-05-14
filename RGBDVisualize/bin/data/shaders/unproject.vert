@@ -19,8 +19,6 @@ uniform vec2 simplify;
 
 //COLOR INTRINSICS
 uniform mat4 extrinsics;
-uniform mat3 colorRotate;
-uniform vec3 colorTranslate;
 uniform vec2 colorFOV;
 uniform vec2 colorPP;
 uniform vec3 dK;
@@ -40,6 +38,14 @@ uniform vec3 noiseShape;
 //POINT AFFECT
 uniform float pointMin;
 uniform float pointMax;
+
+
+//LIGHTS
+uniform sampler2DRect normalTex;
+varying vec3 normal;
+varying vec3 lightDir, eyeVec;
+varying float att;
+varying vec4 normalColor;
 
 uniform int useTexture;
 
@@ -266,6 +272,18 @@ void main(void)
 //								 snoise(vec4(pos.zxy / noiseDensity, noisePosition))) * noiseAmp;
 //	}
 
+	normalColor = texture2DRect(normalTex, floor(gl_Vertex.xy) + halfvec);
+	vec3 surfaceNormal = normalColor.xyz * 2.0 - 1.0;
+    //vec3 surfaceNormal = vec3(0.,0.,-1.);
+    normal = normalize(gl_NormalMatrix * surfaceNormal);
+	
+	vec3 vVertex = vec3(gl_ModelViewMatrix * pos);
+	lightDir = vec3(gl_LightSource[0].position.xyz - vVertex);
+	eyeVec = -vVertex;
+    
+    float d = length(lightDir);
+	att = 1.0 /( gl_LightSource[0].constantAttenuation + ( gl_LightSource[0].linearAttenuation * d) );
+	
     gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * pos;
     gl_FrontColor = gl_Color;
 }

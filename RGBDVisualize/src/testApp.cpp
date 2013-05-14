@@ -121,23 +121,7 @@ void testApp::setup(){
 
 
 	gui.setup("Settings");
-//<<<<<<< HEAD
-//	gui.add(cameraSpeed.setup("Camera Speed", ofParameter<float>(), 0, 40));
-//    gui.add(cameraRollSpeed.setup("Cam Roll Speed", ofParameter<float>(), .0, 4));
-//    gui.add(shouldResetCamera.setup("Reset Camera", ofParameter<bool>()));
-//	gui.add(currentLockCamera.setup("Lock to Track", ofParameter<bool>()));
-//    gui.add(shouldSaveCameraPoint.setup("Set Camera Point", ofParameter<bool>()));
-//	
-//	gui.add(drawPointcloud.setup("Draw Pointcloud",ofParameter<bool>()));
-//    gui.add(drawWireframe.setup("Draw Wireframe",ofParameter<bool>()));
-//    gui.add(drawMesh.setup("Draw Mesh",ofParameter<bool>()));
-//	
-//    gui.add(selfOcclude.setup("Self Occlude", ofParameter<bool>()));
-//    gui.add(drawDOF.setup("Draw DOF", ofParameter<bool>()));
-//
-//    gui.add( customWidth.setup("Frame Width", ofParameter<int>(), 320, 1920*2));
-//    gui.add( customHeight.setup("Frame Height", ofParameter<int>(), 240, 1080*2));
-//=======
+
 	gui.add( videoVolume.setup("Video Volume", ofParameter<float>(), 0, 1.0));
 	gui.add( cameraSpeed.setup("Camera Speed", ofParameter<float>(), 0, 40));
     gui.add( cameraRollSpeed.setup("Cam Roll Speed", ofParameter<float>(), .0, 4));
@@ -149,8 +133,8 @@ void testApp::setup(){
 	gui.add( drawPointcloud.setup("Draw Pointcloud",ofParameter<bool>()));
     gui.add( drawWireframe.setup("Draw Wireframe",ofParameter<bool>()));
     gui.add( drawMesh.setup("Draw Mesh",ofParameter<bool>()));
-    gui.add(drawParticles.setup("Draw Particles",ofParameter<bool>()));
-	gui.add(drawDepthParticles.setup("Draw Depth Particles",ofParameter<bool>()));
+    gui.add( drawParticles.setup("Draw Particles",ofParameter<bool>()));
+	gui.add( drawDepthParticles.setup("Draw Depth Particles",ofParameter<bool>()));
 
 	gui.add( drawScanlinesVertical.setup("Vertical Scanlines", ofParameter<bool>()));
 	gui.add( drawScanlinesHorizontal.setup("Horizontal Scanlines", ofParameter<bool>()));
@@ -164,7 +148,9 @@ void testApp::setup(){
 
     gui.add( selfOcclude.setup("Self Occlude", ofParameter<bool>()));
     gui.add( drawDOF.setup("Draw DOF", ofParameter<bool>()));
-
+	
+	gui.add(loadNormalDir.setup("Load Normals", ofxParameter<bool>()));
+	gui.add(useNormals.setup("Use Normals", ofxParameter<bool>()));
 	
 	gui.add( customWidth.setup("Frame Width", ofParameter<int>(), 320, 1920*4));
     gui.add( customHeight.setup("Frame Height", ofParameter<int>(), 240, 1080*4));
@@ -277,6 +263,13 @@ void testApp::populateTimelineElements(){
     timeline.addCurves("Wireframe Thickness", currentCompositionDirectory + "wireframeThickness.xml", ofRange(0.0,sqrtf(10.0)), 1.5 );
     timeline.addCurves("Mesh Alpha", currentCompositionDirectory + "meshAlpha.xml", ofRange(0,1.0), 1.0 );
 	
+    timeline.addPage("Lights");
+    timeline.addCurves("Constant Attenuate", currentCompositionDirectory + "LightConstant.xml", ofRange(0.0, 1.0), .0 );
+    timeline.addCurves("Linear Attenuate", currentCompositionDirectory + "LightLinear.xml", ofRange(0.0, 1.0), .0 );
+    timeline.addCurves("Light Pos X", currentCompositionDirectory + "LightPosX.xml", ofRange(-700, 700), .0 );
+    timeline.addCurves("Light Pos Y", currentCompositionDirectory + "LightPosY.xml", ofRange(-700, 700), .0 );
+    timeline.addCurves("Light Pos Z", currentCompositionDirectory + "LightPosZ.xml", ofRange(-200, 1000), .0 );
+	
 	timeline.addPage("Scan Lines", true);
 	timeline.addCurves("Horizontal Scanline Alpha", currentCompositionDirectory + "horizontalScanlineAlpha.xml", ofRange(0.0, 1.0), 1.0 );
 	timeline.addCurves("Horizontal Scanline Thickness", currentCompositionDirectory + "horizontalScalineThickness.xml", ofRange(1.0, 10.0), 2.0 );
@@ -311,48 +304,47 @@ void testApp::populateTimelineElements(){
 	ofxTLColorTrack* color = timeline.addColors("Fade Color", currentCompositionDirectory + "FadeColor.xml");
 	color->setDefaultColor(ofColor::white);
 	
-	timeline.addPage("Shape", true);
-	timeline.addCurves("Shape X", currentCompositionDirectory + "ShapeX.xml", ofRange(-1000,1000), 0 );
-	timeline.addCurves("Shape Y", currentCompositionDirectory + "ShapeY.xml", ofRange(-1000,1000), 0 );
-	timeline.addCurves("Shape Z", currentCompositionDirectory + "ShapeZ.xml", ofRange(0,2000), 0 );
-	timeline.addCurves("Shape Scale", currentCompositionDirectory + "ShapeScale.xml", ofRange(0,sqrtf(2000)), 0 );
-	timeline.addCurves("Shape Rotate", currentCompositionDirectory + "ShapeRotate.xml", ofRange(0,360*4), 0 );
-	timeline.addCurves("Shape Line Width", currentCompositionDirectory + "ShapeLineWidth.xml", ofRange(0,7), 0 );
-	timeline.addColors("Shape Color", currentCompositionDirectory + "ShapeColor.xml");
+//	timeline.addPage("Shape", true);
+//	timeline.addCurves("Shape X", currentCompositionDirectory + "ShapeX.xml", ofRange(-1000,1000), 0 );
+//	timeline.addCurves("Shape Y", currentCompositionDirectory + "ShapeY.xml", ofRange(-1000,1000), 0 );
+//	timeline.addCurves("Shape Z", currentCompositionDirectory + "ShapeZ.xml", ofRange(0,2000), 0 );
+//	timeline.addCurves("Shape Scale", currentCompositionDirectory + "ShapeScale.xml", ofRange(0,sqrtf(2000)), 0 );
+//	timeline.addCurves("Shape Rotate", currentCompositionDirectory + "ShapeRotate.xml", ofRange(0,360*4), 0 );
+//	timeline.addCurves("Shape Line Width", currentCompositionDirectory + "ShapeLineWidth.xml", ofRange(0,7), 0 );
+//	timeline.addColors("Shape Color", currentCompositionDirectory + "ShapeColor.xml");
 	
     timeline.addPage("Depth of Field", true);
     timeline.addCurves("DOF Distance", currentCompositionDirectory + "DOFDistance.xml", ofRange(0,sqrtf(1500.0)), 10 );
     timeline.addCurves("DOF Range", currentCompositionDirectory + "DOFRange.xml", ofRange(0,sqrtf(1500.0)) );
     timeline.addCurves("DOF Blur", currentCompositionDirectory + "DOFBlur.xml", ofRange(0,5.0) );
 	
-	timeline.addPage("Time Alignment", true);
-	timeline.addTrack("Video", videoTrack);
-	timeline.addTrack("Depth Sequence", &depthSequence);
-	timeline.addTrack("Alignment", &alignmentScrubber);
-	
-	
-    timeline.addPage("Depth Particle Field", true);
+    timeline.addPage("Depth Particles", true);
 	timeline.addCurves("Depth Particle Alpha", currentCompositionDirectory + "DepthParticleAlpha.xml", ofRange(0, 1.0), 0.0 );
 	timeline.addCurves("Max Particles", currentCompositionDirectory + "MaxParticles.xml", ofRange(0, 4000), 50 );
 	
-	timeline.addPage("Ring Emitter Size", true);
+	timeline.addPage("Emitter Size", true);
 	timeline.addCurves("Ring Emitter Min Radius", currentCompositionDirectory + "RingEmitterMinRadius.xml", ofRange(0, 4000), 0.0 );
 	timeline.addCurves("Ring Emitter Width", currentCompositionDirectory + "RingEmitterWidth.xml", ofRange(0, 4000), 50 );
 	timeline.addCurves("Ring Emitter Z", currentCompositionDirectory + "RingEmitterZ.xml", ofRange(0, 10000), 0 );
     
-    timeline.addPage("Ring Emitter Properties", true);
+    timeline.addPage("Emitter Properties", true);
     timeline.addCurves("Ring Emitter Lifetime", currentCompositionDirectory + "RingEmitterLifetime.xml", ofRange(0.0, 100), 0.1 );
     timeline.addCurves("Ring Emitter Size", currentCompositionDirectory + "RingEmitterSize.xml", ofRange(0.0, 20), 0.1 );
 	timeline.addCurves("Ring Emitter Flow", currentCompositionDirectory + "RingEmitterFlow.xml", ofRange(0.0, 10000), 0.1 );
 	timeline.addCurves("Ring Emitter Min Force", currentCompositionDirectory + "RingEmitterMinForce.xml", ofRange(0.0, 5000), 0.1 );
     timeline.addCurves("Ring Emitter Force Range", currentCompositionDirectory + "RingEmitterForceRange.xml", ofRange(0.0, 5000), 0.1 );
     
-    timeline.addPage("Ring Emitter Colors", true);
+    timeline.addPage("Emitter Colors", true);
     timeline.addColors("Ring Start Color A", currentCompositionDirectory + "RingStartColorA.xml");
     timeline.addColors("Ring Start Color B", currentCompositionDirectory + "RingStartColorB.xml");
     timeline.addColors("Ring End Color A", currentCompositionDirectory + "RingEndColorA.xml");
     timeline.addColors("Ring End Color B", currentCompositionDirectory + "RingEndColorB.xml");
     
+	timeline.addPage("Time Alignment", true);
+	timeline.addTrack("Video", videoTrack);
+	timeline.addTrack("Depth Sequence", &depthSequence);
+	timeline.addTrack("Alignment", &alignmentScrubber);
+	
 	timeline.addPage("Texture Alignment");
 	timeline.addCurves("X Texture Shift", currentCompositionDirectory + "XTextureShift.xml", ofRange(-.35, .35), 0.0 );
 	timeline.addCurves("Y Texture Shift", currentCompositionDirectory + "YTextureShift.xml", ofRange(-.35, .35), 0.0 );
@@ -361,8 +353,8 @@ void testApp::populateTimelineElements(){
 
 	timeline.addCurves("X Texture Matrix Rotate", currentCompositionDirectory + "XTextureMatrixRotate.xml", ofRange(-10, 10), 0.0 );
 	timeline.addCurves("Y Texture Matrix Rotate", currentCompositionDirectory + "YTextureMatrixRotate.xml", ofRange(-10, 10), 0.0 );
-	timeline.addCurves("X Texture Matrix Translate", currentCompositionDirectory + "XTextureMatrixTranslate.xml", ofRange(-10, 10), 0.0 );
-	timeline.addCurves("Y Texture Matrix Translate", currentCompositionDirectory + "YTextureMatrixTranslate.xml", ofRange(-10, 10), 0.0 );
+	timeline.addCurves("X Texture Matrix Translate", currentCompositionDirectory + "XTextureMatrixTranslate.xml", ofRange(-200, 200), 0.0 );
+	timeline.addCurves("Y Texture Matrix Translate", currentCompositionDirectory + "YTextureMatrixTranslate.xml", ofRange(-200, 200), 0.0 );
 
 	timeline.setCurrentPage("Rendering");
 }
@@ -420,6 +412,27 @@ void testApp::drawGeometry(){
 		
 		cam.begin(renderFboRect);
 		
+		ofLight light;		
+		if(useNormals && normalImage.isAllocated()){
+			float constantAtten = powf(timeline.getValue("Constant Attenuate"), 2.0);
+			float linearAtten = powf(timeline.getValue("Linear Attenuate"), 2.0);
+
+			light.setPosition(timeline.getValue("Light Pos X"),
+							  timeline.getValue("Light Pos Y"),
+							  timeline.getValue("Light Pos Z"));
+			light.setAttenuation(constantAtten, linearAtten, 0.0);
+			ofEnableLighting();
+			light.enable();
+			light.setPointLight();
+			
+			if(drawlightDebug){
+				ofPushStyle();
+				ofNoFill();
+				ofSphere(light.getPosition(),5);
+				ofPopStyle();
+			}
+		}
+		
 		ofFloatColor fadeToColor = timeline.getColor("Fade Color");
 		
 		ofPushMatrix();
@@ -446,6 +459,7 @@ void testApp::drawGeometry(){
 			renderer.getShader().end();
 		}
 		
+		
 		float noiseAmplitude = powf(timeline.getValue("Noise Amplitude"), 2.0);
 		float noiseDensity = powf(timeline.getValue("Noise Density"), 2.0);
 		float noiseSpeed = timeline.getValue("Noise Speed");
@@ -465,14 +479,20 @@ void testApp::drawGeometry(){
 										  timeline.getValue("X Perlin Stretch"),
 										  timeline.getValue("Y Perlin Stretch"),
 										  timeline.getValue("Z Perlin Stretch"));
-		
+				
 		renderer.getShader().setUniform1f("pointMin", timeline.getValue("Point Size Min"));
 		renderer.getShader().setUniform1f("pointMax", timeline.getValue("Point Size Max"));
 		renderer.getShader().setUniform1f("fadeAmount", timeline.getValue("Fade Amount"));
 		renderer.getShader().setUniform4f("fadeColor", fadeToColor.r,fadeToColor.g,fadeToColor.b, 1.0);
 		
+		if(useNormals && normalImage.isAllocated()){
+			cout << "binding normal texture" << endl;
+			renderer.getShader().setUniformTexture("normalTex", normalImage, 2);
+		}
+		
 		renderer.getShader().end();
 		
+
 		bool usedDepth = false;
 		if(selfOcclude){
 			ofTranslate(0, 0, 1);
@@ -577,7 +597,7 @@ void testApp::drawGeometry(){
 		ofPopMatrix();
         
         glDisable(GL_DEPTH_TEST);
-
+		
         if(drawParticles){
             
             sys.draw();
@@ -595,6 +615,11 @@ void testApp::drawGeometry(){
             renderer.unbindRenderer();
             ofPopStyle();
         }
+
+		if(useNormals && normalImage.isAllocated()){
+			ofDisableLighting();
+			light.disable();
+		}
 
 		cam.end();
 		fbo1.end();
@@ -870,7 +895,9 @@ void testApp::update(){
             if(!saveDirectory.exists()){
                 saveDirectory.create(true);
             }
-            
+			
+            cout << "1 **** CURRENT VIDEO FRAME " << player.getVideoPlayer()->getCurrentFrame() << endl;
+			
 			if(player.hasHighresVideo()){
 				player.useHiresVideo();
 				videoTrack->setPlayer(player.getVideoPlayer());
@@ -878,8 +905,12 @@ void testApp::update(){
 				meshBuilder.setRGBTexture(*player.getVideoPlayer());
 			}
 			
+			cout << "2 **** CURRENT VIDEO FRAME " << player.getVideoPlayer()->getCurrentFrame() << endl;
+			
             player.getVideoPlayer()->setVolume(0);
             
+			cout << "3 **** CURRENT VIDEO FRAME " << player.getVideoPlayer()->getCurrentFrame() << endl;
+			
             cameraTrack->setTimelineInOutToTrack();
             timeline.setCurrentTimeToInPoint();
 			if(!renderStillFrame){
@@ -888,11 +919,15 @@ void testApp::update(){
 				timeline.setPercentComplete(player.getVideoPlayer()->getPosition());
 			}
 			else{
+				currentRenderFrame = timeline.getInFrame();
+				
 				//timeline.setPercentComplete(timeline.getInOutRange().min);
 			}
 
 //            cout << "setting current time to " << timeline.getPercentComplete() << " seconds: " << timeline.getCurrentTime() << " video: " << player.getVideoPlayer()->getCurrentFrame() << " sec: " <<     (player.getVideoPlayer()->getPosition() * player.getVideoPlayer()->getDuration()) << endl;
             
+			cout << "4 **** CURRENT VIDEO FRAME " << player.getVideoPlayer()->getCurrentFrame() << endl;
+
             currentLockCamera = cameraTrack->lockCameraToTrack = true;
             cameraTrack->jumpToTarget();
         }
@@ -921,6 +956,14 @@ void testApp::update(){
 		drawMesh = true;
 	}
 	
+    if(loadNormalDir){
+        loadNormalDir = false;
+        normalsLoaded = false;
+        ofFileDialogResult r = ofSystemLoadDialog("load normals",true);
+        if(r.bSuccess){
+            loadNormals(r.getPath());
+        }
+    }
 	if(currentLockCamera != cameraTrack->lockCameraToTrack){
 		if(!currentLockCamera){
 			cam.setAnglesFromOrientation();
@@ -942,7 +985,7 @@ void testApp::update(){
 	if(currentlyRendering){
 		
 		if(renderStillFrame){
-			currentRenderFrame = timeline.getCurrentFrame();
+			//currentRenderFrame = timeline.getCurrentFrame();
 		}
 		else{
 			currentRenderFrame = player.getVideoPlayer()->getCurrentFrame();
@@ -1031,6 +1074,10 @@ void testApp::update(){
 		generateRandomMesh(numRandomPoints);
 	}
 	
+	if(renderStillFrame){
+		rendererNeedsUpdate = true;
+	}
+	
 	float currentFarClip = powf(timeline.getValue("Z Threshold Max"), 2.0);
 	float currentNearClip = powf(timeline.getValue("Z Threshold Min"), 2.0);
 	
@@ -1110,7 +1157,6 @@ void testApp::update(){
 	if(drawDepthParticles){
 		depthParticleField.update();
 	}
-
 }
 
 //--------------------------------------------------------------
@@ -1179,7 +1225,14 @@ void testApp::updateRenderer(){
 		holeFiller.close(player.getDepthPixels());
     }
     
-	
+    if(useNormals && normalsLoaded && normalMaps.find(currentVideoFrame) != normalMaps.end() ){
+        if(!normalImage.loadImage(normalMaps[currentVideoFrame])){
+            ofLogError("Normal map load failed");
+        }
+        else{
+            cout << "loaded normal " << normalMaps[currentVideoFrame] << endl;
+        }
+    }
     renderer.update();
     if((currentlyRendering && renderObjectFiles) || renderRainbowVideo ){
 		if(renderRainbowVideo){
@@ -1500,7 +1553,8 @@ void testApp::draw(){
 				else{
 					//					cout << "advancing video frame from " << player.getVideoPlayer()->getCurrentFrame() << " with timeline time " << timeline.getCurrentFrame() << " current render frame: " << currentRenderFrame << endl;
 					if(renderStillFrame){
-						timeline.setCurrentFrame(timeline.getCurrentFrame()+1);
+						timeline.setCurrentFrame(currentRenderFrame++);
+						cout << "current frame is " << timeline.getCurrentFrame() << "Render frame is " << currentRenderFrame << endl;
 					}
 					else{
 						player.getVideoPlayer()->nextFrame();
@@ -1801,6 +1855,7 @@ void testApp::loadDefaults(){
 	drawScanlinesVertical = false;
 	drawScanlinesHorizontal = false;
 
+	useNormals = false;
 	selfOcclude = false;
 	drawDOF = false;
 	
@@ -1831,6 +1886,22 @@ void testApp::loadDefaults(){
     resetCameraPosition();
 	
 	saveComposition();
+}
+
+//--------------------------------------------------------------
+
+void testApp::loadNormals(string directory){
+    ofDirectory dir;
+    dir.allowExt("png");
+    dir.listDir(directory);
+    normalsDirectory = directory;
+    cout << "NORMALS loaded " << dir.numFiles() << endl;
+    normalMaps.clear();
+    for(int i = 0; i < dir.numFiles(); i++){
+        vector<string> filePieces = ofSplitString( ofFilePath::removeExt(dir.getName(i)), "_");
+        normalMaps[ normalFrameOffset + ofToInt(filePieces[1]) ] = dir.getPath(i);
+    }
+    normalsLoaded = dir.numFiles() > 0;
 }
 
 //--------------------------------------------------------------
@@ -1885,6 +1956,12 @@ void testApp::saveComposition(){
 	ofBuffer videoFrameFile;
 	videoFrameFile.append(ofToString(videoTrack->getPlayer()->getCurrentFrame()));
 	ofBufferToFile(currentVideoFrameFile, videoFrameFile);
+
+	if(normalsLoaded){
+		ofBuffer normalsDirectory;
+		normalsDirectory.append(normalsDirectory);
+		ofBufferToFile(currentNormalsDirectoryFile, normalsDirectory);
+	}
 	
 	setCompositionButtonName();
 
@@ -2006,7 +2083,8 @@ bool testApp::loadComposition(string compositionDirectory){
 	currentCompositionDirectory = compositionDirectory;
     currentCompositionFile = currentCompositionDirectory+"compositionsettings.xml";
 	currentVideoFrameFile = currentCompositionDirectory+"videoframe.txt";
-	
+	currentNormalsDirectoryFile = currentCompositionDirectory+"normalsdir.txt";
+
     if(loadedScene != selectedScene){
         isSceneLoaded = loadAssetsForScene(selectedScene);
 		if(!isSceneLoaded){
@@ -2041,6 +2119,18 @@ bool testApp::loadComposition(string compositionDirectory){
 		int savedVideoFrame = ofToInt( ofBufferFromFile(currentVideoFrameFile).getText() );
 		cout << "loading video frame " << savedVideoFrame << endl;
 		videoTrack->getPlayer()->setFrame( savedVideoFrame );
+	}
+	else{
+		cout << "Video frame file does not exist!" << endl;
+	}
+	
+	if(ofFile::doesFileExist(currentNormalsDirectoryFile)){
+		string savedNormals = ofBufferFromFile(currentNormalsDirectoryFile).getText() ;
+		cout << "Loading normals " << savedNormals << endl;
+		loadNormals(savedNormals);
+	}
+	else{
+		cout << "Normals don't exist" << endl;
 	}
 	
     alignmentScrubber.setup();
