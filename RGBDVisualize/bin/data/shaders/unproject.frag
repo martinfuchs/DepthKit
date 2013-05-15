@@ -11,21 +11,31 @@ varying float VZPositionValid0;
 const float epsilon = 1e-6;
 
 varying vec3 normal;
-varying vec3 lightDir, eyeVec;
-varying float att;
 varying vec4 normalColor;
+varying vec3 eyeVec;
+
 uniform float lightEffect;
+uniform float shininess;
+
+varying float diffuseAttenuate;
+varying float specularAttenuate;
+varying vec3 diffuseLightDirection;
+varying vec3 specularLightDirection;
 
 float calculateLight(){
 	
-	vec3 N = normalize(normal);
-	vec3 L = normalize(lightDir);
+	vec3 N = normal;
+	vec3 L = diffuseLightDirection;
 	
-	float lambertTerm = dot(N,L) * att;
+	float lambertTerm = dot(N,L) * diffuseAttenuate;
 	return lambertTerm;
-	
-	//return vec4(1.0);
-    //return vec4(vec3(mix(lambertTerm, 1.0, 0.0)), 1.0);
+}
+
+float calcualteSpecular(){
+	if(dot(normal, specularLightDirection) < 0.0){
+		return 0.0;
+	}
+	return specularAttenuate * pow(max(0.0, dot(reflect(-specularLightDirection, normal), eyeVec)), shininess);
 }
 
 void main()
@@ -37,9 +47,9 @@ void main()
 
     if(useTexture == 1){
         vec4 col = texture2DRect(colorTex, gl_TexCoord[0].st);
-		//enable visualize texture coordinates
-		//col = vec4(gl_TexCoord[0].s / dim.x, gl_TexCoord[0].t / dim.y, 0.0, 1.0);
-        gl_FragColor = mix(col, vec4(fadeColor), fadeAmount) * mix(1.0, calculateLight(), lightEffect	) * gl_Color;
+		float lightAttenuate = mix(1.0,calculateLight() + calcualteSpecular(), lightEffect);
+		col.rgb *= lightAttenuate;
+        gl_FragColor = mix(col, vec4(fadeColor), fadeAmount) * gl_Color;
     }
     else{
         gl_FragColor = vec4(0);
@@ -47,6 +57,8 @@ void main()
 	
 	//enable visualize clipping values
     //gl_FragColor = vec4(VZPositionValid0);
-	//gl_FragColor = fadeColor;
+	//enable visualize texture coordinates
+	//gl_FragColor = vec4(gl_TexCoord[0].s / dim.x, gl_TexCoord[0].t / dim.y, 0.0, 1.0);
+	//enable visualize normals
 	//gl_FragColor = normalColor;
 }

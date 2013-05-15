@@ -264,23 +264,6 @@ void testApp::populateTimelineElements(){
     timeline.addCurves("Wireframe Thickness", currentCompositionDirectory + "wireframeThickness.xml", ofRange(0.0,sqrtf(10.0)), 1.5 );
     timeline.addCurves("Mesh Alpha", currentCompositionDirectory + "meshAlpha.xml", ofRange(0,1.0), 1.0 );
 	
-    timeline.addPage("Point Light", true);
-	timeline.addCurves("Light Effect", currentCompositionDirectory + "LightEffect", ofRange(0.0, 1.0), .0 );
-    timeline.addCurves("Point Constant Attenuate", currentCompositionDirectory + "PointLightConstant.xml", ofRange(0.0, 1.0), .0 );
-    timeline.addCurves("Point Linear Attenuate", currentCompositionDirectory + "PointLightLinear.xml", ofRange(0.0, 1.0), .0 );
-	timeline.addCurves("Point Quad Attenuate", currentCompositionDirectory + "PointLightQuad.xml", ofRange(0.0, 1.0), .0 );
-    timeline.addCurves("Point Light Pos X", currentCompositionDirectory + "PointLightPosX.xml", ofRange(-700, 700), .0 );
-    timeline.addCurves("Point Light Pos Y", currentCompositionDirectory + "PointLightPosY.xml", ofRange(-700, 700), .0 );
-    timeline.addCurves("Point Light Pos Z", currentCompositionDirectory + "PointLightPosZ.xml", ofRange(-200, 1000), .0 );
-
-	timeline.addPage("Dir. Light", true);
-    timeline.addCurves("Directional Constant Attenuate", currentCompositionDirectory + "DirLightConstant.xml", ofRange(0.0, 1.0), .0 );
-    timeline.addCurves("Directional Linear Attenuate", currentCompositionDirectory + "DirLightLinear.xml", ofRange(0.0, 1.0), .0 );
-	timeline.addCurves("Directional Quad Attenuate", currentCompositionDirectory + "DirLightQuad.xml", ofRange(0.0, 1.0), .0 );
-    timeline.addCurves("Directional Light Dir X", currentCompositionDirectory + "DirLightX.xml", ofRange(-1, 1), .0 );
-    timeline.addCurves("Directional Light Dir Y", currentCompositionDirectory + "DirLightY.xml", ofRange(-1, 1), .0 );
-    timeline.addCurves("Directional Light Dir Z", currentCompositionDirectory + "DirLightZ.xml", ofRange(-1, 1), 1 );
-
 	timeline.addPage("Scan Lines", true);
 	timeline.addCurves("Horizontal Scanline Alpha", currentCompositionDirectory + "horizontalScanlineAlpha.xml", ofRange(0.0, 1.0), 1.0 );
 	timeline.addCurves("Horizontal Scanline Thickness", currentCompositionDirectory + "horizontalScalineThickness.xml", ofRange(1.0, 10.0), 2.0 );
@@ -314,6 +297,24 @@ void testApp::populateTimelineElements(){
 	timeline.addCurves("Fade Amount", currentCompositionDirectory + "FadeAmount.xml", ofRange(0,1.0), 0 );
 	ofxTLColorTrack* color = timeline.addColors("Fade Color", currentCompositionDirectory + "FadeColor.xml");
 	color->setDefaultColor(ofColor::white);
+	
+    timeline.addPage("Point Light", true);
+	timeline.addCurves("Light Effect", currentCompositionDirectory + "LightEffect", ofRange(0.0, 1.0), .0 );
+    timeline.addCurves("Point Constant Attenuate", currentCompositionDirectory + "PointLightConstant.xml", ofRange(0.0, 1.0), .0 );
+    timeline.addCurves("Point Linear Attenuate", currentCompositionDirectory + "PointLightLinear.xml", ofRange(0.0, 1.0), .0 );
+	timeline.addCurves("Point Quad Attenuate", currentCompositionDirectory + "PointLightQuad.xml", ofRange(0.0, 1.0), .0 );
+    timeline.addCurves("Point Light Pos X", currentCompositionDirectory + "PointLightPosX.xml", ofRange(-700, 700), .0 );
+    timeline.addCurves("Point Light Pos Y", currentCompositionDirectory + "PointLightPosY.xml", ofRange(-700, 700), .0 );
+    timeline.addCurves("Point Light Pos Z", currentCompositionDirectory + "PointLightPosZ.xml", ofRange(0, 2000), .0 );
+	
+	timeline.addPage("Specular Light", true);
+	timeline.addCurves("Shininess", currentCompositionDirectory + "Shininess.xml", ofRange(0.0, 10.0), .0 );
+    timeline.addCurves("Specular Constant Attenuate", currentCompositionDirectory + "SpecularConstant.xml", ofRange(0.0, 1.0), .0 );
+    timeline.addCurves("Specular Linear Attenuate", currentCompositionDirectory + "SpecularLinear.xml", ofRange(0.0, 1.0), .0 );
+	timeline.addCurves("Specular Quad Attenuate", currentCompositionDirectory + "SpecularQuad.xml", ofRange(0.0, 1.0), .0 );
+    timeline.addCurves("Specular Light Pos X", currentCompositionDirectory + "SpecularX.xml", ofRange(-700, 700), .0 );
+    timeline.addCurves("Specular Light Pos Y", currentCompositionDirectory + "SpecularY.xml", ofRange(-700, 700), .0 );
+    timeline.addCurves("Specular Light Pos Z", currentCompositionDirectory + "SpecularZ.xml", ofRange(0, 2000), 0. );
 	
 //	timeline.addPage("Shape", true);
 //	timeline.addCurves("Shape X", currentCompositionDirectory + "ShapeX.xml", ofRange(-1000,1000), 0 );
@@ -424,12 +425,12 @@ void testApp::drawGeometry(){
 		cam.begin(renderFboRect);
 		
 		ofLight light;
-		ofLight directional;
+		ofLight specularLight;
 		
 		if(useNormals && normalImage.isAllocated()){
 			float constantAtten = powf(timeline.getValue("Point Constant Attenuate"), 2.0);
 			float linearAtten = powf(timeline.getValue("Point Linear Attenuate"), 4.0);
-			float quadAtten = powf(timeline.getValue("Point Quad Attenuate"), 4.0);
+			float quadAtten = powf(timeline.getValue("Point Quad Attenuate"), 6.0);
 
 			light.setPosition(timeline.getValue("Point Light Pos X"),
 							  timeline.getValue("Point Light Pos Y"),
@@ -437,30 +438,36 @@ void testApp::drawGeometry(){
 			
 			light.setAttenuation(constantAtten, linearAtten, quadAtten);
 			
-			ofQuaternion q;
-			q.makeRotate(timeline.getValue("Directional Light Dir X"), ofVec3f(1,0,0),
-						 timeline.getValue("Directional Light Dir Y"), ofVec3f(0,1,0),
-						 timeline.getValue("Directional Light Dir Z"), ofVec3f(0,0,1));
+
+			constantAtten = powf(timeline.getValue("Specular Constant Attenuate"), 2.0);
+			linearAtten = powf(timeline.getValue("Specular Linear Attenuate"), 4.0);
+			quadAtten = powf(timeline.getValue("Specular Quad Attenuate"), 6.0);
 			
-//			directional.setOrientation(q);
-//			constantAtten = powf(timeline.getValue("Directional Constant Attenuate"), 2.0);
-//			linearAtten = powf(timeline.getValue("Directional Linear Attenuate"), 2.0);
-//			quadAtten = powf(timeline.getValue("Directional Quad Attenuate"), 2.0);
-//			directional.setAttenuation(constantAtten, linearAtten, quadAtten);
+			specularLight.setPosition(timeline.getValue("Specular Light Pos X"),
+									  timeline.getValue("Specular Light Pos Y"),
+									  timeline.getValue("Specular Light Pos Z"));
+			
+			specularLight.setAttenuation(constantAtten, linearAtten, quadAtten);
 			
 			ofEnableLighting();
 			light.enable();
 			light.setPointLight();
-			
-//			directional.setDirectional();
-//			directional.enable();
+			specularLight.enable();
+			specularLight.setPointLight();
 
 			if(drawlightDebug){
 				ofPushStyle();
 				ofNoFill();
+				ofPushMatrix();
+				
 				ofSetColor(255,200,0);
-				ofSphere(light.getPosition(),5);
+				ofSphere(light.getPosition(),30);
+				
+				ofSetColor(200,255,0);
+				ofSphere(specularLight.getPosition(),30);
+				
 				ofPopStyle();
+				ofPopMatrix();
 			}
 		}
 		
@@ -517,7 +524,8 @@ void testApp::drawGeometry(){
 		renderer.getShader().setUniform4f("fadeColor", fadeToColor.r,fadeToColor.g,fadeToColor.b, 1.0);
 		
 		if(useNormals && normalImage.isAllocated()){
-			cout << "binding normal texture" << endl;
+
+			renderer.getShader().setUniform1f("shininess", timeline.getValue("Shininess"));
 			renderer.getShader().setUniform1f("lightEffect", timeline.getValue("Light Effect"));
 			renderer.getShader().setUniformTexture("normalTex", normalImage, 2);
 		}
@@ -1261,14 +1269,16 @@ void testApp::updateRenderer(){
 		holeFiller.close(player.getDepthPixels());
     }
     
-    if(useNormals && normalsLoaded && normalMaps.find(currentVideoFrame) != normalMaps.end() ){
+    if(useNormals && normalsLoaded && normalMaps.find(currentVideoFrame) != normalMaps.end() && currentNormalLoaded != currentVideoFrame ){
         if(!normalImage.loadImage(normalMaps[currentVideoFrame])){
             ofLogError("Normal map load failed");
         }
         else{
             cout << "loaded normal " << normalMaps[currentVideoFrame] << endl;
         }
+		currentNormalLoaded = currentVideoFrame;
     }
+	
     renderer.update();
     if((currentlyRendering && renderObjectFiles) || renderRainbowVideo ){
 		if(renderRainbowVideo){

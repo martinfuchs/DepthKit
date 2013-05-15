@@ -164,7 +164,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     map<int,string> normalMaps;
     ofImage normalImage;
     int normalFrameOffset;
-	
+	int currentNormalLoaded;
 	
 	ofxToggle drawShape;
 	ofxIntSlider shapeVerts;
