@@ -14,15 +14,18 @@ varying vec3 normal;
 varying vec3 lightDir, eyeVec;
 varying float att;
 varying vec4 normalColor;
+uniform float lightEffect;
 
-vec4 calculateLight(){
+float calculateLight(){
 	
 	vec3 N = normalize(normal);
 	vec3 L = normalize(lightDir);
 	
 	float lambertTerm = dot(N,L) * att;
+	return lambertTerm;
+	
 	//return vec4(1.0);
-    return vec4(vec3(mix(lambertTerm, 1.0, 0.0)), 1.0);
+    //return vec4(vec3(mix(lambertTerm, 1.0, 0.0)), 1.0);
 }
 
 void main()
@@ -36,7 +39,7 @@ void main()
         vec4 col = texture2DRect(colorTex, gl_TexCoord[0].st);
 		//enable visualize texture coordinates
 		//col = vec4(gl_TexCoord[0].s / dim.x, gl_TexCoord[0].t / dim.y, 0.0, 1.0);
-        gl_FragColor = mix(col, vec4(fadeColor), fadeAmount) * calculateLight() * gl_Color;
+        gl_FragColor = mix(col, vec4(fadeColor), fadeAmount) * mix(1.0, calculateLight(), lightEffect	) * gl_Color;
     }
     else{
         gl_FragColor = vec4(0);

@@ -149,8 +149,9 @@ void testApp::setup(){
     gui.add( selfOcclude.setup("Self Occlude", ofParameter<bool>()));
     gui.add( drawDOF.setup("Draw DOF", ofParameter<bool>()));
 	
-	gui.add(loadNormalDir.setup("Load Normals", ofxParameter<bool>()));
-	gui.add(useNormals.setup("Use Normals", ofxParameter<bool>()));
+	gui.add( loadNormalDir.setup("Load Normals", ofxParameter<bool>()));
+	gui.add( useNormals.setup("Use Normals", ofxParameter<bool>()));
+	gui.add( drawlightDebug.setup("Draw Light Debug", ofxParameter<bool>()));
 	
 	gui.add( customWidth.setup("Frame Width", ofParameter<int>(), 320, 1920*4));
     gui.add( customHeight.setup("Frame Height", ofParameter<int>(), 240, 1080*4));
@@ -263,13 +264,23 @@ void testApp::populateTimelineElements(){
     timeline.addCurves("Wireframe Thickness", currentCompositionDirectory + "wireframeThickness.xml", ofRange(0.0,sqrtf(10.0)), 1.5 );
     timeline.addCurves("Mesh Alpha", currentCompositionDirectory + "meshAlpha.xml", ofRange(0,1.0), 1.0 );
 	
-    timeline.addPage("Lights");
-    timeline.addCurves("Constant Attenuate", currentCompositionDirectory + "LightConstant.xml", ofRange(0.0, 1.0), .0 );
-    timeline.addCurves("Linear Attenuate", currentCompositionDirectory + "LightLinear.xml", ofRange(0.0, 1.0), .0 );
-    timeline.addCurves("Light Pos X", currentCompositionDirectory + "LightPosX.xml", ofRange(-700, 700), .0 );
-    timeline.addCurves("Light Pos Y", currentCompositionDirectory + "LightPosY.xml", ofRange(-700, 700), .0 );
-    timeline.addCurves("Light Pos Z", currentCompositionDirectory + "LightPosZ.xml", ofRange(-200, 1000), .0 );
-	
+    timeline.addPage("Point Light", true);
+	timeline.addCurves("Light Effect", currentCompositionDirectory + "LightEffect", ofRange(0.0, 1.0), .0 );
+    timeline.addCurves("Point Constant Attenuate", currentCompositionDirectory + "PointLightConstant.xml", ofRange(0.0, 1.0), .0 );
+    timeline.addCurves("Point Linear Attenuate", currentCompositionDirectory + "PointLightLinear.xml", ofRange(0.0, 1.0), .0 );
+	timeline.addCurves("Point Quad Attenuate", currentCompositionDirectory + "PointLightQuad.xml", ofRange(0.0, 1.0), .0 );
+    timeline.addCurves("Point Light Pos X", currentCompositionDirectory + "PointLightPosX.xml", ofRange(-700, 700), .0 );
+    timeline.addCurves("Point Light Pos Y", currentCompositionDirectory + "PointLightPosY.xml", ofRange(-700, 700), .0 );
+    timeline.addCurves("Point Light Pos Z", currentCompositionDirectory + "PointLightPosZ.xml", ofRange(-200, 1000), .0 );
+
+	timeline.addPage("Dir. Light", true);
+    timeline.addCurves("Directional Constant Attenuate", currentCompositionDirectory + "DirLightConstant.xml", ofRange(0.0, 1.0), .0 );
+    timeline.addCurves("Directional Linear Attenuate", currentCompositionDirectory + "DirLightLinear.xml", ofRange(0.0, 1.0), .0 );
+	timeline.addCurves("Directional Quad Attenuate", currentCompositionDirectory + "DirLightQuad.xml", ofRange(0.0, 1.0), .0 );
+    timeline.addCurves("Directional Light Dir X", currentCompositionDirectory + "DirLightX.xml", ofRange(-1, 1), .0 );
+    timeline.addCurves("Directional Light Dir Y", currentCompositionDirectory + "DirLightY.xml", ofRange(-1, 1), .0 );
+    timeline.addCurves("Directional Light Dir Z", currentCompositionDirectory + "DirLightZ.xml", ofRange(-1, 1), 1 );
+
 	timeline.addPage("Scan Lines", true);
 	timeline.addCurves("Horizontal Scanline Alpha", currentCompositionDirectory + "horizontalScanlineAlpha.xml", ofRange(0.0, 1.0), 1.0 );
 	timeline.addCurves("Horizontal Scanline Thickness", currentCompositionDirectory + "horizontalScalineThickness.xml", ofRange(1.0, 10.0), 2.0 );
@@ -295,7 +306,7 @@ void testApp::populateTimelineElements(){
 	timeline.addCurves("Z Perlin Stretch", currentCompositionDirectory + "ZPerlinStretch.xml", ofRange(0., 1.0), 1.0 );
 
 	timeline.addPage("Random Points", true);
-	timeline.addCurves("Random Point Amount", currentCompositionDirectory + "PointSizeMin.xml", ofRange(0,640*480*2), 8000 );
+	timeline.addCurves("Random Point Amount", currentCompositionDirectory + "RandomPointAmount.xml", ofRange(0, sqrtf(640*480*2.0)), 100 );
 	timeline.addCurves("Point Size Max", currentCompositionDirectory + "PointSizeMin.xml", ofRange(-10,10), 3 );
 	timeline.addCurves("Point Size Min", currentCompositionDirectory + "PointSizeMax.xml", ofRange(-10,10), 1 );
 
@@ -412,22 +423,42 @@ void testApp::drawGeometry(){
 		
 		cam.begin(renderFboRect);
 		
-		ofLight light;		
+		ofLight light;
+		ofLight directional;
+		
 		if(useNormals && normalImage.isAllocated()){
-			float constantAtten = powf(timeline.getValue("Constant Attenuate"), 2.0);
-			float linearAtten = powf(timeline.getValue("Linear Attenuate"), 2.0);
+			float constantAtten = powf(timeline.getValue("Point Constant Attenuate"), 2.0);
+			float linearAtten = powf(timeline.getValue("Point Linear Attenuate"), 4.0);
+			float quadAtten = powf(timeline.getValue("Point Quad Attenuate"), 4.0);
 
-			light.setPosition(timeline.getValue("Light Pos X"),
-							  timeline.getValue("Light Pos Y"),
-							  timeline.getValue("Light Pos Z"));
-			light.setAttenuation(constantAtten, linearAtten, 0.0);
+			light.setPosition(timeline.getValue("Point Light Pos X"),
+							  timeline.getValue("Point Light Pos Y"),
+							  timeline.getValue("Point Light Pos Z"));
+			
+			light.setAttenuation(constantAtten, linearAtten, quadAtten);
+			
+			ofQuaternion q;
+			q.makeRotate(timeline.getValue("Directional Light Dir X"), ofVec3f(1,0,0),
+						 timeline.getValue("Directional Light Dir Y"), ofVec3f(0,1,0),
+						 timeline.getValue("Directional Light Dir Z"), ofVec3f(0,0,1));
+			
+//			directional.setOrientation(q);
+//			constantAtten = powf(timeline.getValue("Directional Constant Attenuate"), 2.0);
+//			linearAtten = powf(timeline.getValue("Directional Linear Attenuate"), 2.0);
+//			quadAtten = powf(timeline.getValue("Directional Quad Attenuate"), 2.0);
+//			directional.setAttenuation(constantAtten, linearAtten, quadAtten);
+			
 			ofEnableLighting();
 			light.enable();
 			light.setPointLight();
 			
+//			directional.setDirectional();
+//			directional.enable();
+
 			if(drawlightDebug){
 				ofPushStyle();
 				ofNoFill();
+				ofSetColor(255,200,0);
 				ofSphere(light.getPosition(),5);
 				ofPopStyle();
 			}
@@ -487,6 +518,7 @@ void testApp::drawGeometry(){
 		
 		if(useNormals && normalImage.isAllocated()){
 			cout << "binding normal texture" << endl;
+			renderer.getShader().setUniform1f("lightEffect", timeline.getValue("Light Effect"));
 			renderer.getShader().setUniformTexture("normalTex", normalImage, 2);
 		}
 		
@@ -897,13 +929,14 @@ void testApp::update(){
             }
 			
             cout << "1 **** CURRENT VIDEO FRAME " << player.getVideoPlayer()->getCurrentFrame() << endl;
-			
-			if(player.hasHighresVideo()){
-				player.useHiresVideo();
-				videoTrack->setPlayer(player.getVideoPlayer());
-				renderer.setRGBTexture(*player.getVideoPlayer());
-				meshBuilder.setRGBTexture(*player.getVideoPlayer());
-			}
+			int stillVideoFrame = player.getVideoPlayer()->getCurrentFrame();
+//			if(player.hasHighresVideo()){
+//				player.useHiresVideo();
+//				videoTrack->setPlayer(player.getVideoPlayer());
+//				renderer.setRGBTexture(*player.getVideoPlayer());
+//				meshBuilder.setRGBTexture(*player.getVideoPlayer());
+//				player.getVideoPlayer()->setFrame(stillVideoFrame); //JG BUG FIX
+//			}
 			
 			cout << "2 **** CURRENT VIDEO FRAME " << player.getVideoPlayer()->getCurrentFrame() << endl;
 			
@@ -914,13 +947,16 @@ void testApp::update(){
             cameraTrack->setTimelineInOutToTrack();
             timeline.setCurrentTimeToInPoint();
 			if(!renderStillFrame){
-				player.getVideoPlayer()->setPosition(timeline.getPercentComplete());
+				cout << "	**** TIMELINE PERCENT " << timeline.getPercentComplete() << " TIMELINE FRAME " << timeline.getCurrentFrame() << endl;
+				//player.getVideoPlayer()->setPosition(timeline.getPercentComplete());
+				player.getVideoPlayer()->setFrame(timeline.getCurrentFrame());
 				player.getVideoPlayer()->update();
-				timeline.setPercentComplete(player.getVideoPlayer()->getPosition());
+				//timeline.setPercentComplete(player.getVideoPlayer()->getPosition());
+				cout << "	**** VIDEO PERCENT " << player.getVideoPlayer()->getPosition() << " VIDEO FRAME " << player.getVideoPlayer()->getCurrentFrame() << endl;
+				
 			}
 			else{
 				currentRenderFrame = timeline.getInFrame();
-				
 				//timeline.setPercentComplete(timeline.getInOutRange().min);
 			}
 
@@ -1069,7 +1105,7 @@ void testApp::update(){
 		rendererNeedsUpdate = true;
 	}
 	
-	int numRandomPoints = timeline.getValue("Random Point Amount");
+	int numRandomPoints = powf(timeline.getValue("Random Point Amount"),2.0);
 	if(drawRandomMesh && numRandomPoints != randomMesh.getNumVertices()){
 		generateRandomMesh(numRandomPoints);
 	}
@@ -1666,7 +1702,7 @@ bool testApp::loadAssetsForScene(SceneButton* sceneButton){
 	depthSequence.setSequence(player.getDepthSequence());
 	videoTrack->setPlayer(player.getVideoPlayer());
 	alignmentScrubber.setPairSequence(player.getVideoDepthAligment());
-	timeline.setDurationInSeconds(MAX(depthSequence.getDurationInMillis()/1000.0, player.getVideoPlayer()->getDuration()) );
+//	timeline.setDurationInSeconds(MAX(depthSequence.getDurationInMillis()/1000.0, player.getVideoPlayer()->getDuration()) );
 
 	timeline.setTimecontrolTrack(videoTrack);
 	
@@ -1958,9 +1994,9 @@ void testApp::saveComposition(){
 	ofBufferToFile(currentVideoFrameFile, videoFrameFile);
 
 	if(normalsLoaded){
-		ofBuffer normalsDirectory;
-		normalsDirectory.append(normalsDirectory);
-		ofBufferToFile(currentNormalsDirectoryFile, normalsDirectory);
+		ofBuffer normalsSaveBuffer;
+		normalsSaveBuffer.append(normalsDirectory);
+		ofBufferToFile(currentNormalsDirectoryFile, normalsSaveBuffer);
 	}
 	
 	setCompositionButtonName();

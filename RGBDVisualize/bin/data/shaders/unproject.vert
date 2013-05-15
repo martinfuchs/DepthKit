@@ -256,22 +256,18 @@ void main(void)
         gl_TexCoord[0] = texCd;
     }
     
+	vec3 noiseDistort = vec3(snoise(vec4(pos.xyz / noiseDensity, noisePosition)),
+							 snoise(vec4(pos.yzx / noiseDensity, noisePosition)),
+							 snoise(vec4(pos.zxy / noiseDensity, noisePosition))) * noiseShape;
+	
 	//EFFECTS --
 	if(sinAmp.x > 0.0 || sinAmp.y > 0.0){
 		vec2 sinOffset = sin(gl_Vertex.xy * sinFreq + sinPos.xy) * sinAmp;
 		pos.z += sinOffset.x + sinOffset.y;
 	}
-
-	float noiseDistort = snoise(vec4(noiseShape * pos.xyz / noiseDensity, noisePosition));
-	pos.z -= noiseDistort * noiseAmp;
-	gl_PointSize = pow(map(noiseDistort, -1.0, 1.0, pointMin, pointMax), 2.0);
-
-//	if(noiseAmp > 0.0){
-//		vec3 noiseDistort = vec3(snoise(vec4(pos.xyz / noiseDensity, noisePosition)),
-//								 snoise(vec4(pos.yzx / noiseDensity, noisePosition)),
-//								 snoise(vec4(pos.zxy / noiseDensity, noisePosition))) * noiseAmp;
-//	}
-
+	gl_PointSize = pow(map(noiseDistort.z, -1.0, 1.0, pointMin, pointMax), 2.0);
+	pos.xyz += noiseDistort * noiseAmp;
+	
 	normalColor = texture2DRect(normalTex, floor(gl_Vertex.xy) + halfvec);
 	vec3 surfaceNormal = normalColor.xyz * 2.0 - 1.0;
     //vec3 surfaceNormal = vec3(0.,0.,-1.);
@@ -282,7 +278,9 @@ void main(void)
 	eyeVec = -vVertex;
     
     float d = length(lightDir);
-	att = 1.0 /( gl_LightSource[0].constantAttenuation + ( gl_LightSource[0].linearAttenuation * d) );
+	att = 1.0 /( gl_LightSource[0].constantAttenuation +
+				 gl_LightSource[0].linearAttenuation * d  +
+				 gl_LightSource[0].quadraticAttenuation * d * d);
 	
     gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * pos;
     gl_FrontColor = gl_Color;
