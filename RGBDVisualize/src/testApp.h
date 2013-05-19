@@ -190,6 +190,14 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 
 	ofxToggle affectPointsPerlin;
 	
+	ofImage lightSprite;
+	ofImage lightMask;
+	ofImage lightClouds;
+	float currentLightCloudOffset;
+	
+	ofxToggle drawGodRays;
+	ofShader godRays;
+	
 	bool multisampleBufferAllocated;
     bool currentRenderObjectFiles;
     bool firstRenderFrame;

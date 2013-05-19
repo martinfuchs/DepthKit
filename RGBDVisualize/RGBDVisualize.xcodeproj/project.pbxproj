@@ -130,6 +130,8 @@
 		E751030216F156D700D59EC9 /* ofxRGBDVideoExporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E751030016F156D700D59EC9 /* ofxRGBDVideoExporter.cpp */; };
 		E753157E1742EACF005952A8 /* RGBD.icns in Resources */ = {isa = PBXBuildFile; fileRef = E753157D1742EACF005952A8 /* RGBD.icns */; };
 		E753BF751742B4BE005952A8 /* ofxRGBDCombinedVideoExporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E753BF731742B4BE005952A8 /* ofxRGBDCombinedVideoExporter.cpp */; };
+		E76951DF1745794D00FE60A2 /* godrays.frag in Sources */ = {isa = PBXBuildFile; fileRef = E76951DD1745794D00FE60A2 /* godrays.frag */; };
+		E76951E01745794D00FE60A2 /* godrays.vert in Sources */ = {isa = PBXBuildFile; fileRef = E76951DE1745794D00FE60A2 /* godrays.vert */; };
 		E77797981583FB8C0041CEAF /* ofxRGBDScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77797961583FB8C0041CEAF /* ofxRGBDScene.cpp */; };
 		E78FD55216D298D1004D6A36 /* ofxRGBDCPURenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD54E16D298D0004D6A36 /* ofxRGBDCPURenderer.cpp */; };
 		E78FD55316D298D1004D6A36 /* ofxRGBDGPURenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD55016D298D0004D6A36 /* ofxRGBDGPURenderer.cpp */; };
@@ -517,6 +519,8 @@
 		E753157D1742EACF005952A8 /* RGBD.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = RGBD.icns; sourceTree = "<group>"; };
 		E753BF731742B4BE005952A8 /* ofxRGBDCombinedVideoExporter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDCombinedVideoExporter.cpp; sourceTree = "<group>"; };
 		E753BF741742B4BE005952A8 /* ofxRGBDCombinedVideoExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDCombinedVideoExporter.h; sourceTree = "<group>"; };
+		E76951DD1745794D00FE60A2 /* godrays.frag */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = godrays.frag; sourceTree = "<group>"; };
+		E76951DE1745794D00FE60A2 /* godrays.vert */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = godrays.vert; sourceTree = "<group>"; };
 		E77797961583FB8C0041CEAF /* ofxRGBDScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDScene.cpp; sourceTree = "<group>"; };
 		E77797971583FB8C0041CEAF /* ofxRGBDScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDScene.h; sourceTree = "<group>"; };
 		E78FD54E16D298D0004D6A36 /* ofxRGBDCPURenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDCPURenderer.cpp; sourceTree = "<group>"; };
@@ -805,6 +809,8 @@
 		A69D77DC14E0E5A900963BF2 /* shaders */ = {
 			isa = PBXGroup;
 			children = (
+				E76951DD1745794D00FE60A2 /* godrays.frag */,
+				E76951DE1745794D00FE60A2 /* godrays.vert */,
 				E7997A5D1541D06500D4130C /* dofblur.frag */,
 				E7997A5E1541D06500D4130C /* dofblur.vert */,
 				E7A0BA78166EB7BE00764549 /* dofrange2.frag */,
@@ -2049,6 +2055,8 @@
 				E74853FC17185E93007B9793 /* ofxSPKZone.cpp in Sources */,
 				E748540317187160007B9793 /* DepthParticleField.cpp in Sources */,
 				E753BF751742B4BE005952A8 /* ofxRGBDCombinedVideoExporter.cpp in Sources */,
+				E76951DF1745794D00FE60A2 /* godrays.frag in Sources */,
+				E76951E01745794D00FE60A2 /* godrays.vert in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

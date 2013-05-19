@@ -60,6 +60,9 @@ void testApp::setup(){
 	currentHoleKernelSize = 1;
 	currentHoleFillIterations = 1;
     
+	lightSprite.loadImage("light.png");
+	lightMask.loadImage("light_mask.png");
+	lightClouds.loadImage("light_clouds.png");
 	
 	player.updateVideoPlayer = false;
     rendererDirty = true;
@@ -145,7 +148,8 @@ void testApp::setup(){
  	
 	gui.add( drawShape.setup("Draw Shape", ofParameter<bool>()));
 	gui.add( shapeVerts.setup("Shape Verts", ofParameter<int>(),3, 10));
-
+	gui.add( drawGodRays.setup("Draw Backlight", ofParameter<bool>()));
+	
     gui.add( selfOcclude.setup("Self Occlude", ofParameter<bool>()));
     gui.add( drawDOF.setup("Draw DOF", ofParameter<bool>()));
 	
@@ -194,6 +198,7 @@ void testApp::setup(){
     meshBuilder.cacheValidVertices = true;
 	
     accumulatedPerlinOffset = 0;
+	currentLightCloudOffset = 0;
 	sinPosition = ofVec2f(0,0);
 	
     ofxXmlSettings defaultBin;
@@ -227,6 +232,8 @@ void testApp::loadShaders(){
     dofQuad.addTexCoord(ofVec2f(0,fbo1.getHeight()));
     dofQuad.addTexCoord(ofVec2f(fbo1.getWidth(),0));
     dofQuad.addTexCoord(ofVec2f(fbo1.getWidth(),fbo1.getHeight()));
+	
+	godRays.load("shaders/godrays");
 	
     renderer.reloadShader();
 }
@@ -299,7 +306,7 @@ void testApp::populateTimelineElements(){
 	color->setDefaultColor(ofColor::white);
 	
     timeline.addPage("Point Light", true);
-	timeline.addCurves("Light Effect", currentCompositionDirectory + "LightEffect", ofRange(0.0, 1.0), .0 );
+	timeline.addCurves("Light Effect", currentCompositionDirectory + "LightEffect.xml", ofRange(0.0, 1.0), .0 );
     timeline.addCurves("Point Constant Attenuate", currentCompositionDirectory + "PointLightConstant.xml", ofRange(0.0, 1.0), .0 );
     timeline.addCurves("Point Linear Attenuate", currentCompositionDirectory + "PointLightLinear.xml", ofRange(0.0, 1.0), .0 );
 	timeline.addCurves("Point Quad Attenuate", currentCompositionDirectory + "PointLightQuad.xml", ofRange(0.0, 1.0), .0 );
@@ -352,6 +359,17 @@ void testApp::populateTimelineElements(){
     timeline.addColors("Ring End Color A", currentCompositionDirectory + "RingEndColorA.xml");
     timeline.addColors("Ring End Color B", currentCompositionDirectory + "RingEndColorB.xml");
     
+	timeline.addPage("God Rays", true);
+	timeline.addCurves("Backlight Ring Radius", currentCompositionDirectory + "backlightRadius.xml", ofRange(0.0, 2000), 10.0 );
+	timeline.addCurves("Backlight Num Samples", currentCompositionDirectory + "backlightNumSamples.xml", ofRange(0.0, 150), 100 );
+	timeline.addCurves("Backlight Density", currentCompositionDirectory + "backlightDensity.xml", ofRange(0.0, 1.0), 0.1 );
+	timeline.addCurves("Backlight Decay", currentCompositionDirectory + "backlightDecay.xml", ofRange(0.0, 1.0), 0.0 );
+	timeline.addCurves("Backlight Exposure", currentCompositionDirectory + "backlightExposure.xml", ofRange(0.0, 1), 1.0 );
+	timeline.addCurves("Backlight Weight", currentCompositionDirectory + "backlightWeight.xml", ofRange(0.0, 1.), 0.01 );
+	timeline.addCurves("Backlight Texture Alpha", currentCompositionDirectory + "backlightAlpha.xml", ofRange(0.0, 1.0), 0.5 );
+	timeline.addCurves("Backlight Texture Scroll", currentCompositionDirectory + "backlightScroll.xml", ofRange(0.0, 10.0), 0.01 );
+	timeline.addCurves("Backlight Silhouette Alpha", currentCompositionDirectory + "backlightScroll.xml", ofRange(0.0, 1.0), 1.0 );
+	
 	timeline.addPage("Time Alignment", true);
 	timeline.addTrack("Video", videoTrack);
 	timeline.addTrack("Depth Sequence", &depthSequence);
@@ -501,7 +519,9 @@ void testApp::drawGeometry(){
 		float noiseAmplitude = powf(timeline.getValue("Noise Amplitude"), 2.0);
 		float noiseDensity = powf(timeline.getValue("Noise Density"), 2.0);
 		float noiseSpeed = timeline.getValue("Noise Speed");
+		
 		accumulatedPerlinOffset += noiseSpeed;
+
 		renderer.getShader().begin();
 		if(affectPointsPerlin){
 			renderer.getShader().setUniform1f("noiseAmp", noiseAmplitude);
@@ -511,8 +531,6 @@ void testApp::drawGeometry(){
 		}
 		renderer.getShader().setUniform1f("noiseDensity", noiseDensity);
 		renderer.getShader().setUniform1f("noisePosition", accumulatedPerlinOffset);
-		
-
 		renderer.getShader().setUniform3f("noiseShape",
 										  timeline.getValue("X Perlin Stretch"),
 										  timeline.getValue("Y Perlin Stretch"),
@@ -687,7 +705,7 @@ void testApp::drawGeometry(){
             
             //composite
             swapFbo.begin();
-             ofClear(0.0,0.0,0.0,0.0);
+			ofClear(0.0,0.0,0.0,0.0);
             
             ofPushStyle();
             ofEnableBlendMode(blendMode);
@@ -712,8 +730,7 @@ void testApp::drawGeometry(){
             
             fbo1.begin();
             ofClear(0.0,0.0,0.0,0.0);
-//			ofClear(0,0,0,0);
-             
+            
             ofPushStyle();
             
             ofSetColor(255, 255, 255, 255);
@@ -731,6 +748,110 @@ void testApp::drawGeometry(){
             fbo1.end();
         }
 		
+		if(drawGodRays){
+			
+			//draw mask over background
+			dofBuffer.begin();
+			ofClear(0,0,0,0);
+			ofSetColor(255);
+			//ofCircle(fbo1.getWidth()/2, fbo1.getHeight()/2, timeline.getValue("Backlight Ring Radius"));
+			ofPushStyle();
+			
+			ofSetRectMode(OF_RECTMODE_CENTER);
+			float ringRadius = timeline.getValue("Backlight Ring Radius");
+			ofVec2f center(fbo1.getWidth()/2,fbo1.getHeight()/2);
+			lightSprite.draw(fbo1.getWidth()/2, fbo1.getHeight()/2,
+							 ringRadius,ringRadius);
+				
+			//SCROLL THE LIGHT CLOUD MESH
+			float lcw = lightClouds.getWidth();
+			float lch = lightClouds.getHeight();
+			currentLightCloudOffset += timeline.getValue("Backlight Texture Scroll");
+
+			float middleCoord = ofMap(fmod(currentLightCloudOffset, lch),0, lch, -ringRadius/2,ringRadius/2);
+			
+			ofMesh lightCloudMesh;
+			lightCloudMesh.addVertex(center + ofVec2f(-ringRadius/2,-ringRadius/2));
+			lightCloudMesh.addVertex(center + ofVec2f( ringRadius/2,-ringRadius/2));
+			lightCloudMesh.addVertex(center + ofVec2f(-ringRadius/2, middleCoord));
+			lightCloudMesh.addVertex(center + ofVec2f( ringRadius/2, middleCoord));
+			
+			lightCloudMesh.addVertex(center + ofVec2f(-ringRadius/2, middleCoord));
+			lightCloudMesh.addVertex(center + ofVec2f( ringRadius/2, middleCoord));			
+			lightCloudMesh.addVertex(center + ofVec2f(-ringRadius/2, ringRadius/2));
+			lightCloudMesh.addVertex(center + ofVec2f( ringRadius/2, ringRadius/2));
+						
+			lightCloudMesh.addTexCoord( ofVec2f(0,fmod(currentLightCloudOffset+lch, lch)) );
+			lightCloudMesh.addTexCoord( ofVec2f(lcw,fmod(currentLightCloudOffset+lch, lch)) );
+			lightCloudMesh.addTexCoord( ofVec2f(0,0) );
+			lightCloudMesh.addTexCoord( ofVec2f(lcw,0) );
+			
+			lightCloudMesh.addTexCoord( ofVec2f(0,lch) );
+			lightCloudMesh.addTexCoord( ofVec2f(lcw,lch) );
+			lightCloudMesh.addTexCoord( ofVec2f(0,fmod(currentLightCloudOffset, lch)) );
+			lightCloudMesh.addTexCoord( ofVec2f(lcw,fmod(currentLightCloudOffset, lch)) );
+			
+			lightCloudMesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
+			ofSetColor(255,255,255,255*timeline.getValue("Backlight Texture Alpha"));
+			lightClouds.getTextureReference().bind();
+			lightCloudMesh.draw();
+			lightClouds.getTextureReference().unbind();
+
+			
+			ofSetColor(255);
+			lightMask.draw(fbo1.getWidth()/2, fbo1.getHeight()/2,
+						   ringRadius,ringRadius);
+
+			ofPopStyle();
+			
+            cam.begin(renderFboRect);
+            //glEnable(GL_DEPTH_TEST);
+			ofEnableBlendMode(OF_BLENDMODE_SCREEN);
+			if(drawRandomMesh){
+				ofSetColor(255*pointAlpha);
+				renderer.bindRenderer();
+				randomMesh.draw();
+				renderer.unbindRenderer();
+			}
+			//glDisable(GL_DEPTH_TEST);
+				ofSetColor(255);
+			ofEnableAlphaBlending();
+			renderer.getShader().begin();
+			renderer.getShader().setUniform1f("noiseAmp", 0.0);
+			renderer.getShader().setUniform4f("nonTextureColor", 0.0, 0.0, 0.0, timeline.getValue("Backlight Silhouette Alpha"));
+			renderer.getShader().end();
+			renderer.useTexture = false;
+            renderer.drawMesh();
+			renderer.useTexture = true;
+			
+
+            cam.end();
+            dofBuffer.end();
+			
+			//blend it in
+			fbo1.begin();
+			ofClear(0.0,0.0,0.0,0.0);
+			
+			godRays.begin();
+			godRays.setUniform2f("screenLightPos", fbo1.getWidth()/2, fbo1.getHeight()/2);
+			godRays.setUniform1f("numSamples", timeline.getValue("Backlight Num Samples"));
+			godRays.setUniform1f("density", timeline.getValue("Backlight Density"));
+			godRays.setUniform1f("decay", 1.0 - powf(timeline.getValue("Backlight Decay"), 4.0));
+			godRays.setUniform1f("exposure", timeline.getValue("Backlight Exposure"));
+			godRays.setUniform1f("weight", timeline.getValue("Backlight Weight"));
+
+			//applies blend
+			dofBuffer.getTextureReference().draw(0,0);
+			
+			godRays.end();
+			
+			//draw scene on!
+//			ofEnableBlendMode(OF_BLENDMODE_ADD);
+//			fbo1.draw(0, 0);
+			
+			fbo1.end();
+		}
+		
         rendererDirty = false;
 	}
     
@@ -739,7 +860,7 @@ void testApp::drawGeometry(){
 	ofSetColor(0,0,0);
 	ofRect(fboRectangle);
 	ofPopStyle();
-    fbo1.getTextureReference().draw(ofRectangle(fboRectangle.x,fboRectangle.y+fboRectangle.height,fboRectangle.width,-fboRectangle.height));
+	fbo1.getTextureReference().draw(ofRectangle(fboRectangle.x,fboRectangle.y+fboRectangle.height,fboRectangle.width,-fboRectangle.height));
 }
 
 //--------------------------------------------------------------
@@ -903,7 +1024,8 @@ void testApp::update(){
 	if(startRenderMode){
         startRenderMode = false;
 		firstRenderFrame = true;
-        
+        drawlightDebug = false;
+		
         fbo1.begin();
         ofClear(0,0,0,0);
         fbo1.end();
@@ -1027,6 +1149,8 @@ void testApp::update(){
     player.getVideoPlayer()->setVolume(videoVolume);
 	
 	if(currentlyRendering){
+		
+		drawlightDebug = false;
 		
 		if(renderStillFrame){
 			//currentRenderFrame = timeline.getCurrentFrame();
@@ -1329,7 +1453,7 @@ void testApp::checkReallocateFrameBuffers(){
     else if(setCurrentSize && (fbo1.getWidth() != customWidth || fbo1.getHeight() != customHeight)){
         allocateFrameBuffers();
     }
-	else if( (drawDOF && multisampleBufferAllocated) || (!drawDOF && !multisampleBufferAllocated) ){
+	else if( ((drawDOF||drawGodRays) && multisampleBufferAllocated) || ( (!drawDOF&&!drawGodRays) && !multisampleBufferAllocated) ){
 		allocateFrameBuffers();
 	}
     setCurrentSize = false;
@@ -1365,8 +1489,8 @@ void testApp::allocateFrameBuffers(){
 	
     swapFbo.allocate(fboWidth, fboHeight, GL_RGB);
     
-	fbo1.allocate(fboWidth, fboHeight, drawDOF ? GL_RGB : GL_RGBA, drawDOF ? 0 : 4);
-	multisampleBufferAllocated = !drawDOF;
+	fbo1.allocate(fboWidth, fboHeight, drawDOF || drawGodRays ? GL_RGB : GL_RGBA, drawDOF || drawGodRays ? 0 : 4);
+	multisampleBufferAllocated = !drawDOF && !drawGodRays;
 	
     fbo1.begin();
     ofClear(0,0,0,0);
@@ -1908,6 +2032,7 @@ void testApp::loadDefaults(){
 	captureFramePair = false;
 	temporalAlignmentMode = true;
 	numRandomPoints = 2000;
+	drawGodRays = false;
 	
     cam.speed = 20;
 	cam.rollSpeed = 0;
@@ -2150,6 +2275,7 @@ bool testApp::loadComposition(string compositionDirectory){
 	
     timeline.setCurrentPage(0);
     accumulatedPerlinOffset = 0;
+	currentLightCloudOffset = 0;
 	sinPosition = ofVec2f(0,0);
 	if(ofFile::doesFileExist(currentCompositionFile)){
 //		cout << "loading file: " << currentCompositionFile << endl;

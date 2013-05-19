@@ -3,6 +3,8 @@
 
 uniform sampler2DRect colorTex;
 uniform int useTexture;
+uniform vec4 nonTextureColor;
+
 uniform vec2 dim;
 uniform float fadeAmount;
 uniform vec4 fadeColor;
@@ -23,7 +25,6 @@ varying vec3 diffuseLightDirection;
 varying vec3 specularLightDirection;
 
 float calculateLight(){
-	
 	vec3 N = normal;
 	vec3 L = diffuseLightDirection;
 	
@@ -31,7 +32,7 @@ float calculateLight(){
 	return lambertTerm;
 }
 
-float calcualteSpecular(){
+float calculateSpecular(){
 	if(dot(normal, specularLightDirection) < 0.0){
 		return 0.0;
 	}
@@ -47,12 +48,14 @@ void main()
 
     if(useTexture == 1){
         vec4 col = texture2DRect(colorTex, gl_TexCoord[0].st);
-		float lightAttenuate = mix(1.0,calculateLight() + calcualteSpecular(), lightEffect);
-		col.rgb *= lightAttenuate;
+		if(lightEffect > epsilon){
+			float lightAttenuate = mix(1.0, calculateLight() + calculateSpecular(), lightEffect);
+			col.rgb *= lightAttenuate;
+		}
         gl_FragColor = mix(col, vec4(fadeColor), fadeAmount) * gl_Color;
     }
     else{
-        gl_FragColor = vec4(0);
+        gl_FragColor = nonTextureColor;
     }
 	
 	//enable visualize clipping values
@@ -61,4 +64,5 @@ void main()
 	//gl_FragColor = vec4(gl_TexCoord[0].s / dim.x, gl_TexCoord[0].t / dim.y, 0.0, 1.0);
 	//enable visualize normals
 	//gl_FragColor = normalColor;
+	//gl_FragColor = vec4(vec3(lightEffect), 1.0);
 }
