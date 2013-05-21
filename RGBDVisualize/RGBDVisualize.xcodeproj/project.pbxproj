@@ -130,6 +130,8 @@
 		E751030216F156D700D59EC9 /* ofxRGBDVideoExporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E751030016F156D700D59EC9 /* ofxRGBDVideoExporter.cpp */; };
 		E753157E1742EACF005952A8 /* RGBD.icns in Resources */ = {isa = PBXBuildFile; fileRef = E753157D1742EACF005952A8 /* RGBD.icns */; };
 		E753BF751742B4BE005952A8 /* ofxRGBDCombinedVideoExporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E753BF731742B4BE005952A8 /* ofxRGBDCombinedVideoExporter.cpp */; };
+		E75480D9174AC0F600BF3BBC /* distort.frag in Sources */ = {isa = PBXBuildFile; fileRef = E75480D7174AC0F600BF3BBC /* distort.frag */; };
+		E75480DA174AC0F600BF3BBC /* distort.vert in Sources */ = {isa = PBXBuildFile; fileRef = E75480D8174AC0F600BF3BBC /* distort.vert */; };
 		E76951DF1745794D00FE60A2 /* godrays.frag in Sources */ = {isa = PBXBuildFile; fileRef = E76951DD1745794D00FE60A2 /* godrays.frag */; };
 		E76951E01745794D00FE60A2 /* godrays.vert in Sources */ = {isa = PBXBuildFile; fileRef = E76951DE1745794D00FE60A2 /* godrays.vert */; };
 		E77797981583FB8C0041CEAF /* ofxRGBDScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77797961583FB8C0041CEAF /* ofxRGBDScene.cpp */; };
@@ -142,7 +144,6 @@
 		E79F58331625C6C9002B2B34 /* ofxTLCameraTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E79F58311625C6C9002B2B34 /* ofxTLCameraTrack.cpp */; };
 		E7A0BA7A166EB7BE00764549 /* dofrange2.frag in Sources */ = {isa = PBXBuildFile; fileRef = E7A0BA78166EB7BE00764549 /* dofrange2.frag */; };
 		E7A0BA7B166EB7BE00764549 /* dofrange2.vert in Sources */ = {isa = PBXBuildFile; fileRef = E7A0BA79166EB7BE00764549 /* dofrange2.vert */; };
-		E7B28C2916F3D132008F0765 /* ofxRGBDCombinedVideoRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7B28C2716F3D131008F0765 /* ofxRGBDCombinedVideoRenderer.cpp */; };
 		E7C0389916FF7C9D00A789D2 /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7C0388C16FF7C9D00A789D2 /* ofxBaseGui.cpp */; };
 		E7C0389A16FF7C9D00A789D2 /* ofxButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7C0388E16FF7C9D00A789D2 /* ofxButton.cpp */; };
 		E7C0389B16FF7C9D00A789D2 /* ofxLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7C0389116FF7C9D00A789D2 /* ofxLabel.cpp */; };
@@ -519,6 +520,8 @@
 		E753157D1742EACF005952A8 /* RGBD.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = RGBD.icns; sourceTree = "<group>"; };
 		E753BF731742B4BE005952A8 /* ofxRGBDCombinedVideoExporter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDCombinedVideoExporter.cpp; sourceTree = "<group>"; };
 		E753BF741742B4BE005952A8 /* ofxRGBDCombinedVideoExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDCombinedVideoExporter.h; sourceTree = "<group>"; };
+		E75480D7174AC0F600BF3BBC /* distort.frag */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = distort.frag; sourceTree = "<group>"; };
+		E75480D8174AC0F600BF3BBC /* distort.vert */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = distort.vert; sourceTree = "<group>"; };
 		E76951DD1745794D00FE60A2 /* godrays.frag */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = godrays.frag; sourceTree = "<group>"; };
 		E76951DE1745794D00FE60A2 /* godrays.vert */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = godrays.vert; sourceTree = "<group>"; };
 		E77797961583FB8C0041CEAF /* ofxRGBDScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDScene.cpp; sourceTree = "<group>"; };
@@ -543,8 +546,6 @@
 		E79F58321625C6C9002B2B34 /* ofxTLCameraTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLCameraTrack.h; sourceTree = "<group>"; };
 		E7A0BA78166EB7BE00764549 /* dofrange2.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = dofrange2.frag; sourceTree = "<group>"; };
 		E7A0BA79166EB7BE00764549 /* dofrange2.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = dofrange2.vert; sourceTree = "<group>"; };
-		E7B28C2716F3D131008F0765 /* ofxRGBDCombinedVideoRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDCombinedVideoRenderer.cpp; sourceTree = "<group>"; };
-		E7B28C2816F3D132008F0765 /* ofxRGBDCombinedVideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDCombinedVideoRenderer.h; sourceTree = "<group>"; };
 		E7C0388A16FF7C9D00A789D2 /* ofOscParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofOscParameter.h; sourceTree = "<group>"; };
 		E7C0388B16FF7C9D00A789D2 /* ofParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofParameter.h; sourceTree = "<group>"; };
 		E7C0388C16FF7C9D00A789D2 /* ofxBaseGui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxBaseGui.cpp; sourceTree = "<group>"; };
@@ -686,8 +687,6 @@
 				E751030016F156D700D59EC9 /* ofxRGBDVideoExporter.cpp */,
 				E753BF741742B4BE005952A8 /* ofxRGBDCombinedVideoExporter.h */,
 				E753BF731742B4BE005952A8 /* ofxRGBDCombinedVideoExporter.cpp */,
-				E7B28C2816F3D132008F0765 /* ofxRGBDCombinedVideoRenderer.h */,
-				E7B28C2716F3D131008F0765 /* ofxRGBDCombinedVideoRenderer.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -809,6 +808,8 @@
 		A69D77DC14E0E5A900963BF2 /* shaders */ = {
 			isa = PBXGroup;
 			children = (
+				E75480D7174AC0F600BF3BBC /* distort.frag */,
+				E75480D8174AC0F600BF3BBC /* distort.vert */,
 				E76951DD1745794D00FE60A2 /* godrays.frag */,
 				E76951DE1745794D00FE60A2 /* godrays.vert */,
 				E7997A5D1541D06500D4130C /* dofblur.frag */,
@@ -1995,7 +1996,6 @@
 				E74DCB6D16ED25E000A45F2F /* glm.c in Sources */,
 				E74DCB6F16ED25E000A45F2F /* ofxObjLoader.cpp in Sources */,
 				E751030216F156D700D59EC9 /* ofxRGBDVideoExporter.cpp in Sources */,
-				E7B28C2916F3D132008F0765 /* ofxRGBDCombinedVideoRenderer.cpp in Sources */,
 				E7C0389916FF7C9D00A789D2 /* ofxBaseGui.cpp in Sources */,
 				E7C0389A16FF7C9D00A789D2 /* ofxButton.cpp in Sources */,
 				E7C0389B16FF7C9D00A789D2 /* ofxLabel.cpp in Sources */,
@@ -2057,6 +2057,8 @@
 				E753BF751742B4BE005952A8 /* ofxRGBDCombinedVideoExporter.cpp in Sources */,
 				E76951DF1745794D00FE60A2 /* godrays.frag in Sources */,
 				E76951E01745794D00FE60A2 /* godrays.vert in Sources */,
+				E75480D9174AC0F600BF3BBC /* distort.frag in Sources */,
+				E75480DA174AC0F600BF3BBC /* distort.vert in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

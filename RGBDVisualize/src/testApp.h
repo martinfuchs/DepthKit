@@ -193,10 +193,12 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofImage lightSprite;
 	ofImage lightMask;
 	ofImage lightClouds;
+	ofImage waterBump;
 	float currentLightCloudOffset;
 	
 	ofxToggle drawGodRays;
 	ofShader godRays;
+	ofShader distort;
 	
 	bool multisampleBufferAllocated;
     bool currentRenderObjectFiles;
@@ -246,7 +248,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	
     bool viewComps;
     float accumulatedPerlinOffset;
-    
+    float backlightDistortionPosition;
+	
 	ofxGameCamera cam;
 	ofxTLCameraTrack* cameraTrack;
 	

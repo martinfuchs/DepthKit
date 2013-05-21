@@ -63,6 +63,7 @@ void testApp::setup(){
 	lightSprite.loadImage("light.png");
 	lightMask.loadImage("light_mask.png");
 	lightClouds.loadImage("light_clouds.png");
+	waterBump.loadImage("waterbump.png");
 	
 	player.updateVideoPlayer = false;
     rendererDirty = true;
@@ -146,8 +147,8 @@ void testApp::setup(){
 	gui.add( sinDistort.setup("Sine Waves", ofParameter<bool>()));
 	gui.add( affectPointsPerlin.setup("Affect Points Perlin", ofParameter<bool>()));
  	
-	gui.add( drawShape.setup("Draw Shape", ofParameter<bool>()));
-	gui.add( shapeVerts.setup("Shape Verts", ofParameter<int>(),3, 10));
+//	gui.add( drawShape.setup("Draw Shape", ofParameter<bool>()));
+//	gui.add( shapeVerts.setup("Shape Verts", ofParameter<int>(),3, 10));
 	gui.add( drawGodRays.setup("Draw Backlight", ofParameter<bool>()));
 	
     gui.add( selfOcclude.setup("Self Occlude", ofParameter<bool>()));
@@ -179,8 +180,8 @@ void testApp::setup(){
 	
 	gui.add( renderStillFrame.setup("Render Still Frame", ofParameter<bool>()));
 			
-	gui.add(includeTextureMaps.setup("Include Texture Maps", ofParameter<bool>()));
-	gui.add(startSequenceAt0.setup("Start Sequence at 1", ofParameter<bool>()));
+	gui.add( includeTextureMaps.setup("Include Texture Maps", ofParameter<bool>()));
+	gui.add( startSequenceAt0.setup("Start Sequence at 1", ofParameter<bool>()));
 	
     gui.loadFromFile("defaultGuiSettings.xml");
     
@@ -200,6 +201,7 @@ void testApp::setup(){
     accumulatedPerlinOffset = 0;
 	currentLightCloudOffset = 0;
 	sinPosition = ofVec2f(0,0);
+	backlightDistortionPosition = 0;
 	
     ofxXmlSettings defaultBin;
     if(defaultBin.loadFile("defaultBin.xml")){
@@ -234,6 +236,7 @@ void testApp::loadShaders(){
     dofQuad.addTexCoord(ofVec2f(fbo1.getWidth(),fbo1.getHeight()));
 	
 	godRays.load("shaders/godrays");
+	distort.load("shaders/distort");
 	
     renderer.reloadShader();
 }
@@ -336,11 +339,11 @@ void testApp::populateTimelineElements(){
     timeline.addCurves("DOF Distance", currentCompositionDirectory + "DOFDistance.xml", ofRange(0,sqrtf(1500.0)), 10 );
     timeline.addCurves("DOF Range", currentCompositionDirectory + "DOFRange.xml", ofRange(0,sqrtf(1500.0)) );
     timeline.addCurves("DOF Blur", currentCompositionDirectory + "DOFBlur.xml", ofRange(0,5.0) );
-	
+	/*	
     timeline.addPage("Depth Particles", true);
 	timeline.addCurves("Depth Particle Alpha", currentCompositionDirectory + "DepthParticleAlpha.xml", ofRange(0, 1.0), 0.0 );
 	timeline.addCurves("Max Particles", currentCompositionDirectory + "MaxParticles.xml", ofRange(0, 4000), 50 );
-	
+
 	timeline.addPage("Emitter Size", true);
 	timeline.addCurves("Ring Emitter Min Radius", currentCompositionDirectory + "RingEmitterMinRadius.xml", ofRange(0, 4000), 0.0 );
 	timeline.addCurves("Ring Emitter Width", currentCompositionDirectory + "RingEmitterWidth.xml", ofRange(0, 4000), 50 );
@@ -358,18 +361,27 @@ void testApp::populateTimelineElements(){
     timeline.addColors("Ring Start Color B", currentCompositionDirectory + "RingStartColorB.xml");
     timeline.addColors("Ring End Color A", currentCompositionDirectory + "RingEndColorA.xml");
     timeline.addColors("Ring End Color B", currentCompositionDirectory + "RingEndColorB.xml");
-    
-	timeline.addPage("God Rays", true);
+    */
+	
+	timeline.addPage("God Rays Glow", true);
 	timeline.addCurves("Backlight Ring Radius", currentCompositionDirectory + "backlightRadius.xml", ofRange(0.0, 2000), 10.0 );
 	timeline.addCurves("Backlight Num Samples", currentCompositionDirectory + "backlightNumSamples.xml", ofRange(0.0, 150), 100 );
 	timeline.addCurves("Backlight Density", currentCompositionDirectory + "backlightDensity.xml", ofRange(0.0, 1.0), 0.1 );
 	timeline.addCurves("Backlight Decay", currentCompositionDirectory + "backlightDecay.xml", ofRange(0.0, 1.0), 0.0 );
 	timeline.addCurves("Backlight Exposure", currentCompositionDirectory + "backlightExposure.xml", ofRange(0.0, 1), 1.0 );
 	timeline.addCurves("Backlight Weight", currentCompositionDirectory + "backlightWeight.xml", ofRange(0.0, 1.), 0.01 );
+	
+	timeline.addPage("God Rays Effects", true);
+	timeline.addCurves("Backlight Center", currentCompositionDirectory + "backlightCenter.xml", ofRange(-.5, 1.5), 0.50 );
 	timeline.addCurves("Backlight Texture Alpha", currentCompositionDirectory + "backlightAlpha.xml", ofRange(0.0, 1.0), 0.5 );
 	timeline.addCurves("Backlight Texture Scroll", currentCompositionDirectory + "backlightScroll.xml", ofRange(0.0, 10.0), 0.01 );
-	timeline.addCurves("Backlight Silhouette Alpha", currentCompositionDirectory + "backlightScroll.xml", ofRange(0.0, 1.0), 1.0 );
+	timeline.addCurves("Backlight Silhouette Alpha", currentCompositionDirectory + "backlightSilhouetteAlpha.xml", ofRange(0.0, 1.0), 1.0 );
 	
+	timeline.addPage("God Rays Warp", true);
+	timeline.addCurves("Water Distort Amount", currentCompositionDirectory + "backlightDistortAmount.xml", ofRange(0.0, sqrtf(15.0)), 1.0 );
+	timeline.addCurves("Water Bump Texture Scale", currentCompositionDirectory + "backlightDistortScale.xml", ofRange(0.0, sqrtf(15.0)), 1.0 );
+	timeline.addCurves("Water Bump Scroll Speed", currentCompositionDirectory + "backlightBumpScrollSpeed.xml", ofRange(0.0, 3.0), 0.1);
+
 	timeline.addPage("Time Alignment", true);
 	timeline.addTrack("Video", videoTrack);
 	timeline.addTrack("Depth Sequence", &depthSequence);
@@ -612,6 +624,7 @@ void testApp::drawGeometry(){
 			renderer.drawPointCloud();
 		}
         
+		/*
 		float depthAlpha = 	timeline.getValue("Depth Particle Alpha");
 		if(drawDepthParticles && depthAlpha > 0.0 ){
 			ofTranslate(0,0,-.5);
@@ -629,6 +642,7 @@ void testApp::drawGeometry(){
 
 			renderer.unbindRenderer();
 		}
+		*/
 		
 		if(drawRandomMesh){
 			ofTranslate(0,0,-.5);
@@ -750,7 +764,8 @@ void testApp::drawGeometry(){
 		
 		if(drawGodRays){
 			
-			//draw mask over background
+			//draw light rays
+			
 			dofBuffer.begin();
 			ofClear(0,0,0,0);
 			ofSetColor(255);
@@ -759,8 +774,8 @@ void testApp::drawGeometry(){
 			
 			ofSetRectMode(OF_RECTMODE_CENTER);
 			float ringRadius = timeline.getValue("Backlight Ring Radius");
-			ofVec2f center(fbo1.getWidth()/2,fbo1.getHeight()/2);
-			lightSprite.draw(fbo1.getWidth()/2, fbo1.getHeight()/2,
+			ofVec2f center(fbo1.getWidth()/2,fbo1.getHeight() * timeline.getValue("Backlight Center"));
+			lightSprite.draw(center.x, center.y,
 							 ringRadius,ringRadius);
 				
 			//SCROLL THE LIGHT CLOUD MESH
@@ -799,13 +814,31 @@ void testApp::drawGeometry(){
 
 			
 			ofSetColor(255);
-			lightMask.draw(fbo1.getWidth()/2, fbo1.getHeight()/2,
-						   ringRadius,ringRadius);
-
+			lightMask.draw(center.x, center.y,ringRadius,ringRadius);
 			ofPopStyle();
+
+            dofBuffer.end();
 			
+			///DRAW WHOLE SCENE
+			swapFbo.begin();
+			ofClear(0,0,0,0);
+			
+			distort.begin();
+			backlightDistortionPosition += timeline.getValue("Water Bump Scroll Speed");
+			float waterScale = timeline.getValue("Water Bump Texture Scale");
+			distort.setUniform1f("waterDistortion", powf(timeline.getValue("Water Distort Amount"),2.0));
+			distort.setUniform2f("waterbumpScale", waterScale,waterScale);
+			distort.setUniform2f("waterbumpOffset", 0, backlightDistortionPosition);
+			distort.setUniform2f("waterbumpDimensions", waterBump.getWidth(), waterBump.getHeight());
+			distort.setUniformTexture("waterbump", waterBump, 1);
+			
+			dofBuffer.draw(0, 0);
+			
+			distort.end();
+			
+			//Draw in sw
             cam.begin(renderFboRect);
-            //glEnable(GL_DEPTH_TEST);
+
 			ofEnableBlendMode(OF_BLENDMODE_SCREEN);
 			if(drawRandomMesh){
 				ofSetColor(255*pointAlpha);
@@ -813,8 +846,8 @@ void testApp::drawGeometry(){
 				randomMesh.draw();
 				renderer.unbindRenderer();
 			}
-			//glDisable(GL_DEPTH_TEST);
-				ofSetColor(255);
+
+			ofSetColor(255);
 			ofEnableAlphaBlending();
 			renderer.getShader().begin();
 			renderer.getShader().setUniform1f("noiseAmp", 0.0);
@@ -824,31 +857,27 @@ void testApp::drawGeometry(){
             renderer.drawMesh();
 			renderer.useTexture = true;
 			
-
             cam.end();
-            dofBuffer.end();
 			
+			swapFbo.end();
+
 			//blend it in
 			fbo1.begin();
 			ofClear(0.0,0.0,0.0,0.0);
 			
 			godRays.begin();
-			godRays.setUniform2f("screenLightPos", fbo1.getWidth()/2, fbo1.getHeight()/2);
+			godRays.setUniform2f("screenLightPos", center.x, center.y);
 			godRays.setUniform1f("numSamples", timeline.getValue("Backlight Num Samples"));
 			godRays.setUniform1f("density", timeline.getValue("Backlight Density"));
 			godRays.setUniform1f("decay", 1.0 - powf(timeline.getValue("Backlight Decay"), 4.0));
 			godRays.setUniform1f("exposure", timeline.getValue("Backlight Exposure"));
 			godRays.setUniform1f("weight", timeline.getValue("Backlight Weight"));
-
+			
 			//applies blend
-			dofBuffer.getTextureReference().draw(0,0);
+			swapFbo.getTextureReference().draw(0,0);
 			
 			godRays.end();
-			
-			//draw scene on!
-//			ofEnableBlendMode(OF_BLENDMODE_ADD);
-//			fbo1.draw(0, 0);
-			
+						
 			fbo1.end();
 		}
 		
@@ -2276,6 +2305,8 @@ bool testApp::loadComposition(string compositionDirectory){
     timeline.setCurrentPage(0);
     accumulatedPerlinOffset = 0;
 	currentLightCloudOffset = 0;
+	backlightDistortionPosition = 0;
+	
 	sinPosition = ofVec2f(0,0);
 	if(ofFile::doesFileExist(currentCompositionFile)){
 //		cout << "loading file: " << currentCompositionFile << endl;
