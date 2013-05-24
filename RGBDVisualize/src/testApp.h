@@ -187,7 +187,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxToggle includeTextureMaps;
 	ofxToggle renderRainbowVideo;
     ofxToggle startSequenceAt0;
-
+	ofxIntSlider normalCorrect;
+	
 	ofxToggle affectPointsPerlin;
 	
 	ofImage lightSprite;

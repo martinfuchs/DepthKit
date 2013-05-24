@@ -150,12 +150,13 @@ void testApp::setup(){
 //	gui.add( drawShape.setup("Draw Shape", ofParameter<bool>()));
 //	gui.add( shapeVerts.setup("Shape Verts", ofParameter<int>(),3, 10));
 	gui.add( drawGodRays.setup("Draw Backlight", ofParameter<bool>()));
-	
     gui.add( selfOcclude.setup("Self Occlude", ofParameter<bool>()));
     gui.add( drawDOF.setup("Draw DOF", ofParameter<bool>()));
 	
 	gui.add( loadNormalDir.setup("Load Normals", ofxParameter<bool>()));
 	gui.add( useNormals.setup("Use Normals", ofxParameter<bool>()));
+	gui.add( normalCorrect.setup("Normal Offset", ofxParameter<int>(), -5, 5));
+	
 	gui.add( drawlightDebug.setup("Draw Light Debug", ofxParameter<bool>()));
 	
 	gui.add( customWidth.setup("Frame Width", ofParameter<int>(), 320, 1920*4));
@@ -1422,8 +1423,8 @@ void testApp::updateRenderer(){
 		holeFiller.close(player.getDepthPixels());
     }
     
-    if(useNormals && normalsLoaded && normalMaps.find(currentVideoFrame) != normalMaps.end() && currentNormalLoaded != currentVideoFrame ){
-        if(!normalImage.loadImage(normalMaps[currentVideoFrame])){
+    if(useNormals && normalsLoaded && normalMaps.find(currentVideoFrame + normalCorrect) != normalMaps.end() && currentNormalLoaded != currentVideoFrame + normalCorrect ){
+        if(!normalImage.loadImage(normalMaps[currentVideoFrame + normalCorrect])){
             ofLogError("Normal map load failed");
         }
         else{
@@ -2062,6 +2063,7 @@ void testApp::loadDefaults(){
 	temporalAlignmentMode = true;
 	numRandomPoints = 2000;
 	drawGodRays = false;
+	normalCorrect = false;
 	
     cam.speed = 20;
 	cam.rollSpeed = 0;
