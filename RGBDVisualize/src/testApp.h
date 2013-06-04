@@ -201,6 +201,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofShader godRays;
 	ofShader distort;
 	
+	ofImage transparencyCheckers;
+	
 	bool multisampleBufferAllocated;
     bool currentRenderObjectFiles;
     bool firstRenderFrame;

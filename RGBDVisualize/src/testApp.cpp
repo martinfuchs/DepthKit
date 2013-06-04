@@ -214,6 +214,7 @@ void testApp::setup(){
         ofLogError("No default bin found");
     }
     
+	transparencyCheckers.loadImage("transparency.jpg");
     ofSetWindowShape(ofGetScreenWidth()-125, ofGetScreenHeight()-100);
 }
 
@@ -1654,6 +1655,7 @@ void testApp::draw(){
 				combinedVideoRect.scaleTo(colorAssistRenderArea, OF_ASPECT_RATIO_KEEP);
 				combinedVideoRect.x = fboRectangle.getMaxX();
 				combinedVideoRect.y = fboRectangle.getMinY();
+				transparencyCheckers.draw(combinedVideoRect);
 				combinedVideoTexture.draw(combinedVideoRect);
 			}
 
@@ -1716,7 +1718,10 @@ void testApp::draw(){
                     if(renderObjectFiles){
                         char objFilename[512];
                         sprintf(objFilename, "%s/save.%05d.obj", saveFolder.c_str(), videoFrame);
-                        ofMesh reducedMesh = meshBuilder.getReducedMesh(true, ofVec3f(.001, -.001, .001), false, true);
+                        ofMesh reducedMesh;
+						ofMatrix4x4 scaleMatrix;
+						scaleMatrix.makeScaleMatrix(ofVec3f(.001, -.001, .001));
+						meshBuilder.getReducedMesh(reducedMesh, true, false, true,scaleMatrix);
                         ofxObjLoader::save(string(objFilename), reducedMesh);
 						if(includeTextureMaps){
 							savingImage.setFromPixels(player.getVideoPlayer()->getPixelsRef());
@@ -2108,6 +2113,7 @@ void testApp::loadNormals(string directory){
 
 //--------------------------------------------------------------
 void testApp::resetCameraPosition(){
+	
 	cam.setPosition(0, 0, 0);
 	cam.setOrientation(ofQuaternion());
 	cam.rotate(180, ofVec3f(0,1,0));
