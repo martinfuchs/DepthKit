@@ -177,7 +177,9 @@ void testApp::setup(){
 	gui.add( captureFramePair.setup("Set Color-Depth Time", ofParameter<bool>()));
 	
 	gui.add( renderObjectFiles.setup("Export .obj Files", ofParameter<bool>()));
-	gui.add( renderRainbowVideo.setup("Export Combined Video", ofParameter<bool>()));
+	gui.add( renderCombinedVideo1to1.setup("Export Combined Video", ofParameter<bool>()));
+//	gui.add( renderCombinedVideo720p.setup("Export Combined Video, 720p", ofParameter<bool>()));
+//	gui.add( renderCombinedVideo1080p.setup("Export Combined Video, 1080p", ofParameter<bool>()));
 	
 	gui.add( renderStillFrame.setup("Render Still Frame", ofParameter<bool>()));
 			
@@ -1028,9 +1030,17 @@ void testApp::update(){
     	renderQueue[i].remove->enabled = viewComps;
     }
     
-	if(renderRainbowVideo && renderObjectFiles){
+	if(renderCombinedVideo1to1 && renderObjectFiles){
 		ofSystemAlertDialog("Select either object files or combined video for custom export");
-		renderRainbowVideo = false;
+		renderCombinedVideo1to1 = false;
+	}
+	
+	
+	if(viewComps && timeline.getIsEnabled()){
+		timeline.disable();
+	}
+	else if(!viewComps && !currentlyRendering && !timeline.getIsEnabled()){
+		timeline.enable();
 	}
 	
 	renderBatch->enabled = viewComps && (renderQueue.size() > 0);
@@ -1134,8 +1144,10 @@ void testApp::update(){
 	
     if(!currentlyRendering){
         checkReallocateFrameBuffers();
-    }
-    
+
+        //check if the rendering output type changed
+		checkRenderOutputOptions();
+	}
 	if(renderStillFrame && timeline.getTimecontrolTrack() != NULL){
 		timeline.setTimecontrolTrack(NULL);
 		videoTrack->setPlayAlongToTimeline(false);
@@ -1339,7 +1351,7 @@ void testApp::update(){
 		rendererDirty = true;
     }
 	
-	if(renderRainbowVideo && rainbowVideoFrame != currentVideoFrame){
+	if(renderCombinedVideo1to1 && rainbowVideoFrame != currentVideoFrame){
 		rendererNeedsUpdate = true;
 	}
 	if(temporalAlignmentMode &&
@@ -1359,8 +1371,28 @@ void testApp::update(){
 }
 
 //--------------------------------------------------------------
-void testApp::generateScanlineMesh(bool verticalScanline, bool horizontalScanline)
-{
+void testApp::checkRenderOutputOptions(){
+//	if(renderObjectFiles && currentExportType != ObjectFile){
+//		toggleOffRenderOutputOptions();
+//		currentExportType = ObjectFile;
+//		renderObjectFiles = true;
+//	}
+//	else if(renderCombinedVideo1to1 && currentExportType != Combined1to1){
+//		
+//	}
+	
+}
+
+//--------------------------------------------------------------
+void testApp::toggleOffRenderOutputOptions(){
+    renderObjectFiles = false;
+	renderCombinedVideo1to1 = false;
+	renderCombinedVideo720p = false;
+	renderCombinedVideo1080p = false;
+}
+
+//--------------------------------------------------------------
+void testApp::generateScanlineMesh(bool verticalScanline, bool horizontalScanline) {
 	horizontalScanlineMesh.clear();
 	verticalScanlineMesh.clear();
 	horizontalScanlineMesh.setMode(OF_PRIMITIVE_LINES);
@@ -1435,8 +1467,8 @@ void testApp::updateRenderer(){
     }
 	
     renderer.update();
-    if((currentlyRendering && renderObjectFiles) || renderRainbowVideo ){
-		if(renderRainbowVideo){
+    if((currentlyRendering && renderObjectFiles) || renderCombinedVideo1to1 ){
+		if(renderCombinedVideo1to1){
 			meshBuilder.setSimplification(ofVec2f(1,1));
 		}
 		else{
@@ -1449,7 +1481,7 @@ void testApp::updateRenderer(){
         updateSpark();
     }
 	
-	if(renderRainbowVideo){
+	if(renderCombinedVideo1to1){
 		rainbowVideoFrame = currentVideoFrame;
 		rainbowExporter.minDepth = meshBuilder.nearClip;
 		rainbowExporter.maxDepth = meshBuilder.farClip;
@@ -1590,16 +1622,14 @@ void testApp::updateSpark(){
     float maxForce = minForce + timeline.getValue("Ring Emitter Force Range");
     ringEmitter.setForce(-minForce, -maxForce);
 
-    
     //quick mesh test
-
     testMesh.clear();
     for(int x = 0; x < 640; x+=5){
         for(int i = 0; i < 480; i+=5){
             testMesh.addVertex(ofVec3f(x+ ofGetFrameNum()%5,i,0));
         }
     }
-    
+
     /*
     for(int i = 0; i < meshBuilder.validVertIndices.size(); i++){
         emitters[i].setFlow(.01);
@@ -1638,7 +1668,7 @@ void testApp::draw(){
 			fboRectangle.y = 50;
 			
 			ofRectangle colorAssistRenderArea = ofRectangle(0,0,ofGetWidth() - fboRectangle.getMaxX(),timeline.getDrawRect().y - 50);
-			if(!renderRainbowVideo){
+			if(!renderCombinedVideo1to1){
 				colorAlignAssistRect = naturalVideoRect;
 				colorAlignAssistRect.scaleTo(colorAssistRenderArea);
 				colorAlignAssistRect.x = fboRectangle.getMaxX();
@@ -1650,7 +1680,7 @@ void testApp::draw(){
 				depthAlignAssistRect.y = colorAlignAssistRect.getMaxY();
 				depthAlignAssistRect.x = colorAlignAssistRect.getX();
 			}
-			else if(renderRainbowVideo){
+			else if(renderCombinedVideo1to1){
 				ofRectangle combinedVideoRect(0,0,rainbowExporter.getPixels().getWidth(),rainbowExporter.getPixels().getHeight());
 				combinedVideoRect.scaleTo(colorAssistRenderArea, OF_ASPECT_RATIO_KEEP);
 				combinedVideoRect.x = fboRectangle.getMaxX();
@@ -1692,7 +1722,7 @@ void testApp::draw(){
 				}
                 sprintf(filename, "%s/save.%05d.png", saveFolder.c_str(), videoFrame);
 
-				if(firstRenderFrame && renderRainbowVideo){
+				if(firstRenderFrame && renderCombinedVideo1to1){
 					ofxXmlSettings depthProjectionSettings;
 					depthProjectionSettings.addTag("depth");
 					depthProjectionSettings.pushTag("depth");
@@ -1728,7 +1758,7 @@ void testApp::draw(){
 							savingImage.saveImage(filename);
 						}
                     }
-					else if(renderRainbowVideo){
+					else if(renderCombinedVideo1to1){
 						rainbowExporter.updatePixels(meshBuilder, *player.getVideoPlayer());
 						ofSaveImage(rainbowExporter.getPixels(), filename);
 					}
@@ -2084,8 +2114,13 @@ void testApp::loadDefaults(){
     lockTo1080p = true;
 	setCurrentSize = false;
 	
+	currentExportType = RGBD;
+
     renderObjectFiles = false;
-	renderRainbowVideo = false;
+	renderCombinedVideo1to1 = false;
+	renderCombinedVideo720p = false;
+	renderCombinedVideo1080p = false;
+	
     startSequenceAt0 = false;
 	renderStillFrame = false;
 	alwaysRegenerateRandomPoints = false;
@@ -2366,6 +2401,7 @@ bool testApp::loadComposition(string compositionDirectory){
 	rainbowVideoFrame = -1;
 	
 	setCompositionButtonName();
+	
     //turn off view comps
 	viewComps = false;
 	return true;

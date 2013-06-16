@@ -144,6 +144,8 @@
 		E79F58331625C6C9002B2B34 /* ofxTLCameraTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E79F58311625C6C9002B2B34 /* ofxTLCameraTrack.cpp */; };
 		E7A0BA7A166EB7BE00764549 /* dofrange2.frag in Sources */ = {isa = PBXBuildFile; fileRef = E7A0BA78166EB7BE00764549 /* dofrange2.frag */; };
 		E7A0BA7B166EB7BE00764549 /* dofrange2.vert in Sources */ = {isa = PBXBuildFile; fileRef = E7A0BA79166EB7BE00764549 /* dofrange2.vert */; };
+		E7BAFC39176BE5C30097AC71 /* ETF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7BAFC37176BE5C30097AC71 /* ETF.cpp */; };
+		E7BAFC3A176BE5C30097AC71 /* fdog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7BAFC38176BE5C30097AC71 /* fdog.cpp */; };
 		E7C0389916FF7C9D00A789D2 /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7C0388C16FF7C9D00A789D2 /* ofxBaseGui.cpp */; };
 		E7C0389A16FF7C9D00A789D2 /* ofxButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7C0388E16FF7C9D00A789D2 /* ofxButton.cpp */; };
 		E7C0389B16FF7C9D00A789D2 /* ofxLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7C0389116FF7C9D00A789D2 /* ofxLabel.cpp */; };
@@ -546,6 +548,12 @@
 		E79F58321625C6C9002B2B34 /* ofxTLCameraTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLCameraTrack.h; sourceTree = "<group>"; };
 		E7A0BA78166EB7BE00764549 /* dofrange2.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = dofrange2.frag; sourceTree = "<group>"; };
 		E7A0BA79166EB7BE00764549 /* dofrange2.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = dofrange2.vert; sourceTree = "<group>"; };
+		E7BAFC32176BE5C30097AC71 /* ETF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETF.h; sourceTree = "<group>"; };
+		E7BAFC33176BE5C30097AC71 /* fdog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fdog.h; sourceTree = "<group>"; };
+		E7BAFC34176BE5C30097AC71 /* imatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imatrix.h; sourceTree = "<group>"; };
+		E7BAFC35176BE5C30097AC71 /* myvec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = myvec.h; sourceTree = "<group>"; };
+		E7BAFC37176BE5C30097AC71 /* ETF.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ETF.cpp; sourceTree = "<group>"; };
+		E7BAFC38176BE5C30097AC71 /* fdog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fdog.cpp; sourceTree = "<group>"; };
 		E7C0388A16FF7C9D00A789D2 /* ofOscParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofOscParameter.h; sourceTree = "<group>"; };
 		E7C0388B16FF7C9D00A789D2 /* ofParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofParameter.h; sourceTree = "<group>"; };
 		E7C0388C16FF7C9D00A789D2 /* ofxBaseGui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxBaseGui.cpp; sourceTree = "<group>"; };
@@ -705,6 +713,7 @@
 		A60F73EA1477206A007E1206 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				E7BAFC2F176BE5C30097AC71 /* CLD */,
 				E70ABDD6154991CE00CF8802 /* opencv */,
 				A60F73EC1477206A007E1206 /* ofxCv */,
 			);
@@ -1704,6 +1713,43 @@
 			path = osx;
 			sourceTree = "<group>";
 		};
+		E7BAFC2F176BE5C30097AC71 /* CLD */ = {
+			isa = PBXGroup;
+			children = (
+				E7BAFC30176BE5C30097AC71 /* include */,
+				E7BAFC36176BE5C30097AC71 /* src */,
+			);
+			path = CLD;
+			sourceTree = "<group>";
+		};
+		E7BAFC30176BE5C30097AC71 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				E7BAFC31176BE5C30097AC71 /* CLD */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		E7BAFC31176BE5C30097AC71 /* CLD */ = {
+			isa = PBXGroup;
+			children = (
+				E7BAFC32176BE5C30097AC71 /* ETF.h */,
+				E7BAFC33176BE5C30097AC71 /* fdog.h */,
+				E7BAFC34176BE5C30097AC71 /* imatrix.h */,
+				E7BAFC35176BE5C30097AC71 /* myvec.h */,
+			);
+			path = CLD;
+			sourceTree = "<group>";
+		};
+		E7BAFC36176BE5C30097AC71 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				E7BAFC37176BE5C30097AC71 /* ETF.cpp */,
+				E7BAFC38176BE5C30097AC71 /* fdog.cpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		E7C0388816FF7C9D00A789D2 /* ofxGui */ = {
 			isa = PBXGroup;
 			children = (
@@ -2059,6 +2105,8 @@
 				E76951E01745794D00FE60A2 /* godrays.vert in Sources */,
 				E75480D9174AC0F600BF3BBC /* distort.frag in Sources */,
 				E75480DA174AC0F600BF3BBC /* distort.vert in Sources */,
+				E7BAFC39176BE5C30097AC71 /* ETF.cpp in Sources */,
+				E7BAFC3A176BE5C30097AC71 /* fdog.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

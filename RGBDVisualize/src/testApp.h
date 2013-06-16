@@ -46,6 +46,15 @@ typedef struct {
 class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 
   public:
+	
+	enum ExportType {
+		RGBD,
+		ObjectFile,
+		Combined1to1,
+		Combined720p,
+		Combined1070p
+	};
+
 	void setup();
 	void update();
 	void draw();
@@ -185,7 +194,12 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 
     ofxToggle renderObjectFiles;
 	ofxToggle includeTextureMaps;
-	ofxToggle renderRainbowVideo;
+	ofxToggle renderCombinedVideo1to1;
+	ofxToggle renderCombinedVideo720p;
+	ofxToggle renderCombinedVideo1080p;
+	void checkRenderOutputOptions();
+	void toggleOffRenderOutputOptions();
+	
     ofxToggle startSequenceAt0;
 	ofxIntSlider normalCorrect;
 	
@@ -239,7 +253,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	
 	void addCompToRenderQueue(CompButton* comp);
 	void finishRender();
-    
+
     string currentCompShortName;
 	string currentCompositionDirectory;
 	string currentCompositionFile;
@@ -285,6 +299,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	string saveFolder;
 	string lastSavedDate;    
 	
+	ExportType currentExportType;
 	int rainbowVideoFrame;
 	bool timelineElementsAdded;
 	bool currentlyRendering;
