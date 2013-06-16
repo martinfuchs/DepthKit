@@ -134,6 +134,9 @@ void testApp::setup(){
 	gui.add( currentLockCamera.setup("Lock to Track", ofParameter<bool>()));
     gui.add( shouldSaveCameraPoint.setup("Set Camera Point", ofParameter<bool>()));
 	
+	gui.add( minDepthSlider.setup("Min Depth", ofParameter<float>(), 0, 3000));
+	gui.add( maxDepthSlider.setup("Max Depth", ofParameter<float>(), 0, 3000));
+
 	gui.add( drawPointcloud.setup("Draw Pointcloud",ofParameter<bool>()));
     gui.add( drawWireframe.setup("Draw Wireframe",ofParameter<bool>()));
     gui.add( drawMesh.setup("Draw Mesh",ofParameter<bool>()));
@@ -260,12 +263,18 @@ void testApp::populateTimelineElements(){
 	
     //rendering
     timeline.addPage("Geometry", true);
+    timeline.addCurves("Top Clip", currentCompositionDirectory + "topClip.xml", ofRange(0, 1), 0);
+    timeline.addCurves("Right Clip", currentCompositionDirectory + "rightClip.xml", ofRange(0, 1), 1);
+    timeline.addCurves("Bottom Clip", currentCompositionDirectory + "bottomClip.xml", ofRange(0, 1), 1);
+    timeline.addCurves("Left Clip", currentCompositionDirectory + "leftClip.xml", ofRange(0, 1), 0);
+	
     timeline.addCurves("Simplify X", currentCompositionDirectory + "simplifyx.xml", ofRange(1, 8), 2);
     timeline.addCurves("Simplify Y", currentCompositionDirectory + "simplifyy.xml", ofRange(1, 8), 2);
-    timeline.addCurves("Edge Clip", currentCompositionDirectory + "edgeClip.xml", ofRange(1.0, 2000), 2000 );
-    timeline.addCurves("Z Threshold Max", currentCompositionDirectory + "zThreshold.xml", ofRange(1.0, sqrtf(6000)), sqrtf(6000) );
-    timeline.addCurves("Z Threshold Min", currentCompositionDirectory + "zThresholdMin.xml", ofRange(0, sqrtf(2000)), 0 );
-    		
+	timeline.addCurves("Edge Clip", currentCompositionDirectory + "edgeClip.xml", ofRange(1.0, 2000), 2000 );
+	
+//    timeline.addCurves("Z Threshold Max", currentCompositionDirectory + "zThreshold.xml", ofRange(1.0, sqrtf(6000)), sqrtf(6000) );
+//    timeline.addCurves("Z Threshold Min", currentCompositionDirectory + "zThresholdMin.xml", ofRange(0, sqrtf(2000)), 0 );
+    
     timeline.addPage("Rotation", true);
 	timeline.addCurves("X Rotate", currentCompositionDirectory + "meshXRot.xml", ofRange(-360,360), 0.);
     timeline.addCurves("Y Rotate", currentCompositionDirectory + "meshYRot.xml", ofRange(-360,360), 0.);
@@ -1289,14 +1298,20 @@ void testApp::update(){
 		rendererNeedsUpdate = true;
 	}
 	
-	float currentFarClip = powf(timeline.getValue("Z Threshold Max"), 2.0);
-	float currentNearClip = powf(timeline.getValue("Z Threshold Min"), 2.0);
-	
+//	float currentFarClip = powf(timeline.getValue("Z Threshold Max"), 2.0);
+//	float currentNearClip = powf(timeline.getValue("Z Threshold Min"), 2.0);
+	float currentFarClip = maxDepthSlider;
+	float currentNearClip = minDepthSlider;
+	float currentTopClip =  timeline.getValue("Top Clip");
+    float currentRightClip = timeline.getValue("Right Clip");
+    float currentBotomClip = timeline.getValue("Bottom Clip");
+    float currentLeftClip = timeline.getValue("Left Clip");
+
 	if(timeline.getValue("X Texture Shift") != renderer.shift.x ||
 	   timeline.getValue("Y Texture Shift") != renderer.shift.y ||
        timeline.getValue("X Texture Scale") != renderer.scale.x ||
        timeline.getValue("Y Texture Scale") != renderer.scale.y ||
-	  
+	   
 	   timeline.getValue("X Texture Matrix Rotate") != renderer.colorMatrixRotate.x ||
 	   timeline.getValue("Y Texture Matrix Rotate") != renderer.colorMatrixRotate.y ||
        timeline.getValue("X Texture Matrix Translate") != renderer.colorMatrixTranslate.x ||
@@ -1307,8 +1322,14 @@ void testApp::update(){
 	   fillHoles != holeFiller.enable ||
 	   currentHoleKernelSize != holeFiller.getKernelSize() ||
        currentHoleFillIterations != holeFiller.getIterations()||
+	   
 	   currentFarClip != renderer.farClip ||
-	   currentNearClip != renderer.nearClip)
+	   currentNearClip != renderer.nearClip ||
+	   
+	   renderer.topClip != currentTopClip ||
+	   renderer.rightClip != currentRightClip ||
+	   renderer.leftClip != currentLeftClip ||
+	   renderer.bottomClip != currentBotomClip)
 	{
 		renderer.shift.x = timeline.getValue("X Texture Shift");
 		renderer.shift.y = timeline.getValue("Y Texture Shift");
@@ -1320,12 +1341,16 @@ void testApp::update(){
 		renderer.colorMatrixTranslate.x = timeline.getValue("X Texture Matrix Translate");
 		renderer.colorMatrixTranslate.y = timeline.getValue("Y Texture Matrix Translate");
 		
-		renderer.mirror = currentMirror;
-		renderer.farClip = currentFarClip;
-		renderer.nearClip = currentNearClip;
-        renderer.edgeClip = timeline.getValue("Edge Clip");
-        
-        meshBuilder.mirror = currentMirror;
+		meshBuilder.mirror = renderer.mirror = currentMirror;
+		meshBuilder.farClip = renderer.farClip = currentFarClip;
+		meshBuilder.nearClip = renderer.nearClip = currentNearClip;
+        meshBuilder.edgeClip = renderer.edgeClip = timeline.getValue("Edge Clip");
+
+		renderer.topClip = meshBuilder.topClip = currentTopClip;
+		renderer.rightClip = meshBuilder.rightClip = currentRightClip;
+		renderer.leftClip = meshBuilder.leftClip = currentLeftClip;
+		renderer.bottomClip = meshBuilder.bottomClip = currentBotomClip;
+
 		meshBuilder.shift.x = timeline.getValue("X Texture Shift");
 		meshBuilder.shift.y = timeline.getValue("Y Texture Shift");
         meshBuilder.scale.x = timeline.getValue("X Texture Scale");
@@ -1335,11 +1360,7 @@ void testApp::update(){
 		meshBuilder.colorMatrixRotate.y = timeline.getValue("Y Texture Matrix Rotate");
 		meshBuilder.colorMatrixTranslate.x = timeline.getValue("X Texture Matrix Translate");
 		meshBuilder.colorMatrixTranslate.y = timeline.getValue("Y Texture Matrix Translate");
-		
-		meshBuilder.farClip = currentFarClip;
-		meshBuilder.nearClip = currentNearClip;
-        meshBuilder.edgeClip = renderer.edgeClip;
-        
+
 		holeFiller.enable = fillHoles;
 		currentHoleKernelSize = holeFiller.setKernelSize(currentHoleKernelSize);
 		currentHoleFillIterations = holeFiller.setIterations(currentHoleFillIterations);
@@ -1723,25 +1744,26 @@ void testApp::draw(){
                 sprintf(filename, "%s/save.%05d.png", saveFolder.c_str(), videoFrame);
 
 				if(firstRenderFrame && renderCombinedVideo1to1){
-					ofxXmlSettings depthProjectionSettings;
-					depthProjectionSettings.addTag("depth");
-					depthProjectionSettings.pushTag("depth");
-					
-					depthProjectionSettings.addValue("fovx", meshBuilder.depthFOV.x);
-					depthProjectionSettings.addValue("fovx", meshBuilder.depthFOV.y);
-					depthProjectionSettings.addValue("ppx", meshBuilder.depthPrincipalPoint.x);
-					depthProjectionSettings.addValue("ppy", meshBuilder.depthPrincipalPoint.y);
-					depthProjectionSettings.addValue("width", meshBuilder.depthImageSize.width);
-					depthProjectionSettings.addValue("height", meshBuilder.depthImageSize.height);
-					depthProjectionSettings.addValue("minDepth", meshBuilder.nearClip);
-					depthProjectionSettings.addValue("maxDepth", meshBuilder.farClip);
-					
-					depthProjectionSettings.popTag();
-					
-					depthProjectionSettings.saveFile(saveFolder + "/_depthProperties.xml" );
-		
-					rainbowExporter.minDepth = meshBuilder.nearClip;
-					rainbowExporter.maxDepth = meshBuilder.farClip;
+					//ONE TO ONE WAY
+					//////////////////
+//					ofxXmlSettings depthProjectionSettings;
+//					depthProjectionSettings.addTag("depth");
+//					depthProjectionSettings.pushTag("depth");
+//					
+//					depthProjectionSettings.addValue("fovx", meshBuilder.depthFOV.x);
+//					depthProjectionSettings.addValue("fovx", meshBuilder.depthFOV.y);
+//					depthProjectionSettings.addValue("ppx", meshBuilder.depthPrincipalPoint.x);
+//					depthProjectionSettings.addValue("ppy", meshBuilder.depthPrincipalPoint.y);
+//					depthProjectionSettings.addValue("width", meshBuilder.depthImageSize.width);
+//					depthProjectionSettings.addValue("height", meshBuilder.depthImageSize.height);
+//					depthProjectionSettings.addValue("minDepth", meshBuilder.nearClip);
+//					depthProjectionSettings.addValue("maxDepth", meshBuilder.farClip);
+//					
+//					depthProjectionSettings.popTag();
+//
+//					//////////////////
+					//BIG WAY
+					writeCalibrationDataToXML();
 				}
 				
                 if(!firstRenderFrame){
@@ -1827,6 +1849,95 @@ void testApp::draw(){
         }
         ofPopStyle();
     }
+}
+
+void testApp::writeCalibrationDataToXML(){
+	ofxXmlSettings calibration;
+	calibration.addTag("depthIntrinsics");
+	calibration.pushTag("depthIntrinsics");
+	
+	calibration.addValue("ppx", meshBuilder.depthPrincipalPoint.x);
+	calibration.addValue("ppy", meshBuilder.depthPrincipalPoint.y);
+	calibration.addValue("fovx", meshBuilder.depthFOV.x);
+	calibration.addValue("fovy", meshBuilder.depthFOV.y);
+	calibration.addValue("width", meshBuilder.depthImageSize.width);
+	calibration.addValue("height", meshBuilder.depthImageSize.height);
+	calibration.popTag();//depthIntrinsics
+	
+	calibration.addTag("colorIntrinsics");
+	calibration.pushTag("colorIntrinsics");
+	calibration.addValue("ppx", meshBuilder.colorPrincipalPoint.x);
+	calibration.addValue("ppy", meshBuilder.colorPrincipalPoint.y);
+	calibration.addValue("fovx", meshBuilder.colorFOV.x);
+	calibration.addValue("fovy", meshBuilder.colorFOV.y);
+	calibration.addValue("width", meshBuilder.colorImageSize.width);
+	calibration.addValue("height", meshBuilder.colorImageSize.height);
+	
+	calibration.addTag("dK");
+	calibration.pushTag("dK");
+	for(int i = 0; i < 3; i++) calibration.addValue("k" + ofToString(i), meshBuilder.distortionK[i] );
+	calibration.popTag();//dK
+	
+	calibration.addTag("dP");
+	calibration.pushTag("dP");
+	for(int i = 0; i < 2; i++) calibration.addValue("p" + ofToString(i), meshBuilder.distortionP[i] );
+	calibration.popTag();//dP
+	
+	calibration.popTag();//colorIntrinsics
+	
+	calibration.addTag("extrinsics");
+	calibration.pushTag("extrinsics");
+	calibration.addTag("rotation");
+	calibration.pushTag("rotation");
+	for(int i = 0; i < 9; i++) calibration.addValue("r" + ofToString(i), meshBuilder.depthToRGBRotation[i] );
+	calibration.popTag();
+	
+	calibration.addTag("translation");
+	calibration.pushTag("translation");
+	for(int i = 0; i < 3; i++) calibration.addValue("t" + ofToString(i), meshBuilder.depthToRGBTranslation[i]);
+	calibration.popTag();//translation
+	
+	calibration.popTag();//extrinsics
+	
+	calibration.addTag("adjustment");
+	calibration.pushTag("adjustment");
+	
+	calibration.addTag("translate");
+	calibration.pushTag("translate");
+	calibration.addValue("x", meshBuilder.colorMatrixTranslate.x);
+	calibration.addValue("y", meshBuilder.colorMatrixTranslate.y);
+	calibration.addValue("z", meshBuilder.colorMatrixTranslate.z);
+	calibration.popTag();
+	
+	calibration.addTag("rotate");
+	calibration.pushTag("rotate");
+	calibration.addValue("x", meshBuilder.colorMatrixRotate.x);
+	calibration.addValue("y", meshBuilder.colorMatrixRotate.y);
+	calibration.addValue("z", meshBuilder.colorMatrixRotate.z);
+	calibration.popTag();
+	
+	calibration.addTag("scale");
+	calibration.pushTag("scale");
+	calibration.addValue("x", meshBuilder.scale.x);
+	calibration.addValue("y", meshBuilder.scale.y);
+	calibration.popTag();
+	
+	calibration.addTag("depth");
+	calibration.pushTag("depth");
+	calibration.addValue("min", meshBuilder.nearClip);
+	calibration.addValue("max", meshBuilder.farClip);
+	calibration.popTag();
+	
+	calibration.popTag();
+	
+	
+	calibration.popTag();//adjustment
+	
+	//					calibration.saveFile(outputDirectory + "/_calibration.xml");
+	calibration.saveFile(saveFolder + "/_depthProperties.xml" );
+	
+	rainbowExporter.minDepth = meshBuilder.nearClip;
+	rainbowExporter.maxDepth = meshBuilder.farClip;
 }
 
 #pragma mark compositions
@@ -2115,11 +2226,15 @@ void testApp::loadDefaults(){
 	setCurrentSize = false;
 	
 	currentExportType = RGBD;
-
+	rainbowExporter.oneToOne = false;
+	
     renderObjectFiles = false;
 	renderCombinedVideo1to1 = false;
 	renderCombinedVideo720p = false;
 	renderCombinedVideo1080p = false;
+	
+	maxDepthSlider = 6000;
+	minDepthSlider = 200;
 	
     startSequenceAt0 = false;
 	renderStillFrame = false;

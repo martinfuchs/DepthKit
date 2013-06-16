@@ -189,6 +189,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle fillHoles;
     ofxIntSlider currentHoleKernelSize;
     ofxIntSlider currentHoleFillIterations;
+	
     ofxToggle temporalAlignmentMode;
     ofxToggle captureFramePair;
 
@@ -210,6 +211,10 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofImage lightClouds;
 	ofImage waterBump;
 	float currentLightCloudOffset;
+	
+	ofxFloatSlider minDepthSlider;
+	ofxFloatSlider maxDepthSlider;
+	
 	
 	ofxToggle drawGodRays;
 	ofShader godRays;
@@ -253,7 +258,8 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	
 	void addCompToRenderQueue(CompButton* comp);
 	void finishRender();
-
+	void writeCalibrationDataToXML();
+	
     string currentCompShortName;
 	string currentCompositionDirectory;
 	string currentCompositionFile;

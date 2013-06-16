@@ -130,10 +130,6 @@
 		E751030216F156D700D59EC9 /* ofxRGBDVideoExporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E751030016F156D700D59EC9 /* ofxRGBDVideoExporter.cpp */; };
 		E753157E1742EACF005952A8 /* RGBD.icns in Resources */ = {isa = PBXBuildFile; fileRef = E753157D1742EACF005952A8 /* RGBD.icns */; };
 		E753BF751742B4BE005952A8 /* ofxRGBDCombinedVideoExporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E753BF731742B4BE005952A8 /* ofxRGBDCombinedVideoExporter.cpp */; };
-		E75480D9174AC0F600BF3BBC /* distort.frag in Sources */ = {isa = PBXBuildFile; fileRef = E75480D7174AC0F600BF3BBC /* distort.frag */; };
-		E75480DA174AC0F600BF3BBC /* distort.vert in Sources */ = {isa = PBXBuildFile; fileRef = E75480D8174AC0F600BF3BBC /* distort.vert */; };
-		E76951DF1745794D00FE60A2 /* godrays.frag in Sources */ = {isa = PBXBuildFile; fileRef = E76951DD1745794D00FE60A2 /* godrays.frag */; };
-		E76951E01745794D00FE60A2 /* godrays.vert in Sources */ = {isa = PBXBuildFile; fileRef = E76951DE1745794D00FE60A2 /* godrays.vert */; };
 		E77797981583FB8C0041CEAF /* ofxRGBDScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77797961583FB8C0041CEAF /* ofxRGBDScene.cpp */; };
 		E78FD55216D298D1004D6A36 /* ofxRGBDCPURenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD54E16D298D0004D6A36 /* ofxRGBDCPURenderer.cpp */; };
 		E78FD55316D298D1004D6A36 /* ofxRGBDGPURenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD55016D298D0004D6A36 /* ofxRGBDGPURenderer.cpp */; };
@@ -142,8 +138,6 @@
 		E78FD57E16D29917004D6A36 /* ofOpenALSoundPlayer_TimelineAdditions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E78FD55F16D29917004D6A36 /* ofOpenALSoundPlayer_TimelineAdditions.cpp */; };
 		E78FD58216D29917004D6A36 /* libsndfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E78FD57716D29917004D6A36 /* libsndfile.a */; };
 		E79F58331625C6C9002B2B34 /* ofxTLCameraTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E79F58311625C6C9002B2B34 /* ofxTLCameraTrack.cpp */; };
-		E7A0BA7A166EB7BE00764549 /* dofrange2.frag in Sources */ = {isa = PBXBuildFile; fileRef = E7A0BA78166EB7BE00764549 /* dofrange2.frag */; };
-		E7A0BA7B166EB7BE00764549 /* dofrange2.vert in Sources */ = {isa = PBXBuildFile; fileRef = E7A0BA79166EB7BE00764549 /* dofrange2.vert */; };
 		E7BAFC39176BE5C30097AC71 /* ETF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7BAFC37176BE5C30097AC71 /* ETF.cpp */; };
 		E7BAFC3A176BE5C30097AC71 /* fdog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7BAFC38176BE5C30097AC71 /* fdog.cpp */; };
 		E7C0389916FF7C9D00A789D2 /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7C0388C16FF7C9D00A789D2 /* ofxBaseGui.cpp */; };
@@ -2032,8 +2026,6 @@
 				E7E2D18715F4C5F800CADFC5 /* ofxTLColorTrack.cpp in Sources */,
 				E79F58331625C6C9002B2B34 /* ofxTLCameraTrack.cpp in Sources */,
 				E7CC5397164D5F7300084827 /* ofxRemoveCocoaMenu.mm in Sources */,
-				E7A0BA7A166EB7BE00764549 /* dofrange2.frag in Sources */,
-				E7A0BA7B166EB7BE00764549 /* dofrange2.vert in Sources */,
 				E78FD55216D298D1004D6A36 /* ofxRGBDCPURenderer.cpp in Sources */,
 				E78FD55316D298D1004D6A36 /* ofxRGBDGPURenderer.cpp in Sources */,
 				E78FD57C16D29917004D6A36 /* kiss_fft.c in Sources */,
@@ -2101,10 +2093,6 @@
 				E74853FC17185E93007B9793 /* ofxSPKZone.cpp in Sources */,
 				E748540317187160007B9793 /* DepthParticleField.cpp in Sources */,
 				E753BF751742B4BE005952A8 /* ofxRGBDCombinedVideoExporter.cpp in Sources */,
-				E76951DF1745794D00FE60A2 /* godrays.frag in Sources */,
-				E76951E01745794D00FE60A2 /* godrays.vert in Sources */,
-				E75480D9174AC0F600BF3BBC /* distort.frag in Sources */,
-				E75480DA174AC0F600BF3BBC /* distort.vert in Sources */,
 				E7BAFC39176BE5C30097AC71 /* ETF.cpp in Sources */,
 				E7BAFC3A176BE5C30097AC71 /* fdog.cpp in Sources */,
 			);
