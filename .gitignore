@@ -15,6 +15,9 @@ RGBDVisualize/bin/data/*.xml
 timeline*.xml
 *trackPositions.xml
 
+pcl/
+*.dylib
+
 #vs2010 stuff
 ipch/
 *.suo

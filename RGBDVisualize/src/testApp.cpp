@@ -263,17 +263,18 @@ void testApp::populateTimelineElements(){
 	
     //rendering
     timeline.addPage("Geometry", true);
+    timeline.addCurves("Simplify X", currentCompositionDirectory + "simplifyx.xml", ofRange(1, 8), 2);
+    timeline.addCurves("Simplify Y", currentCompositionDirectory + "simplifyy.xml", ofRange(1, 8), 2);
+	timeline.addCurves("Edge Clip", currentCompositionDirectory + "edgeClip.xml", ofRange(1.0, 2000), 2000 );
+	//    timeline.addCurves("Z Threshold Max", currentCompositionDirectory + "zThreshold.xml", ofRange(1.0, sqrtf(6000)), sqrtf(6000) );
+	//    timeline.addCurves("Z Threshold Min", currentCompositionDirectory + "zThresholdMin.xml", ofRange(0, sqrtf(2000)), 0 );
+
+	timeline.addPage("Clipping", true);
     timeline.addCurves("Top Clip", currentCompositionDirectory + "topClip.xml", ofRange(0, 1), 0);
     timeline.addCurves("Right Clip", currentCompositionDirectory + "rightClip.xml", ofRange(0, 1), 1);
     timeline.addCurves("Bottom Clip", currentCompositionDirectory + "bottomClip.xml", ofRange(0, 1), 1);
     timeline.addCurves("Left Clip", currentCompositionDirectory + "leftClip.xml", ofRange(0, 1), 0);
 	
-    timeline.addCurves("Simplify X", currentCompositionDirectory + "simplifyx.xml", ofRange(1, 8), 2);
-    timeline.addCurves("Simplify Y", currentCompositionDirectory + "simplifyy.xml", ofRange(1, 8), 2);
-	timeline.addCurves("Edge Clip", currentCompositionDirectory + "edgeClip.xml", ofRange(1.0, 2000), 2000 );
-	
-//    timeline.addCurves("Z Threshold Max", currentCompositionDirectory + "zThreshold.xml", ofRange(1.0, sqrtf(6000)), sqrtf(6000) );
-//    timeline.addCurves("Z Threshold Min", currentCompositionDirectory + "zThresholdMin.xml", ofRange(0, sqrtf(2000)), 0 );
     
     timeline.addPage("Rotation", true);
 	timeline.addCurves("X Rotate", currentCompositionDirectory + "meshXRot.xml", ofRange(-360,360), 0.);
@@ -352,6 +353,7 @@ void testApp::populateTimelineElements(){
     timeline.addCurves("DOF Distance", currentCompositionDirectory + "DOFDistance.xml", ofRange(0,sqrtf(1500.0)), 10 );
     timeline.addCurves("DOF Range", currentCompositionDirectory + "DOFRange.xml", ofRange(0,sqrtf(1500.0)) );
     timeline.addCurves("DOF Blur", currentCompositionDirectory + "DOFBlur.xml", ofRange(0,5.0) );
+	
 	/*	
     timeline.addPage("Depth Particles", true);
 	timeline.addCurves("Depth Particle Alpha", currentCompositionDirectory + "DepthParticleAlpha.xml", ofRange(0, 1.0), 0.0 );
