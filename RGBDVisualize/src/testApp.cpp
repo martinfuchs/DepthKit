@@ -265,17 +265,16 @@ void testApp::populateTimelineElements(){
     timeline.addPage("Geometry", true);
     timeline.addCurves("Simplify X", currentCompositionDirectory + "simplifyx.xml", ofRange(1, 8), 2);
     timeline.addCurves("Simplify Y", currentCompositionDirectory + "simplifyy.xml", ofRange(1, 8), 2);
-	timeline.addCurves("Edge Clip", currentCompositionDirectory + "edgeClip.xml", ofRange(1.0, 2000), 2000 );
-	//    timeline.addCurves("Z Threshold Max", currentCompositionDirectory + "zThreshold.xml", ofRange(1.0, sqrtf(6000)), sqrtf(6000) );
-	//    timeline.addCurves("Z Threshold Min", currentCompositionDirectory + "zThresholdMin.xml", ofRange(0, sqrtf(2000)), 0 );
+	timeline.addCurves("Z Threshold Max", currentCompositionDirectory + "zThreshold.xml", ofRange(1.0, sqrtf(6000)), sqrtf(6000) );
+	timeline.addCurves("Z Threshold Min", currentCompositionDirectory + "zThresholdMin.xml", ofRange(0, sqrtf(2000)), 0 );
 
 	timeline.addPage("Clipping", true);
+	timeline.addCurves("Edge Clip", currentCompositionDirectory + "edgeClip.xml", ofRange(1.0, 2000), 2000 );
     timeline.addCurves("Top Clip", currentCompositionDirectory + "topClip.xml", ofRange(0, 1), 0);
     timeline.addCurves("Right Clip", currentCompositionDirectory + "rightClip.xml", ofRange(0, 1), 1);
     timeline.addCurves("Bottom Clip", currentCompositionDirectory + "bottomClip.xml", ofRange(0, 1), 1);
     timeline.addCurves("Left Clip", currentCompositionDirectory + "leftClip.xml", ofRange(0, 1), 0);
 	
-    
     timeline.addPage("Rotation", true);
 	timeline.addCurves("X Rotate", currentCompositionDirectory + "meshXRot.xml", ofRange(-360,360), 0.);
     timeline.addCurves("Y Rotate", currentCompositionDirectory + "meshYRot.xml", ofRange(-360,360), 0.);
@@ -322,23 +321,23 @@ void testApp::populateTimelineElements(){
 	ofxTLColorTrack* color = timeline.addColors("Fade Color", currentCompositionDirectory + "FadeColor.xml");
 	color->setDefaultColor(ofColor::white);
 	
-    timeline.addPage("Point Light", true);
-	timeline.addCurves("Light Effect", currentCompositionDirectory + "LightEffect.xml", ofRange(0.0, 1.0), .0 );
-    timeline.addCurves("Point Constant Attenuate", currentCompositionDirectory + "PointLightConstant.xml", ofRange(0.0, 1.0), .0 );
-    timeline.addCurves("Point Linear Attenuate", currentCompositionDirectory + "PointLightLinear.xml", ofRange(0.0, 1.0), .0 );
-	timeline.addCurves("Point Quad Attenuate", currentCompositionDirectory + "PointLightQuad.xml", ofRange(0.0, 1.0), .0 );
-    timeline.addCurves("Point Light Pos X", currentCompositionDirectory + "PointLightPosX.xml", ofRange(-700, 700), .0 );
-    timeline.addCurves("Point Light Pos Y", currentCompositionDirectory + "PointLightPosY.xml", ofRange(-700, 700), .0 );
-    timeline.addCurves("Point Light Pos Z", currentCompositionDirectory + "PointLightPosZ.xml", ofRange(0, 2000), .0 );
+//    timeline.addPage("Point Light", true);
+//	timeline.addCurves("Light Effect", currentCompositionDirectory + "LightEffect.xml", ofRange(0.0, 1.0), .0 );
+//    timeline.addCurves("Point Constant Attenuate", currentCompositionDirectory + "PointLightConstant.xml", ofRange(0.0, 1.0), .0 );
+//    timeline.addCurves("Point Linear Attenuate", currentCompositionDirectory + "PointLightLinear.xml", ofRange(0.0, 1.0), .0 );
+//	timeline.addCurves("Point Quad Attenuate", currentCompositionDirectory + "PointLightQuad.xml", ofRange(0.0, 1.0), .0 );
+//    timeline.addCurves("Point Light Pos X", currentCompositionDirectory + "PointLightPosX.xml", ofRange(-700, 700), .0 );
+//    timeline.addCurves("Point Light Pos Y", currentCompositionDirectory + "PointLightPosY.xml", ofRange(-700, 700), .0 );
+//    timeline.addCurves("Point Light Pos Z", currentCompositionDirectory + "PointLightPosZ.xml", ofRange(0, 2000), .0 );
 	
-	timeline.addPage("Specular Light", true);
-	timeline.addCurves("Shininess", currentCompositionDirectory + "Shininess.xml", ofRange(0.0, 10.0), .0 );
-    timeline.addCurves("Specular Constant Attenuate", currentCompositionDirectory + "SpecularConstant.xml", ofRange(0.0, 1.0), .0 );
-    timeline.addCurves("Specular Linear Attenuate", currentCompositionDirectory + "SpecularLinear.xml", ofRange(0.0, 1.0), .0 );
-	timeline.addCurves("Specular Quad Attenuate", currentCompositionDirectory + "SpecularQuad.xml", ofRange(0.0, 1.0), .0 );
-    timeline.addCurves("Specular Light Pos X", currentCompositionDirectory + "SpecularX.xml", ofRange(-700, 700), .0 );
-    timeline.addCurves("Specular Light Pos Y", currentCompositionDirectory + "SpecularY.xml", ofRange(-700, 700), .0 );
-    timeline.addCurves("Specular Light Pos Z", currentCompositionDirectory + "SpecularZ.xml", ofRange(0, 2000), 0. );
+//	timeline.addPage("Specular Light", true);
+//	timeline.addCurves("Shininess", currentCompositionDirectory + "Shininess.xml", ofRange(0.0, 10.0), .0 );
+//    timeline.addCurves("Specular Constant Attenuate", currentCompositionDirectory + "SpecularConstant.xml", ofRange(0.0, 1.0), .0 );
+//    timeline.addCurves("Specular Linear Attenuate", currentCompositionDirectory + "SpecularLinear.xml", ofRange(0.0, 1.0), .0 );
+//	timeline.addCurves("Specular Quad Attenuate", currentCompositionDirectory + "SpecularQuad.xml", ofRange(0.0, 1.0), .0 );
+//    timeline.addCurves("Specular Light Pos X", currentCompositionDirectory + "SpecularX.xml", ofRange(-700, 700), .0 );
+//    timeline.addCurves("Specular Light Pos Y", currentCompositionDirectory + "SpecularY.xml", ofRange(-700, 700), .0 );
+//    timeline.addCurves("Specular Light Pos Z", currentCompositionDirectory + "SpecularZ.xml", ofRange(0, 2000), 0. );
 	
 //	timeline.addPage("Shape", true);
 //	timeline.addCurves("Shape X", currentCompositionDirectory + "ShapeX.xml", ofRange(-1000,1000), 0 );
@@ -378,24 +377,24 @@ void testApp::populateTimelineElements(){
     timeline.addColors("Ring End Color B", currentCompositionDirectory + "RingEndColorB.xml");
     */
 	
-	timeline.addPage("God Rays Glow", true);
-	timeline.addCurves("Backlight Ring Radius", currentCompositionDirectory + "backlightRadius.xml", ofRange(0.0, 2000), 10.0 );
-	timeline.addCurves("Backlight Num Samples", currentCompositionDirectory + "backlightNumSamples.xml", ofRange(0.0, 150), 100 );
-	timeline.addCurves("Backlight Density", currentCompositionDirectory + "backlightDensity.xml", ofRange(0.0, 1.0), 0.1 );
-	timeline.addCurves("Backlight Decay", currentCompositionDirectory + "backlightDecay.xml", ofRange(0.0, 1.0), 0.0 );
-	timeline.addCurves("Backlight Exposure", currentCompositionDirectory + "backlightExposure.xml", ofRange(0.0, 1), 1.0 );
-	timeline.addCurves("Backlight Weight", currentCompositionDirectory + "backlightWeight.xml", ofRange(0.0, 1.), 0.01 );
-	
-	timeline.addPage("God Rays Effects", true);
-	timeline.addCurves("Backlight Center", currentCompositionDirectory + "backlightCenter.xml", ofRange(-.5, 1.5), 0.50 );
-	timeline.addCurves("Backlight Texture Alpha", currentCompositionDirectory + "backlightAlpha.xml", ofRange(0.0, 1.0), 0.5 );
-	timeline.addCurves("Backlight Texture Scroll", currentCompositionDirectory + "backlightScroll.xml", ofRange(0.0, 10.0), 0.01 );
-	timeline.addCurves("Backlight Silhouette Alpha", currentCompositionDirectory + "backlightSilhouetteAlpha.xml", ofRange(0.0, 1.0), 1.0 );
-	
-	timeline.addPage("God Rays Warp", true);
-	timeline.addCurves("Water Distort Amount", currentCompositionDirectory + "backlightDistortAmount.xml", ofRange(0.0, sqrtf(15.0)), 1.0 );
-	timeline.addCurves("Water Bump Texture Scale", currentCompositionDirectory + "backlightDistortScale.xml", ofRange(0.0, sqrtf(15.0)), 1.0 );
-	timeline.addCurves("Water Bump Scroll Speed", currentCompositionDirectory + "backlightBumpScrollSpeed.xml", ofRange(0.0, 3.0), 0.1);
+//	timeline.addPage("God Rays Glow", true);
+//	timeline.addCurves("Backlight Ring Radius", currentCompositionDirectory + "backlightRadius.xml", ofRange(0.0, 2000), 10.0 );
+//	timeline.addCurves("Backlight Num Samples", currentCompositionDirectory + "backlightNumSamples.xml", ofRange(0.0, 150), 100 );
+//	timeline.addCurves("Backlight Density", currentCompositionDirectory + "backlightDensity.xml", ofRange(0.0, 1.0), 0.1 );
+//	timeline.addCurves("Backlight Decay", currentCompositionDirectory + "backlightDecay.xml", ofRange(0.0, 1.0), 0.0 );
+//	timeline.addCurves("Backlight Exposure", currentCompositionDirectory + "backlightExposure.xml", ofRange(0.0, 1), 1.0 );
+//	timeline.addCurves("Backlight Weight", currentCompositionDirectory + "backlightWeight.xml", ofRange(0.0, 1.), 0.01 );
+//	
+//	timeline.addPage("God Rays Effects", true);
+//	timeline.addCurves("Backlight Center", currentCompositionDirectory + "backlightCenter.xml", ofRange(-.5, 1.5), 0.50 );
+//	timeline.addCurves("Backlight Texture Alpha", currentCompositionDirectory + "backlightAlpha.xml", ofRange(0.0, 1.0), 0.5 );
+//	timeline.addCurves("Backlight Texture Scroll", currentCompositionDirectory + "backlightScroll.xml", ofRange(0.0, 10.0), 0.01 );
+//	timeline.addCurves("Backlight Silhouette Alpha", currentCompositionDirectory + "backlightSilhouetteAlpha.xml", ofRange(0.0, 1.0), 1.0 );
+//	
+//	timeline.addPage("God Rays Warp", true);
+//	timeline.addCurves("Water Distort Amount", currentCompositionDirectory + "backlightDistortAmount.xml", ofRange(0.0, sqrtf(15.0)), 1.0 );
+//	timeline.addCurves("Water Bump Texture Scale", currentCompositionDirectory + "backlightDistortScale.xml", ofRange(0.0, sqrtf(15.0)), 1.0 );
+//	timeline.addCurves("Water Bump Scroll Speed", currentCompositionDirectory + "backlightBumpScrollSpeed.xml", ofRange(0.0, 3.0), 0.1);
 
 	timeline.addPage("Time Alignment", true);
 	timeline.addTrack("Video", videoTrack);
@@ -403,15 +402,16 @@ void testApp::populateTimelineElements(){
 	timeline.addTrack("Alignment", &alignmentScrubber);
 	
 	timeline.addPage("Texture Alignment");
-	timeline.addCurves("X Texture Shift", currentCompositionDirectory + "XTextureShift.xml", ofRange(-.35, .35), 0.0 );
-	timeline.addCurves("Y Texture Shift", currentCompositionDirectory + "YTextureShift.xml", ofRange(-.35, .35), 0.0 );
+//	timeline.addCurves("X Translate", currentCompositionDirectory + "XTextureShift.xml", ofRange(-.35, .35), 0.0 );
+//	timeline.addCurves("Y Translate", currentCompositionDirectory + "YTextureShift.xml", ofRange(-.35, .35), 0.0 );
+	timeline.addCurves("X Texture Rotate", currentCompositionDirectory + "XTextureRotate.xml", ofRange(-10, 10), 0.0 );
+	timeline.addCurves("Y Texture Rotate", currentCompositionDirectory + "YTextureRotate.xml", ofRange(-10, 10), 0.0 );
+	
+	timeline.addCurves("X Texture Translate", currentCompositionDirectory + "XTextureTranslate.xml", ofRange(-200, 200), 0.0 );
+	timeline.addCurves("Y Texture Translate", currentCompositionDirectory + "YTextureTranslate.xml", ofRange(-200, 200), 0.0 );
+
 	timeline.addCurves("X Texture Scale", currentCompositionDirectory + "XTextureScale.xml", ofRange(.75, 1.25), 1.0 );
 	timeline.addCurves("Y Texture Scale", currentCompositionDirectory + "YTextureScale.xml", ofRange(.75, 1.25), 1.0 );
-
-	timeline.addCurves("X Texture Matrix Rotate", currentCompositionDirectory + "XTextureMatrixRotate.xml", ofRange(-10, 10), 0.0 );
-	timeline.addCurves("Y Texture Matrix Rotate", currentCompositionDirectory + "YTextureMatrixRotate.xml", ofRange(-10, 10), 0.0 );
-	timeline.addCurves("X Texture Matrix Translate", currentCompositionDirectory + "XTextureMatrixTranslate.xml", ofRange(-200, 200), 0.0 );
-	timeline.addCurves("Y Texture Matrix Translate", currentCompositionDirectory + "YTextureMatrixTranslate.xml", ofRange(-200, 200), 0.0 );
 
 	timeline.setCurrentPage("Rendering");
 }
@@ -1159,6 +1159,7 @@ void testApp::update(){
         //check if the rendering output type changed
 		checkRenderOutputOptions();
 	}
+	
 	if(renderStillFrame && timeline.getTimecontrolTrack() != NULL){
 		timeline.setTimecontrolTrack(NULL);
 		videoTrack->setPlayAlongToTimeline(false);
@@ -1309,15 +1310,13 @@ void testApp::update(){
     float currentBotomClip = timeline.getValue("Bottom Clip");
     float currentLeftClip = timeline.getValue("Left Clip");
 
-	if(timeline.getValue("X Texture Shift") != renderer.shift.x ||
-	   timeline.getValue("Y Texture Shift") != renderer.shift.y ||
-       timeline.getValue("X Texture Scale") != renderer.scale.x ||
+	if(timeline.getValue("X Texture Scale") != renderer.scale.x ||
        timeline.getValue("Y Texture Scale") != renderer.scale.y ||
 	   
-	   timeline.getValue("X Texture Matrix Rotate") != renderer.colorMatrixRotate.x ||
-	   timeline.getValue("Y Texture Matrix Rotate") != renderer.colorMatrixRotate.y ||
-       timeline.getValue("X Texture Matrix Translate") != renderer.colorMatrixTranslate.x ||
-       timeline.getValue("Y Texture Matrix Translate") != renderer.colorMatrixTranslate.y ||
+	   timeline.getValue("X Texture Rotate") != renderer.colorMatrixRotate.x ||
+	   timeline.getValue("Y Texture Rotate") != renderer.colorMatrixRotate.y ||
+       timeline.getValue("X Texture Translate") != renderer.colorMatrixTranslate.x ||
+       timeline.getValue("Y Texture Translate") != renderer.colorMatrixTranslate.y ||
 	   
 	   timeline.getValue("Edge Clip") != renderer.edgeClip ||
 	   currentMirror != renderer.mirror ||
@@ -1333,35 +1332,27 @@ void testApp::update(){
 	   renderer.leftClip != currentLeftClip ||
 	   renderer.bottomClip != currentBotomClip)
 	{
-		renderer.shift.x = timeline.getValue("X Texture Shift");
-		renderer.shift.y = timeline.getValue("Y Texture Shift");
-        renderer.scale.x = timeline.getValue("X Texture Scale");
-        renderer.scale.y = timeline.getValue("Y Texture Scale");
+        meshBuilder.scale.x = renderer.scale.x = timeline.getValue("X Texture Scale");
+		meshBuilder.scale.y = renderer.scale.y = timeline.getValue("Y Texture Scale");
 		
-		renderer.colorMatrixRotate.x = timeline.getValue("X Texture Matrix Rotate");
-		renderer.colorMatrixRotate.y = timeline.getValue("Y Texture Matrix Rotate");
-		renderer.colorMatrixTranslate.x = timeline.getValue("X Texture Matrix Translate");
-		renderer.colorMatrixTranslate.y = timeline.getValue("Y Texture Matrix Translate");
+		meshBuilder.colorMatrixRotate.x =
+			renderer.colorMatrixRotate.x = timeline.getValue("X Texture Rotate");
+		meshBuilder.colorMatrixRotate.y =
+			renderer.colorMatrixRotate.y = timeline.getValue("Y Texture Rotate");
+		meshBuilder.colorMatrixTranslate.x =
+			renderer.colorMatrixTranslate.x = timeline.getValue("X Texture Translate");
+		meshBuilder.colorMatrixTranslate.y =
+			renderer.colorMatrixTranslate.y = timeline.getValue("Y Texture Translate");
 		
 		meshBuilder.mirror = renderer.mirror = currentMirror;
 		meshBuilder.farClip = renderer.farClip = currentFarClip;
 		meshBuilder.nearClip = renderer.nearClip = currentNearClip;
         meshBuilder.edgeClip = renderer.edgeClip = timeline.getValue("Edge Clip");
 
-		renderer.topClip = meshBuilder.topClip = currentTopClip;
-		renderer.rightClip = meshBuilder.rightClip = currentRightClip;
-		renderer.leftClip = meshBuilder.leftClip = currentLeftClip;
-		renderer.bottomClip = meshBuilder.bottomClip = currentBotomClip;
-
-		meshBuilder.shift.x = timeline.getValue("X Texture Shift");
-		meshBuilder.shift.y = timeline.getValue("Y Texture Shift");
-        meshBuilder.scale.x = timeline.getValue("X Texture Scale");
-        meshBuilder.scale.y = timeline.getValue("Y Texture Scale");
-		
-		meshBuilder.colorMatrixRotate.x = timeline.getValue("X Texture Matrix Rotate");
-		meshBuilder.colorMatrixRotate.y = timeline.getValue("Y Texture Matrix Rotate");
-		meshBuilder.colorMatrixTranslate.x = timeline.getValue("X Texture Matrix Translate");
-		meshBuilder.colorMatrixTranslate.y = timeline.getValue("Y Texture Matrix Translate");
+		meshBuilder.topClip = renderer.topClip = currentTopClip;
+		meshBuilder.rightClip = renderer.rightClip = currentRightClip;
+		meshBuilder.leftClip = renderer.leftClip = currentLeftClip;
+		meshBuilder.bottomClip = renderer.bottomClip = currentBotomClip;
 
 		holeFiller.enable = fillHoles;
 		currentHoleKernelSize = holeFiller.setKernelSize(currentHoleKernelSize);
@@ -1381,7 +1372,7 @@ void testApp::update(){
 	   (currentDepthFrame != player.getDepthSequence()->getCurrentFrame() ||
 		currentVideoFrame != videoTrack->getPlayer()->getCurrentFrame()))
 	{
-		   rendererNeedsUpdate = true;
+		rendererNeedsUpdate = true;
 	}
 	
 	if(rendererNeedsUpdate){
@@ -1395,6 +1386,7 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::checkRenderOutputOptions(){
+	
 //	if(renderObjectFiles && currentExportType != ObjectFile){
 //		toggleOffRenderOutputOptions();
 //		currentExportType = ObjectFile;
