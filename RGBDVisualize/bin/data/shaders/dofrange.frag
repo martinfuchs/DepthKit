@@ -1,14 +1,23 @@
 #version 110
 #extension GL_ARB_texture_rectangle : enable
 
-varying float VInFocus0;
-varying float VZPositionValid0;
-uniform float blackout;
+
+//Shader for visualizing a depth texture as a focal distance map
+//paired with dofblur for debugging purposes
+
+uniform sampler2DRect depthTex;
+uniform float focalDistance;
+uniform float focalRange;
+
+float LinearizeDepth(float zoverw){
+    float n = 1.0; // camera z near
+    float f = 20000.0; // camera z far
+    return (2.0 * n) / (f + n - zoverw * (f - n));
+}
 
 void main()
 {
-	if(VZPositionValid0 < 0.999){ 
-    	discard;
-    }	
-	gl_FragColor = vec4(VInFocus0) * blackout;
+    float depth = LinearizeDepth( texture2DRect(depthTex, gl_TexCoord[0].st).r ) * 20000.;
+    gl_FragColor = vec4(1.0 - min( abs(depth  - focalDistance) / focalRange, 1.0) );
+    gl_FragColor.a = 1.0;
 }

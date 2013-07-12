@@ -69,58 +69,6 @@
 		E74806D715EBC01500B4157F /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E74806D615EBC01500B4157F /* CoreVideo.framework */; };
 		E74806D915EBC02100B4157F /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E74806D815EBC02100B4157F /* Accelerate.framework */; };
 		E74806F515EBC06A00B4157F /* ofxTimecode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74806E815EBC06900B4157F /* ofxTimecode.cpp */; };
-		E74853CA17185E93007B9793 /* SPK_BufferHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748537E17185E93007B9793 /* SPK_BufferHandler.cpp */; };
-		E74853CB17185E93007B9793 /* SPK_DEF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748537F17185E93007B9793 /* SPK_DEF.cpp */; };
-		E74853CC17185E93007B9793 /* SPK_Emitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748538017185E93007B9793 /* SPK_Emitter.cpp */; };
-		E74853CD17185E93007B9793 /* SPK_Factory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748538117185E93007B9793 /* SPK_Factory.cpp */; };
-		E74853CE17185E93007B9793 /* SPK_Group.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748538217185E93007B9793 /* SPK_Group.cpp */; };
-		E74853CF17185E93007B9793 /* SPK_Interpolator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748538317185E93007B9793 /* SPK_Interpolator.cpp */; };
-		E74853D017185E93007B9793 /* SPK_Model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748538417185E93007B9793 /* SPK_Model.cpp */; };
-		E74853D117185E93007B9793 /* SPK_Modifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748538517185E93007B9793 /* SPK_Modifier.cpp */; };
-		E74853D217185E93007B9793 /* SPK_Particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748538617185E93007B9793 /* SPK_Particle.cpp */; };
-		E74853D317185E93007B9793 /* SPK_Registerable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748538717185E93007B9793 /* SPK_Registerable.cpp */; };
-		E74853D417185E93007B9793 /* SPK_Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748538817185E93007B9793 /* SPK_Renderer.cpp */; };
-		E74853D517185E93007B9793 /* SPK_System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748538917185E93007B9793 /* SPK_System.cpp */; };
-		E74853D617185E93007B9793 /* SPK_Transformable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748538A17185E93007B9793 /* SPK_Transformable.cpp */; };
-		E74853D717185E93007B9793 /* SPK_Vector3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748538B17185E93007B9793 /* SPK_Vector3D.cpp */; };
-		E74853D817185E93007B9793 /* SPK_Zone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748538C17185E93007B9793 /* SPK_Zone.cpp */; };
-		E74853D917185E93007B9793 /* SPK_NormalEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748538F17185E93007B9793 /* SPK_NormalEmitter.cpp */; };
-		E74853DA17185E93007B9793 /* SPK_RandomEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748539017185E93007B9793 /* SPK_RandomEmitter.cpp */; };
-		E74853DB17185E93007B9793 /* SPK_SphericEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748539117185E93007B9793 /* SPK_SphericEmitter.cpp */; };
-		E74853DC17185E93007B9793 /* SPK_StraightEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748539217185E93007B9793 /* SPK_StraightEmitter.cpp */; };
-		E74853DD17185E93007B9793 /* SPK_Collision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748539417185E93007B9793 /* SPK_Collision.cpp */; };
-		E74853DE17185E93007B9793 /* SPK_Destroyer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748539517185E93007B9793 /* SPK_Destroyer.cpp */; };
-		E74853DF17185E93007B9793 /* SPK_LinearForce.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748539617185E93007B9793 /* SPK_LinearForce.cpp */; };
-		E74853E017185E93007B9793 /* SPK_ModifierGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748539717185E93007B9793 /* SPK_ModifierGroup.cpp */; };
-		E74853E117185E93007B9793 /* SPK_Obstacle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748539817185E93007B9793 /* SPK_Obstacle.cpp */; };
-		E74853E217185E93007B9793 /* SPK_PointMass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748539917185E93007B9793 /* SPK_PointMass.cpp */; };
-		E74853E317185E93007B9793 /* SPK_Vortex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748539A17185E93007B9793 /* SPK_Vortex.cpp */; };
-		E74853E417185E93007B9793 /* SPK_Oriented3DRendererInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748539C17185E93007B9793 /* SPK_Oriented3DRendererInterface.cpp */; };
-		E74853E517185E93007B9793 /* SPK_QuadRendererInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748539D17185E93007B9793 /* SPK_QuadRendererInterface.cpp */; };
-		E74853E617185E93007B9793 /* SPK_AABox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748539F17185E93007B9793 /* SPK_AABox.cpp */; };
-		E74853E717185E93007B9793 /* SPK_Cylinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74853A017185E93007B9793 /* SPK_Cylinder.cpp */; };
-		E74853E817185E93007B9793 /* SPK_Line.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74853A117185E93007B9793 /* SPK_Line.cpp */; };
-		E74853E917185E93007B9793 /* SPK_Plane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74853A217185E93007B9793 /* SPK_Plane.cpp */; };
-		E74853EA17185E93007B9793 /* SPK_Point.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74853A317185E93007B9793 /* SPK_Point.cpp */; };
-		E74853EB17185E93007B9793 /* SPK_Ring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74853A417185E93007B9793 /* SPK_Ring.cpp */; };
-		E74853EC17185E93007B9793 /* SPK_Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74853A517185E93007B9793 /* SPK_Sphere.cpp */; };
-		E74853ED17185E93007B9793 /* SPK_ZoneIntersection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74853A617185E93007B9793 /* SPK_ZoneIntersection.cpp */; };
-		E74853EE17185E93007B9793 /* SPK_ZoneUnion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74853A717185E93007B9793 /* SPK_ZoneUnion.cpp */; };
-		E74853EF17185E93007B9793 /* SPK_GLExtHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74853AA17185E93007B9793 /* SPK_GLExtHandler.cpp */; };
-		E74853F017185E93007B9793 /* SPK_GLLineRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74853AB17185E93007B9793 /* SPK_GLLineRenderer.cpp */; };
-		E74853F117185E93007B9793 /* SPK_GLLineTrailRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74853AC17185E93007B9793 /* SPK_GLLineTrailRenderer.cpp */; };
-		E74853F217185E93007B9793 /* SPK_GLPointRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74853AD17185E93007B9793 /* SPK_GLPointRenderer.cpp */; };
-		E74853F317185E93007B9793 /* SPK_GLQuadRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74853AE17185E93007B9793 /* SPK_GLQuadRenderer.cpp */; };
-		E74853F417185E93007B9793 /* SPK_GLRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74853AF17185E93007B9793 /* SPK_GLRenderer.cpp */; };
-		E74853F517185E93007B9793 /* ofxSPK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74853B117185E93007B9793 /* ofxSPK.cpp */; };
-		E74853F617185E93007B9793 /* ofxSPKEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74853B317185E93007B9793 /* ofxSPKEmitter.cpp */; };
-		E74853F717185E93007B9793 /* ofxSPKGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74853B517185E93007B9793 /* ofxSPKGroup.cpp */; };
-		E74853F817185E93007B9793 /* ofxSPKModifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74853B717185E93007B9793 /* ofxSPKModifier.cpp */; };
-		E74853F917185E93007B9793 /* ofxSPKRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74853B917185E93007B9793 /* ofxSPKRenderer.cpp */; };
-		E74853FA17185E93007B9793 /* ofxSPKSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74853BB17185E93007B9793 /* ofxSPKSystem.cpp */; };
-		E74853FB17185E93007B9793 /* ofxSPKUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74853BD17185E93007B9793 /* ofxSPKUtils.cpp */; };
-		E74853FC17185E93007B9793 /* ofxSPKZone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74853BF17185E93007B9793 /* ofxSPKZone.cpp */; };
-		E748540317187160007B9793 /* DepthParticleField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E748540117187160007B9793 /* DepthParticleField.cpp */; };
 		E748F78615EBBF1A00B4157F /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = E748F78315EBBF1A00B4157F /* .gitignore */; };
 		E74DCB4416ED24A000A45F2F /* opencv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E74DCB4316ED24A000A45F2F /* opencv.a */; };
 		E74DCB6D16ED25E000A45F2F /* glm.c in Sources */ = {isa = PBXBuildFile; fileRef = E74DCB5916ED25DF00A45F2F /* glm.c */; };
@@ -346,122 +294,6 @@
 		E74806D815EBC02100B4157F /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		E74806E815EBC06900B4157F /* ofxTimecode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTimecode.cpp; sourceTree = "<group>"; };
 		E74806E915EBC06900B4157F /* ofxTimecode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTimecode.h; sourceTree = "<group>"; };
-		E748533E17185E93007B9793 /* SPK_ArrayBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_ArrayBuffer.h; sourceTree = "<group>"; };
-		E748533F17185E93007B9793 /* SPK_Buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Buffer.h; sourceTree = "<group>"; };
-		E748534017185E93007B9793 /* SPK_BufferHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_BufferHandler.h; sourceTree = "<group>"; };
-		E748534117185E93007B9793 /* SPK_DEF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_DEF.h; sourceTree = "<group>"; };
-		E748534217185E93007B9793 /* SPK_Emitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Emitter.h; sourceTree = "<group>"; };
-		E748534317185E93007B9793 /* SPK_Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Factory.h; sourceTree = "<group>"; };
-		E748534417185E93007B9793 /* SPK_Group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Group.h; sourceTree = "<group>"; };
-		E748534517185E93007B9793 /* SPK_Interpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Interpolator.h; sourceTree = "<group>"; };
-		E748534617185E93007B9793 /* SPK_Model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Model.h; sourceTree = "<group>"; };
-		E748534717185E93007B9793 /* SPK_Modifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Modifier.h; sourceTree = "<group>"; };
-		E748534817185E93007B9793 /* SPK_Particle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Particle.h; sourceTree = "<group>"; };
-		E748534917185E93007B9793 /* SPK_Pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Pool.h; sourceTree = "<group>"; };
-		E748534A17185E93007B9793 /* SPK_Registerable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Registerable.h; sourceTree = "<group>"; };
-		E748534B17185E93007B9793 /* SPK_RegWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_RegWrapper.h; sourceTree = "<group>"; };
-		E748534C17185E93007B9793 /* SPK_Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Renderer.h; sourceTree = "<group>"; };
-		E748534D17185E93007B9793 /* SPK_System.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_System.h; sourceTree = "<group>"; };
-		E748534E17185E93007B9793 /* SPK_Transformable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Transformable.h; sourceTree = "<group>"; };
-		E748534F17185E93007B9793 /* SPK_Vector3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Vector3D.h; sourceTree = "<group>"; };
-		E748535017185E93007B9793 /* SPK_Zone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Zone.h; sourceTree = "<group>"; };
-		E748535317185E93007B9793 /* SPK_NormalEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_NormalEmitter.h; sourceTree = "<group>"; };
-		E748535417185E93007B9793 /* SPK_RandomEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_RandomEmitter.h; sourceTree = "<group>"; };
-		E748535517185E93007B9793 /* SPK_SphericEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_SphericEmitter.h; sourceTree = "<group>"; };
-		E748535617185E93007B9793 /* SPK_StaticEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_StaticEmitter.h; sourceTree = "<group>"; };
-		E748535717185E93007B9793 /* SPK_StraightEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_StraightEmitter.h; sourceTree = "<group>"; };
-		E748535917185E93007B9793 /* SPK_Collision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Collision.h; sourceTree = "<group>"; };
-		E748535A17185E93007B9793 /* SPK_Destroyer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Destroyer.h; sourceTree = "<group>"; };
-		E748535B17185E93007B9793 /* SPK_LinearForce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_LinearForce.h; sourceTree = "<group>"; };
-		E748535C17185E93007B9793 /* SPK_ModifierGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_ModifierGroup.h; sourceTree = "<group>"; };
-		E748535D17185E93007B9793 /* SPK_Obstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Obstacle.h; sourceTree = "<group>"; };
-		E748535E17185E93007B9793 /* SPK_PointMass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_PointMass.h; sourceTree = "<group>"; };
-		E748535F17185E93007B9793 /* SPK_Rotator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Rotator.h; sourceTree = "<group>"; };
-		E748536017185E93007B9793 /* SPK_Vortex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Vortex.h; sourceTree = "<group>"; };
-		E748536217185E93007B9793 /* SPK_LineRendererInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_LineRendererInterface.h; sourceTree = "<group>"; };
-		E748536317185E93007B9793 /* SPK_Oriented2DRendererInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Oriented2DRendererInterface.h; sourceTree = "<group>"; };
-		E748536417185E93007B9793 /* SPK_Oriented3DRendererInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Oriented3DRendererInterface.h; sourceTree = "<group>"; };
-		E748536517185E93007B9793 /* SPK_PointRendererInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_PointRendererInterface.h; sourceTree = "<group>"; };
-		E748536617185E93007B9793 /* SPK_QuadRendererInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_QuadRendererInterface.h; sourceTree = "<group>"; };
-		E748536817185E93007B9793 /* SPK_AABox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_AABox.h; sourceTree = "<group>"; };
-		E748536917185E93007B9793 /* SPK_Cylinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Cylinder.h; sourceTree = "<group>"; };
-		E748536A17185E93007B9793 /* SPK_Line.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Line.h; sourceTree = "<group>"; };
-		E748536B17185E93007B9793 /* SPK_Plane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Plane.h; sourceTree = "<group>"; };
-		E748536C17185E93007B9793 /* SPK_Point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Point.h; sourceTree = "<group>"; };
-		E748536D17185E93007B9793 /* SPK_Ring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Ring.h; sourceTree = "<group>"; };
-		E748536E17185E93007B9793 /* SPK_Sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_Sphere.h; sourceTree = "<group>"; };
-		E748536F17185E93007B9793 /* SPK_ZoneIntersection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_ZoneIntersection.h; sourceTree = "<group>"; };
-		E748537017185E93007B9793 /* SPK_ZoneUnion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_ZoneUnion.h; sourceTree = "<group>"; };
-		E748537317185E93007B9793 /* SPK_GL_DEF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_GL_DEF.h; sourceTree = "<group>"; };
-		E748537417185E93007B9793 /* SPK_GLExtHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_GLExtHandler.h; sourceTree = "<group>"; };
-		E748537517185E93007B9793 /* SPK_GLLineRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_GLLineRenderer.h; sourceTree = "<group>"; };
-		E748537617185E93007B9793 /* SPK_GLLineTrailRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_GLLineTrailRenderer.h; sourceTree = "<group>"; };
-		E748537717185E93007B9793 /* SPK_GLPointRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_GLPointRenderer.h; sourceTree = "<group>"; };
-		E748537817185E93007B9793 /* SPK_GLQuadRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_GLQuadRenderer.h; sourceTree = "<group>"; };
-		E748537917185E93007B9793 /* SPK_GLRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_GLRenderer.h; sourceTree = "<group>"; };
-		E748537A17185E93007B9793 /* SPK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK.h; sourceTree = "<group>"; };
-		E748537B17185E93007B9793 /* SPK_GL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPK_GL.h; sourceTree = "<group>"; };
-		E748537E17185E93007B9793 /* SPK_BufferHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_BufferHandler.cpp; sourceTree = "<group>"; };
-		E748537F17185E93007B9793 /* SPK_DEF.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_DEF.cpp; sourceTree = "<group>"; };
-		E748538017185E93007B9793 /* SPK_Emitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Emitter.cpp; sourceTree = "<group>"; };
-		E748538117185E93007B9793 /* SPK_Factory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Factory.cpp; sourceTree = "<group>"; };
-		E748538217185E93007B9793 /* SPK_Group.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Group.cpp; sourceTree = "<group>"; };
-		E748538317185E93007B9793 /* SPK_Interpolator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Interpolator.cpp; sourceTree = "<group>"; };
-		E748538417185E93007B9793 /* SPK_Model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Model.cpp; sourceTree = "<group>"; };
-		E748538517185E93007B9793 /* SPK_Modifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Modifier.cpp; sourceTree = "<group>"; };
-		E748538617185E93007B9793 /* SPK_Particle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Particle.cpp; sourceTree = "<group>"; };
-		E748538717185E93007B9793 /* SPK_Registerable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Registerable.cpp; sourceTree = "<group>"; };
-		E748538817185E93007B9793 /* SPK_Renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Renderer.cpp; sourceTree = "<group>"; };
-		E748538917185E93007B9793 /* SPK_System.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_System.cpp; sourceTree = "<group>"; };
-		E748538A17185E93007B9793 /* SPK_Transformable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Transformable.cpp; sourceTree = "<group>"; };
-		E748538B17185E93007B9793 /* SPK_Vector3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Vector3D.cpp; sourceTree = "<group>"; };
-		E748538C17185E93007B9793 /* SPK_Zone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Zone.cpp; sourceTree = "<group>"; };
-		E748538F17185E93007B9793 /* SPK_NormalEmitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_NormalEmitter.cpp; sourceTree = "<group>"; };
-		E748539017185E93007B9793 /* SPK_RandomEmitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_RandomEmitter.cpp; sourceTree = "<group>"; };
-		E748539117185E93007B9793 /* SPK_SphericEmitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_SphericEmitter.cpp; sourceTree = "<group>"; };
-		E748539217185E93007B9793 /* SPK_StraightEmitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_StraightEmitter.cpp; sourceTree = "<group>"; };
-		E748539417185E93007B9793 /* SPK_Collision.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Collision.cpp; sourceTree = "<group>"; };
-		E748539517185E93007B9793 /* SPK_Destroyer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Destroyer.cpp; sourceTree = "<group>"; };
-		E748539617185E93007B9793 /* SPK_LinearForce.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_LinearForce.cpp; sourceTree = "<group>"; };
-		E748539717185E93007B9793 /* SPK_ModifierGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_ModifierGroup.cpp; sourceTree = "<group>"; };
-		E748539817185E93007B9793 /* SPK_Obstacle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Obstacle.cpp; sourceTree = "<group>"; };
-		E748539917185E93007B9793 /* SPK_PointMass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_PointMass.cpp; sourceTree = "<group>"; };
-		E748539A17185E93007B9793 /* SPK_Vortex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Vortex.cpp; sourceTree = "<group>"; };
-		E748539C17185E93007B9793 /* SPK_Oriented3DRendererInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Oriented3DRendererInterface.cpp; sourceTree = "<group>"; };
-		E748539D17185E93007B9793 /* SPK_QuadRendererInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_QuadRendererInterface.cpp; sourceTree = "<group>"; };
-		E748539F17185E93007B9793 /* SPK_AABox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_AABox.cpp; sourceTree = "<group>"; };
-		E74853A017185E93007B9793 /* SPK_Cylinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Cylinder.cpp; sourceTree = "<group>"; };
-		E74853A117185E93007B9793 /* SPK_Line.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Line.cpp; sourceTree = "<group>"; };
-		E74853A217185E93007B9793 /* SPK_Plane.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Plane.cpp; sourceTree = "<group>"; };
-		E74853A317185E93007B9793 /* SPK_Point.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Point.cpp; sourceTree = "<group>"; };
-		E74853A417185E93007B9793 /* SPK_Ring.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Ring.cpp; sourceTree = "<group>"; };
-		E74853A517185E93007B9793 /* SPK_Sphere.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_Sphere.cpp; sourceTree = "<group>"; };
-		E74853A617185E93007B9793 /* SPK_ZoneIntersection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_ZoneIntersection.cpp; sourceTree = "<group>"; };
-		E74853A717185E93007B9793 /* SPK_ZoneUnion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_ZoneUnion.cpp; sourceTree = "<group>"; };
-		E74853AA17185E93007B9793 /* SPK_GLExtHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_GLExtHandler.cpp; sourceTree = "<group>"; };
-		E74853AB17185E93007B9793 /* SPK_GLLineRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_GLLineRenderer.cpp; sourceTree = "<group>"; };
-		E74853AC17185E93007B9793 /* SPK_GLLineTrailRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_GLLineTrailRenderer.cpp; sourceTree = "<group>"; };
-		E74853AD17185E93007B9793 /* SPK_GLPointRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_GLPointRenderer.cpp; sourceTree = "<group>"; };
-		E74853AE17185E93007B9793 /* SPK_GLQuadRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_GLQuadRenderer.cpp; sourceTree = "<group>"; };
-		E74853AF17185E93007B9793 /* SPK_GLRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SPK_GLRenderer.cpp; sourceTree = "<group>"; };
-		E74853B117185E93007B9793 /* ofxSPK.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSPK.cpp; sourceTree = "<group>"; };
-		E74853B217185E93007B9793 /* ofxSPK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSPK.h; sourceTree = "<group>"; };
-		E74853B317185E93007B9793 /* ofxSPKEmitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSPKEmitter.cpp; sourceTree = "<group>"; };
-		E74853B417185E93007B9793 /* ofxSPKEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSPKEmitter.h; sourceTree = "<group>"; };
-		E74853B517185E93007B9793 /* ofxSPKGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSPKGroup.cpp; sourceTree = "<group>"; };
-		E74853B617185E93007B9793 /* ofxSPKGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSPKGroup.h; sourceTree = "<group>"; };
-		E74853B717185E93007B9793 /* ofxSPKModifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSPKModifier.cpp; sourceTree = "<group>"; };
-		E74853B817185E93007B9793 /* ofxSPKModifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSPKModifier.h; sourceTree = "<group>"; };
-		E74853B917185E93007B9793 /* ofxSPKRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSPKRenderer.cpp; sourceTree = "<group>"; };
-		E74853BA17185E93007B9793 /* ofxSPKRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSPKRenderer.h; sourceTree = "<group>"; };
-		E74853BB17185E93007B9793 /* ofxSPKSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSPKSystem.cpp; sourceTree = "<group>"; };
-		E74853BC17185E93007B9793 /* ofxSPKSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSPKSystem.h; sourceTree = "<group>"; };
-		E74853BD17185E93007B9793 /* ofxSPKUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSPKUtils.cpp; sourceTree = "<group>"; };
-		E74853BE17185E93007B9793 /* ofxSPKUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSPKUtils.h; sourceTree = "<group>"; };
-		E74853BF17185E93007B9793 /* ofxSPKZone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSPKZone.cpp; sourceTree = "<group>"; };
-		E74853C017185E93007B9793 /* ofxSPKZone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSPKZone.h; sourceTree = "<group>"; };
-		E748540117187160007B9793 /* DepthParticleField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DepthParticleField.cpp; sourceTree = "<group>"; };
-		E748540217187160007B9793 /* DepthParticleField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepthParticleField.h; sourceTree = "<group>"; };
 		E748F78315EBBF1A00B4157F /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		E748F78515EBBF1A00B4157F /* ofRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofRange.h; sourceTree = "<group>"; };
 		E748FF0815EBBFA200B4157F /* ofxTimeline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTimeline.cpp; sourceTree = "<group>"; };
@@ -516,10 +348,6 @@
 		E753157D1742EACF005952A8 /* RGBD.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = RGBD.icns; sourceTree = "<group>"; };
 		E753BF731742B4BE005952A8 /* ofxRGBDCombinedVideoExporter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDCombinedVideoExporter.cpp; sourceTree = "<group>"; };
 		E753BF741742B4BE005952A8 /* ofxRGBDCombinedVideoExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDCombinedVideoExporter.h; sourceTree = "<group>"; };
-		E75480D7174AC0F600BF3BBC /* distort.frag */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = distort.frag; sourceTree = "<group>"; };
-		E75480D8174AC0F600BF3BBC /* distort.vert */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = distort.vert; sourceTree = "<group>"; };
-		E76951DD1745794D00FE60A2 /* godrays.frag */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = godrays.frag; sourceTree = "<group>"; };
-		E76951DE1745794D00FE60A2 /* godrays.vert */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = godrays.vert; sourceTree = "<group>"; };
 		E77797961583FB8C0041CEAF /* ofxRGBDScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDScene.cpp; sourceTree = "<group>"; };
 		E77797971583FB8C0041CEAF /* ofxRGBDScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRGBDScene.h; sourceTree = "<group>"; };
 		E78FD54E16D298D0004D6A36 /* ofxRGBDCPURenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxRGBDCPURenderer.cpp; sourceTree = "<group>"; };
@@ -540,8 +368,6 @@
 		E7997A5E1541D06500D4130C /* dofblur.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = dofblur.vert; sourceTree = "<group>"; };
 		E79F58311625C6C9002B2B34 /* ofxTLCameraTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLCameraTrack.cpp; sourceTree = "<group>"; };
 		E79F58321625C6C9002B2B34 /* ofxTLCameraTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLCameraTrack.h; sourceTree = "<group>"; };
-		E7A0BA78166EB7BE00764549 /* dofrange2.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = dofrange2.frag; sourceTree = "<group>"; };
-		E7A0BA79166EB7BE00764549 /* dofrange2.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = dofrange2.vert; sourceTree = "<group>"; };
 		E7BAFC32176BE5C30097AC71 /* ETF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETF.h; sourceTree = "<group>"; };
 		E7BAFC33176BE5C30097AC71 /* fdog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fdog.h; sourceTree = "<group>"; };
 		E7BAFC34176BE5C30097AC71 /* imatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imatrix.h; sourceTree = "<group>"; };
@@ -811,14 +637,8 @@
 		A69D77DC14E0E5A900963BF2 /* shaders */ = {
 			isa = PBXGroup;
 			children = (
-				E75480D7174AC0F600BF3BBC /* distort.frag */,
-				E75480D8174AC0F600BF3BBC /* distort.vert */,
-				E76951DD1745794D00FE60A2 /* godrays.frag */,
-				E76951DE1745794D00FE60A2 /* godrays.vert */,
 				E7997A5D1541D06500D4130C /* dofblur.frag */,
 				E7997A5E1541D06500D4130C /* dofblur.vert */,
-				E7A0BA78166EB7BE00764549 /* dofrange2.frag */,
-				E7A0BA79166EB7BE00764549 /* dofrange2.vert */,
 				E7F96F0E153E8D0F005841A9 /* unproject.vert */,
 				E7F96F0D153E8D0F005841A9 /* unproject.frag */,
 			);
@@ -828,7 +648,6 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
-				E748532717185E92007B9793 /* ofxSPK */,
 				E7C0388816FF7C9D00A789D2 /* ofxGui */,
 				E74DCB4516ED25DF00A45F2F /* ofxObjLoader */,
 				E74806DA15EBC06800B4157F /* ofxTimecode */,
@@ -915,8 +734,6 @@
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
-				E748540217187160007B9793 /* DepthParticleField.h */,
-				E748540117187160007B9793 /* DepthParticleField.cpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -1205,296 +1022,6 @@
 			children = (
 				E74806E815EBC06900B4157F /* ofxTimecode.cpp */,
 				E74806E915EBC06900B4157F /* ofxTimecode.h */,
-			);
-			path = src;
-			sourceTree = "<group>";
-		};
-		E748532717185E92007B9793 /* ofxSPK */ = {
-			isa = PBXGroup;
-			children = (
-				E748533A17185E93007B9793 /* libs */,
-				E74853B017185E93007B9793 /* src */,
-			);
-			name = ofxSPK;
-			path = ../../../addons/ofxSPK;
-			sourceTree = "<group>";
-		};
-		E748533A17185E93007B9793 /* libs */ = {
-			isa = PBXGroup;
-			children = (
-				E748533B17185E93007B9793 /* SPARK */,
-			);
-			path = libs;
-			sourceTree = "<group>";
-		};
-		E748533B17185E93007B9793 /* SPARK */ = {
-			isa = PBXGroup;
-			children = (
-				E748533C17185E93007B9793 /* include */,
-				E748537C17185E93007B9793 /* src */,
-			);
-			path = SPARK;
-			sourceTree = "<group>";
-		};
-		E748533C17185E93007B9793 /* include */ = {
-			isa = PBXGroup;
-			children = (
-				E748533D17185E93007B9793 /* Core */,
-				E748535117185E93007B9793 /* Extensions */,
-				E748537117185E93007B9793 /* RenderingAPIs */,
-				E748537A17185E93007B9793 /* SPK.h */,
-				E748537B17185E93007B9793 /* SPK_GL.h */,
-			);
-			path = include;
-			sourceTree = "<group>";
-		};
-		E748533D17185E93007B9793 /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				E748533E17185E93007B9793 /* SPK_ArrayBuffer.h */,
-				E748533F17185E93007B9793 /* SPK_Buffer.h */,
-				E748534017185E93007B9793 /* SPK_BufferHandler.h */,
-				E748534117185E93007B9793 /* SPK_DEF.h */,
-				E748534217185E93007B9793 /* SPK_Emitter.h */,
-				E748534317185E93007B9793 /* SPK_Factory.h */,
-				E748534417185E93007B9793 /* SPK_Group.h */,
-				E748534517185E93007B9793 /* SPK_Interpolator.h */,
-				E748534617185E93007B9793 /* SPK_Model.h */,
-				E748534717185E93007B9793 /* SPK_Modifier.h */,
-				E748534817185E93007B9793 /* SPK_Particle.h */,
-				E748534917185E93007B9793 /* SPK_Pool.h */,
-				E748534A17185E93007B9793 /* SPK_Registerable.h */,
-				E748534B17185E93007B9793 /* SPK_RegWrapper.h */,
-				E748534C17185E93007B9793 /* SPK_Renderer.h */,
-				E748534D17185E93007B9793 /* SPK_System.h */,
-				E748534E17185E93007B9793 /* SPK_Transformable.h */,
-				E748534F17185E93007B9793 /* SPK_Vector3D.h */,
-				E748535017185E93007B9793 /* SPK_Zone.h */,
-			);
-			path = Core;
-			sourceTree = "<group>";
-		};
-		E748535117185E93007B9793 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				E748535217185E93007B9793 /* Emitters */,
-				E748535817185E93007B9793 /* Modifiers */,
-				E748536117185E93007B9793 /* Renderers */,
-				E748536717185E93007B9793 /* Zones */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
-		E748535217185E93007B9793 /* Emitters */ = {
-			isa = PBXGroup;
-			children = (
-				E748535317185E93007B9793 /* SPK_NormalEmitter.h */,
-				E748535417185E93007B9793 /* SPK_RandomEmitter.h */,
-				E748535517185E93007B9793 /* SPK_SphericEmitter.h */,
-				E748535617185E93007B9793 /* SPK_StaticEmitter.h */,
-				E748535717185E93007B9793 /* SPK_StraightEmitter.h */,
-			);
-			path = Emitters;
-			sourceTree = "<group>";
-		};
-		E748535817185E93007B9793 /* Modifiers */ = {
-			isa = PBXGroup;
-			children = (
-				E748535917185E93007B9793 /* SPK_Collision.h */,
-				E748535A17185E93007B9793 /* SPK_Destroyer.h */,
-				E748535B17185E93007B9793 /* SPK_LinearForce.h */,
-				E748535C17185E93007B9793 /* SPK_ModifierGroup.h */,
-				E748535D17185E93007B9793 /* SPK_Obstacle.h */,
-				E748535E17185E93007B9793 /* SPK_PointMass.h */,
-				E748535F17185E93007B9793 /* SPK_Rotator.h */,
-				E748536017185E93007B9793 /* SPK_Vortex.h */,
-			);
-			path = Modifiers;
-			sourceTree = "<group>";
-		};
-		E748536117185E93007B9793 /* Renderers */ = {
-			isa = PBXGroup;
-			children = (
-				E748536217185E93007B9793 /* SPK_LineRendererInterface.h */,
-				E748536317185E93007B9793 /* SPK_Oriented2DRendererInterface.h */,
-				E748536417185E93007B9793 /* SPK_Oriented3DRendererInterface.h */,
-				E748536517185E93007B9793 /* SPK_PointRendererInterface.h */,
-				E748536617185E93007B9793 /* SPK_QuadRendererInterface.h */,
-			);
-			path = Renderers;
-			sourceTree = "<group>";
-		};
-		E748536717185E93007B9793 /* Zones */ = {
-			isa = PBXGroup;
-			children = (
-				E748536817185E93007B9793 /* SPK_AABox.h */,
-				E748536917185E93007B9793 /* SPK_Cylinder.h */,
-				E748536A17185E93007B9793 /* SPK_Line.h */,
-				E748536B17185E93007B9793 /* SPK_Plane.h */,
-				E748536C17185E93007B9793 /* SPK_Point.h */,
-				E748536D17185E93007B9793 /* SPK_Ring.h */,
-				E748536E17185E93007B9793 /* SPK_Sphere.h */,
-				E748536F17185E93007B9793 /* SPK_ZoneIntersection.h */,
-				E748537017185E93007B9793 /* SPK_ZoneUnion.h */,
-			);
-			path = Zones;
-			sourceTree = "<group>";
-		};
-		E748537117185E93007B9793 /* RenderingAPIs */ = {
-			isa = PBXGroup;
-			children = (
-				E748537217185E93007B9793 /* OpenGL */,
-			);
-			path = RenderingAPIs;
-			sourceTree = "<group>";
-		};
-		E748537217185E93007B9793 /* OpenGL */ = {
-			isa = PBXGroup;
-			children = (
-				E748537317185E93007B9793 /* SPK_GL_DEF.h */,
-				E748537417185E93007B9793 /* SPK_GLExtHandler.h */,
-				E748537517185E93007B9793 /* SPK_GLLineRenderer.h */,
-				E748537617185E93007B9793 /* SPK_GLLineTrailRenderer.h */,
-				E748537717185E93007B9793 /* SPK_GLPointRenderer.h */,
-				E748537817185E93007B9793 /* SPK_GLQuadRenderer.h */,
-				E748537917185E93007B9793 /* SPK_GLRenderer.h */,
-			);
-			path = OpenGL;
-			sourceTree = "<group>";
-		};
-		E748537C17185E93007B9793 /* src */ = {
-			isa = PBXGroup;
-			children = (
-				E748537D17185E93007B9793 /* Core */,
-				E748538D17185E93007B9793 /* Extensions */,
-				E74853A817185E93007B9793 /* RenderingAPIs */,
-			);
-			path = src;
-			sourceTree = "<group>";
-		};
-		E748537D17185E93007B9793 /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				E748537E17185E93007B9793 /* SPK_BufferHandler.cpp */,
-				E748537F17185E93007B9793 /* SPK_DEF.cpp */,
-				E748538017185E93007B9793 /* SPK_Emitter.cpp */,
-				E748538117185E93007B9793 /* SPK_Factory.cpp */,
-				E748538217185E93007B9793 /* SPK_Group.cpp */,
-				E748538317185E93007B9793 /* SPK_Interpolator.cpp */,
-				E748538417185E93007B9793 /* SPK_Model.cpp */,
-				E748538517185E93007B9793 /* SPK_Modifier.cpp */,
-				E748538617185E93007B9793 /* SPK_Particle.cpp */,
-				E748538717185E93007B9793 /* SPK_Registerable.cpp */,
-				E748538817185E93007B9793 /* SPK_Renderer.cpp */,
-				E748538917185E93007B9793 /* SPK_System.cpp */,
-				E748538A17185E93007B9793 /* SPK_Transformable.cpp */,
-				E748538B17185E93007B9793 /* SPK_Vector3D.cpp */,
-				E748538C17185E93007B9793 /* SPK_Zone.cpp */,
-			);
-			path = Core;
-			sourceTree = "<group>";
-		};
-		E748538D17185E93007B9793 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				E748538E17185E93007B9793 /* Emitters */,
-				E748539317185E93007B9793 /* Modifiers */,
-				E748539B17185E93007B9793 /* Renderers */,
-				E748539E17185E93007B9793 /* Zones */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
-		E748538E17185E93007B9793 /* Emitters */ = {
-			isa = PBXGroup;
-			children = (
-				E748538F17185E93007B9793 /* SPK_NormalEmitter.cpp */,
-				E748539017185E93007B9793 /* SPK_RandomEmitter.cpp */,
-				E748539117185E93007B9793 /* SPK_SphericEmitter.cpp */,
-				E748539217185E93007B9793 /* SPK_StraightEmitter.cpp */,
-			);
-			path = Emitters;
-			sourceTree = "<group>";
-		};
-		E748539317185E93007B9793 /* Modifiers */ = {
-			isa = PBXGroup;
-			children = (
-				E748539417185E93007B9793 /* SPK_Collision.cpp */,
-				E748539517185E93007B9793 /* SPK_Destroyer.cpp */,
-				E748539617185E93007B9793 /* SPK_LinearForce.cpp */,
-				E748539717185E93007B9793 /* SPK_ModifierGroup.cpp */,
-				E748539817185E93007B9793 /* SPK_Obstacle.cpp */,
-				E748539917185E93007B9793 /* SPK_PointMass.cpp */,
-				E748539A17185E93007B9793 /* SPK_Vortex.cpp */,
-			);
-			path = Modifiers;
-			sourceTree = "<group>";
-		};
-		E748539B17185E93007B9793 /* Renderers */ = {
-			isa = PBXGroup;
-			children = (
-				E748539C17185E93007B9793 /* SPK_Oriented3DRendererInterface.cpp */,
-				E748539D17185E93007B9793 /* SPK_QuadRendererInterface.cpp */,
-			);
-			path = Renderers;
-			sourceTree = "<group>";
-		};
-		E748539E17185E93007B9793 /* Zones */ = {
-			isa = PBXGroup;
-			children = (
-				E748539F17185E93007B9793 /* SPK_AABox.cpp */,
-				E74853A017185E93007B9793 /* SPK_Cylinder.cpp */,
-				E74853A117185E93007B9793 /* SPK_Line.cpp */,
-				E74853A217185E93007B9793 /* SPK_Plane.cpp */,
-				E74853A317185E93007B9793 /* SPK_Point.cpp */,
-				E74853A417185E93007B9793 /* SPK_Ring.cpp */,
-				E74853A517185E93007B9793 /* SPK_Sphere.cpp */,
-				E74853A617185E93007B9793 /* SPK_ZoneIntersection.cpp */,
-				E74853A717185E93007B9793 /* SPK_ZoneUnion.cpp */,
-			);
-			path = Zones;
-			sourceTree = "<group>";
-		};
-		E74853A817185E93007B9793 /* RenderingAPIs */ = {
-			isa = PBXGroup;
-			children = (
-				E74853A917185E93007B9793 /* OpenGL */,
-			);
-			path = RenderingAPIs;
-			sourceTree = "<group>";
-		};
-		E74853A917185E93007B9793 /* OpenGL */ = {
-			isa = PBXGroup;
-			children = (
-				E74853AA17185E93007B9793 /* SPK_GLExtHandler.cpp */,
-				E74853AB17185E93007B9793 /* SPK_GLLineRenderer.cpp */,
-				E74853AC17185E93007B9793 /* SPK_GLLineTrailRenderer.cpp */,
-				E74853AD17185E93007B9793 /* SPK_GLPointRenderer.cpp */,
-				E74853AE17185E93007B9793 /* SPK_GLQuadRenderer.cpp */,
-				E74853AF17185E93007B9793 /* SPK_GLRenderer.cpp */,
-			);
-			path = OpenGL;
-			sourceTree = "<group>";
-		};
-		E74853B017185E93007B9793 /* src */ = {
-			isa = PBXGroup;
-			children = (
-				E74853B117185E93007B9793 /* ofxSPK.cpp */,
-				E74853B217185E93007B9793 /* ofxSPK.h */,
-				E74853B317185E93007B9793 /* ofxSPKEmitter.cpp */,
-				E74853B417185E93007B9793 /* ofxSPKEmitter.h */,
-				E74853B517185E93007B9793 /* ofxSPKGroup.cpp */,
-				E74853B617185E93007B9793 /* ofxSPKGroup.h */,
-				E74853B717185E93007B9793 /* ofxSPKModifier.cpp */,
-				E74853B817185E93007B9793 /* ofxSPKModifier.h */,
-				E74853B917185E93007B9793 /* ofxSPKRenderer.cpp */,
-				E74853BA17185E93007B9793 /* ofxSPKRenderer.h */,
-				E74853BB17185E93007B9793 /* ofxSPKSystem.cpp */,
-				E74853BC17185E93007B9793 /* ofxSPKSystem.h */,
-				E74853BD17185E93007B9793 /* ofxSPKUtils.cpp */,
-				E74853BE17185E93007B9793 /* ofxSPKUtils.h */,
-				E74853BF17185E93007B9793 /* ofxSPKZone.cpp */,
-				E74853C017185E93007B9793 /* ofxSPKZone.h */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -2040,58 +1567,6 @@
 				E7C0389C16FF7C9D00A789D2 /* ofxPanel.cpp in Sources */,
 				E7C0389D16FF7C9D00A789D2 /* ofxSlider.cpp in Sources */,
 				E7C0389E16FF7C9D00A789D2 /* ofxToggle.cpp in Sources */,
-				E74853CA17185E93007B9793 /* SPK_BufferHandler.cpp in Sources */,
-				E74853CB17185E93007B9793 /* SPK_DEF.cpp in Sources */,
-				E74853CC17185E93007B9793 /* SPK_Emitter.cpp in Sources */,
-				E74853CD17185E93007B9793 /* SPK_Factory.cpp in Sources */,
-				E74853CE17185E93007B9793 /* SPK_Group.cpp in Sources */,
-				E74853CF17185E93007B9793 /* SPK_Interpolator.cpp in Sources */,
-				E74853D017185E93007B9793 /* SPK_Model.cpp in Sources */,
-				E74853D117185E93007B9793 /* SPK_Modifier.cpp in Sources */,
-				E74853D217185E93007B9793 /* SPK_Particle.cpp in Sources */,
-				E74853D317185E93007B9793 /* SPK_Registerable.cpp in Sources */,
-				E74853D417185E93007B9793 /* SPK_Renderer.cpp in Sources */,
-				E74853D517185E93007B9793 /* SPK_System.cpp in Sources */,
-				E74853D617185E93007B9793 /* SPK_Transformable.cpp in Sources */,
-				E74853D717185E93007B9793 /* SPK_Vector3D.cpp in Sources */,
-				E74853D817185E93007B9793 /* SPK_Zone.cpp in Sources */,
-				E74853D917185E93007B9793 /* SPK_NormalEmitter.cpp in Sources */,
-				E74853DA17185E93007B9793 /* SPK_RandomEmitter.cpp in Sources */,
-				E74853DB17185E93007B9793 /* SPK_SphericEmitter.cpp in Sources */,
-				E74853DC17185E93007B9793 /* SPK_StraightEmitter.cpp in Sources */,
-				E74853DD17185E93007B9793 /* SPK_Collision.cpp in Sources */,
-				E74853DE17185E93007B9793 /* SPK_Destroyer.cpp in Sources */,
-				E74853DF17185E93007B9793 /* SPK_LinearForce.cpp in Sources */,
-				E74853E017185E93007B9793 /* SPK_ModifierGroup.cpp in Sources */,
-				E74853E117185E93007B9793 /* SPK_Obstacle.cpp in Sources */,
-				E74853E217185E93007B9793 /* SPK_PointMass.cpp in Sources */,
-				E74853E317185E93007B9793 /* SPK_Vortex.cpp in Sources */,
-				E74853E417185E93007B9793 /* SPK_Oriented3DRendererInterface.cpp in Sources */,
-				E74853E517185E93007B9793 /* SPK_QuadRendererInterface.cpp in Sources */,
-				E74853E617185E93007B9793 /* SPK_AABox.cpp in Sources */,
-				E74853E717185E93007B9793 /* SPK_Cylinder.cpp in Sources */,
-				E74853E817185E93007B9793 /* SPK_Line.cpp in Sources */,
-				E74853E917185E93007B9793 /* SPK_Plane.cpp in Sources */,
-				E74853EA17185E93007B9793 /* SPK_Point.cpp in Sources */,
-				E74853EB17185E93007B9793 /* SPK_Ring.cpp in Sources */,
-				E74853EC17185E93007B9793 /* SPK_Sphere.cpp in Sources */,
-				E74853ED17185E93007B9793 /* SPK_ZoneIntersection.cpp in Sources */,
-				E74853EE17185E93007B9793 /* SPK_ZoneUnion.cpp in Sources */,
-				E74853EF17185E93007B9793 /* SPK_GLExtHandler.cpp in Sources */,
-				E74853F017185E93007B9793 /* SPK_GLLineRenderer.cpp in Sources */,
-				E74853F117185E93007B9793 /* SPK_GLLineTrailRenderer.cpp in Sources */,
-				E74853F217185E93007B9793 /* SPK_GLPointRenderer.cpp in Sources */,
-				E74853F317185E93007B9793 /* SPK_GLQuadRenderer.cpp in Sources */,
-				E74853F417185E93007B9793 /* SPK_GLRenderer.cpp in Sources */,
-				E74853F517185E93007B9793 /* ofxSPK.cpp in Sources */,
-				E74853F617185E93007B9793 /* ofxSPKEmitter.cpp in Sources */,
-				E74853F717185E93007B9793 /* ofxSPKGroup.cpp in Sources */,
-				E74853F817185E93007B9793 /* ofxSPKModifier.cpp in Sources */,
-				E74853F917185E93007B9793 /* ofxSPKRenderer.cpp in Sources */,
-				E74853FA17185E93007B9793 /* ofxSPKSystem.cpp in Sources */,
-				E74853FB17185E93007B9793 /* ofxSPKUtils.cpp in Sources */,
-				E74853FC17185E93007B9793 /* ofxSPKZone.cpp in Sources */,
-				E748540317187160007B9793 /* DepthParticleField.cpp in Sources */,
 				E753BF751742B4BE005952A8 /* ofxRGBDCombinedVideoExporter.cpp in Sources */,
 				E7BAFC39176BE5C30097AC71 /* ETF.cpp in Sources */,
 				E7BAFC3A176BE5C30097AC71 /* fdog.cpp in Sources */,

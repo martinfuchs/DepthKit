@@ -9,49 +9,30 @@ uniform vec2 dim;
 uniform float fadeAmount;
 uniform vec4 fadeColor;
 
-varying float VZPositionValid0;
+varying float positionValid;
 const float epsilon = 1e-6;
 
-varying vec3 normal;
-varying vec4 normalColor;
-varying vec3 eyeVec;
+//varying vec3 normal;
+//varying vec4 normalColor;
+//varying vec3 eyeVec;
 
-uniform float lightEffect;
-uniform float shininess;
+//uniform float lightEffect;
+//uniform float shininess;
 
-varying float diffuseAttenuate;
-varying float specularAttenuate;
-varying vec3 diffuseLightDirection;
-varying vec3 specularLightDirection;
-
-float calculateLight(){
-	vec3 N = normal;
-	vec3 L = diffuseLightDirection;
-	
-	float lambertTerm = dot(N,L) * diffuseAttenuate;
-	return lambertTerm;
-}
-
-float calculateSpecular(){
-	if(dot(normal, specularLightDirection) < 0.0){
-		return 0.0;
-	}
-	return specularAttenuate * pow(max(0.0, dot(reflect(-specularLightDirection, normal), eyeVec)), shininess);
-}
+//varying float diffuseAttenuate;
+//varying float specularAttenuate;
+//varying vec3 diffuseLightDirection;
+//varying vec3 specularLightDirection;
 
 void main()
 {
-    if(VZPositionValid0 < epsilon){
+    if(positionValid < epsilon){
     	discard;
         return;
     }
 
     if(useTexture == 1){
         vec4 col = texture2DRect(colorTex, gl_TexCoord[0].st);
-		if(lightEffect > epsilon){
-			float lightAttenuate = mix(1.0, calculateLight() + calculateSpecular(), lightEffect);
-			col.rgb *= lightAttenuate;
-		}
         gl_FragColor = mix(col, vec4(fadeColor), fadeAmount) * gl_Color;
     }
     else{

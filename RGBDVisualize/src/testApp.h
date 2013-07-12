@@ -17,9 +17,6 @@
 #include "ofxRGBDPlayer.h"
 #include "ofxGui.h"
 #include "ofxObjLoader.h"
-
-#include "DepthParticleField.h"
-#include "ofxSPK.h"
 #include "ofxRGBDCombinedVideoExporter.h"
 
 
@@ -100,22 +97,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     void resetCameraPosition();
     void checkReallocateFrameBuffers();
     void allocateFrameBuffers();
-    
-	ofxToggle drawDepthParticles;
-	DepthParticleField depthParticleField;
-    
-    //SPARKSTUFF
-    ofxToggle drawParticles;
-    void setupSpark();
-    void updateSpark();
-    
-    ofxSPK::System sys;
-    ofxSPK::Group group;
-    SPK::Ring* ringZone;
-    //vector<ofxSPK::Emitter0> emitters;
-    ofxSPK::Emitter ringEmitter;
-    ofxSPK::Modifier attractor;
-    //END SPARK STUFF
+        
     
     //TEST DRAWING SYSTEM
     ofMesh testMesh;
@@ -162,24 +144,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxIntSlider customHeight;
     ofxToggle setCurrentSize;
 	
-	ofxToggle drawlightDebug;
-	
-    //NORMAL ADDITION
-    void loadNormals(string directory);
-    string normalsDirectory;
-    ofxToggle loadNormalDir;
-    ofxToggle useNormals;
-    bool normalsLoaded;
-    map<int,string> normalMaps;
-    ofImage normalImage;
-    int normalFrameOffset;
-	int currentNormalLoaded;
-	
-	ofxToggle drawShape;
-	ofxIntSlider shapeVerts;
-	ofMesh shapeMesh;
-	void generateShapeMesh();
-	
+
 	ofxToggle drawRandomMesh;
 	ofMesh randomMesh;
 	ofxIntSlider numRandomPoints;
@@ -202,24 +167,21 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	void toggleOffRenderOutputOptions();
 	
     ofxToggle startSequenceAt0;
-	ofxIntSlider normalCorrect;
-	
 	ofxToggle affectPointsPerlin;
 	
-	ofImage lightSprite;
-	ofImage lightMask;
-	ofImage lightClouds;
-	ofImage waterBump;
-	float currentLightCloudOffset;
+//	ofImage lightSprite;
+//	ofImage lightMask;
+//	ofImage lightClouds;
+//	ofImage waterBump;
+//	float currentLightCloudOffset;
 	
-	ofxFloatSlider minDepthSlider;
-	ofxFloatSlider maxDepthSlider;
+//	ofxFloatSlider minDepthSlider;
+//	ofxFloatSlider maxDepthSlider;
+
 	
-	
-	ofxToggle drawGodRays;
-	ofShader godRays;
-	ofShader distort;
-	
+//	ofxToggle drawGodRays;
+//	ofShader godRays;
+//	ofShader distort;
 	ofImage transparencyCheckers;
 	
 	bool multisampleBufferAllocated;
@@ -265,13 +227,13 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	string currentCompositionFile;
     string currentCompositionLabel;
 	string currentVideoFrameFile;
-	string currentNormalsDirectoryFile;
+//	string currentNormalsDirectoryFile;
 	
 	string mediaBinFolder;
 	
     bool viewComps;
     float accumulatedPerlinOffset;
-    float backlightDistortionPosition;
+    //float backlightDistortionPosition;
 	
 	ofxGameCamera cam;
 	ofxTLCameraTrack* cameraTrack;

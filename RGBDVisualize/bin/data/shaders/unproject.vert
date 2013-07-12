@@ -43,23 +43,23 @@ uniform float noisePosition;
 uniform vec3 noiseShape;
 
 //POINT AFFECT
-uniform float pointMin;
-uniform float pointMax;
+//uniform float pointMin;
+//uniform float pointMax;
 
 //LIGHTS
 uniform sampler2DRect normalTex;
-varying vec3 normal;
-varying vec4 normalColor;
-varying vec3 eyeVec;
+//varying vec3 normal;
+//varying vec4 normalColor;
+//varying vec3 eyeVec;
 
-varying vec3 diffuseLightDirection;
-varying vec3 specularLightDirection;
-varying float diffuseAttenuate;
-varying float specularAttenuate;
+//varying vec3 diffuseLightDirection;
+//varying vec3 specularLightDirection;
+//varying float diffuseAttenuate;
+//varying float specularAttenuate;
 
 uniform int useTexture;
 
-varying float VZPositionValid0;
+varying float positionValid;
 
 const float epsilon = 1e-6;
 
@@ -217,14 +217,7 @@ void main(void)
 {
     //align to texture
     vec2 halfvec = vec2(.5,.5);
-//    float depth = texture2DRect(depthTex, floor(gl_Vertex.xy) + halfvec).r * 65535.;
-//    float right = texture2DRect(depthTex, floor(gl_Vertex.xy + vec2(simplify.x,0.0)) + halfvec ).r * 65535.;
-//    float down  = texture2DRect(depthTex, floor(gl_Vertex.xy + vec2(0.0,simplify.y)) + halfvec ).r * 65535.;
-//    float left  = texture2DRect(depthTex, floor(gl_Vertex.xy + vec2(-simplify.x,0.0)) + halfvec ).r * 65535.;
-//    float up    = texture2DRect(depthTex, floor(gl_Vertex.xy + vec2(0.0,-simplify.y)) + halfvec ).r * 65535.;
-//    float bl    = texture2DRect(depthTex, vec2(floor(gl_Vertex.x - simplify.x),floor( gl_Vertex.y + simplify.y)) + halfvec ).r * 65535.;
-//    float ur    = texture2DRect(depthTex, vec2(floor(gl_Vertex.x  + simplify.x),floor(gl_Vertex.y - simplify.y)) + halfvec ).r * 65535.;
-	
+
     float depth = depthAtPosition(floor(gl_Vertex.xy) + halfvec);
     float right = depthAtPosition(floor(gl_Vertex.xy + vec2(simplify.x,0.0)) + halfvec );
     float down  = depthAtPosition(floor(gl_Vertex.xy + vec2(0.0,simplify.y)) + halfvec );
@@ -234,29 +227,29 @@ void main(void)
     float ur    = depthAtPosition(vec2(floor(gl_Vertex.x  + simplify.x),floor(gl_Vertex.y - simplify.y)) + halfvec );
 
     //cull invalid verts
-    VZPositionValid0 = (depth < farClip &&
-                        right < farClip &&
-                        down < farClip &&
-                        left < farClip &&
-                        up < farClip &&
-                        bl < farClip &&
-                        ur < farClip &&
-                        
-                        depth > nearClip &&
-                        right > nearClip &&
-                        down > nearClip &&
-                        left > nearClip &&
-                        up > nearClip &&
-                        bl > nearClip &&
-                        ur > nearClip &&
-                        
-                        abs(down - depth) < edgeClip &&
-                        abs(right - depth) < edgeClip &&
-                        abs(up - depth) < edgeClip &&
-                        abs(left - depth) < edgeClip &&
-                        abs(ur - depth) < edgeClip &&
-                        abs(bl - depth) < edgeClip
-						) ? 1.0 : 0.0;
+    positionValid = (depth < farClip &&
+					right < farClip &&
+					down < farClip &&
+					left < farClip &&
+					up < farClip &&
+					bl < farClip &&
+					ur < farClip &&
+					
+					depth > nearClip &&
+					right > nearClip &&
+					down > nearClip &&
+					left > nearClip &&
+					up > nearClip &&
+					bl > nearClip &&
+					ur > nearClip &&
+					
+					abs(down - depth) < edgeClip &&
+					abs(right - depth) < edgeClip &&
+					abs(up - depth) < edgeClip &&
+					abs(left - depth) < edgeClip &&
+					abs(ur - depth) < edgeClip &&
+					abs(bl - depth) < edgeClip
+					) ? 1.0 : 0.0;
 
 
 	vec4 pos = vec4((gl_Vertex.x - principalPoint.x) * depth / fov.x,
@@ -288,44 +281,24 @@ void main(void)
     
 
 	//DISTORT GEOMETRY
-	vec3 noiseDistort = vec3(snoise(vec4(pos.xyz / noiseDensity, noisePosition)),
-							 snoise(vec4(pos.yzx / noiseDensity, noisePosition)),
-							 snoise(vec4(pos.zxy / noiseDensity, noisePosition))) * noiseShape;
+	vec3 noiseDistort = vec3(0.0);
+	if(noiseAmp > 0.0){
+		noiseDistort = vec3(snoise(vec4(pos.xyz / noiseDensity, noisePosition)),
+							snoise(vec4(pos.yzx / noiseDensity, noisePosition)),
+							snoise(vec4(pos.zxy / noiseDensity, noisePosition))) * noiseShape;
+	}
+	
 	//SINE
 	if(sinAmp.x > 0.0 || sinAmp.y > 0.0){
 		vec2 sinOffset = sin(gl_Vertex.xy * sinFreq + sinPos.xy) * sinAmp;
 		pos.z += sinOffset.x + sinOffset.y;
 	}
+	
 	//PERLIN
 	pos.xyz += noiseDistort * noiseAmp;
 	
-	//NORMALS
-	normalColor = texture2DRect(normalTex, floor(gl_Vertex.xy) + halfvec);
-	vec3 surfaceNormal = normalColor.xyz * 2.0 - 1.0;
-    normal = -normalize(gl_NormalMatrix * surfaceNormal);
-	vec3 vVertex = vec3(gl_ModelViewMatrix * pos);
-	eyeVec = normalize(-vVertex);
-
-	//DIFFUSE LIGHT
-	vec3 diffuseLightDirectionFull = vec3(gl_LightSource[0].position.xyz - vVertex);
-    float d = length(diffuseLightDirectionFull);
-	diffuseAttenuate = 1.0 /(gl_LightSource[0].constantAttenuation +
-							 gl_LightSource[0].linearAttenuation	* d +
-							 gl_LightSource[0].quadraticAttenuation * d * d);
-	
-	diffuseLightDirection = diffuseLightDirectionFull / d;
-	
-	//SPECULAR LIGHT
-	vec3 specularLightDirectionFull = vec3(gl_LightSource[1].position.xyz - vVertex);
-	d = length(specularLightDirectionFull);
-	specularAttenuate = 1.0 /(gl_LightSource[1].constantAttenuation +
-							  gl_LightSource[1].linearAttenuation	* d +
-							  gl_LightSource[1].quadraticAttenuation * d * d);
-
-	specularLightDirection = specularLightDirectionFull / d;
-	
 	//POSITION
-	gl_PointSize = pow(map(noiseDistort.z, -1.0, 1.0, pointMin, pointMax), 2.0);
+//	gl_PointSize = pow(map(noiseDistort.z, -1.0, 1.0, pointMin, pointMax), 2.0);
     gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * pos;
     gl_FrontColor = gl_Color;
 }

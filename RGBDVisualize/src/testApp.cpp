@@ -60,10 +60,10 @@ void testApp::setup(){
 	currentHoleKernelSize = 1;
 	currentHoleFillIterations = 1;
     
-	lightSprite.loadImage("light.png");
-	lightMask.loadImage("light_mask.png");
-	lightClouds.loadImage("light_clouds.png");
-	waterBump.loadImage("waterbump.png");
+//	lightSprite.loadImage("light.png");
+//	lightMask.loadImage("light_mask.png");
+//	lightClouds.loadImage("light_clouds.png");
+//	waterBump.loadImage("waterbump.png");
 	
 	player.updateVideoPlayer = false;
     rendererDirty = true;
@@ -127,64 +127,45 @@ void testApp::setup(){
 	gui.setup("Settings");
 
 	gui.add( videoVolume.setup("Video Volume", ofParameter<float>(), 0, 1.0));
+    gui.add( temporalAlignmentMode.setup("Temporal Alignment", ofParameter<bool>()));
+	gui.add( captureFramePair.setup("Set Color-Depth Time", ofParameter<bool>()));
 	gui.add( cameraSpeed.setup("Camera Speed", ofParameter<float>(), 0, 40));
     gui.add( cameraRollSpeed.setup("Cam Roll Speed", ofParameter<float>(), .0, 4));
-
     gui.add( shouldResetCamera.setup("Reset Camera", ofParameter<bool>()));
 	gui.add( currentLockCamera.setup("Lock to Track", ofParameter<bool>()));
     gui.add( shouldSaveCameraPoint.setup("Set Camera Point", ofParameter<bool>()));
 	
-	gui.add( minDepthSlider.setup("Min Depth", ofParameter<float>(), 0, 3000));
-	gui.add( maxDepthSlider.setup("Max Depth", ofParameter<float>(), 0, 3000));
-
-	gui.add( drawPointcloud.setup("Draw Pointcloud",ofParameter<bool>()));
-    gui.add( drawWireframe.setup("Draw Wireframe",ofParameter<bool>()));
-    gui.add( drawMesh.setup("Draw Mesh",ofParameter<bool>()));
-    gui.add( drawParticles.setup("Draw Particles",ofParameter<bool>()));
-	gui.add( drawDepthParticles.setup("Draw Depth Particles",ofParameter<bool>()));
-
-	gui.add( drawScanlinesVertical.setup("Vertical Scanlines", ofParameter<bool>()));
-	gui.add( drawScanlinesHorizontal.setup("Horizontal Scanlines", ofParameter<bool>()));
-	gui.add( drawRandomMesh.setup("Draw Random Points", ofParameter<bool>()) );
-			
-	gui.add( sinDistort.setup("Sine Waves", ofParameter<bool>()));
-	gui.add( affectPointsPerlin.setup("Affect Points Perlin", ofParameter<bool>()));
- 	
-//	gui.add( drawShape.setup("Draw Shape", ofParameter<bool>()));
-//	gui.add( shapeVerts.setup("Shape Verts", ofParameter<int>(),3, 10));
-	gui.add( drawGodRays.setup("Draw Backlight", ofParameter<bool>()));
-    gui.add( selfOcclude.setup("Self Occlude", ofParameter<bool>()));
-    gui.add( drawDOF.setup("Draw DOF", ofParameter<bool>()));
-	
-	gui.add( loadNormalDir.setup("Load Normals", ofxParameter<bool>()));
-	gui.add( useNormals.setup("Use Normals", ofxParameter<bool>()));
-	gui.add( normalCorrect.setup("Normal Offset", ofxParameter<int>(), -5, 5));
-	
-	gui.add( drawlightDebug.setup("Draw Light Debug", ofxParameter<bool>()));
-	
-	gui.add( customWidth.setup("Frame Width", ofParameter<int>(), 320, 1920*4));
-    gui.add( customHeight.setup("Frame Height", ofParameter<int>(), 240, 1080*4));
-
-    gui.add( setCurrentSize.setup("Apply Custom Size", ofParameter<bool>()));
-	
-    gui.add( lockTo720p.setup("Render 720p", ofParameter<bool>()));
-    gui.add( lockTo1080p.setup("Render 1080p",ofParameter<bool>()));
+	gui.add( currentMirror.setup("Mirror", ofParameter<bool>()));
+	gui.add( renderStillFrame.setup("Freeze One Frame", ofParameter<bool>()));
     
-    gui.add( currentMirror.setup("Mirror", ofParameter<bool>()));
-	
-    gui.add( fillHoles.setup("Fill Holes", ofParameter<bool>()));
+	gui.add( fillHoles.setup("Fill Holes", ofParameter<bool>()));
     gui.add( currentHoleKernelSize.setup("Hole Kernel Size", ofParameter<int>(), 1, 10));
     gui.add( currentHoleFillIterations.setup("Hole Fill Iterations", ofParameter<int>(), 1, 20));
 	
-    gui.add( temporalAlignmentMode.setup("Temporal Alignment", ofParameter<bool>()));
-	gui.add( captureFramePair.setup("Set Color-Depth Time", ofParameter<bool>()));
+	gui.add( drawPointcloud.setup("Draw Point Grid",ofParameter<bool>()));
+	gui.add( drawRandomMesh.setup("Draw Points Random", ofParameter<bool>()) );
+    gui.add( drawWireframe.setup("Draw Wireframe",ofParameter<bool>()));
+	gui.add( drawScanlinesVertical.setup("Draw Vertical Lines", ofParameter<bool>()));
+	gui.add( drawScanlinesHorizontal.setup("Draw Horizontal Lines", ofParameter<bool>()));
+	
+    gui.add( drawMesh.setup("Draw Mesh",ofParameter<bool>()));
+    gui.add( selfOcclude.setup("Self Occlude", ofParameter<bool>()));
+    gui.add( drawDOF.setup("Draw DOF", ofParameter<bool>()));
+	
+	gui.add( sinDistort.setup("Wave Distort", ofParameter<bool>()));
+	gui.add( affectPointsPerlin.setup("Noise Distort", ofParameter<bool>()));
+	
+	gui.add( customWidth.setup("Frame Width", ofParameter<int>(), 320, 1920*4));
+    gui.add( customHeight.setup("Frame Height", ofParameter<int>(), 240, 1080*4));
+    gui.add( setCurrentSize.setup("Apply Custom Size", ofParameter<bool>()));
+    gui.add( lockTo720p.setup("Render 720p", ofParameter<bool>()));
+    gui.add( lockTo1080p.setup("Render 1080p",ofParameter<bool>()));
 	
 	gui.add( renderObjectFiles.setup("Export .obj Files", ofParameter<bool>()));
 	gui.add( renderCombinedVideo1to1.setup("Export Combined Video", ofParameter<bool>()));
 //	gui.add( renderCombinedVideo720p.setup("Export Combined Video, 720p", ofParameter<bool>()));
 //	gui.add( renderCombinedVideo1080p.setup("Export Combined Video, 1080p", ofParameter<bool>()));
 	
-	gui.add( renderStillFrame.setup("Render Still Frame", ofParameter<bool>()));
 			
 	gui.add( includeTextureMaps.setup("Include Texture Maps", ofParameter<bool>()));
 	gui.add( startSequenceAt0.setup("Start Sequence at 1", ofParameter<bool>()));
@@ -193,21 +174,15 @@ void testApp::setup(){
     
 	loadDefaults();	
     
-
 	timelineElementsAdded = false;
 	allocateFrameBuffers();
     loadShaders();
-    
-    //SPARK
-    setupSpark();
     
 	currentLockCamera = false;
     meshBuilder.cacheValidVertices = true;
 	
     accumulatedPerlinOffset = 0;
-	currentLightCloudOffset = 0;
 	sinPosition = ofVec2f(0,0);
-	backlightDistortionPosition = 0;
 	
     ofxXmlSettings defaultBin;
     if(defaultBin.loadFile("defaultBin.xml")){
@@ -225,7 +200,7 @@ void testApp::setup(){
 
 void testApp::loadShaders(){
     
-    dofRange.load("shaders/dofrange2");
+    dofRange.load("shaders/dofrange");
 	cout << "LOADING DOF BLUR" << endl;
     dofBlur.load("shaders/dofblur");
 	cout << "LOADING DOF BLURANGE" << endl;
@@ -242,8 +217,8 @@ void testApp::loadShaders(){
     dofQuad.addTexCoord(ofVec2f(fbo1.getWidth(),0));
     dofQuad.addTexCoord(ofVec2f(fbo1.getWidth(),fbo1.getHeight()));
 	
-	godRays.load("shaders/godrays");
-	distort.load("shaders/distort");
+//	godRays.load("shaders/godrays");
+//	distort.load("shaders/distort");
 	
     renderer.reloadShader();
 }
@@ -267,6 +242,7 @@ void testApp::populateTimelineElements(){
     timeline.addCurves("Simplify Y", currentCompositionDirectory + "simplifyy.xml", ofRange(1, 8), 2);
 	timeline.addCurves("Z Threshold Max", currentCompositionDirectory + "zThreshold.xml", ofRange(1.0, sqrtf(6000)), sqrtf(6000) );
 	timeline.addCurves("Z Threshold Min", currentCompositionDirectory + "zThresholdMin.xml", ofRange(0, sqrtf(2000)), 0 );
+	timeline.addCurves("Random Point Amount", currentCompositionDirectory + "RandomPointAmount.xml", ofRange(0, sqrtf(640*480*2.0)), 100 );
 
 	timeline.addPage("Clipping", true);
 	timeline.addCurves("Edge Clip", currentCompositionDirectory + "edgeClip.xml", ofRange(1.0, 2000), 2000 );
@@ -311,10 +287,10 @@ void testApp::populateTimelineElements(){
 	timeline.addCurves("Y Perlin Stretch", currentCompositionDirectory + "YPerlinStretch.xml", ofRange(0., 1.0), 1.0 );
 	timeline.addCurves("Z Perlin Stretch", currentCompositionDirectory + "ZPerlinStretch.xml", ofRange(0., 1.0), 1.0 );
 
-	timeline.addPage("Random Points", true);
-	timeline.addCurves("Random Point Amount", currentCompositionDirectory + "RandomPointAmount.xml", ofRange(0, sqrtf(640*480*2.0)), 100 );
-	timeline.addCurves("Point Size Max", currentCompositionDirectory + "PointSizeMin.xml", ofRange(-10,10), 3 );
-	timeline.addCurves("Point Size Min", currentCompositionDirectory + "PointSizeMax.xml", ofRange(-10,10), 1 );
+//	timeline.addPage("Random Points", true);
+//	timeline.addCurves("Random Point Amount", currentCompositionDirectory + "RandomPointAmount.xml", ofRange(0, sqrtf(640*480*2.0)), 100 );
+//	timeline.addCurves("Point Size Max", currentCompositionDirectory + "PointSizeMin.xml", ofRange(-10,10), 3 );
+//	timeline.addCurves("Point Size Min", currentCompositionDirectory + "PointSizeMax.xml", ofRange(-10,10), 1 );
 
 	timeline.addPage("Fade To Color", true);
 	timeline.addCurves("Fade Amount", currentCompositionDirectory + "FadeAmount.xml", ofRange(0,1.0), 0 );
@@ -469,53 +445,6 @@ void testApp::drawGeometry(){
 		
 		cam.begin(renderFboRect);
 		
-		ofLight light;
-		ofLight specularLight;
-		
-		if(useNormals && normalImage.isAllocated()){
-			float constantAtten = powf(timeline.getValue("Point Constant Attenuate"), 2.0);
-			float linearAtten = powf(timeline.getValue("Point Linear Attenuate"), 4.0);
-			float quadAtten = powf(timeline.getValue("Point Quad Attenuate"), 6.0);
-
-			light.setPosition(timeline.getValue("Point Light Pos X"),
-							  timeline.getValue("Point Light Pos Y"),
-							  timeline.getValue("Point Light Pos Z"));
-			
-			light.setAttenuation(constantAtten, linearAtten, quadAtten);
-			
-
-			constantAtten = powf(timeline.getValue("Specular Constant Attenuate"), 2.0);
-			linearAtten = powf(timeline.getValue("Specular Linear Attenuate"), 4.0);
-			quadAtten = powf(timeline.getValue("Specular Quad Attenuate"), 6.0);
-			
-			specularLight.setPosition(timeline.getValue("Specular Light Pos X"),
-									  timeline.getValue("Specular Light Pos Y"),
-									  timeline.getValue("Specular Light Pos Z"));
-			
-			specularLight.setAttenuation(constantAtten, linearAtten, quadAtten);
-			
-			ofEnableLighting();
-			light.enable();
-			light.setPointLight();
-			specularLight.enable();
-			specularLight.setPointLight();
-
-			if(drawlightDebug){
-				ofPushStyle();
-				ofNoFill();
-				ofPushMatrix();
-				
-				ofSetColor(255,200,0);
-				ofSphere(light.getPosition(),30);
-				
-				ofSetColor(200,255,0);
-				ofSphere(specularLight.getPosition(),30);
-				
-				ofPopStyle();
-				ofPopMatrix();
-			}
-		}
-		
 		ofFloatColor fadeToColor = timeline.getColor("Fade Color");
 		
 		ofPushMatrix();
@@ -542,7 +471,7 @@ void testApp::drawGeometry(){
 			renderer.getShader().end();
 		}
 		
-		
+
 		float noiseAmplitude = powf(timeline.getValue("Noise Amplitude"), 2.0);
 		float noiseDensity = powf(timeline.getValue("Noise Density"), 2.0);
 		float noiseSpeed = timeline.getValue("Noise Speed");
@@ -563,18 +492,11 @@ void testApp::drawGeometry(){
 										  timeline.getValue("Y Perlin Stretch"),
 										  timeline.getValue("Z Perlin Stretch"));
 				
-		renderer.getShader().setUniform1f("pointMin", timeline.getValue("Point Size Min"));
-		renderer.getShader().setUniform1f("pointMax", timeline.getValue("Point Size Max"));
+//		renderer.getShader().setUniform1f("pointMin", timeline.getValue("Point Size Min"));
+//		renderer.getShader().setUniform1f("pointMax", timeline.getValue("Point Size Max"));
 		renderer.getShader().setUniform1f("fadeAmount", timeline.getValue("Fade Amount"));
 		renderer.getShader().setUniform4f("fadeColor", fadeToColor.r,fadeToColor.g,fadeToColor.b, 1.0);
-		
-		if(useNormals && normalImage.isAllocated()){
-
-			renderer.getShader().setUniform1f("shininess", timeline.getValue("Shininess"));
-			renderer.getShader().setUniform1f("lightEffect", timeline.getValue("Light Effect"));
-			renderer.getShader().setUniformTexture("normalTex", normalImage, 2);
-		}
-		
+				
 		renderer.getShader().end();
 		
 
@@ -593,7 +515,7 @@ void testApp::drawGeometry(){
 		if(drawMesh && meshAlpha > 0){
 			ofSetColor(255*meshAlpha);
 			renderer.drawMesh();
-            //meshBuilder.drawMesh();
+
 			usedDepth = true;
 		}
 		
@@ -667,46 +589,24 @@ void testApp::drawGeometry(){
 			renderer.unbindRenderer();
 		}
 		
-		if(drawShape){
-			ofRotate(timeline.getValue("Shape Rotate"), 0, 0, 1);
-			float scale = powf(timeline.getValue("Shape Scale"),2);
-			ofScale(scale, scale);
-			ofTranslate(timeline.getValue("Shape X"),
-						timeline.getValue("Shape Y"),
-						timeline.getValue("Shape Z"));
-			ofSetColor(timeline.getColor("Shape Color"));
-			ofSetLineWidth(timeline.getValue("Shape Line Width"));
-			generateShapeMesh();
-			shapeMesh.draw();
-			
-		}
+//		if(drawShape){
+//			ofRotate(timeline.getValue("Shape Rotate"), 0, 0, 1);
+//			float scale = powf(timeline.getValue("Shape Scale"),2);
+//			ofScale(scale, scale);
+//			ofTranslate(timeline.getValue("Shape X"),
+//						timeline.getValue("Shape Y"),
+//						timeline.getValue("Shape Z"));
+//			ofSetColor(timeline.getColor("Shape Color"));
+//			ofSetLineWidth(timeline.getValue("Shape Line Width"));
+//			generateShapeMesh();
+//			shapeMesh.draw();
+//		}
+		
 		ofPopStyle();
 		ofPopMatrix();
         
         glDisable(GL_DEPTH_TEST);
 		
-        if(drawParticles){
-            
-            sys.draw();
-            ringEmitter.draw();
-            renderer.bindRenderer();
-            
-            ofPushStyle();
-            float pointSize = timeline.getValue("Point Size");
-            float thickness = timeline.getValue("Wireframe Thickness");
-            thickness *= thickness;
-			ofSetLineWidth(thickness);
-
-            testMesh.setMode(OF_PRIMITIVE_LINE_STRIP);
-            testMesh.draw();
-            renderer.unbindRenderer();
-            ofPopStyle();
-        }
-
-		if(useNormals && normalImage.isAllocated()){
-			ofDisableLighting();
-			light.disable();
-		}
 
 		cam.end();
 		fbo1.end();
@@ -777,124 +677,6 @@ void testApp::drawGeometry(){
             fbo1.end();
         }
 		
-		if(drawGodRays){
-			
-			//draw light rays
-			
-			dofBuffer.begin();
-			ofClear(0,0,0,0);
-			ofSetColor(255);
-			//ofCircle(fbo1.getWidth()/2, fbo1.getHeight()/2, timeline.getValue("Backlight Ring Radius"));
-			ofPushStyle();
-			
-			ofSetRectMode(OF_RECTMODE_CENTER);
-			float ringRadius = timeline.getValue("Backlight Ring Radius");
-			ofVec2f center(fbo1.getWidth()/2,fbo1.getHeight() * timeline.getValue("Backlight Center"));
-			lightSprite.draw(center.x, center.y,
-							 ringRadius,ringRadius);
-				
-			//SCROLL THE LIGHT CLOUD MESH
-			float lcw = lightClouds.getWidth();
-			float lch = lightClouds.getHeight();
-			currentLightCloudOffset += timeline.getValue("Backlight Texture Scroll");
-
-			float middleCoord = ofMap(fmod(currentLightCloudOffset, lch),0, lch, -ringRadius/2,ringRadius/2);
-			
-			ofMesh lightCloudMesh;
-			lightCloudMesh.addVertex(center + ofVec2f(-ringRadius/2,-ringRadius/2));
-			lightCloudMesh.addVertex(center + ofVec2f( ringRadius/2,-ringRadius/2));
-			lightCloudMesh.addVertex(center + ofVec2f(-ringRadius/2, middleCoord));
-			lightCloudMesh.addVertex(center + ofVec2f( ringRadius/2, middleCoord));
-			
-			lightCloudMesh.addVertex(center + ofVec2f(-ringRadius/2, middleCoord));
-			lightCloudMesh.addVertex(center + ofVec2f( ringRadius/2, middleCoord));			
-			lightCloudMesh.addVertex(center + ofVec2f(-ringRadius/2, ringRadius/2));
-			lightCloudMesh.addVertex(center + ofVec2f( ringRadius/2, ringRadius/2));
-						
-			lightCloudMesh.addTexCoord( ofVec2f(0,fmod(currentLightCloudOffset+lch, lch)) );
-			lightCloudMesh.addTexCoord( ofVec2f(lcw,fmod(currentLightCloudOffset+lch, lch)) );
-			lightCloudMesh.addTexCoord( ofVec2f(0,0) );
-			lightCloudMesh.addTexCoord( ofVec2f(lcw,0) );
-			
-			lightCloudMesh.addTexCoord( ofVec2f(0,lch) );
-			lightCloudMesh.addTexCoord( ofVec2f(lcw,lch) );
-			lightCloudMesh.addTexCoord( ofVec2f(0,fmod(currentLightCloudOffset, lch)) );
-			lightCloudMesh.addTexCoord( ofVec2f(lcw,fmod(currentLightCloudOffset, lch)) );
-			
-			lightCloudMesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
-			ofSetColor(255,255,255,255*timeline.getValue("Backlight Texture Alpha"));
-			lightClouds.getTextureReference().bind();
-			lightCloudMesh.draw();
-			lightClouds.getTextureReference().unbind();
-
-			
-			ofSetColor(255);
-			lightMask.draw(center.x, center.y,ringRadius,ringRadius);
-			ofPopStyle();
-
-            dofBuffer.end();
-			
-			///DRAW WHOLE SCENE
-			swapFbo.begin();
-			ofClear(0,0,0,0);
-			
-			distort.begin();
-			backlightDistortionPosition += timeline.getValue("Water Bump Scroll Speed");
-			float waterScale = timeline.getValue("Water Bump Texture Scale");
-			distort.setUniform1f("waterDistortion", powf(timeline.getValue("Water Distort Amount"),2.0));
-			distort.setUniform2f("waterbumpScale", waterScale,waterScale);
-			distort.setUniform2f("waterbumpOffset", 0, backlightDistortionPosition);
-			distort.setUniform2f("waterbumpDimensions", waterBump.getWidth(), waterBump.getHeight());
-			distort.setUniformTexture("waterbump", waterBump, 1);
-			
-			dofBuffer.draw(0, 0);
-			
-			distort.end();
-			
-			//Draw in sw
-            cam.begin(renderFboRect);
-
-			ofEnableBlendMode(OF_BLENDMODE_SCREEN);
-			if(drawRandomMesh){
-				ofSetColor(255*pointAlpha);
-				renderer.bindRenderer();
-				randomMesh.draw();
-				renderer.unbindRenderer();
-			}
-
-			ofSetColor(255);
-			ofEnableAlphaBlending();
-			renderer.getShader().begin();
-			renderer.getShader().setUniform1f("noiseAmp", 0.0);
-			renderer.getShader().setUniform4f("nonTextureColor", 0.0, 0.0, 0.0, timeline.getValue("Backlight Silhouette Alpha"));
-			renderer.getShader().end();
-			renderer.useTexture = false;
-            renderer.drawMesh();
-			renderer.useTexture = true;
-			
-            cam.end();
-			
-			swapFbo.end();
-
-			//blend it in
-			fbo1.begin();
-			ofClear(0.0,0.0,0.0,0.0);
-			
-			godRays.begin();
-			godRays.setUniform2f("screenLightPos", center.x, center.y);
-			godRays.setUniform1f("numSamples", timeline.getValue("Backlight Num Samples"));
-			godRays.setUniform1f("density", timeline.getValue("Backlight Density"));
-			godRays.setUniform1f("decay", 1.0 - powf(timeline.getValue("Backlight Decay"), 4.0));
-			godRays.setUniform1f("exposure", timeline.getValue("Backlight Exposure"));
-			godRays.setUniform1f("weight", timeline.getValue("Backlight Weight"));
-			
-			//applies blend
-			swapFbo.getTextureReference().draw(0,0);
-			
-			godRays.end();
-						
-			fbo1.end();
-		}
 		
         rendererDirty = false;
 	}
@@ -1076,8 +858,7 @@ void testApp::update(){
 	if(startRenderMode){
         startRenderMode = false;
 		firstRenderFrame = true;
-        drawlightDebug = false;
-		
+			
         fbo1.begin();
         ofClear(0,0,0,0);
         fbo1.end();
@@ -1177,14 +958,14 @@ void testApp::update(){
 		drawMesh = true;
 	}
 	
-    if(loadNormalDir){
-        loadNormalDir = false;
-        normalsLoaded = false;
-        ofFileDialogResult r = ofSystemLoadDialog("load normals",true);
-        if(r.bSuccess){
-            loadNormals(r.getPath());
-        }
-    }
+//    if(loadNormalDir){
+//        loadNormalDir = false;
+//        normalsLoaded = false;
+//        ofFileDialogResult r = ofSystemLoadDialog("load normals",true);
+//        if(r.bSuccess){
+//            loadNormals(r.getPath());
+//        }
+//    }
 	if(currentLockCamera != cameraTrack->lockCameraToTrack){
 		if(!currentLockCamera){
 			cam.setAnglesFromOrientation();
@@ -1205,7 +986,7 @@ void testApp::update(){
 	
 	if(currentlyRendering){
 		
-		drawlightDebug = false;
+		//drawlightDebug = false;
 		
 		if(renderStillFrame){
 			//currentRenderFrame = timeline.getCurrentFrame();
@@ -1301,10 +1082,10 @@ void testApp::update(){
 		rendererNeedsUpdate = true;
 	}
 	
-//	float currentFarClip = powf(timeline.getValue("Z Threshold Max"), 2.0);
-//	float currentNearClip = powf(timeline.getValue("Z Threshold Min"), 2.0);
-	float currentFarClip = maxDepthSlider;
-	float currentNearClip = minDepthSlider;
+	float currentFarClip = powf(timeline.getValue("Z Threshold Max"), 2.0);
+	float currentNearClip = powf(timeline.getValue("Z Threshold Min"), 2.0);
+//	float currentFarClip = maxDepthSlider;
+//	float currentNearClip = minDepthSlider;
 	float currentTopClip =  timeline.getValue("Top Clip");
     float currentRightClip = timeline.getValue("Right Clip");
     float currentBotomClip = timeline.getValue("Bottom Clip");
@@ -1379,9 +1160,9 @@ void testApp::update(){
 		updateRenderer();
 	}
 	
-	if(drawDepthParticles){
-		depthParticleField.update();
-	}
+//	if(drawDepthParticles){
+//		depthParticleField.update();
+//	}
 }
 
 //--------------------------------------------------------------
@@ -1433,21 +1214,6 @@ void testApp::generateScanlineMesh(bool verticalScanline, bool horizontalScanlin
 }
 
 //--------------------------------------------------------------
-void testApp::generateShapeMesh(){
-	shapeMesh.clear();
-	
-	float angleStep = 360./shapeVerts;
-
-	for(int i = 0; i < shapeVerts; i++){
-		ofVec3f vert = ofVec3f(0,1,0).getRotated( i*angleStep, ofVec3f(0,0,1) );
-		shapeMesh.addVertex(vert);
-	}
-
-	
-	shapeMesh.setMode(OF_PRIMITIVE_LINE_LOOP);
-}
-
-//--------------------------------------------------------------
 void testApp::generateRandomMesh(int numPoints){
 	//
 
@@ -1471,15 +1237,15 @@ void testApp::updateRenderer(){
 		holeFiller.close(player.getDepthPixels());
     }
     
-    if(useNormals && normalsLoaded && normalMaps.find(currentVideoFrame + normalCorrect) != normalMaps.end() && currentNormalLoaded != currentVideoFrame + normalCorrect ){
-        if(!normalImage.loadImage(normalMaps[currentVideoFrame + normalCorrect])){
-            ofLogError("Normal map load failed");
-        }
-        else{
-            cout << "loaded normal " << normalMaps[currentVideoFrame] << endl;
-        }
-		currentNormalLoaded = currentVideoFrame;
-    }
+//    if(useNormals && normalsLoaded && normalMaps.find(currentVideoFrame + normalCorrect) != normalMaps.end() && currentNormalLoaded != currentVideoFrame + normalCorrect ){
+//        if(!normalImage.loadImage(normalMaps[currentVideoFrame + normalCorrect])){
+//            ofLogError("Normal map load failed");
+//        }
+//        else{
+//            cout << "loaded normal " << normalMaps[currentVideoFrame] << endl;
+//        }
+//		currentNormalLoaded = currentVideoFrame;
+//    }
 	
     renderer.update();
     if((currentlyRendering && renderObjectFiles) || renderCombinedVideo1to1 ){
@@ -1492,9 +1258,6 @@ void testApp::updateRenderer(){
         meshBuilder.update();
     }
 
-    if(drawParticles){
-        updateSpark();
-    }
 	
 	if(renderCombinedVideo1to1){
 		rainbowVideoFrame = currentVideoFrame;
@@ -1531,7 +1294,7 @@ void testApp::checkReallocateFrameBuffers(){
     else if(setCurrentSize && (fbo1.getWidth() != customWidth || fbo1.getHeight() != customHeight)){
         allocateFrameBuffers();
     }
-	else if( ((drawDOF||drawGodRays) && multisampleBufferAllocated) || ( (!drawDOF&&!drawGodRays) && !multisampleBufferAllocated) ){
+	else if( (drawDOF && multisampleBufferAllocated) || (!drawDOF && !multisampleBufferAllocated) ){
 		allocateFrameBuffers();
 	}
     setCurrentSize = false;
@@ -1567,8 +1330,8 @@ void testApp::allocateFrameBuffers(){
 	
     swapFbo.allocate(fboWidth, fboHeight, GL_RGB);
     
-	fbo1.allocate(fboWidth, fboHeight, drawDOF || drawGodRays ? GL_RGB : GL_RGBA, drawDOF || drawGodRays ? 0 : 4);
-	multisampleBufferAllocated = !drawDOF && !drawGodRays;
+	fbo1.allocate(fboWidth, fboHeight, drawDOF ? GL_RGB : GL_RGBA, drawDOF ? 0 : 4);
+	multisampleBufferAllocated = !drawDOF;
 	
     fbo1.begin();
     ofClear(0,0,0,0);
@@ -1578,86 +1341,6 @@ void testApp::allocateFrameBuffers(){
     dofBuffer.end();
 	
 	cout << "finished allocating frame buffers" << endl;
-
-}
-
-void testApp::setupSpark(){
-    
-    sys.setup();
-
-	group.setup(sys);
-	group.setColor(ofxSPK::RangeC(ofColor(255, 255, 0, 255), ofColor(255, 0, 0, 255)),
-				   ofxSPK::RangeC(ofColor(255, 0, 255, 0), ofColor(255, 255, 0, 0)));
-	
-	group.setLifeTime(0.5);
-	group.setFriction(0.9);
-	group.setSize(3);
-    
-	group.setGravity(ofVec3f(0, 0.98, 0));
-	group.reserve(50000);
-    
-    ringEmitter.setup(SPK::SphericEmitter::create(), group);
-    ringZone = SPK::Ring::create(toSPK(ofVec3f(0, 0, 100)), toSPK(ofVec3f(0, 0, 1)), 40, 160);
-
-    ringEmitter.setZone(ringZone, false);
-//    emitters.resize(320*240);
-//    for(int i = 0; i < 320*240; i++){
-//        emitters[i] = group.createEmitter(ofxSPK::Emitter::SPHERIC);
-//        emitters[i].setFlow(.002);
-//        emitters[i].setForce(100*.1, 1350*.1);
-//        emitters[i].setAngles(0.0, 0.1);
-//    }
-
-}
-
-void testApp::updateSpark(){ 
-	sys->setCameraPosition(toSPK(cam.getPosition()));
-	sys.update();
-    
-    group.setLifeTime(timeline.getValue("Ring Emitter Lifetime"));
-	group.setFriction(0.9);
-	group.setSize(timeline.getValue("Ring Emitter Size"));
-    
-    float minRadius = timeline.getValue("Ring Emitter Min Radius");
-    float maxRaidus = minRadius + timeline.getValue("Ring Emitter Width");
-    ringZone->setRadius(minRadius,maxRaidus);
-    ringZone->setPosition(toSPK(ofVec3f(0,0, timeline.getValue("Ring Emitter Z"))));
-    
-    ofColor startColorA = timeline.getColor("Ring Start Color A");
-    ofColor startColorB = timeline.getColor("Ring Start Color B");
-    ofColor endColorA   = timeline.getColor("Ring End Color A");
-    ofColor endColorB   = timeline.getColor("Ring End Color B");
-    endColorA.a = 0;
-    endColorB.a = 0;
-    group.setColor(ofxSPK::RangeC(startColorA,startColorB),
-				   ofxSPK::RangeC(endColorA, endColorB));
-
-    ringEmitter.setFlow(timeline.getValue("Ring Emitter Flow"));
-    float minForce = timeline.getValue("Ring Emitter Min Force");
-    float maxForce = minForce + timeline.getValue("Ring Emitter Force Range");
-    ringEmitter.setForce(-minForce, -maxForce);
-
-    //quick mesh test
-    testMesh.clear();
-    for(int x = 0; x < 640; x+=5){
-        for(int i = 0; i < 480; i+=5){
-            testMesh.addVertex(ofVec3f(x+ ofGetFrameNum()%5,i,0));
-        }
-    }
-
-    /*
-    for(int i = 0; i < meshBuilder.validVertIndices.size(); i++){
-        emitters[i].setFlow(.01);
-        ofVec3f position = meshBuilder.getMesh().getVertices()[ meshBuilder.validVertIndices[i] ] ;
-        emitters[i].setPosition(-position.x,-position.y,position.z);
-        emitters[i].update();
-    }
-
-    for(int i = meshBuilder.validVertIndices.size(); i < 320*240; i++){
-        emitters[i].setFlow(0);
-        emitters[i].update();
-    }
-     */
 
 }
 
@@ -2001,7 +1684,7 @@ bool testApp::loadAssetsForScene(SceneButton* sceneButton){
 
     renderer.setDepthImage(player.getDepthPixels());
     meshBuilder.setDepthImage(player.getDepthPixels());
-	depthParticleField.setup(player.getDepthPixels());
+//	depthParticleField.setup(player.getDepthPixels());
 	
 	depthSequence.setSequence(player.getDepthSequence());
 	videoTrack->setPlayer(player.getVideoPlayer());
@@ -2187,7 +1870,7 @@ void testApp::clearRenderQueue(){
 void testApp::loadDefaults(){
     
 	videoVolume = 1.0;
-	shapeVerts = 3;
+//	shapeVerts = 3;
 	drawPointcloud = false;
 	drawWireframe = false;
 	drawMesh = true;
@@ -2195,15 +1878,15 @@ void testApp::loadDefaults(){
 	drawScanlinesVertical = false;
 	drawScanlinesHorizontal = false;
 
-	useNormals = false;
+//	useNormals = false;
 	selfOcclude = false;
 	drawDOF = false;
 	
 	captureFramePair = false;
 	temporalAlignmentMode = true;
 	numRandomPoints = 2000;
-	drawGodRays = false;
-	normalCorrect = false;
+//	drawGodRays = false;
+//	normalCorrect = false;
 	
     cam.speed = 20;
 	cam.rollSpeed = 0;
@@ -2227,8 +1910,8 @@ void testApp::loadDefaults(){
 	renderCombinedVideo720p = false;
 	renderCombinedVideo1080p = false;
 	
-	maxDepthSlider = 6000;
-	minDepthSlider = 200;
+//	maxDepthSlider = 6000;
+//	minDepthSlider = 200;
 	
     startSequenceAt0 = false;
 	renderStillFrame = false;
@@ -2237,22 +1920,6 @@ void testApp::loadDefaults(){
     resetCameraPosition();
 	
 	saveComposition();
-}
-
-//--------------------------------------------------------------
-
-void testApp::loadNormals(string directory){
-    ofDirectory dir;
-    dir.allowExt("png");
-    dir.listDir(directory);
-    normalsDirectory = directory;
-    cout << "NORMALS loaded " << dir.numFiles() << endl;
-    normalMaps.clear();
-    for(int i = 0; i < dir.numFiles(); i++){
-        vector<string> filePieces = ofSplitString( ofFilePath::removeExt(dir.getName(i)), "_");
-        normalMaps[ normalFrameOffset + ofToInt(filePieces[1]) ] = dir.getPath(i);
-    }
-    normalsLoaded = dir.numFiles() > 0;
 }
 
 //--------------------------------------------------------------
@@ -2309,11 +1976,11 @@ void testApp::saveComposition(){
 	videoFrameFile.append(ofToString(videoTrack->getPlayer()->getCurrentFrame()));
 	ofBufferToFile(currentVideoFrameFile, videoFrameFile);
 
-	if(normalsLoaded){
-		ofBuffer normalsSaveBuffer;
-		normalsSaveBuffer.append(normalsDirectory);
-		ofBufferToFile(currentNormalsDirectoryFile, normalsSaveBuffer);
-	}
+//	if(normalsLoaded){
+//		ofBuffer normalsSaveBuffer;
+//		normalsSaveBuffer.append(normalsDirectory);
+//		ofBufferToFile(currentNormalsDirectoryFile, normalsSaveBuffer);
+//	}
 	
 	setCompositionButtonName();
 
@@ -2435,7 +2102,7 @@ bool testApp::loadComposition(string compositionDirectory){
 	currentCompositionDirectory = compositionDirectory;
     currentCompositionFile = currentCompositionDirectory+"compositionsettings.xml";
 	currentVideoFrameFile = currentCompositionDirectory+"videoframe.txt";
-	currentNormalsDirectoryFile = currentCompositionDirectory+"normalsdir.txt";
+//	currentNormalsDirectoryFile = currentCompositionDirectory+"normalsdir.txt";
 
     if(loadedScene != selectedScene){
         isSceneLoaded = loadAssetsForScene(selectedScene);
@@ -2456,15 +2123,14 @@ bool testApp::loadComposition(string compositionDirectory){
 	
     timeline.setCurrentPage(0);
     accumulatedPerlinOffset = 0;
-	currentLightCloudOffset = 0;
-	backlightDistortionPosition = 0;
+//	currentLightCloudOffset = 0;
+//	backlightDistortionPosition = 0;
 	
 	sinPosition = ofVec2f(0,0);
 	if(ofFile::doesFileExist(currentCompositionFile)){
 //		cout << "loading file: " << currentCompositionFile << endl;
 //		cout << ofBufferFromFile(currentCompositionFile).getText() << endl;
 		gui.loadFromFile(currentCompositionFile);
-		
 	}
 	else{
         loadDefaults();
@@ -2479,14 +2145,14 @@ bool testApp::loadComposition(string compositionDirectory){
 		cout << "Video frame file does not exist!" << endl;
 	}
 	
-	if(ofFile::doesFileExist(currentNormalsDirectoryFile)){
-		string savedNormals = ofBufferFromFile(currentNormalsDirectoryFile).getText() ;
-		cout << "Loading normals " << savedNormals << endl;
-		loadNormals(savedNormals);
-	}
-	else{
-		cout << "Normals don't exist" << endl;
-	}
+//	if(ofFile::doesFileExist(currentNormalsDirectoryFile)){
+//		string savedNormals = ofBufferFromFile(currentNormalsDirectoryFile).getText() ;
+//		cout << "Loading normals " << savedNormals << endl;
+////		loadNormals(savedNormals);
+//	}
+//	else{
+//		cout << "Normals don't exist" << endl;
+//	}
 	
     alignmentScrubber.setup();
 	alignmentScrubber.videoSequence = videoTrack;
