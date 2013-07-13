@@ -146,7 +146,7 @@ void testApp::setup(){
     gui.add( selfOcclude.setup("Self Occlude", ofParameter<bool>()));
     gui.add( drawDOF.setup("Depth of Field", ofParameter<bool>()));
 	gui.add( sinDistort.setup("Wave Distort", ofParameter<bool>()));
-	gui.add( affectPointsPerlin.setup("Noise Distort", ofParameter<bool>()));
+	gui.add( affectPointsPerlin.setup("Warp Distort", ofParameter<bool>()));
 	
 	gui.add( exportLabel.setup("Export", "Export"));
 	gui.add( customWidth.setup("Frame Width", ofParameter<int>(), 320, 1920*4));
@@ -227,7 +227,6 @@ void testApp::populateTimelineElements(){
 	timeline.addCurves("Camera Dampen", currentCompositionDirectory + "CameraDampen.xml", ofRange(0,1.0), .3);
 	videoTrack = new ofxTLVideoTrack();
 	timeline.addTrack("Video", videoTrack);
-	timeline.addColors("Background Color", currentCompositionDirectory + "backgroundColor.xml");
 	
     //rendering
     timeline.addPage("Geometry", true);
@@ -262,7 +261,7 @@ void testApp::populateTimelineElements(){
 	timeline.addCurves("Vertical Scanline Alpha", currentCompositionDirectory + "verticalScanlineAlpha.xml", ofRange(0.0, 1.0), 1.0 );
 	timeline.addCurves("Vertical Scanline Thickness", currentCompositionDirectory + "verticalScalineThickness.xml", ofRange(1.0, 10.0), 2.0 );
 	
-	timeline.addPage("Sine Waves", true);
+	timeline.addPage("Waves", true);
     timeline.addCurves("X Sin Amplitude", currentCompositionDirectory + "XSinAmp.xml", ofRange(0,sqrtf(200.)), .5 );
 	timeline.addCurves("X Sin Speed", currentCompositionDirectory + "XSinSpeed.xml", ofRange(0,sqrtf(3.0)), 0.3 );
 	timeline.addCurves("X Sin Frequency", currentCompositionDirectory + "XSinFreq.xml", ofRange(0,sqrtf(3.0)), .3 );
@@ -270,52 +269,19 @@ void testApp::populateTimelineElements(){
 	timeline.addCurves("Y Sin Speed", currentCompositionDirectory + "YSinSpeed.xml", ofRange(0,sqrtf(3.0)), .3 );
 	timeline.addCurves("Y Sin Frequency", currentCompositionDirectory + "YSinFreq.xml", ofRange(0,sqrtf(3.0)), .3 );
 	
-	timeline.addPage("Perlin Noise", true);
-    timeline.addCurves("Noise Amplitude", currentCompositionDirectory + "NoiseAmplitude.xml", ofRange(0,sqrtf(200.)), .5 );
-	timeline.addCurves("Noise Density", currentCompositionDirectory + "NoiseDensity.xml", ofRange(0,sqrt(2000.)), 0.3 );
-	timeline.addCurves("Noise Speed", currentCompositionDirectory + "NoiseSpeed.xml", ofRange(0,.1), .05 );
+	timeline.addPage("Warp", true);
+    timeline.addCurves("Warp Amplitude", currentCompositionDirectory + "WarpAmplitude.xml", ofRange(0,sqrtf(400.)), .5 );
+	timeline.addCurves("Warp Density", currentCompositionDirectory + "WarpDensity.xml", ofRange(0,sqrt(2000.)), 0.3 );
+	timeline.addCurves("Warp Speed", currentCompositionDirectory + "WarpSpeed.xml", ofRange(0,.1), .05 );
+    timeline.addCurves("Warp Stretch X", currentCompositionDirectory + "XPerlinStretch.xml", ofRange(0., 1.0), 1.0 );
+	timeline.addCurves("Warp Stretch Y", currentCompositionDirectory + "YPerlinStretch.xml", ofRange(0., 1.0), 1.0 );
+	timeline.addCurves("Warp Stretch Z", currentCompositionDirectory + "ZPerlinStretch.xml", ofRange(0., 1.0), 1.0 );
 
-	timeline.addPage("Perlin Shape", true);
-    timeline.addCurves("X Perlin Stretch", currentCompositionDirectory + "XPerlinStretch.xml", ofRange(0., 1.0), 1.0 );
-	timeline.addCurves("Y Perlin Stretch", currentCompositionDirectory + "YPerlinStretch.xml", ofRange(0., 1.0), 1.0 );
-	timeline.addCurves("Z Perlin Stretch", currentCompositionDirectory + "ZPerlinStretch.xml", ofRange(0., 1.0), 1.0 );
-
-//	timeline.addPage("Random Points", true);
-//	timeline.addCurves("Random Point Amount", currentCompositionDirectory + "RandomPointAmount.xml", ofRange(0, sqrtf(640*480*2.0)), 100 );
-//	timeline.addCurves("Point Size Max", currentCompositionDirectory + "PointSizeMin.xml", ofRange(-10,10), 3 );
-//	timeline.addCurves("Point Size Min", currentCompositionDirectory + "PointSizeMax.xml", ofRange(-10,10), 1 );
-
-	timeline.addPage("Fade To Color", true);
+	timeline.addPage("Color", true);
 	timeline.addCurves("Fade Amount", currentCompositionDirectory + "FadeAmount.xml", ofRange(0,1.0), 0 );
 	ofxTLColorTrack* color = timeline.addColors("Fade Color", currentCompositionDirectory + "FadeColor.xml");
 	color->setDefaultColor(ofColor::white);
-	
-//    timeline.addPage("Point Light", true);
-//	timeline.addCurves("Light Effect", currentCompositionDirectory + "LightEffect.xml", ofRange(0.0, 1.0), .0 );
-//    timeline.addCurves("Point Constant Attenuate", currentCompositionDirectory + "PointLightConstant.xml", ofRange(0.0, 1.0), .0 );
-//    timeline.addCurves("Point Linear Attenuate", currentCompositionDirectory + "PointLightLinear.xml", ofRange(0.0, 1.0), .0 );
-//	timeline.addCurves("Point Quad Attenuate", currentCompositionDirectory + "PointLightQuad.xml", ofRange(0.0, 1.0), .0 );
-//    timeline.addCurves("Point Light Pos X", currentCompositionDirectory + "PointLightPosX.xml", ofRange(-700, 700), .0 );
-//    timeline.addCurves("Point Light Pos Y", currentCompositionDirectory + "PointLightPosY.xml", ofRange(-700, 700), .0 );
-//    timeline.addCurves("Point Light Pos Z", currentCompositionDirectory + "PointLightPosZ.xml", ofRange(0, 2000), .0 );
-	
-//	timeline.addPage("Specular Light", true);
-//	timeline.addCurves("Shininess", currentCompositionDirectory + "Shininess.xml", ofRange(0.0, 10.0), .0 );
-//    timeline.addCurves("Specular Constant Attenuate", currentCompositionDirectory + "SpecularConstant.xml", ofRange(0.0, 1.0), .0 );
-//    timeline.addCurves("Specular Linear Attenuate", currentCompositionDirectory + "SpecularLinear.xml", ofRange(0.0, 1.0), .0 );
-//	timeline.addCurves("Specular Quad Attenuate", currentCompositionDirectory + "SpecularQuad.xml", ofRange(0.0, 1.0), .0 );
-//    timeline.addCurves("Specular Light Pos X", currentCompositionDirectory + "SpecularX.xml", ofRange(-700, 700), .0 );
-//    timeline.addCurves("Specular Light Pos Y", currentCompositionDirectory + "SpecularY.xml", ofRange(-700, 700), .0 );
-//    timeline.addCurves("Specular Light Pos Z", currentCompositionDirectory + "SpecularZ.xml", ofRange(0, 2000), 0. );
-	
-//	timeline.addPage("Shape", true);
-//	timeline.addCurves("Shape X", currentCompositionDirectory + "ShapeX.xml", ofRange(-1000,1000), 0 );
-//	timeline.addCurves("Shape Y", currentCompositionDirectory + "ShapeY.xml", ofRange(-1000,1000), 0 );
-//	timeline.addCurves("Shape Z", currentCompositionDirectory + "ShapeZ.xml", ofRange(0,2000), 0 );
-//	timeline.addCurves("Shape Scale", currentCompositionDirectory + "ShapeScale.xml", ofRange(0,sqrtf(2000)), 0 );
-//	timeline.addCurves("Shape Rotate", currentCompositionDirectory + "ShapeRotate.xml", ofRange(0,360*4), 0 );
-//	timeline.addCurves("Shape Line Width", currentCompositionDirectory + "ShapeLineWidth.xml", ofRange(0,7), 0 );
-//	timeline.addColors("Shape Color", currentCompositionDirectory + "ShapeColor.xml");
+	timeline.addColors("Background Color", currentCompositionDirectory + "backgroundColor.xml");
 	
     timeline.addPage("Depth of Field", true);
     timeline.addCurves("DOF Distance", currentCompositionDirectory + "DOFDistance.xml", ofRange(0,sqrtf(1500.0)), 10 );
@@ -365,7 +331,7 @@ void testApp::populateTimelineElements(){
 //	timeline.addCurves("Water Bump Texture Scale", currentCompositionDirectory + "backlightDistortScale.xml", ofRange(0.0, sqrtf(15.0)), 1.0 );
 //	timeline.addCurves("Water Bump Scroll Speed", currentCompositionDirectory + "backlightBumpScrollSpeed.xml", ofRange(0.0, 3.0), 0.1);
 
-	timeline.addPage("Time Alignment", true);
+	timeline.addPage("Synchronize", true);
 	timeline.addTrack("Video", videoTrack);
 	timeline.addTrack("Depth Sequence", &depthSequence);
 	timeline.addTrack("Alignment", &alignmentScrubber);
@@ -465,9 +431,9 @@ void testApp::drawGeometry(){
 		}
 		
 
-		float noiseAmplitude = powf(timeline.getValue("Noise Amplitude"), 2.0);
-		float noiseDensity = powf(timeline.getValue("Noise Density"), 2.0);
-		float noiseSpeed = timeline.getValue("Noise Speed");
+		float noiseAmplitude = powf(timeline.getValue("Warp Amplitude"), 2.0);
+		float noiseDensity = powf(timeline.getValue("Warp Density"), 2.0);
+		float noiseSpeed = timeline.getValue("Warp Speed");
 		
 		accumulatedPerlinOffset += noiseSpeed;
 
@@ -481,9 +447,9 @@ void testApp::drawGeometry(){
 		renderer.getShader().setUniform1f("noiseDensity", noiseDensity);
 		renderer.getShader().setUniform1f("noisePosition", accumulatedPerlinOffset);
 		renderer.getShader().setUniform3f("noiseShape",
-										  timeline.getValue("X Perlin Stretch"),
-										  timeline.getValue("Y Perlin Stretch"),
-										  timeline.getValue("Z Perlin Stretch"));
+										  timeline.getValue("Warp Stretch X"),
+										  timeline.getValue("Warp Stretch Y"),
+										  timeline.getValue("Warp Stretch Z"));
 				
 //		renderer.getShader().setUniform1f("pointMin", timeline.getValue("Point Size Min"));
 //		renderer.getShader().setUniform1f("pointMax", timeline.getValue("Point Size Max"));
@@ -550,7 +516,7 @@ void testApp::drawGeometry(){
 			
 			ofTranslate(0,0,-.5);
 			ofSetColor(255*pointAlpha);
-			glPointSize(pointSize*pointSize);
+			glPointSize(pointSize);
 			renderer.drawPointCloud();
 		}
         
@@ -576,7 +542,8 @@ void testApp::drawGeometry(){
 		
 		if(drawRandomMesh){
 			ofTranslate(0,0,-.5);
-			ofSetColor(255*pointAlpha);			
+			ofSetColor(255*pointAlpha);
+			glPointSize(pointSize);			
 			renderer.bindRenderer();
 			randomMesh.draw();
 			renderer.unbindRenderer();
@@ -1021,7 +988,7 @@ void testApp::update(){
 		
 		if(captureFramePair && temporalAlignmentMode){
             if(alignmentScrubber.getPairs().size() == 1){
-                ofSystemAlertDialog("You have just set a second Color/Depth pair. Most of the time you just need one. If you are having alignment troubles, make sure to delete the existing pair first before setting a second one. You can delete the pairs in the Time Alignment tab by selecting them in the timeline track and hitting 'delete' key.");
+                ofSystemAlertDialog("You have just set a second Color/Depth pair. Most of the time you just need one. If you are having synchronization troubles, make sure to delete the existing pair first before setting a second one. You can delete the pairs in the Synchronize tab by selecting them in the timeline track and hitting 'delete'.");
             }
 			alignmentScrubber.registerCurrentAlignment();
 			alignmentScrubber.save();
@@ -1077,8 +1044,6 @@ void testApp::update(){
 	
 	float currentFarClip = powf(timeline.getValue("Z Threshold Max"), 2.0);
 	float currentNearClip = powf(timeline.getValue("Z Threshold Min"), 2.0);
-//	float currentFarClip = maxDepthSlider;
-//	float currentNearClip = minDepthSlider;
 	float currentTopClip =  timeline.getValue("Top Clip");
     float currentRightClip = timeline.getValue("Right Clip");
     float currentBotomClip = timeline.getValue("Bottom Clip");
@@ -1427,7 +1392,6 @@ void testApp::draw(){
 				
 
 				bool renderCameraRGBD =  !renderObjectFiles && !includeTextureMaps && !renderRainbow();
-
 				if(firstRenderFrame && renderRainbow()){
 					writeCalibrationDataToXML();
 				}
@@ -2177,7 +2141,7 @@ bool testApp::loadComposition(string compositionDirectory){
         temporalAlignmentMode = false;
     }
 	else{
-		timeline.setCurrentPage("Time Alignment");
+		timeline.setCurrentPage("Synchronize");
 	}
 	
 	cameraTrack->setup();
