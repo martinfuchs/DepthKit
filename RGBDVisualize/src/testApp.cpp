@@ -60,22 +60,15 @@ void testApp::setup(){
 	currentHoleKernelSize = 1;
 	currentHoleFillIterations = 1;
     
-//	lightSprite.loadImage("light.png");
-//	lightMask.loadImage("light_mask.png");
-//	lightClouds.loadImage("light_clouds.png");
-//	waterBump.loadImage("waterbump.png");
-	
 	player.updateVideoPlayer = false;
     rendererDirty = true;
     isSceneLoaded = false;
     
 	timeline.setup();
 	timeline.setMinimalHeaders(true);
-//	timeline.setOffset(ofVec2f(0, ofGetHeight() - 200));
 	timeline.setLockWidthToWindow(false);
 	timeline.setOffset(ofVec2f(15, ofGetHeight() - 200));
 	timeline.setWidth(ofGetWidth()-30);
-	
 	
 	timeline.setPageName("Main");
 	timeline.setDurationInFrames(300); //base duration
@@ -123,51 +116,51 @@ void testApp::setup(){
 	renderBatch->setDelegate(this);
     setButtonColors(renderBatch);
 
-
 	gui.setup("Settings");
 
+	gui.add( setupLabel.setup("Setup", "Setup"));
 	gui.add( videoVolume.setup("Video Volume", ofParameter<float>(), 0, 1.0));
     gui.add( temporalAlignmentMode.setup("Temporal Alignment", ofParameter<bool>()));
 	gui.add( captureFramePair.setup("Set Color-Depth Time", ofParameter<bool>()));
+	
+	gui.add( cameraLabel.setup("Camera", "Camera"));
 	gui.add( cameraSpeed.setup("Camera Speed", ofParameter<float>(), 0, 40));
     gui.add( cameraRollSpeed.setup("Cam Roll Speed", ofParameter<float>(), .0, 4));
     gui.add( shouldResetCamera.setup("Reset Camera", ofParameter<bool>()));
 	gui.add( currentLockCamera.setup("Lock to Track", ofParameter<bool>()));
     gui.add( shouldSaveCameraPoint.setup("Set Camera Point", ofParameter<bool>()));
-	
 	gui.add( currentMirror.setup("Mirror", ofParameter<bool>()));
+	
+	gui.add( renderingLabel.setup("Rendering", "Rendering"));
 	gui.add( renderStillFrame.setup("Freeze One Frame", ofParameter<bool>()));
-    
 	gui.add( fillHoles.setup("Fill Holes", ofParameter<bool>()));
     gui.add( currentHoleKernelSize.setup("Hole Kernel Size", ofParameter<int>(), 1, 10));
     gui.add( currentHoleFillIterations.setup("Hole Fill Iterations", ofParameter<int>(), 1, 20));
-	
-	gui.add( drawPointcloud.setup("Draw Point Grid",ofParameter<bool>()));
+		
+	gui.add( drawPointcloud.setup("Draw Point Grid", ofParameter<bool>()));
 	gui.add( drawRandomMesh.setup("Draw Points Random", ofParameter<bool>()) );
     gui.add( drawWireframe.setup("Draw Wireframe",ofParameter<bool>()));
 	gui.add( drawScanlinesVertical.setup("Draw Vertical Lines", ofParameter<bool>()));
 	gui.add( drawScanlinesHorizontal.setup("Draw Horizontal Lines", ofParameter<bool>()));
-	
     gui.add( drawMesh.setup("Draw Mesh",ofParameter<bool>()));
     gui.add( selfOcclude.setup("Self Occlude", ofParameter<bool>()));
-    gui.add( drawDOF.setup("Draw DOF", ofParameter<bool>()));
-	
+    gui.add( drawDOF.setup("Depth of Field", ofParameter<bool>()));
 	gui.add( sinDistort.setup("Wave Distort", ofParameter<bool>()));
 	gui.add( affectPointsPerlin.setup("Noise Distort", ofParameter<bool>()));
 	
+	gui.add( exportLabel.setup("Export", "Export"));
 	gui.add( customWidth.setup("Frame Width", ofParameter<int>(), 320, 1920*4));
     gui.add( customHeight.setup("Frame Height", ofParameter<int>(), 240, 1080*4));
     gui.add( setCurrentSize.setup("Apply Custom Size", ofParameter<bool>()));
     gui.add( lockTo720p.setup("Render 720p", ofParameter<bool>()));
     gui.add( lockTo1080p.setup("Render 1080p",ofParameter<bool>()));
-	
-	gui.add( renderObjectFiles.setup("Export .obj Files", ofParameter<bool>()));
-	gui.add( renderCombinedVideo1to1.setup("Export Combined Video", ofParameter<bool>()));
-//	gui.add( renderCombinedVideo720p.setup("Export Combined Video, 720p", ofParameter<bool>()));
-//	gui.add( renderCombinedVideo1080p.setup("Export Combined Video, 1080p", ofParameter<bool>()));
+	gui.add( renderObjectFiles.setup(".obj Files", ofParameter<bool>()));
+	gui.add( includeTextureMaps.setup(".obj Textures", ofParameter<bool>()));
+	gui.add( renderCombinedVideo1to1.setup("Combined Per Pixel", ofParameter<bool>()));
+	gui.add( renderCombinedVideo720p.setup("Combined 720p", ofParameter<bool>()));
+	gui.add( renderCombinedVideo1080p.setup("Combined 1080p", ofParameter<bool>()));
 	
 			
-	gui.add( includeTextureMaps.setup("Include Texture Maps", ofParameter<bool>()));
 	gui.add( startSequenceAt0.setup("Start Sequence at 1", ofParameter<bool>()));
 	
     gui.loadFromFile("defaultGuiSettings.xml");
@@ -823,10 +816,10 @@ void testApp::update(){
     	renderQueue[i].remove->enabled = viewComps;
     }
     
-	if(renderCombinedVideo1to1 && renderObjectFiles){
-		ofSystemAlertDialog("Select either object files or combined video for custom export");
-		renderCombinedVideo1to1 = false;
-	}
+//	if(renderRainbow() && renderObjectFiles){
+//		ofSystemAlertDialog("Select either object files or combined video for custom export");
+//		renderCombinedVideo1to1 = false;
+//	}
 	
 	
 	if(viewComps && timeline.getIsEnabled()){
@@ -1146,9 +1139,10 @@ void testApp::update(){
 		rendererDirty = true;
     }
 	
-	if(renderCombinedVideo1to1 && rainbowVideoFrame != currentVideoFrame){
+	if(renderRainbow() && rainbowVideoFrame != currentVideoFrame){
 		rendererNeedsUpdate = true;
 	}
+	
 	if(temporalAlignmentMode &&
 	   (currentDepthFrame != player.getDepthSequence()->getCurrentFrame() ||
 		currentVideoFrame != videoTrack->getPlayer()->getCurrentFrame()))
@@ -1158,30 +1152,36 @@ void testApp::update(){
 	
 	if(rendererNeedsUpdate){
 		updateRenderer();
-	}
-	
-//	if(drawDepthParticles){
-//		depthParticleField.update();
-//	}
+	}	
 }
 
 //--------------------------------------------------------------
 void testApp::checkRenderOutputOptions(){
+
+//	toggleOffRenderOutputOptions();
 	
-//	if(renderObjectFiles && currentExportType != ObjectFile){
-//		toggleOffRenderOutputOptions();
-//		currentExportType = ObjectFile;
-//		renderObjectFiles = true;
-//	}
-//	else if(renderCombinedVideo1to1 && currentExportType != Combined1to1){
-//		
-//	}
+	if(!currentCombined1to1 && renderCombinedVideo1to1){
+		toggleOffRenderOutputOptions();
+		renderCombinedVideo1to1 = currentCombined1to1 = true;
+	}
+	else if(!currentCombined720p && renderCombinedVideo720p){
+		toggleOffRenderOutputOptions();
+		renderCombinedVideo720p = currentCombined720p = true;
+	}
+	else if(!currentCombined1080p && renderCombinedVideo1080p){
+		toggleOffRenderOutputOptions();
+		renderCombinedVideo1080p = currentCombined1080p = true;
+	}
+
+	currentCombined1to1 = renderCombinedVideo1080p;
+	currentCombined720p = renderCombinedVideo720p;
+	currentCombined1080p = renderCombinedVideo1to1;
+
 	
 }
 
 //--------------------------------------------------------------
 void testApp::toggleOffRenderOutputOptions(){
-    renderObjectFiles = false;
 	renderCombinedVideo1to1 = false;
 	renderCombinedVideo720p = false;
 	renderCombinedVideo1080p = false;
@@ -1236,20 +1236,10 @@ void testApp::updateRenderer(){
 	if(currentDepthFrame != player.getDepthSequence()->getCurrentFrame()){
 		holeFiller.close(player.getDepthPixels());
     }
-    
-//    if(useNormals && normalsLoaded && normalMaps.find(currentVideoFrame + normalCorrect) != normalMaps.end() && currentNormalLoaded != currentVideoFrame + normalCorrect ){
-//        if(!normalImage.loadImage(normalMaps[currentVideoFrame + normalCorrect])){
-//            ofLogError("Normal map load failed");
-//        }
-//        else{
-//            cout << "loaded normal " << normalMaps[currentVideoFrame] << endl;
-//        }
-//		currentNormalLoaded = currentVideoFrame;
-//    }
 	
     renderer.update();
-    if((currentlyRendering && renderObjectFiles) || renderCombinedVideo1to1 ){
-		if(renderCombinedVideo1to1){
+    if((currentlyRendering && renderObjectFiles) || renderRainbow() ){
+		if(renderRainbow()){
 			meshBuilder.setSimplification(ofVec2f(1,1));
 		}
 		else{
@@ -1259,14 +1249,26 @@ void testApp::updateRenderer(){
     }
 
 	
-	if(renderCombinedVideo1to1){
+	if(renderRainbow()){
+		
 		rainbowVideoFrame = currentVideoFrame;
 		rainbowExporter.minDepth = meshBuilder.nearClip;
 		rainbowExporter.maxDepth = meshBuilder.farClip;
+		rainbowExporter.oneToOne = renderCombinedVideo1to1;
+		if(!renderCombinedVideo1to1){
+			rainbowExporter.frameSize = renderCombinedVideo720p ? 720 : 1080;
+		}
+		
 		rainbowExporter.updatePixels(meshBuilder, *player.getVideoPlayer());
-		if(!combinedVideoTexture.isAllocated()){
+		
+		if(!combinedVideoTexture.isAllocated() ||
+		   combinedVideoTexture.getWidth() != rainbowExporter.getPixels().getWidth() ||
+		   combinedVideoTexture.getHeight() != rainbowExporter.getPixels().getHeight() )
+		{
+			cout << "allocating video texture" << endl;
 			combinedVideoTexture.allocate(rainbowExporter.getPixels());
 		}
+		
 		combinedVideoTexture.loadData(rainbowExporter.getPixels());
 	}
 	
@@ -1344,6 +1346,9 @@ void testApp::allocateFrameBuffers(){
 
 }
 
+bool testApp::renderRainbow(){
+	return renderCombinedVideo1to1 || renderCombinedVideo720p || renderCombinedVideo1080p;
+}
 
 //--------------------------------------------------------------
 void testApp::draw(){
@@ -1366,7 +1371,7 @@ void testApp::draw(){
 			fboRectangle.y = 50;
 			
 			ofRectangle colorAssistRenderArea = ofRectangle(0,0,ofGetWidth() - fboRectangle.getMaxX(),timeline.getDrawRect().y - 50);
-			if(!renderCombinedVideo1to1){
+			if(!renderRainbow()){
 				colorAlignAssistRect = naturalVideoRect;
 				colorAlignAssistRect.scaleTo(colorAssistRenderArea);
 				colorAlignAssistRect.x = fboRectangle.getMaxX();
@@ -1378,7 +1383,7 @@ void testApp::draw(){
 				depthAlignAssistRect.y = colorAlignAssistRect.getMaxY();
 				depthAlignAssistRect.x = colorAlignAssistRect.getX();
 			}
-			else if(renderCombinedVideo1to1){
+			else {
 				ofRectangle combinedVideoRect(0,0,rainbowExporter.getPixels().getWidth(),rainbowExporter.getPixels().getHeight());
 				combinedVideoRect.scaleTo(colorAssistRenderArea, OF_ASPECT_RATIO_KEEP);
 				combinedVideoRect.x = fboRectangle.getMaxX();
@@ -1419,49 +1424,36 @@ void testApp::draw(){
 					videoFrame -= timeline.getInFrame();
 				}
                 sprintf(filename, "%s/save.%05d.png", saveFolder.c_str(), videoFrame);
+				
 
-				if(firstRenderFrame && renderCombinedVideo1to1){
-					//ONE TO ONE WAY
-					//////////////////
-//					ofxXmlSettings depthProjectionSettings;
-//					depthProjectionSettings.addTag("depth");
-//					depthProjectionSettings.pushTag("depth");
-//					
-//					depthProjectionSettings.addValue("fovx", meshBuilder.depthFOV.x);
-//					depthProjectionSettings.addValue("fovx", meshBuilder.depthFOV.y);
-//					depthProjectionSettings.addValue("ppx", meshBuilder.depthPrincipalPoint.x);
-//					depthProjectionSettings.addValue("ppy", meshBuilder.depthPrincipalPoint.y);
-//					depthProjectionSettings.addValue("width", meshBuilder.depthImageSize.width);
-//					depthProjectionSettings.addValue("height", meshBuilder.depthImageSize.height);
-//					depthProjectionSettings.addValue("minDepth", meshBuilder.nearClip);
-//					depthProjectionSettings.addValue("maxDepth", meshBuilder.farClip);
-//					
-//					depthProjectionSettings.popTag();
-//
-//					//////////////////
-					//BIG WAY
+				bool renderCameraRGBD =  !renderObjectFiles && !includeTextureMaps && !renderRainbow();
+
+				if(firstRenderFrame && renderRainbow()){
 					writeCalibrationDataToXML();
 				}
-				
-                if(!firstRenderFrame){
+                
+				if(!firstRenderFrame){
+					
                     if(renderObjectFiles){
                         char objFilename[512];
                         sprintf(objFilename, "%s/save.%05d.obj", saveFolder.c_str(), videoFrame);
                         ofMesh reducedMesh;
 						ofMatrix4x4 scaleMatrix;
 						scaleMatrix.makeScaleMatrix(ofVec3f(.001, -.001, .001));
-						meshBuilder.getReducedMesh(reducedMesh, true, false, true,scaleMatrix);
+						meshBuilder.getReducedMesh(reducedMesh, true, false, true, scaleMatrix);
                         ofxObjLoader::save(string(objFilename), reducedMesh);
-						if(includeTextureMaps){
-							savingImage.setFromPixels(player.getVideoPlayer()->getPixelsRef());
-							savingImage.saveImage(filename);
-						}
                     }
-					else if(renderCombinedVideo1to1){
+					
+					if(includeTextureMaps){
+						savingImage.setFromPixels(player.getVideoPlayer()->getPixelsRef());
+						savingImage.saveImage(filename);
+					}
+					
+					if(renderRainbow()){
 						rainbowExporter.updatePixels(meshBuilder, *player.getVideoPlayer());
 						ofSaveImage(rainbowExporter.getPixels(), filename);
 					}
-                    else{
+                    if(renderCameraRGBD){
                         fbo1.getTextureReference().readToPixels(savingImage.getPixelsRef());
 						savingImage.mirror(true, false);
 						savingImage.saveImage(filename);
@@ -1485,7 +1477,7 @@ void testApp::draw(){
 					finishRender();
 				}
 				else{
-					//					cout << "advancing video frame from " << player.getVideoPlayer()->getCurrentFrame() << " with timeline time " << timeline.getCurrentFrame() << " current render frame: " << currentRenderFrame << endl;
+					//cout << "advancing video frame from " << player.getVideoPlayer()->getCurrentFrame() << " with timeline time " << timeline.getCurrentFrame() << " current render frame: " << currentRenderFrame << endl;
 					if(renderStillFrame){
 						timeline.setCurrentFrame(currentRenderFrame++);
 						cout << "current frame is " << timeline.getCurrentFrame() << "Render frame is " << currentRenderFrame << endl;
@@ -1495,10 +1487,10 @@ void testApp::draw(){
 						player.getVideoPlayer()->update();
 						timeline.setPercentComplete(player.getVideoPlayer()->getPosition());
 					}
-					//					cout << " to " << player.getVideoPlayer()->getCurrentFrame() << endl;
+					//cout << " to " << player.getVideoPlayer()->getCurrentFrame() << endl;
 				}
 			}
-            //ofDrawBitmapString();
+
             timeline.getFont().drawString("fps: " + ofToString(ofGetFrameRate()), saveCompButton->x + saveCompButton->width + 10, saveCompButton->y + 10);
 			if(!currentlyRendering){
 				gui.draw();
@@ -1529,92 +1521,106 @@ void testApp::draw(){
 }
 
 void testApp::writeCalibrationDataToXML(){
+	
 	ofxXmlSettings calibration;
-	calibration.addTag("depthIntrinsics");
-	calibration.pushTag("depthIntrinsics");
-	
-	calibration.addValue("ppx", meshBuilder.depthPrincipalPoint.x);
-	calibration.addValue("ppy", meshBuilder.depthPrincipalPoint.y);
-	calibration.addValue("fovx", meshBuilder.depthFOV.x);
-	calibration.addValue("fovy", meshBuilder.depthFOV.y);
-	calibration.addValue("width", meshBuilder.depthImageSize.width);
-	calibration.addValue("height", meshBuilder.depthImageSize.height);
-	calibration.popTag();//depthIntrinsics
-	
-	calibration.addTag("colorIntrinsics");
-	calibration.pushTag("colorIntrinsics");
-	calibration.addValue("ppx", meshBuilder.colorPrincipalPoint.x);
-	calibration.addValue("ppy", meshBuilder.colorPrincipalPoint.y);
-	calibration.addValue("fovx", meshBuilder.colorFOV.x);
-	calibration.addValue("fovy", meshBuilder.colorFOV.y);
-	calibration.addValue("width", meshBuilder.colorImageSize.width);
-	calibration.addValue("height", meshBuilder.colorImageSize.height);
-	
-	calibration.addTag("dK");
-	calibration.pushTag("dK");
-	for(int i = 0; i < 3; i++) calibration.addValue("k" + ofToString(i), meshBuilder.distortionK[i] );
-	calibration.popTag();//dK
-	
-	calibration.addTag("dP");
-	calibration.pushTag("dP");
-	for(int i = 0; i < 2; i++) calibration.addValue("p" + ofToString(i), meshBuilder.distortionP[i] );
-	calibration.popTag();//dP
-	
-	calibration.popTag();//colorIntrinsics
-	
-	calibration.addTag("extrinsics");
-	calibration.pushTag("extrinsics");
-	calibration.addTag("rotation");
-	calibration.pushTag("rotation");
-	for(int i = 0; i < 9; i++) calibration.addValue("r" + ofToString(i), meshBuilder.depthToRGBRotation[i] );
-	calibration.popTag();
-	
-	calibration.addTag("translation");
-	calibration.pushTag("translation");
-	for(int i = 0; i < 3; i++) calibration.addValue("t" + ofToString(i), meshBuilder.depthToRGBTranslation[i]);
-	calibration.popTag();//translation
-	
-	calibration.popTag();//extrinsics
-	
-	calibration.addTag("adjustment");
-	calibration.pushTag("adjustment");
-	
-	calibration.addTag("translate");
-	calibration.pushTag("translate");
-	calibration.addValue("x", meshBuilder.colorMatrixTranslate.x);
-	calibration.addValue("y", meshBuilder.colorMatrixTranslate.y);
-	calibration.addValue("z", meshBuilder.colorMatrixTranslate.z);
-	calibration.popTag();
-	
-	calibration.addTag("rotate");
-	calibration.pushTag("rotate");
-	calibration.addValue("x", meshBuilder.colorMatrixRotate.x);
-	calibration.addValue("y", meshBuilder.colorMatrixRotate.y);
-	calibration.addValue("z", meshBuilder.colorMatrixRotate.z);
-	calibration.popTag();
-	
-	calibration.addTag("scale");
-	calibration.pushTag("scale");
-	calibration.addValue("x", meshBuilder.scale.x);
-	calibration.addValue("y", meshBuilder.scale.y);
-	calibration.popTag();
-	
-	calibration.addTag("depth");
-	calibration.pushTag("depth");
-	calibration.addValue("min", meshBuilder.nearClip);
-	calibration.addValue("max", meshBuilder.farClip);
-	calibration.popTag();
-	
-	calibration.popTag();
-	
+
+	if(renderCombinedVideo1to1){
+		calibration.addTag("depth");
+		calibration.pushTag("depth");
+		
+		calibration.addValue("fovx", meshBuilder.depthFOV.x);
+		calibration.addValue("fovx", meshBuilder.depthFOV.y);
+		calibration.addValue("ppx", meshBuilder.depthPrincipalPoint.x);
+		calibration.addValue("ppy", meshBuilder.depthPrincipalPoint.y);
+		calibration.addValue("width", meshBuilder.depthImageSize.width);
+		calibration.addValue("height", meshBuilder.depthImageSize.height);
+		calibration.addValue("minDepth", meshBuilder.nearClip);
+		calibration.addValue("maxDepth", meshBuilder.farClip);
+		
+		calibration.popTag();
+	}
+	else{		
+		calibration.addTag("depthIntrinsics");
+		calibration.pushTag("depthIntrinsics");
+		
+		calibration.addValue("ppx", meshBuilder.depthPrincipalPoint.x);
+		calibration.addValue("ppy", meshBuilder.depthPrincipalPoint.y);
+		calibration.addValue("fovx", meshBuilder.depthFOV.x);
+		calibration.addValue("fovy", meshBuilder.depthFOV.y);
+		calibration.addValue("width", meshBuilder.depthImageSize.width);
+		calibration.addValue("height", meshBuilder.depthImageSize.height);
+		calibration.popTag();//depthIntrinsics
+		
+		calibration.addTag("colorIntrinsics");
+		calibration.pushTag("colorIntrinsics");
+		calibration.addValue("ppx", meshBuilder.colorPrincipalPoint.x);
+		calibration.addValue("ppy", meshBuilder.colorPrincipalPoint.y);
+		calibration.addValue("fovx", meshBuilder.colorFOV.x);
+		calibration.addValue("fovy", meshBuilder.colorFOV.y);
+		calibration.addValue("width", meshBuilder.colorImageSize.width);
+		calibration.addValue("height", meshBuilder.colorImageSize.height);
+		
+		calibration.addTag("dK");
+		calibration.pushTag("dK");
+		for(int i = 0; i < 3; i++) calibration.addValue("k" + ofToString(i), meshBuilder.distortionK[i] );
+		calibration.popTag();//dK
+		
+		calibration.addTag("dP");
+		calibration.pushTag("dP");
+		for(int i = 0; i < 2; i++) calibration.addValue("p" + ofToString(i), meshBuilder.distortionP[i] );
+		calibration.popTag();//dP
+		
+		calibration.popTag();//colorIntrinsics
+		
+		calibration.addTag("extrinsics");
+		calibration.pushTag("extrinsics");
+		calibration.addTag("rotation");
+		calibration.pushTag("rotation");
+		for(int i = 0; i < 9; i++) calibration.addValue("r" + ofToString(i), meshBuilder.depthToRGBRotation[i] );
+		calibration.popTag();
+		
+		calibration.addTag("translation");
+		calibration.pushTag("translation");
+		for(int i = 0; i < 3; i++) calibration.addValue("t" + ofToString(i), meshBuilder.depthToRGBTranslation[i]);
+		calibration.popTag();//translation
+		
+		calibration.popTag();//extrinsics
+		
+		calibration.addTag("adjustment");
+		calibration.pushTag("adjustment");
+		
+		calibration.addTag("translate");
+		calibration.pushTag("translate");
+		calibration.addValue("x", meshBuilder.colorMatrixTranslate.x);
+		calibration.addValue("y", meshBuilder.colorMatrixTranslate.y);
+		calibration.addValue("z", meshBuilder.colorMatrixTranslate.z);
+		calibration.popTag();
+		
+		calibration.addTag("rotate");
+		calibration.pushTag("rotate");
+		calibration.addValue("x", meshBuilder.colorMatrixRotate.x);
+		calibration.addValue("y", meshBuilder.colorMatrixRotate.y);
+		calibration.addValue("z", meshBuilder.colorMatrixRotate.z);
+		calibration.popTag();
+		
+		calibration.addTag("scale");
+		calibration.pushTag("scale");
+		calibration.addValue("x", meshBuilder.scale.x);
+		calibration.addValue("y", meshBuilder.scale.y);
+		calibration.popTag();
+		
+		calibration.addTag("depth");
+		calibration.pushTag("depth");
+		calibration.addValue("min", meshBuilder.nearClip);
+		calibration.addValue("max", meshBuilder.farClip);
+		calibration.popTag();
+		
+		calibration.popTag();
+	}
 	
 	calibration.popTag();//adjustment
 	
-	//					calibration.saveFile(outputDirectory + "/_calibration.xml");
-	calibration.saveFile(saveFolder + "/_depthProperties.xml" );
-	
-	rainbowExporter.minDepth = meshBuilder.nearClip;
-	rainbowExporter.maxDepth = meshBuilder.farClip;
+	calibration.saveFile(saveFolder + "/_depthProperties.xml" );	
 }
 
 #pragma mark compositions
@@ -1902,10 +1908,15 @@ void testApp::loadDefaults(){
     lockTo1080p = true;
 	setCurrentSize = false;
 	
-	currentExportType = RGBD;
+	currentCombined1to1 = false;
+	currentCombined720p = false;
+	currentCombined1080p = false;
+
+//	currentExportType = RGBD;
 	rainbowExporter.oneToOne = false;
 	
     renderObjectFiles = false;
+	includeTextureMaps = false;
 	renderCombinedVideo1to1 = false;
 	renderCombinedVideo720p = false;
 	renderCombinedVideo1080p = false;

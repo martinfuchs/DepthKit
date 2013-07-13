@@ -44,13 +44,13 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 
   public:
 	
-	enum ExportType {
-		RGBD,
-		ObjectFile,
-		Combined1to1,
-		Combined720p,
-		Combined1070p
-	};
+//	enum ExportType {
+//		RGBD,
+//		ObjectFile,
+//		Combined1to1,
+//		Combined720p,
+//		Combined1070p
+//	};
 
 	void setup();
 	void update();
@@ -163,6 +163,12 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxToggle renderCombinedVideo1to1;
 	ofxToggle renderCombinedVideo720p;
 	ofxToggle renderCombinedVideo1080p;
+	bool renderRainbow();
+	
+	bool currentCombined1to1;
+	bool currentCombined720p;
+	bool currentCombined1080p;
+	
 	void checkRenderOutputOptions();
 	void toggleOffRenderOutputOptions();
 	
@@ -227,7 +233,6 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	string currentCompositionFile;
     string currentCompositionLabel;
 	string currentVideoFrameFile;
-//	string currentNormalsDirectoryFile;
 	
 	string mediaBinFolder;
 	
@@ -237,6 +242,11 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	
 	ofxGameCamera cam;
 	ofxTLCameraTrack* cameraTrack;
+	
+	ofxLabel setupLabel;
+	ofxLabel cameraLabel;
+	ofxLabel renderingLabel;
+	ofxLabel exportLabel;
 	
 	ofxTimeline timeline;
 	ofxTLVideoTrack* videoTrack;
@@ -267,7 +277,6 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	string saveFolder;
 	string lastSavedDate;    
 	
-	ExportType currentExportType;
 	int rainbowVideoFrame;
 	bool timelineElementsAdded;
 	bool currentlyRendering;
