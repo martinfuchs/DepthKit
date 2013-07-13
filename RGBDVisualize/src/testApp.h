@@ -122,6 +122,7 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxToggle drawScanlinesHorizontal;
 	
 	ofxToggle renderStillFrame;
+	bool recalculateRainbowFrame;
 	
 	ofxToggle sinDistort;
 	ofVec2f sinPosition;

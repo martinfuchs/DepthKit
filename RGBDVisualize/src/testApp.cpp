@@ -20,7 +20,8 @@ void testApp::setup(){
 	pathDelim = "/";
 #endif
     renderQueueIndexToRemove = -1;
-    
+    recalculateRainbowFrame = false;
+	
     cam.setup();
 	cameraSpeed = cam.speed = 20;
 	cam.autosavePosition = true;
@@ -118,12 +119,12 @@ void testApp::setup(){
 
 	gui.setup("Settings");
 
-	gui.add( setupLabel.setup("Setup", "Setup"));
+	gui.add( setupLabel.setup("SETUP", "SETUP"));
 	gui.add( videoVolume.setup("Video Volume", ofParameter<float>(), 0, 1.0));
     gui.add( temporalAlignmentMode.setup("Temporal Alignment", ofParameter<bool>()));
 	gui.add( captureFramePair.setup("Set Color-Depth Time", ofParameter<bool>()));
 	
-	gui.add( cameraLabel.setup("Camera", "Camera"));
+	gui.add( cameraLabel.setup("CAMERA", "CAMERA"));
 	gui.add( cameraSpeed.setup("Camera Speed", ofParameter<float>(), 0, 40));
     gui.add( cameraRollSpeed.setup("Cam Roll Speed", ofParameter<float>(), .0, 4));
     gui.add( shouldResetCamera.setup("Reset Camera", ofParameter<bool>()));
@@ -131,8 +132,8 @@ void testApp::setup(){
     gui.add( shouldSaveCameraPoint.setup("Set Camera Point", ofParameter<bool>()));
 	gui.add( currentMirror.setup("Mirror", ofParameter<bool>()));
 	
-	gui.add( renderingLabel.setup("Rendering", "Rendering"));
-	gui.add( renderStillFrame.setup("Freeze One Frame", ofParameter<bool>()));
+	gui.add( renderingLabel.setup("RENDERING", "RENDERING"));
+	gui.add( renderStillFrame.setup("Freeze Frame Mode", ofParameter<bool>()));
 	gui.add( fillHoles.setup("Fill Holes", ofParameter<bool>()));
     gui.add( currentHoleKernelSize.setup("Hole Kernel Size", ofParameter<int>(), 1, 10));
     gui.add( currentHoleFillIterations.setup("Hole Fill Iterations", ofParameter<int>(), 1, 20));
@@ -148,7 +149,7 @@ void testApp::setup(){
 	gui.add( sinDistort.setup("Wave Distort", ofParameter<bool>()));
 	gui.add( affectPointsPerlin.setup("Warp Distort", ofParameter<bool>()));
 	
-	gui.add( exportLabel.setup("Export", "Export"));
+	gui.add( exportLabel.setup("EXPORT", "EXPORT"));
 	gui.add( customWidth.setup("Frame Width", ofParameter<int>(), 320, 1920*4));
     gui.add( customHeight.setup("Frame Height", ofParameter<int>(), 240, 1080*4));
     gui.add( setCurrentSize.setup("Apply Custom Size", ofParameter<bool>()));
@@ -160,7 +161,6 @@ void testApp::setup(){
 	gui.add( renderCombinedVideo720p.setup("Combined 720p", ofParameter<bool>()));
 	gui.add( renderCombinedVideo1080p.setup("Combined 1080p", ofParameter<bool>()));
 	
-			
 	gui.add( startSequenceAt0.setup("Start Sequence at 1", ofParameter<bool>()));
 	
     gui.loadFromFile("defaultGuiSettings.xml");
@@ -234,7 +234,6 @@ void testApp::populateTimelineElements(){
     timeline.addCurves("Simplify Y", currentCompositionDirectory + "simplifyy.xml", ofRange(1, 8), 2);
 	timeline.addCurves("Z Threshold Max", currentCompositionDirectory + "zThreshold.xml", ofRange(1.0, sqrtf(6000)), sqrtf(6000) );
 	timeline.addCurves("Z Threshold Min", currentCompositionDirectory + "zThresholdMin.xml", ofRange(0, sqrtf(2000)), 0 );
-	timeline.addCurves("Random Point Amount", currentCompositionDirectory + "RandomPointAmount.xml", ofRange(0, sqrtf(640*480*2.0)), 100 );
 
 	timeline.addPage("Clipping", true);
 	timeline.addCurves("Edge Clip", currentCompositionDirectory + "edgeClip.xml", ofRange(1.0, 2000), 2000 );
@@ -251,6 +250,7 @@ void testApp::populateTimelineElements(){
     timeline.addPage("Rendering", true);
     timeline.addCurves("Point Alpha", currentCompositionDirectory + "pointAlpha.xml", ofRange(0.0,1.0), 1.0 );
     timeline.addCurves("Point Size", currentCompositionDirectory + "pointSize.xml", ofRange(0.0, sqrtf(10.0) ), 1.5 );
+	timeline.addCurves("Random Point Amount", currentCompositionDirectory + "RandomPointAmount.xml", ofRange(0, sqrtf(640*480*2.0)), 100 );	
     timeline.addCurves("Wireframe Alpha", currentCompositionDirectory + "wireframeAlpha.xml", ofRange(0,1.0), 1.0 );
     timeline.addCurves("Wireframe Thickness", currentCompositionDirectory + "wireframeThickness.xml", ofRange(0.0,sqrtf(10.0)), 1.5 );
     timeline.addCurves("Mesh Alpha", currentCompositionDirectory + "meshAlpha.xml", ofRange(0,1.0), 1.0 );
@@ -288,57 +288,12 @@ void testApp::populateTimelineElements(){
     timeline.addCurves("DOF Range", currentCompositionDirectory + "DOFRange.xml", ofRange(0,sqrtf(1500.0)) );
     timeline.addCurves("DOF Blur", currentCompositionDirectory + "DOFBlur.xml", ofRange(0,5.0) );
 	
-	/*	
-    timeline.addPage("Depth Particles", true);
-	timeline.addCurves("Depth Particle Alpha", currentCompositionDirectory + "DepthParticleAlpha.xml", ofRange(0, 1.0), 0.0 );
-	timeline.addCurves("Max Particles", currentCompositionDirectory + "MaxParticles.xml", ofRange(0, 4000), 50 );
-
-	timeline.addPage("Emitter Size", true);
-	timeline.addCurves("Ring Emitter Min Radius", currentCompositionDirectory + "RingEmitterMinRadius.xml", ofRange(0, 4000), 0.0 );
-	timeline.addCurves("Ring Emitter Width", currentCompositionDirectory + "RingEmitterWidth.xml", ofRange(0, 4000), 50 );
-	timeline.addCurves("Ring Emitter Z", currentCompositionDirectory + "RingEmitterZ.xml", ofRange(0, 10000), 0 );
-    
-    timeline.addPage("Emitter Properties", true);
-    timeline.addCurves("Ring Emitter Lifetime", currentCompositionDirectory + "RingEmitterLifetime.xml", ofRange(0.0, 100), 0.1 );
-    timeline.addCurves("Ring Emitter Size", currentCompositionDirectory + "RingEmitterSize.xml", ofRange(0.0, 20), 0.1 );
-	timeline.addCurves("Ring Emitter Flow", currentCompositionDirectory + "RingEmitterFlow.xml", ofRange(0.0, 10000), 0.1 );
-	timeline.addCurves("Ring Emitter Min Force", currentCompositionDirectory + "RingEmitterMinForce.xml", ofRange(0.0, 5000), 0.1 );
-    timeline.addCurves("Ring Emitter Force Range", currentCompositionDirectory + "RingEmitterForceRange.xml", ofRange(0.0, 5000), 0.1 );
-    
-    timeline.addPage("Emitter Colors", true);
-    timeline.addColors("Ring Start Color A", currentCompositionDirectory + "RingStartColorA.xml");
-    timeline.addColors("Ring Start Color B", currentCompositionDirectory + "RingStartColorB.xml");
-    timeline.addColors("Ring End Color A", currentCompositionDirectory + "RingEndColorA.xml");
-    timeline.addColors("Ring End Color B", currentCompositionDirectory + "RingEndColorB.xml");
-    */
-	
-//	timeline.addPage("God Rays Glow", true);
-//	timeline.addCurves("Backlight Ring Radius", currentCompositionDirectory + "backlightRadius.xml", ofRange(0.0, 2000), 10.0 );
-//	timeline.addCurves("Backlight Num Samples", currentCompositionDirectory + "backlightNumSamples.xml", ofRange(0.0, 150), 100 );
-//	timeline.addCurves("Backlight Density", currentCompositionDirectory + "backlightDensity.xml", ofRange(0.0, 1.0), 0.1 );
-//	timeline.addCurves("Backlight Decay", currentCompositionDirectory + "backlightDecay.xml", ofRange(0.0, 1.0), 0.0 );
-//	timeline.addCurves("Backlight Exposure", currentCompositionDirectory + "backlightExposure.xml", ofRange(0.0, 1), 1.0 );
-//	timeline.addCurves("Backlight Weight", currentCompositionDirectory + "backlightWeight.xml", ofRange(0.0, 1.), 0.01 );
-//	
-//	timeline.addPage("God Rays Effects", true);
-//	timeline.addCurves("Backlight Center", currentCompositionDirectory + "backlightCenter.xml", ofRange(-.5, 1.5), 0.50 );
-//	timeline.addCurves("Backlight Texture Alpha", currentCompositionDirectory + "backlightAlpha.xml", ofRange(0.0, 1.0), 0.5 );
-//	timeline.addCurves("Backlight Texture Scroll", currentCompositionDirectory + "backlightScroll.xml", ofRange(0.0, 10.0), 0.01 );
-//	timeline.addCurves("Backlight Silhouette Alpha", currentCompositionDirectory + "backlightSilhouetteAlpha.xml", ofRange(0.0, 1.0), 1.0 );
-//	
-//	timeline.addPage("God Rays Warp", true);
-//	timeline.addCurves("Water Distort Amount", currentCompositionDirectory + "backlightDistortAmount.xml", ofRange(0.0, sqrtf(15.0)), 1.0 );
-//	timeline.addCurves("Water Bump Texture Scale", currentCompositionDirectory + "backlightDistortScale.xml", ofRange(0.0, sqrtf(15.0)), 1.0 );
-//	timeline.addCurves("Water Bump Scroll Speed", currentCompositionDirectory + "backlightBumpScrollSpeed.xml", ofRange(0.0, 3.0), 0.1);
-
 	timeline.addPage("Synchronize", true);
 	timeline.addTrack("Video", videoTrack);
 	timeline.addTrack("Depth Sequence", &depthSequence);
 	timeline.addTrack("Alignment", &alignmentScrubber);
 	
 	timeline.addPage("Texture Alignment");
-//	timeline.addCurves("X Translate", currentCompositionDirectory + "XTextureShift.xml", ofRange(-.35, .35), 0.0 );
-//	timeline.addCurves("Y Translate", currentCompositionDirectory + "YTextureShift.xml", ofRange(-.35, .35), 0.0 );
 	timeline.addCurves("X Texture Rotate", currentCompositionDirectory + "XTextureRotate.xml", ofRange(-10, 10), 0.0 );
 	timeline.addCurves("Y Texture Rotate", currentCompositionDirectory + "YTextureRotate.xml", ofRange(-10, 10), 0.0 );
 	
@@ -451,8 +406,6 @@ void testApp::drawGeometry(){
 										  timeline.getValue("Warp Stretch Y"),
 										  timeline.getValue("Warp Stretch Z"));
 				
-//		renderer.getShader().setUniform1f("pointMin", timeline.getValue("Point Size Min"));
-//		renderer.getShader().setUniform1f("pointMax", timeline.getValue("Point Size Max"));
 		renderer.getShader().setUniform1f("fadeAmount", timeline.getValue("Fade Amount"));
 		renderer.getShader().setUniform4f("fadeColor", fadeToColor.r,fadeToColor.g,fadeToColor.b, 1.0);
 				
@@ -519,26 +472,6 @@ void testApp::drawGeometry(){
 			glPointSize(pointSize);
 			renderer.drawPointCloud();
 		}
-        
-		/*
-		float depthAlpha = 	timeline.getValue("Depth Particle Alpha");
-		if(drawDepthParticles && depthAlpha > 0.0 ){
-			ofTranslate(0,0,-.5);
-			ofSetColor(255*depthAlpha);
-			
-			renderer.bindRenderer();
-			
-			int maxParticles = timeline.getValue("Max Particles");
-			if(maxParticles != depthParticleField.getMaxParticles()){
-				depthParticleField.setMaxParticles(maxParticles);
-			}
-			ofSetLineWidth(thickness);			
-			glPointSize(pointSize*pointSize);
-			depthParticleField.mesh.drawVertices();
-
-			renderer.unbindRenderer();
-		}
-		*/
 		
 		if(drawRandomMesh){
 			ofTranslate(0,0,-.5);
@@ -548,19 +481,6 @@ void testApp::drawGeometry(){
 			randomMesh.draw();
 			renderer.unbindRenderer();
 		}
-		
-//		if(drawShape){
-//			ofRotate(timeline.getValue("Shape Rotate"), 0, 0, 1);
-//			float scale = powf(timeline.getValue("Shape Scale"),2);
-//			ofScale(scale, scale);
-//			ofTranslate(timeline.getValue("Shape X"),
-//						timeline.getValue("Shape Y"),
-//						timeline.getValue("Shape Z"));
-//			ofSetColor(timeline.getColor("Shape Color"));
-//			ofSetLineWidth(timeline.getValue("Shape Line Width"));
-//			generateShapeMesh();
-//			shapeMesh.draw();
-//		}
 		
 		ofPopStyle();
 		ofPopMatrix();
@@ -658,8 +578,6 @@ void testApp::keyPressed(int key){
 	
 	if(loadedScene == NULL) return;
 	
-    
-	
 	if(currentlyRendering){
 		if(key == ' '){
 			finishRender();
@@ -674,6 +592,10 @@ void testApp::keyPressed(int key){
 		if(key == OF_KEY_LEFT){
 			player.getVideoPlayer()->previousFrame();
 		}
+	}
+	
+	if(key == OF_KEY_RETURN && renderStillFrame){
+		videoTrack->getPlayer()->setFrame(timeline.getCurrentFrame());
 	}
 	
 	if(key == ' '){
@@ -782,13 +704,7 @@ void testApp::update(){
     for(int i = 0; i < renderQueue.size(); i++){
     	renderQueue[i].remove->enabled = viewComps;
     }
-    
-//	if(renderRainbow() && renderObjectFiles){
-//		ofSystemAlertDialog("Select either object files or combined video for custom export");
-//		renderCombinedVideo1to1 = false;
-//	}
-	
-	
+    	
 	if(viewComps && timeline.getIsEnabled()){
 		timeline.disable();
 	}
@@ -831,7 +747,7 @@ void testApp::update(){
             if(!renderQueue[i].completed){
                 selectedScene = renderQueue[i].sceneButton;
                 currentCompShortName = renderQueue[i].compShortName;
-				cout << "RENDER: loading comp " << renderQueue[i].compositionFolder << endl;
+//				cout << "RENDER: loading comp " << renderQueue[i].compositionFolder << endl;
                 loadComposition(renderQueue[i].compositionFolder + pathDelim);
                 foundCompToRender = true;
                 renderQueue[i].completed = true;
@@ -851,31 +767,23 @@ void testApp::update(){
                 saveDirectory.create(true);
             }
 			
-            cout << "1 **** CURRENT VIDEO FRAME " << player.getVideoPlayer()->getCurrentFrame() << endl;
+//            cout << "1 **** CURRENT VIDEO FRAME " << player.getVideoPlayer()->getCurrentFrame() << endl;
 			int stillVideoFrame = player.getVideoPlayer()->getCurrentFrame();
-//			if(player.hasHighresVideo()){
-//				player.useHiresVideo();
-//				videoTrack->setPlayer(player.getVideoPlayer());
-//				renderer.setRGBTexture(*player.getVideoPlayer());
-//				meshBuilder.setRGBTexture(*player.getVideoPlayer());
-//				player.getVideoPlayer()->setFrame(stillVideoFrame); //JG BUG FIX
-//			}
-			
-			cout << "2 **** CURRENT VIDEO FRAME " << player.getVideoPlayer()->getCurrentFrame() << endl;
+//			cout << "2 **** CURRENT VIDEO FRAME " << player.getVideoPlayer()->getCurrentFrame() << endl;
 			
             player.getVideoPlayer()->setVolume(0);
             
-			cout << "3 **** CURRENT VIDEO FRAME " << player.getVideoPlayer()->getCurrentFrame() << endl;
+//			cout << "3 **** CURRENT VIDEO FRAME " << player.getVideoPlayer()->getCurrentFrame() << endl;
 			
             cameraTrack->setTimelineInOutToTrack();
             timeline.setCurrentTimeToInPoint();
 			if(!renderStillFrame){
-				cout << "	**** TIMELINE PERCENT " << timeline.getPercentComplete() << " TIMELINE FRAME " << timeline.getCurrentFrame() << endl;
+//				cout << "	**** TIMELINE PERCENT " << timeline.getPercentComplete() << " TIMELINE FRAME " << timeline.getCurrentFrame() << endl;
 				//player.getVideoPlayer()->setPosition(timeline.getPercentComplete());
 				player.getVideoPlayer()->setFrame(timeline.getCurrentFrame());
 				player.getVideoPlayer()->update();
 				//timeline.setPercentComplete(player.getVideoPlayer()->getPosition());
-				cout << "	**** VIDEO PERCENT " << player.getVideoPlayer()->getPosition() << " VIDEO FRAME " << player.getVideoPlayer()->getCurrentFrame() << endl;
+//				cout << "	**** VIDEO PERCENT " << player.getVideoPlayer()->getPosition() << " VIDEO FRAME " << player.getVideoPlayer()->getCurrentFrame() << endl;
 				
 			}
 			else{
@@ -885,7 +793,7 @@ void testApp::update(){
 
 //            cout << "setting current time to " << timeline.getPercentComplete() << " seconds: " << timeline.getCurrentTime() << " video: " << player.getVideoPlayer()->getCurrentFrame() << " sec: " <<     (player.getVideoPlayer()->getPosition() * player.getVideoPlayer()->getDuration()) << endl;
             
-			cout << "4 **** CURRENT VIDEO FRAME " << player.getVideoPlayer()->getCurrentFrame() << endl;
+//			cout << "4 **** CURRENT VIDEO FRAME " << player.getVideoPlayer()->getCurrentFrame() << endl;
 
             currentLockCamera = cameraTrack->lockCameraToTrack = true;
             cameraTrack->jumpToTarget();
@@ -896,7 +804,6 @@ void testApp::update(){
 	
     if(!currentlyRendering){
         checkReallocateFrameBuffers();
-
         //check if the rendering output type changed
 		checkRenderOutputOptions();
 	}
@@ -918,14 +825,6 @@ void testApp::update(){
 		drawMesh = true;
 	}
 	
-//    if(loadNormalDir){
-//        loadNormalDir = false;
-//        normalsLoaded = false;
-//        ofFileDialogResult r = ofSystemLoadDialog("load normals",true);
-//        if(r.bSuccess){
-//            loadNormals(r.getPath());
-//        }
-//    }
 	if(currentLockCamera != cameraTrack->lockCameraToTrack){
 		if(!currentLockCamera){
 			cam.setAnglesFromOrientation();
@@ -1106,6 +1005,7 @@ void testApp::update(){
 	
 	if(renderRainbow() && rainbowVideoFrame != currentVideoFrame){
 		rendererNeedsUpdate = true;
+		recalculateRainbowFrame = true;
 	}
 	
 	if(temporalAlignmentMode &&
@@ -1122,8 +1022,6 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::checkRenderOutputOptions(){
-
-//	toggleOffRenderOutputOptions();
 	
 	if(!currentCombined1to1 && renderCombinedVideo1to1){
 		toggleOffRenderOutputOptions();
@@ -1138,11 +1036,9 @@ void testApp::checkRenderOutputOptions(){
 		renderCombinedVideo1080p = currentCombined1080p = true;
 	}
 
-	currentCombined1to1 = renderCombinedVideo1080p;
+	currentCombined1to1 = renderCombinedVideo1to1;
 	currentCombined720p = renderCombinedVideo720p;
-	currentCombined1080p = renderCombinedVideo1to1;
-
-	
+	currentCombined1080p = renderCombinedVideo1080p;
 }
 
 //--------------------------------------------------------------
@@ -1150,6 +1046,7 @@ void testApp::toggleOffRenderOutputOptions(){
 	renderCombinedVideo1to1 = false;
 	renderCombinedVideo720p = false;
 	renderCombinedVideo1080p = false;
+	recalculateRainbowFrame = true;	
 }
 
 //--------------------------------------------------------------
@@ -1180,7 +1077,6 @@ void testApp::generateScanlineMesh(bool verticalScanline, bool horizontalScanlin
 
 //--------------------------------------------------------------
 void testApp::generateRandomMesh(int numPoints){
-	//
 
 	if(numPoints == 0){
 		randomMesh.clear();
@@ -1212,9 +1108,8 @@ void testApp::updateRenderer(){
 		}
         meshBuilder.update();
     }
-
 	
-	if(renderRainbow()){
+	if(renderRainbow() && recalculateRainbowFrame){
 		
 		rainbowVideoFrame = currentVideoFrame;
 		rainbowExporter.minDepth = meshBuilder.nearClip;
@@ -1230,11 +1125,11 @@ void testApp::updateRenderer(){
 		   combinedVideoTexture.getWidth() != rainbowExporter.getPixels().getWidth() ||
 		   combinedVideoTexture.getHeight() != rainbowExporter.getPixels().getHeight() )
 		{
-			cout << "allocating video texture" << endl;
 			combinedVideoTexture.allocate(rainbowExporter.getPixels());
 		}
 		
 		combinedVideoTexture.loadData(rainbowExporter.getPixels());
+		recalculateRainbowFrame = false;
 	}
 	
 	cameraTrack->setDampening(powf(timeline.getValue("Camera Dampen"),2.));
@@ -1503,7 +1398,10 @@ void testApp::writeCalibrationDataToXML(){
 		
 		calibration.popTag();
 	}
-	else{		
+	else{
+		calibration.addTag("calibration");
+		calibration.pushTag("calibration");
+		
 		calibration.addTag("depthIntrinsics");
 		calibration.pushTag("depthIntrinsics");
 		
@@ -1578,11 +1476,10 @@ void testApp::writeCalibrationDataToXML(){
 		calibration.addValue("min", meshBuilder.nearClip);
 		calibration.addValue("max", meshBuilder.farClip);
 		calibration.popTag();
-		
-		calibration.popTag();
+	
+		calibration.popTag(); //calibration
 	}
 	
-	calibration.popTag();//adjustment
 	
 	calibration.saveFile(saveFolder + "/_depthProperties.xml" );	
 }
