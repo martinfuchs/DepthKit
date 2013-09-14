@@ -29,6 +29,7 @@ ${PREFIX}obviousjim/ofxMSATimer
 ${PREFIX}YCAMInterlab/ofxTimecode
 ${PREFIX}YCAMInterlab/ofxTimeline
 ${PREFIX}obviousjim/ofxObjLoader		
+${PREFIX}obviousjim/ofxGui		
 
 # you also need to replace ofxOpenCv/libs/opencv with this link:
 # https://github.com/kylemcdonald/ofxCv/downloads
