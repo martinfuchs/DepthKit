@@ -155,8 +155,8 @@ void testApp::setup(){
     gui.add( setCurrentSize.setup("Apply Custom Size", ofParameter<bool>()));
     gui.add( lockTo720p.setup("Render 720p", ofParameter<bool>()));
     gui.add( lockTo1080p.setup("Render 1080p",ofParameter<bool>()));
-	gui.add( renderObjectFiles.setup(".obj Files", ofParameter<bool>()));
-	gui.add( includeTextureMaps.setup(".obj Textures", ofParameter<bool>()));
+	gui.add( renderObjectFiles.setup("obj Files", ofParameter<bool>()));
+	gui.add( includeTextureMaps.setup("obj Textures", ofParameter<bool>()));
 	gui.add( renderCombinedVideo1to1.setup("Combined Per Pixel", ofParameter<bool>()));
 	gui.add( renderCombinedVideo720p.setup("Combined 720p", ofParameter<bool>()));
 	gui.add( renderCombinedVideo1080p.setup("Combined 1080p", ofParameter<bool>()));
@@ -1388,7 +1388,7 @@ void testApp::writeCalibrationDataToXML(){
 		calibration.pushTag("depth");
 		
 		calibration.addValue("fovx", meshBuilder.depthFOV.x);
-		calibration.addValue("fovx", meshBuilder.depthFOV.y);
+		calibration.addValue("fovy", meshBuilder.depthFOV.y);
 		calibration.addValue("ppx", meshBuilder.depthPrincipalPoint.x);
 		calibration.addValue("ppy", meshBuilder.depthPrincipalPoint.y);
 		calibration.addValue("width", meshBuilder.depthImageSize.width);
@@ -1768,12 +1768,7 @@ void testApp::loadDefaults(){
     customHeight = 1080;
     lockTo1080p = true;
 	setCurrentSize = false;
-	
-	currentCombined1to1 = false;
-	currentCombined720p = false;
-	currentCombined1080p = false;
-
-//	currentExportType = RGBD;
+		
 	rainbowExporter.oneToOne = false;
 	
     renderObjectFiles = false;
@@ -1781,7 +1776,7 @@ void testApp::loadDefaults(){
 	renderCombinedVideo1to1 = false;
 	renderCombinedVideo720p = false;
 	renderCombinedVideo1080p = false;
-	
+
 //	maxDepthSlider = 6000;
 //	minDepthSlider = 200;
 	
