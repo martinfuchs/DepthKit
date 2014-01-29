@@ -12,7 +12,7 @@ void DKVisualize::setup(){
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
 	ofBackground(44);
-	ofxTimeline::removeCocoaMenusFromGlut("RGBDVisualize");
+	ofxTimeline::removeCocoaMenusFromGlut("DKVisualize");
 	
 #ifdef TARGET_WIN32
 	pathDelim = "\\";
@@ -23,6 +23,7 @@ void DKVisualize::setup(){
     recalculateRainbowFrame = false;
 	
     cam.setup();
+    resetCameraPosition();
 	cameraSpeed = cam.speed = 20;
 	cam.autosavePosition = true;
 	cam.loadCameraPosition();
@@ -77,6 +78,7 @@ void DKVisualize::setup(){
     timeline.setSpacebarTogglePlay(false);
     
 	newCompButton = new ofxMSAInteractiveObjectWithDelegate();
+    newCompButton->enableMouseEvents();
     newCompButton->fontReference = &timeline.getFont();
 	newCompButton->setLabel("Create New Composition From This Scene");
 	newCompButton->setDelegate(this);
@@ -84,6 +86,7 @@ void DKVisualize::setup(){
     setButtonColors(newCompButton);
 	
 	saveCompButton = new ofxMSAInteractiveObjectWithDelegate();
+    saveCompButton->enableMouseEvents();
     saveCompButton->fontReference = &timeline.getFont();
 	saveCompButton->setLabel("Save Comp");
 	saveCompButton->setDelegate(this);
@@ -95,6 +98,7 @@ void DKVisualize::setup(){
 	saveCompAsNewButton->setLabel("Copy To New");
 	saveCompAsNewButton->setDelegate(this);
 	saveCompAsNewButton->setPosAndSize(750, 25, 125, 25);
+    saveCompAsNewButton->enableMouseEvents();
     setButtonColors(saveCompAsNewButton);
 	
     mediaBinButton = new ofxMSAInteractiveObjectWithDelegate();
@@ -102,6 +106,7 @@ void DKVisualize::setup(){
 	mediaBinButton->setLabel("Load MediaBin");
 	mediaBinButton->setDelegate(this);
 	mediaBinButton->setPosAndSize(250,0, 500, 25);
+    mediaBinButton->enableMouseEvents();
     setButtonColors(mediaBinButton);
 	
     changeCompButton = new ofxMSAInteractiveObjectWithDelegate();
@@ -109,12 +114,14 @@ void DKVisualize::setup(){
 	changeCompButton->setLabel("Change Comp");
 	changeCompButton->setDelegate(this);
 	changeCompButton->setPosAndSize(250,25, 500, 25);
+	changeCompButton->enableMouseEvents();
     setButtonColors(changeCompButton);
 	
     renderBatch = new ofxMSAInteractiveObjectWithDelegate();
     renderBatch->fontReference = &timeline.getFont();
     renderBatch->setLabel("Start Rendering Queue >>");
 	renderBatch->setDelegate(this);
+    renderBatch->enableMouseEvents();
     setButtonColors(renderBatch);
 
 	gui.setup("Settings");
@@ -566,7 +573,9 @@ void DKVisualize::drawGeometry(){
 	ofSetColor(0,0,0);
 	ofRect(fboRectangle);
 	ofPopStyle();
-	fbo1.getTextureReference().draw(ofRectangle(fboRectangle.x,fboRectangle.y+fboRectangle.height,fboRectangle.width,-fboRectangle.height));
+//	fbo1.getTextureReference().draw(ofRectangle(fboRectangle.x,fboRectangle.y+fboRectangle.height,fboRectangle.width,-fboRectangle.height));
+    fbo1.getTextureReference().draw(fboRectangle);
+
 }
 
 //--------------------------------------------------------------
@@ -1796,22 +1805,6 @@ void DKVisualize::resetCameraPosition(){
 	cam.setOrientation(ofQuaternion());
 	cam.rotate(180, ofVec3f(0,1,0));
 	cam.movedManually();
-	
-	/*
-	 cam.setPosition(0, 0, 0);
-	 ofMatrix4x4 yflip,xflip;
-	 ofMatrix4x4 transform;
-	 yflip.makeScaleMatrix(ofVec3f(1,-1,1));
-	 xflip.makeScaleMatrix(ofVec3f(-1,1,1));
-	 transform = yflip * renderer.getDepthToRGBTransform().getInverse() * yflip;
-	 //			transform = yflip * renderer.getDepthToRGBTransform().getInverse() * yflip;
-	 //			transform = xflip * yflip * renderer.getDepthToRGBTransform()  * yflip * xflip;
-	 cam.setTransformMatrix(transform);
-	 cam.setFov(renderer.getRGBCalibration().getDistortedIntrinsics().getFov().y);
-	 cam.setAnglesFromOrientation();
-	 cam.invertControls = true;
-	 cam.applyRotation = cam.applyTranslation = false;
-	 */
 }
 
 //--------------------------------------------------------------

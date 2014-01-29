@@ -33,3 +33,4 @@ ipch/
 *.sys
 /RGBDCaptureXtionPro/bin/data/depthframes/
 /RGBDCaptureKinect/bin/data/depthframes/
+defaultBin.xml
