@@ -21,7 +21,7 @@ ${PREFIX}Flightphase/ofxRange
 ${PREFIX}Flightphase/ofxTween
 ${PREFIX}Flightphase/ofxMSAInteractiveObject
 ${PREFIX}Flightphase/ofxTextInputField
-${PREFIX}obviousjim/ofxRGBDepth
+${PREFIX}obviousjim/ofxDepthKit
 ${PREFIX}obviousjim/ofxCv
 ${PREFIX}obviousjim/ofxKinect
 ${PREFIX}obviousjim/ofxOpenNI
@@ -31,7 +31,18 @@ ${PREFIX}YCAMInterlab/ofxTimeline
 ${PREFIX}obviousjim/ofxObjLoader		
 ${PREFIX}obviousjim/ofxGui		
 
-# you also need to replace ofxOpenCv/libs/opencv with this link:
-# https://github.com/kylemcdonald/ofxCv/downloads
-# opencv-2.3.-osx.zip — OpenCV 2.3 library 
-#=======
+cd ofxTimeline
+git checkout -b develop --track origin/develop
+git pull origin develop
+cd ..
+
+cd ofxTextInputField
+git checkout -b develop --track origin/develop
+git pull origin develop
+cd ..
+
+cd ofxDepthKit
+git checkout -b develop --track origin/develop
+git pull origin develop
+cd ..
+
