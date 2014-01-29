@@ -40,18 +40,10 @@ typedef struct {
     ofxMSAInteractiveObjectWithDelegate* remove;
 } RenderButton;
 
-class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
+class DKVisualize : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 
   public:
 	
-//	enum ExportType {
-//		RGBD,
-//		ObjectFile,
-//		Combined1to1,
-//		Combined720p,
-//		Combined1070p
-//	};
-
 	void setup();
 	void update();
 	void draw();
