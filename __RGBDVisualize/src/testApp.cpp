@@ -1,18 +1,18 @@
-#include "DKVisualize.h"
+#include "testApp.h"
 
 #if (OF_VERSION_MINOR <= 7 && OF_VERSION_PATCH <= 4)
 #define ofParameter ofxParameter
 #endif
 
 //--------------------------------------------------------------
-void DKVisualize::setup(){
+void testApp::setup(){
 	
 	ofSetFrameRate(60);
     ofSetEscapeQuitsApp(false);
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
 	ofBackground(44);
-	ofxTimeline::removeCocoaMenusFromGlut("DKVisualize");
+	ofxTimeline::removeCocoaMenusFromGlut("RGBDVisualize");
 	
 #ifdef TARGET_WIN32
 	pathDelim = "\\";
@@ -23,7 +23,6 @@ void DKVisualize::setup(){
     recalculateRainbowFrame = false;
 	
     cam.setup();
-    resetCameraPosition();
 	cameraSpeed = cam.speed = 20;
 	cam.autosavePosition = true;
 	cam.loadCameraPosition();
@@ -78,7 +77,6 @@ void DKVisualize::setup(){
     timeline.setSpacebarTogglePlay(false);
     
 	newCompButton = new ofxMSAInteractiveObjectWithDelegate();
-    newCompButton->enableMouseEvents();
     newCompButton->fontReference = &timeline.getFont();
 	newCompButton->setLabel("Create New Composition From This Scene");
 	newCompButton->setDelegate(this);
@@ -86,7 +84,6 @@ void DKVisualize::setup(){
     setButtonColors(newCompButton);
 	
 	saveCompButton = new ofxMSAInteractiveObjectWithDelegate();
-    saveCompButton->enableMouseEvents();
     saveCompButton->fontReference = &timeline.getFont();
 	saveCompButton->setLabel("Save Comp");
 	saveCompButton->setDelegate(this);
@@ -98,7 +95,6 @@ void DKVisualize::setup(){
 	saveCompAsNewButton->setLabel("Copy To New");
 	saveCompAsNewButton->setDelegate(this);
 	saveCompAsNewButton->setPosAndSize(750, 25, 125, 25);
-    saveCompAsNewButton->enableMouseEvents();
     setButtonColors(saveCompAsNewButton);
 	
     mediaBinButton = new ofxMSAInteractiveObjectWithDelegate();
@@ -106,7 +102,6 @@ void DKVisualize::setup(){
 	mediaBinButton->setLabel("Load MediaBin");
 	mediaBinButton->setDelegate(this);
 	mediaBinButton->setPosAndSize(250,0, 500, 25);
-    mediaBinButton->enableMouseEvents();
     setButtonColors(mediaBinButton);
 	
     changeCompButton = new ofxMSAInteractiveObjectWithDelegate();
@@ -114,14 +109,12 @@ void DKVisualize::setup(){
 	changeCompButton->setLabel("Change Comp");
 	changeCompButton->setDelegate(this);
 	changeCompButton->setPosAndSize(250,25, 500, 25);
-	changeCompButton->enableMouseEvents();
     setButtonColors(changeCompButton);
 	
     renderBatch = new ofxMSAInteractiveObjectWithDelegate();
     renderBatch->fontReference = &timeline.getFont();
     renderBatch->setLabel("Start Rendering Queue >>");
 	renderBatch->setDelegate(this);
-    renderBatch->enableMouseEvents();
     setButtonColors(renderBatch);
 
 	gui.setup("Settings");
@@ -156,6 +149,7 @@ void DKVisualize::setup(){
 	gui.add( sinDistort.setup("Wave Distort", ofParameter<bool>()));
 	gui.add( affectPointsPerlin.setup("Warp Distort", ofParameter<bool>()));
 	
+	gui.add( exportLabel.setup("EXPORT", "EXPORT"));
 	gui.add( customWidth.setup("Frame Width", ofParameter<int>(), 320, 1920*4));
     gui.add( customHeight.setup("Frame Height", ofParameter<int>(), 240, 1080*4));
     gui.add( setCurrentSize.setup("Apply Custom Size", ofParameter<bool>()));
@@ -197,7 +191,7 @@ void DKVisualize::setup(){
     ofSetWindowShape(ofGetScreenWidth()-125, ofGetScreenHeight()-100);
 }
 
-void DKVisualize::loadShaders(){
+void testApp::loadShaders(){
     
     dofRange.load("shaders/dofrange");
 	cout << "LOADING DOF BLUR" << endl;
@@ -215,11 +209,14 @@ void DKVisualize::loadShaders(){
     dofQuad.addTexCoord(ofVec2f(0,fbo1.getHeight()));
     dofQuad.addTexCoord(ofVec2f(fbo1.getWidth(),0));
     dofQuad.addTexCoord(ofVec2f(fbo1.getWidth(),fbo1.getHeight()));
-		
+	
+//	godRays.load("shaders/godrays");
+//	distort.load("shaders/distort");
+	
     renderer.reloadShader();
 }
 
-void DKVisualize::populateTimelineElements(){
+void testApp::populateTimelineElements(){
 	
 	timeline.setPageName("Camera");
 	cameraTrack = new ofxTLCameraTrack();
@@ -309,7 +306,7 @@ void DKVisualize::populateTimelineElements(){
 	timeline.setCurrentPage("Rendering");
 }
 
-void DKVisualize::drawGeometry(){
+void testApp::drawGeometry(){
 	
     float pointAlpha = timeline.getValue("Point Alpha");
     float wireAlpha = timeline.getValue("Wireframe Alpha");
@@ -569,13 +566,11 @@ void DKVisualize::drawGeometry(){
 	ofSetColor(0,0,0);
 	ofRect(fboRectangle);
 	ofPopStyle();
-//	fbo1.getTextureReference().draw(ofRectangle(fboRectangle.x,fboRectangle.y+fboRectangle.height,fboRectangle.width,-fboRectangle.height));
-    fbo1.getTextureReference().draw(fboRectangle);
-
+	fbo1.getTextureReference().draw(ofRectangle(fboRectangle.x,fboRectangle.y+fboRectangle.height,fboRectangle.width,-fboRectangle.height));
 }
 
 //--------------------------------------------------------------
-void DKVisualize::keyPressed(int key){
+void testApp::keyPressed(int key){
 	
 	if(key == 'f'){
 		ofToggleFullscreen();
@@ -666,32 +661,32 @@ void DKVisualize::keyPressed(int key){
 }
 
 //--------------------------------------------------------------
-void DKVisualize::keyReleased(int key){
+void testApp::keyReleased(int key){
 	
 }
 
 //--------------------------------------------------------------
-void DKVisualize::mouseMoved(int x, int y ){
+void testApp::mouseMoved(int x, int y ){
 	cam.usemouse = fboRectangle.inside(x, y);
 }
 
 //--------------------------------------------------------------
-void DKVisualize::mouseDragged(int x, int y, int button){
+void testApp::mouseDragged(int x, int y, int button){
 	
 }
 
 //--------------------------------------------------------------
-void DKVisualize::mousePressed(int x, int y, int button){
+void testApp::mousePressed(int x, int y, int button){
 }
 
 //--------------------------------------------------------------
-void DKVisualize::mouseReleased(int x, int y, int button){
+void testApp::mouseReleased(int x, int y, int button){
 	rendererDirty = true; //catch all for buttons...
 }
 
 #pragma mark application logic
 //--------------------------------------------------------------
-void DKVisualize::update(){
+void testApp::update(){
 	
     if(!isSceneLoaded){
         viewComps = true;
@@ -832,7 +827,7 @@ void DKVisualize::update(){
 	
 	if(currentLockCamera != cameraTrack->lockCameraToTrack){
 		if(!currentLockCamera){
-			cam.movedManually();
+			cam.setAnglesFromOrientation();
 		}
 		cameraTrack->lockCameraToTrack = currentLockCamera;
 	}
@@ -1026,7 +1021,7 @@ void DKVisualize::update(){
 }
 
 //--------------------------------------------------------------
-void DKVisualize::checkRenderOutputOptions(){
+void testApp::checkRenderOutputOptions(){
 	
 	if(!currentCombined1to1 && renderCombinedVideo1to1){
 		toggleOffRenderOutputOptions();
@@ -1047,7 +1042,7 @@ void DKVisualize::checkRenderOutputOptions(){
 }
 
 //--------------------------------------------------------------
-void DKVisualize::toggleOffRenderOutputOptions(){
+void testApp::toggleOffRenderOutputOptions(){
 	renderCombinedVideo1to1 = false;
 	renderCombinedVideo720p = false;
 	renderCombinedVideo1080p = false;
@@ -1055,7 +1050,7 @@ void DKVisualize::toggleOffRenderOutputOptions(){
 }
 
 //--------------------------------------------------------------
-void DKVisualize::generateScanlineMesh(bool verticalScanline, bool horizontalScanline) {
+void testApp::generateScanlineMesh(bool verticalScanline, bool horizontalScanline) {
 	horizontalScanlineMesh.clear();
 	verticalScanlineMesh.clear();
 	horizontalScanlineMesh.setMode(OF_PRIMITIVE_LINES);
@@ -1081,7 +1076,7 @@ void DKVisualize::generateScanlineMesh(bool verticalScanline, bool horizontalSca
 }
 
 //--------------------------------------------------------------
-void DKVisualize::generateRandomMesh(int numPoints){
+void testApp::generateRandomMesh(int numPoints){
 
 	if(numPoints == 0){
 		randomMesh.clear();
@@ -1097,7 +1092,7 @@ void DKVisualize::generateRandomMesh(int numPoints){
 }
 
 //--------------------------------------------------------------
-void DKVisualize::updateRenderer(){
+void testApp::updateRenderer(){
 	
 	if(currentDepthFrame != player.getDepthSequence()->getCurrentFrame()){
 		holeFiller.close(player.getDepthPixels());
@@ -1146,7 +1141,7 @@ void DKVisualize::updateRenderer(){
 }
 
 //--------------------------------------------------------------
-void DKVisualize::checkReallocateFrameBuffers(){
+void testApp::checkReallocateFrameBuffers(){
     
     if(lockTo720p && (fbo1.getWidth() != 1280 || fbo1.getHeight() != 720)){
         customWidth = 1280;
@@ -1170,7 +1165,7 @@ void DKVisualize::checkReallocateFrameBuffers(){
     lockTo1080p = fbo1.getWidth() == 1920 && fbo1.getHeight() == 1080;
 }
 
-void DKVisualize::allocateFrameBuffers(){
+void testApp::allocateFrameBuffers(){
 	
     int fboWidth = customWidth;
     int fboHeight = customHeight;
@@ -1211,12 +1206,12 @@ void DKVisualize::allocateFrameBuffers(){
 
 }
 
-bool DKVisualize::renderRainbow(){
+bool testApp::renderRainbow(){
 	return renderCombinedVideo1to1 || renderCombinedVideo720p || renderCombinedVideo1080p;
 }
 
 //--------------------------------------------------------------
-void DKVisualize::draw(){
+void testApp::draw(){
 	
 	//REMOVE
 	if(!isSceneLoaded) return;
@@ -1384,7 +1379,7 @@ void DKVisualize::draw(){
     }
 }
 
-void DKVisualize::writeCalibrationDataToXML(){
+void testApp::writeCalibrationDataToXML(){
 	
 	ofxXmlSettings calibration;
 
@@ -1491,11 +1486,11 @@ void DKVisualize::writeCalibrationDataToXML(){
 
 #pragma mark compositions
 //--------------------------------------------------------------
-bool DKVisualize::createNewComposition(){
+bool testApp::createNewComposition(){
 	cout << "createNewComposition -- selected take " << selectedScene->scene.name << endl;
     
     if(selectedScene == NULL){
-        ofLogError("DKVisualize::createNewComposition -- Cannot create new comp with no selected take!");
+        ofLogError("testApp::createNewComposition -- Cannot create new comp with no selected take!");
         return false;
     }
     
@@ -1528,7 +1523,7 @@ bool DKVisualize::createNewComposition(){
 	return true;
 }
 
-bool DKVisualize::loadAssetsForScene(SceneButton* sceneButton){
+bool testApp::loadAssetsForScene(SceneButton* sceneButton){
 	
 	ofxRGBDScene& scene = sceneButton->scene;
 	if(!player.setup(scene)){
@@ -1577,7 +1572,7 @@ bool DKVisualize::loadAssetsForScene(SceneButton* sceneButton){
 }
 
 //--------------------------------------------------------------
-void DKVisualize::loadNewMediaBin(){
+void testApp::loadNewMediaBin(){
 	
 	ofFileDialogResult r = ofSystemLoadDialog("Select Media Bin", true);
 	if(r.bSuccess){
@@ -1602,7 +1597,7 @@ void DKVisualize::loadNewMediaBin(){
 }
 
 //--------------------------------------------------------------
-void DKVisualize::populateScenes(){
+void testApp::populateScenes(){
     
     ofDirectory dir(mediaBinFolder);
 	dir.listDir();
@@ -1640,7 +1635,7 @@ void DKVisualize::populateScenes(){
 }
 
 //--------------------------------------------------------------
-void DKVisualize::positionSceneButtons(){
+void testApp::positionSceneButtons(){
     int compx = 0;
 	int compy = 50;
 	
@@ -1658,7 +1653,7 @@ void DKVisualize::positionSceneButtons(){
 }
 
 //--------------------------------------------------------------
-void DKVisualize::populateCompositionsForScene(){
+void testApp::populateCompositionsForScene(){
     
 	if(selectedScene == NULL){
         ofLogError("populateCompositionsForScene -- Take is null");
@@ -1723,7 +1718,7 @@ void DKVisualize::populateCompositionsForScene(){
 	}
 }
 
-void DKVisualize::clearCompositionButtons(){
+void testApp::clearCompositionButtons(){
 	for(int i = comps.size()-1; i >= 0; i--){
         delete comps[i].toggle;
         delete comps[i].load;
@@ -1731,7 +1726,7 @@ void DKVisualize::clearCompositionButtons(){
     comps.clear();
 }
 
-void DKVisualize::clearRenderQueue(){
+void testApp::clearRenderQueue(){
 	for(int i = renderQueue.size()-1; i >= 0; i--){
 		delete renderQueue[i].remove;
 	}
@@ -1739,7 +1734,7 @@ void DKVisualize::clearRenderQueue(){
 }
 
 //--------------------------------------------------------------
-void DKVisualize::loadDefaults(){
+void testApp::loadDefaults(){
     
 	videoVolume = 1.0;
 //	shapeVerts = 3;
@@ -1795,16 +1790,32 @@ void DKVisualize::loadDefaults(){
 }
 
 //--------------------------------------------------------------
-void DKVisualize::resetCameraPosition(){
+void testApp::resetCameraPosition(){
 	
 	cam.setPosition(0, 0, 0);
 	cam.setOrientation(ofQuaternion());
 	cam.rotate(180, ofVec3f(0,1,0));
-	cam.movedManually();
+	cam.setAnglesFromOrientation();
+	
+	/*
+	 cam.setPosition(0, 0, 0);
+	 ofMatrix4x4 yflip,xflip;
+	 ofMatrix4x4 transform;
+	 yflip.makeScaleMatrix(ofVec3f(1,-1,1));
+	 xflip.makeScaleMatrix(ofVec3f(-1,1,1));
+	 transform = yflip * renderer.getDepthToRGBTransform().getInverse() * yflip;
+	 //			transform = yflip * renderer.getDepthToRGBTransform().getInverse() * yflip;
+	 //			transform = xflip * yflip * renderer.getDepthToRGBTransform()  * yflip * xflip;
+	 cam.setTransformMatrix(transform);
+	 cam.setFov(renderer.getRGBCalibration().getDistortedIntrinsics().getFov().y);
+	 cam.setAnglesFromOrientation();
+	 cam.invertControls = true;
+	 cam.applyRotation = cam.applyTranslation = false;
+	 */
 }
 
 //--------------------------------------------------------------
-void DKVisualize::setButtonColors(ofxMSAInteractiveObjectWithDelegate* btn){
+void testApp::setButtonColors(ofxMSAInteractiveObjectWithDelegate* btn){
 	ofColor downColor  = ofColor(255, 120, 0);
 	ofColor idleColor  = ofColor(220, 200, 200);
 	ofColor hoverColor = ofColor(255*.2, 255*.2, 30*.2);
@@ -1816,7 +1827,7 @@ void DKVisualize::setButtonColors(ofxMSAInteractiveObjectWithDelegate* btn){
 }
 
 //--------------------------------------------------------------
-void DKVisualize::saveComposition(){
+void testApp::saveComposition(){
 	
 	if(loadedScene == NULL){
 		return;
@@ -1843,19 +1854,19 @@ void DKVisualize::saveComposition(){
 }
 
 //--------------------------------------------------------------
-void DKVisualize::objectDidRollOver(ofxMSAInteractiveObject* object, int x, int y){
+void testApp::objectDidRollOver(ofxMSAInteractiveObject* object, int x, int y){
 }
 
 //--------------------------------------------------------------
-void DKVisualize::objectDidRollOut(ofxMSAInteractiveObject* object, int x, int y){
+void testApp::objectDidRollOut(ofxMSAInteractiveObject* object, int x, int y){
 }
 
 //--------------------------------------------------------------
-void DKVisualize::objectDidPress(ofxMSAInteractiveObject* object, int x, int y, int button){
+void testApp::objectDidPress(ofxMSAInteractiveObject* object, int x, int y, int button){
 }
 
 //--------------------------------------------------------------
-void DKVisualize::objectDidRelease(ofxMSAInteractiveObject* object, int x, int y, int button){
+void testApp::objectDidRelease(ofxMSAInteractiveObject* object, int x, int y, int button){
     
 	if(object == mediaBinButton){
     	loadNewMediaBin();
@@ -1941,12 +1952,12 @@ void DKVisualize::objectDidRelease(ofxMSAInteractiveObject* object, int x, int y
 }
 
 //--------------------------------------------------------------
-void DKVisualize::objectDidMouseMove(ofxMSAInteractiveObject* object, int x, int y){
+void testApp::objectDidMouseMove(ofxMSAInteractiveObject* object, int x, int y){
     
 }
 
 //--------------------------------------------------------------
-bool DKVisualize::loadComposition(string compositionDirectory){
+bool testApp::loadComposition(string compositionDirectory){
 	
     if(selectedScene == NULL){
 		ofLogError("loadComposition -- Loading with a NULL secene");
@@ -1972,35 +1983,23 @@ bool DKVisualize::loadComposition(string compositionDirectory){
     }
 	
     //camera stuff
-    cam.setCameraPositionFile( currentCompositionDirectory + "camera_position.xml" );
-//	cam.loadCameraPosition();
+    cam.cameraPositionFile = currentCompositionDirectory + "camera_position.xml";
+	cam.loadCameraPosition();
     string cameraSaveFile = currentCompositionDirectory + "camera.xml";
 	cameraTrack->setXMLFileName(cameraSaveFile);
 	
     timeline.setCurrentPage(0);
     accumulatedPerlinOffset = 0;
+//	currentLightCloudOffset = 0;
+//	backlightDistortionPosition = 0;
 	
 	sinPosition = ofVec2f(0,0);
-    bool loadedSettingsSuccess = false;
 	if(ofFile::doesFileExist(currentCompositionFile)){
-        //test the file
-        ofxXmlSettings fileTest;
-        if(fileTest.load(currentCompositionFile)){
-            if(fileTest.tagExists("Settings")){
-                gui.loadFromFile(currentCompositionFile);
-                loadedSettingsSuccess = true;
-            }
-            else{
-                //Settings tag doesn't exist, figure out how to add it!
-                ofSystemAlertDialog("Settings file: " + currentCompositionFile + " is from an older version of the toolkit");
-            }
-        }
-        else{
-            ofSystemAlertDialog("Settings file: " + currentCompositionFile + " is corrupted");
-        }
-    }
-    
-    if(!loadedSettingsSuccess){
+//		cout << "loading file: " << currentCompositionFile << endl;
+//		cout << ofBufferFromFile(currentCompositionFile).getText() << endl;
+		gui.loadFromFile(currentCompositionFile);
+	}
+	else{
         loadDefaults();
     }
 
@@ -2012,7 +2011,16 @@ bool DKVisualize::loadComposition(string compositionDirectory){
 	else{
 		cout << "Video frame file does not exist!" << endl;
 	}
-		
+	
+//	if(ofFile::doesFileExist(currentNormalsDirectoryFile)){
+//		string savedNormals = ofBufferFromFile(currentNormalsDirectoryFile).getText() ;
+//		cout << "Loading normals " << savedNormals << endl;
+////		loadNormals(savedNormals);
+//	}
+//	else{
+//		cout << "Normals don't exist" << endl;
+//	}
+	
     alignmentScrubber.setup();
 	alignmentScrubber.videoSequence = videoTrack;
 	alignmentScrubber.depthSequence = &depthSequence;
@@ -2041,14 +2049,14 @@ bool DKVisualize::loadComposition(string compositionDirectory){
 	return true;
 }
 
-void DKVisualize::setCompositionButtonName(){
+void testApp::setCompositionButtonName(){
     lastSavedDate = "Last Saved on " + ofToString(ofGetMonth() ) + "/" + ofToString( ofGetDay()) + " at " + ofToString(ofGetHours()) + ":" + ofToString( ofGetMinutes() )  + ":" + ofToString( ofGetSeconds() );
     
     //TODO: change widths to prevent font overflow
     changeCompButton->setLabel(selectedScene->scene.name + "/" + currentCompShortName + " -- " + lastSavedDate);
 }
 
-void DKVisualize::addCompToRenderQueue(CompButton* comp){
+void testApp::addCompToRenderQueue(CompButton* comp){
     for(int i = 0; i < renderQueue.size(); i++){
         if(comp->compositionFolder == renderQueue[i].compositionFolder){
             return;
@@ -2067,7 +2075,7 @@ void DKVisualize::addCompToRenderQueue(CompButton* comp){
 }
 
 //--------------------------------------------------------------
-void DKVisualize::populateRenderQueue(){
+void testApp::populateRenderQueue(){
     
     int posx = ofGetWidth()-300;
     int posy = 50;
@@ -2094,7 +2102,7 @@ void DKVisualize::populateRenderQueue(){
 }
 
 //--------------------------------------------------------------
-void DKVisualize::finishRender(){
+void testApp::finishRender(){
 	
 	currentlyRendering = false;
     for(int i = 0; i < renderQueue.size(); i++){
@@ -2120,7 +2128,7 @@ void DKVisualize::finishRender(){
 }
 
 //--------------------------------------------------------------
-void DKVisualize::windowResized(int w, int h){
+void testApp::windowResized(int w, int h){
 	
 	timeline.setOffset(ofVec2f(15, ofGetHeight() - 200));
 	timeline.setWidth(w-30);
@@ -2129,11 +2137,11 @@ void DKVisualize::windowResized(int w, int h){
 }
 
 //--------------------------------------------------------------
-void DKVisualize::gotMessage(ofMessage msg){
+void testApp::gotMessage(ofMessage msg){
 	
 }
 
 //--------------------------------------------------------------
-void DKVisualize::dragEvent(ofDragInfo dragInfo){ 
+void testApp::dragEvent(ofDragInfo dragInfo){ 
 	
 }
