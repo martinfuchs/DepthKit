@@ -60,6 +60,7 @@ class DKVisualize : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
  	
 	void updateRenderer();
 	void drawGeometry();
+	void drawOcclusionLayer();
 	
 	bool createNewComposition();
 	bool loadDepthSequence(string path);
@@ -90,12 +91,7 @@ class DKVisualize : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     void checkReallocateFrameBuffers();
     void allocateFrameBuffers();
         
-    
-    //TEST DRAWING SYSTEM
-    ofMesh testMesh;
-    
-    //END TEST DRAWING SYSTEM
-    
+	
     ofxPanel gui;
     ofxFloatSlider videoVolume;
     ofxToggle drawPointcloud;
@@ -124,8 +120,10 @@ class DKVisualize : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	float currentScanlineStepVertical;
 	float currentScanlineStepHorizontal;
 	
-	ofMesh verticalScanlineMesh;
-	ofMesh horizontalScanlineMesh;
+	ofVbo verticalScanlineMesh;
+	int verticalScanlineElements;
+	ofVbo horizontalScanlineMesh;
+	int horizontalScanlineElements;
 	
 	void generateScanlineMesh(bool verticalScanline, bool horizontalScanline);
 	
@@ -139,7 +137,7 @@ class DKVisualize : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	
 
 	ofxToggle drawRandomMesh;
-	ofMesh randomMesh;
+	ofVboMesh randomMesh;
 	ofxIntSlider numRandomPoints;
 	ofxToggle alwaysRegenerateRandomPoints;
 	void generateRandomMesh(int numPoints);
@@ -254,7 +252,7 @@ class DKVisualize : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxTLVideoDepthAlignmentScrubber alignmentScrubber;
 	ofxDepthHoleFiller holeFiller;
 
-	ofRectangle fboRectangle;    
+	ofRectangle fboRectangle;
     ofRectangle depthAlignAssistRect;
     ofRectangle colorAlignAssistRect;
 
@@ -265,7 +263,8 @@ class DKVisualize : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofFbo fbo1;
     ofFbo swapFbo; //used for temp drawing
     ofFbo dofBuffer; //used to get a solid depth texture
-
+	ofRectangle renderFboRect;
+	
 	ofImage savingImage;
 	string saveFolder;
 	string lastSavedDate;    

@@ -23,26 +23,29 @@ ${PREFIX}Flightphase/ofxMSAInteractiveObject
 ${PREFIX}Flightphase/ofxTextInputField
 ${PREFIX}obviousjim/ofxDepthKit
 ${PREFIX}obviousjim/ofxCv
-${PREFIX}obviousjim/ofxKinect
+#${PREFIX}obviousjim/ofxKinect
 ${PREFIX}obviousjim/ofxOpenNI
 ${PREFIX}obviousjim/ofxMSATimer
 ${PREFIX}YCAMInterlab/ofxTimecode
 ${PREFIX}YCAMInterlab/ofxTimeline
 ${PREFIX}obviousjim/ofxObjLoader		
-${PREFIX}obviousjim/ofxGui		
+#${PREFIX}obviousjim/ofxGui		
 
 cd ofxTimeline
-git checkout -b develop --track origin/develop
+git fetch
+git checkout -b develop origin/develop --track 
 git pull origin develop
 cd ..
 
 cd ofxTextInputField
-git checkout -b develop --track origin/develop
+git fetch
+git checkout -b develop origin/develop --track 
 git pull origin develop
 cd ..
 
 cd ofxDepthKit
-git checkout -b develop --track origin/develop
+git fetch
+git checkout -b develop origin/develop --track 
 git pull origin develop
 cd ..
 

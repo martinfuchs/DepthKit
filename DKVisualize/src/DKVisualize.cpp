@@ -333,7 +333,7 @@ void DKVisualize::drawGeometry(){
 	
     //helps eliminate zfight by translating the mesh occluder slightly back from the camera
     ofVec3f camTranslateVec = cam.getLookAtDir();
-    ofRectangle renderFboRect = ofRectangle(0, 0, fbo1.getWidth(), fbo1.getHeight());
+    renderFboRect = ofRectangle(0, 0, fbo1.getWidth(), fbo1.getHeight());
     
     rendererDirty |= (renderedCameraPos.getPosition() != cam.getPosition() ||
                       renderedCameraPos.getOrientationQuat() != cam.getOrientationQuat() );
@@ -416,15 +416,6 @@ void DKVisualize::drawGeometry(){
 		
 
 		bool usedDepth = false;
-		if(selfOcclude){
-			ofTranslate(0, 0, 1);
-			renderer.useTexture = false;
-			renderer.drawMesh();
-            
-			renderer.useTexture = true;
-			ofTranslate(0, 0, -1);
-			usedDepth = true;
-		}
 		
 		ofTranslate(0,0,-.5);
 		if(drawMesh && meshAlpha > 0){
@@ -434,7 +425,7 @@ void DKVisualize::drawGeometry(){
 			usedDepth = true;
 		}
 		
-		if(!usedDepth){
+		if(!usedDepth && !selfOcclude){
 			glDisable(GL_DEPTH_TEST);
 		}
 		
@@ -443,6 +434,10 @@ void DKVisualize::drawGeometry(){
 		float thickness = timeline.getValue("Wireframe Thickness");
 		thickness *= thickness;
 		if(drawWireframe && wireAlpha > 0){
+			if(selfOcclude){
+				drawOcclusionLayer();
+			}
+			
 			ofTranslate(0,0,-.5);
 			ofSetColor(255*wireAlpha);
 			ofSetLineWidth(thickness);
@@ -451,25 +446,35 @@ void DKVisualize::drawGeometry(){
 		
 
 		if(drawScanlinesVertical || drawScanlinesHorizontal){
+
+			if(selfOcclude){
+				drawOcclusionLayer();
+			}
+			
 			ofTranslate(0,0,-.5);
 			renderer.bindRenderer();
 			if(drawScanlinesVertical){
 				ofSetLineWidth( timeline.getValue("Vertical Scanline Thickness") );
 				ofSetColor( timeline.getValue("Vertical Scanline Alpha")*255);
-				verticalScanlineMesh.draw();
+//				verticalScanlineMesh.draw();
+				verticalScanlineMesh.draw( ofGetGLPrimitiveMode(OF_PRIMITIVE_LINES), 0, verticalScanlineElements);
 			}
 		
 			if(drawScanlinesHorizontal){
 				ofSetLineWidth( timeline.getValue("Horizontal Scanline Thickness") );
 				ofSetColor( timeline.getValue("Horizontal Scanline Alpha")*255);
-				horizontalScanlineMesh.draw();
+				horizontalScanlineMesh.draw( ofGetGLPrimitiveMode(OF_PRIMITIVE_LINES), 0, horizontalScanlineElements);
 			}
 			renderer.unbindRenderer();
 		}
 		
 		float pointSize = powf(timeline.getValue("Point Size"), 2.0);
 		if(drawPointcloud && pointAlpha > 0){
-			
+
+			if(selfOcclude){
+				drawOcclusionLayer();
+			}
+
 			ofTranslate(0,0,-.5);
 			ofSetColor(255*pointAlpha);
 			glPointSize(pointSize);
@@ -477,6 +482,11 @@ void DKVisualize::drawGeometry(){
 		}
 		
 		if(drawRandomMesh){
+			
+			if(selfOcclude){
+				drawOcclusionLayer();
+			}
+			
 			ofTranslate(0,0,-.5);
 			ofSetColor(255*pointAlpha);
 			glPointSize(pointSize);			
@@ -571,7 +581,34 @@ void DKVisualize::drawGeometry(){
 	ofPopStyle();
 //	fbo1.getTextureReference().draw(ofRectangle(fboRectangle.x,fboRectangle.y+fboRectangle.height,fboRectangle.width,-fboRectangle.height));
     fbo1.getTextureReference().draw(fboRectangle);
+}
 
+//--------------------------------------------------------------
+void DKVisualize::drawOcclusionLayer(){
+
+	//return;
+	
+	ofPushMatrix();
+	
+	ofTranslate(0, 0, 1);
+	
+	glClear(GL_DEPTH_BUFFER_BIT);
+	
+	glEnable(GL_DEPTH_TEST);  // We want depth test !
+	glDepthFunc(GL_LESS);     // We want to get the nearest pixels
+	glColorMask(0,0,0,0);     // Disable color, we only want depth.
+//	glDepthMask(GL_TRUE);     // Ask z writing
+	
+	renderer.useTexture = false;
+	renderer.drawMesh();
+	renderer.useTexture = true;
+	
+	glEnable(GL_DEPTH_TEST);  // We still want depth test
+	glDepthFunc(GL_LEQUAL);   // EQUAL should work, too. (Only draw pixels if they are the closest ones)
+	glColorMask(1,1,1,1);     // We want color this time
+//	glDepthMask(GL_FALSE);
+	
+	ofPopMatrix();
 }
 
 //--------------------------------------------------------------
@@ -831,9 +868,9 @@ void DKVisualize::update(){
 	}
 	
 	if(currentLockCamera != cameraTrack->lockCameraToTrack){
-		if(!currentLockCamera){
-			cam.movedManually();
-		}
+//		if(!currentLockCamera){
+//			cam.movedManually();
+//		}
 		cameraTrack->lockCameraToTrack = currentLockCamera;
 	}
 	
@@ -844,8 +881,8 @@ void DKVisualize::update(){
 		timeline.setInOutRange(ofRange(0,1));
 	}
 	
-	cam.applyRotation = !cameraTrack->lockCameraToTrack;
-	cam.applyTranslation = !cameraTrack->lockCameraToTrack;
+	cam.applyTranslation = cam.applyRotation = !cameraTrack->lockCameraToTrack && fboRectangle.inside(mouseX,mouseY);
+	
     player.getVideoPlayer()->setVolume(videoVolume);
 	
 	if(currentlyRendering){
@@ -1056,27 +1093,35 @@ void DKVisualize::toggleOffRenderOutputOptions(){
 
 //--------------------------------------------------------------
 void DKVisualize::generateScanlineMesh(bool verticalScanline, bool horizontalScanline) {
-	horizontalScanlineMesh.clear();
-	verticalScanlineMesh.clear();
-	horizontalScanlineMesh.setMode(OF_PRIMITIVE_LINES);
-	verticalScanlineMesh.setMode(OF_PRIMITIVE_LINES);
+	
+//	horizontalScanlineMesh.setMode(OF_PRIMITIVE_LINES);
+//	verticalScanlineMesh.setMode(OF_PRIMITIVE_LINES);
 
 	if(verticalScanline){
+		ofMesh verticalMesh;
 		for(float x = 0; x < 640; x += renderer.getSimplification().x){
 			for(float y = 0; y < 480; y += renderer.getSimplification().y){
-				verticalScanlineMesh.addVertex(ofVec3f(x,y,0));
-				verticalScanlineMesh.addVertex(ofVec3f(x,y+renderer.getSimplification().y,0));
+				verticalMesh.addVertex(ofVec3f(x,y,0));
+				verticalMesh.addVertex(ofVec3f(x,y+renderer.getSimplification().y,0));
 			}
 		}
+		verticalScanlineMesh.clear();
+		verticalScanlineMesh.setMesh(verticalMesh, GL_STATIC_DRAW);
+		verticalScanlineElements = verticalScanlineMesh.getNumVertices();
 	}
 	
 	if(horizontalScanline){
+		ofMesh horizontalMesh;
+		
 		for(float y = 0; y < 480; y+=renderer.getSimplification().y){
 			for(float x = 0; x < 640; x+=renderer.getSimplification().x){
-				horizontalScanlineMesh.addVertex(ofVec3f(x,y,0));
-				horizontalScanlineMesh.addVertex(ofVec3f(x+renderer.getSimplification().x,y,0));
+				horizontalMesh.addVertex(ofVec3f(x,y,0));
+				horizontalMesh.addVertex(ofVec3f(x+renderer.getSimplification().x,y,0));
 			}
 		}
+		horizontalScanlineMesh.clear();
+		horizontalScanlineMesh.setMesh(horizontalMesh, GL_STATIC_DRAW);
+		horizontalScanlineElements = horizontalScanlineMesh.getNumVertices();
 	}
 }
 
@@ -1272,10 +1317,7 @@ void DKVisualize::draw(){
                 dofFocalRange*=dofFocalRange;
                 dofRange.setUniform1f("focalDistance", dofFocalDistance);
                 dofRange.setUniform1f("focalRange", dofFocalRange);
-				dofBuffer.getDepthTexture().draw(ofRectangle(colorAlignAssistRect.x,
-															 colorAlignAssistRect.getMaxY(),
-															 colorAlignAssistRect.width,
-															 -colorAlignAssistRect.height));
+				dofBuffer.getDepthTexture().draw(colorAlignAssistRect);
                 dofRange.end();
             }
             			
@@ -1800,7 +1842,7 @@ void DKVisualize::resetCameraPosition(){
 	cam.setPosition(0, 0, 0);
 	cam.setOrientation(ofQuaternion());
 	cam.rotate(180, ofVec3f(0,1,0));
-	cam.movedManually();
+//	cam.movedManually();
 }
 
 //--------------------------------------------------------------
@@ -1972,8 +2014,8 @@ bool DKVisualize::loadComposition(string compositionDirectory){
     }
 	
     //camera stuff
-    cam.setCameraPositionFile( currentCompositionDirectory + "camera_position.xml" );
-//	cam.loadCameraPosition();
+    cam.cameraPositionFile = currentCompositionDirectory + "camera_position.xml" ;
+	cam.loadCameraPosition();
     string cameraSaveFile = currentCompositionDirectory + "camera.xml";
 	cameraTrack->setXMLFileName(cameraSaveFile);
 	
