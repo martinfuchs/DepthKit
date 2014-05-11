@@ -253,6 +253,7 @@ class DKVisualize : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	ofxDepthHoleFiller holeFiller;
 
 	ofRectangle fboRectangle;
+	ofRectangle fboRenderArea;
     ofRectangle depthAlignAssistRect;
     ofRectangle colorAlignAssistRect;
 

@@ -12,7 +12,7 @@ void DKVisualize::setup(){
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
 	ofBackground(44);
-	ofxTimeline::removeCocoaMenusFromGlut("DKVisualize");
+//	ofxTimeline::removeCocoaMenusFromGlut("DKVisualize");
 	
 #ifdef TARGET_WIN32
 	pathDelim = "\\";
@@ -216,7 +216,9 @@ void DKVisualize::loadShaders(){
     dofQuad.addTexCoord(ofVec2f(fbo1.getWidth(),0));
     dofQuad.addTexCoord(ofVec2f(fbo1.getWidth(),fbo1.getHeight()));
 		
-    renderer.reloadShader();
+//    renderer.reloadShader();
+	renderer.setShaderPath("shaders/unproject");
+	
 }
 
 void DKVisualize::populateTimelineElements(){
@@ -489,7 +491,8 @@ void DKVisualize::drawGeometry(){
 			
 			ofTranslate(0,0,-.5);
 			ofSetColor(255*pointAlpha);
-			glPointSize(pointSize);			
+			glPointSize(pointSize);
+			
 			renderer.bindRenderer();
 			randomMesh.draw();
 			renderer.unbindRenderer();
@@ -509,7 +512,6 @@ void DKVisualize::drawGeometry(){
             
             //render DOF
             dofBuffer.begin();
-            //ofClear(0,0,0,0);
 			ofClear(0,0,0,0);
 
             cam.begin(renderFboRect);
@@ -579,8 +581,15 @@ void DKVisualize::drawGeometry(){
 	ofSetColor(0,0,0);
 	ofRect(fboRectangle);
 	ofPopStyle();
-//	fbo1.getTextureReference().draw(ofRectangle(fboRectangle.x,fboRectangle.y+fboRectangle.height,fboRectangle.width,-fboRectangle.height));
     fbo1.getTextureReference().draw(fboRectangle);
+	if(cam.applyRotation){
+		ofPushStyle();
+		ofNoFill();
+		ofSetColor(255, 40);
+		ofSetLineWidth(2);
+		ofRect(fboRectangle);
+		ofPopStyle();
+	}
 }
 
 //--------------------------------------------------------------
@@ -709,7 +718,6 @@ void DKVisualize::keyReleased(int key){
 
 //--------------------------------------------------------------
 void DKVisualize::mouseMoved(int x, int y ){
-	cam.usemouse = fboRectangle.inside(x, y);
 }
 
 //--------------------------------------------------------------
@@ -770,9 +778,8 @@ void DKVisualize::update(){
         populateCompositionsForScene();
     }
     
-    cam.speed = cameraSpeed;
-    cam.rollSpeed = cameraRollSpeed;
-    
+
+
 	if(startRenderMode){
         startRenderMode = false;
 		firstRenderFrame = true;
@@ -868,9 +875,6 @@ void DKVisualize::update(){
 	}
 	
 	if(currentLockCamera != cameraTrack->lockCameraToTrack){
-//		if(!currentLockCamera){
-//			cam.movedManually();
-//		}
 		cameraTrack->lockCameraToTrack = currentLockCamera;
 	}
 	
@@ -881,7 +885,8 @@ void DKVisualize::update(){
 		timeline.setInOutRange(ofRange(0,1));
 	}
 	
-	cam.applyTranslation = cam.applyRotation = !cameraTrack->lockCameraToTrack && fboRectangle.inside(mouseX,mouseY);
+	cam.applyTranslation &= !cameraTrack->lockCameraToTrack;
+	cam.applyRotation &= !cameraTrack->lockCameraToTrack;
 	
     player.getVideoPlayer()->setVolume(videoVolume);
 	
@@ -923,10 +928,6 @@ void DKVisualize::update(){
 			resetCameraPosition();
             shouldResetCamera = false;
 		}
-		else{
-			cam.applyRotation = cam.applyTranslation = true;
-		}
-		
 		if(captureFramePair && temporalAlignmentMode){
             if(alignmentScrubber.getPairs().size() == 1){
                 ofSystemAlertDialog("You have just set a second Color/Depth pair. Most of the time you just need one. If you are having synchronization troubles, make sure to delete the existing pair first before setting a second one. You can delete the pairs in the Synchronize tab by selecting them in the timeline track and hitting 'delete'.");
@@ -951,7 +952,9 @@ void DKVisualize::update(){
     ofVec2f simplification = ofVec2f( timeline.getValue("Simplify X"), timeline.getValue("Simplify Y") );
 	if(renderer.getSimplification().x != simplification.x || renderer.getSimplification().y != simplification.y){
     	renderer.setSimplification(simplification);
-        meshBuilder.setSimplification(simplification);
+		if( (currentlyRendering && renderObjectFiles) || renderRainbow() ){
+			meshBuilder.setSimplification(simplification);
+		}
 		rendererNeedsUpdate = true;
     }
 	
@@ -1273,12 +1276,17 @@ void DKVisualize::draw(){
 				timeline.setOffset(ofVec2f(15, ofGetHeight() - timeline.getDrawRect().height - 15));
 			}
             
-			ofRectangle fboRenderArea = ofRectangle(0,0,ofGetWidth()-220-300, timeline.getDrawRect().y - 50);
+			fboRenderArea = ofRectangle(0,0,ofGetWidth()-220-300, timeline.getDrawRect().y - 50);
 			ofRectangle naturalVideoRect = ofRectangle(0,0,fbo1.getWidth(),fbo1.getHeight());
 			fboRectangle = naturalVideoRect;
 			fboRectangle.scaleTo(fboRenderArea);
 			fboRectangle.x = 220;
 			fboRectangle.y = 50;
+			
+		    cam.speed = cameraSpeed;
+			cam.rollSpeed = cameraRollSpeed;
+			cam.applyTranslation = cam.applyRotation = fboRectangle.inside(ofGetMouseX(), ofGetMouseY());
+			cam.usemouse = fboRectangle.inside(ofGetMouseX(), ofGetMouseY());
 			
 			ofRectangle colorAssistRenderArea = ofRectangle(0,0,ofGetWidth() - fboRectangle.getMaxX(),timeline.getDrawRect().y - 50);
 			if(!renderRainbow()){

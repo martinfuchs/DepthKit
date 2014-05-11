@@ -48,14 +48,6 @@ uniform vec3 noiseShape;
 
 //LIGHTS
 uniform sampler2DRect normalTex;
-//varying vec3 normal;
-//varying vec4 normalColor;
-//varying vec3 eyeVec;
-
-//varying vec3 diffuseLightDirection;
-//varying vec3 specularLightDirection;
-//varying float diffuseAttenuate;
-//varying float specularAttenuate;
 
 uniform int useTexture;
 
