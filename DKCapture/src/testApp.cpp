@@ -1,10 +1,12 @@
 #include "testApp.h"
 #include "ofxXmlSettings.h"
-#if PROVIDER == FREENECT
+
+#ifdef FREENECT
 	#include "ofxDepthImageProviderFreenect.h"
 #else
-	#include "ofxDepthImageProvider.h
+	#include "ofxDepthImageProviderOpenNI.h"
 #endif
+
 
 //--------------------------------------------------------------
 void testApp::setup(){
@@ -16,7 +18,7 @@ void testApp::setup(){
 #ifdef FREENECT
     gui.setImageProvider( new ofxDepthImageProviderFreenect() );
 #else
-	gui.setImageProvider( new ofxDepthImageProviderFreenect() );
+	gui.setImageProvider( new ofxDepthImageProviderOpenNI() );
 #endif
 	
 	gui.setup();
