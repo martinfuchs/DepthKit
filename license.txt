@@ -1,10 +1,10 @@
-The RGBDToolkit is released under the MIT License and is completely free to use for any purpose.
+The DepthKit is released under the MIT License and is completely free to use for any purpose.
 
-Please credit the RGBDToolkit and link to http://www.rgbdtoolkit.com when creating projects that use the software.
+Please credit the DepthKit and link to http://depthkit.tv when creating projects that use the software.
 
 
 The MIT License (MIT)
-Copyright (c) 2012 James George
+Copyright (c) 2012-2014 James George
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

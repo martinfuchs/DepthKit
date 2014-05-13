@@ -12,21 +12,21 @@ For each platform:
 	-- Copy the old release folders 
 	-- Replace application files, and README files, and shaders in both the with and without example data folders
 
-Make sure that when you open the app with example data, that the example compsition loads automatically.
+Make sure that when you open the app with example data, that the example composition loads automatically.
 
 Updating the git repositories:
 
 Whene releasing a new toolkit version, push the current develop branches into master and tag it with the version number.
 
 Do this for the associated addons, most critically tag:
-	ofxRGBDepth
+	ofxDepthKit
 	ofxTimeline
 	ofxCv
 
 Because changes in these addons tend to dramatically effect the function of the toolkit.
 
 Creating a source package:
-With each release, the full source code needs to be uploaded as well. To prepare the sourc release:
+With each release, the full source code needs to be uploaded as well. To prepare the source release:
 	-- copy the entire openFrameworks source folder
 	-- delete everything but the following directories:
 		openFrameworks/libs
@@ -34,13 +34,13 @@ With each release, the full source code needs to be uploaded as well. To prepare
 		openFrameworks/addons
 
 	-- in openFrameworks/addons/ delete all the addons that aren't associated with the toolkit
-	-- in openFrameworks/apps delete evertying but the RGBDToolkit folder
-	-- in openFrameworks/apps/RGBDToolkit/ delete any uncommitted or experimental apps
+	-- in openFrameworks/apps delete everything but the RGBDToolkit folder
+	-- in openFrameworks/apps/DepthKit/ delete any uncommitted or experimental apps
 
 
-(1) Note about RGBDToolkit version numbers: 
+(1) Note about DepthKit version numbers: 
 This is modeled roughly after how the openFrameworks version numbers work. 
-RGBDToolkit preRelease 00XY
+DepthKit preRelease 00XY
 
 X is the major release, and is incremented whenever a significant change has been made to the toolkit. During the pre release period it is OK to break project compatibility with old projects when releasing a new major version
 

@@ -1,12 +1,14 @@
-# [RGBDToolkit](http://www.rgbdtoolkit.com) beta 005
+# [DepthKit](http://www.DepthKit.com) beta 005
 
-![ RGBDToolkit](http://rgbdtoolkit.com/images/productshot_2.jpg)
+![ DepthKit](http://DepthKit.com/images/productshot_2.jpg)
 
-**Software for experimenting with cinematic language of depth imaging.**
+**The RGB+D Filmmaking Toolkit**
 
-**Version 005 for Mac OS X and Windows Released on April 16th 2013**
+**Version 006 for Mac OS X Released on May 13th 2014**
 
-The RGBDToolkit is an experiment in a possible future of film making, where photographic data captured in 3-dimensions will allow for deciding camera angles after the fact, combining the languages of photography and data visualization. This hybrid computer graphics and video would allow for a storytelling medium at once imaginary and photo real.  The RGBDToolkit is a software work flow for augmenting high definition video with 3D scans from a depth sensor, such as an Xbox Kinect, to create a hybrid video and computer graphics. First a recording application allows you to calibrate a high definition video camera to the depth sensor, allowing their data streams to be merged. Secondly a visualization application allows for viewing the combined footage and applying different 3D rendering styles, camera moves, and exporting sequences. 
+**Version 005 Windows Released on April 16th 2013**
+
+The DepthKit is an experiment in a possible future of film making, where photographic data captured in 3-dimensions will allow for deciding camera angles after the fact, combining the languages of photography and data visualization. This hybrid computer graphics and video would allow for a storytelling medium at once imaginary and photo real.  The DepthKit is a software work flow for augmenting high definition video with 3D scans from a depth sensor, such as an Xbox Kinect, to create a hybrid video and computer graphics. First a recording application allows you to calibrate a high definition video camera to the depth sensor, allowing their data streams to be merged. Secondly a visualization application allows for viewing the combined footage and applying different 3D rendering styles, camera moves, and exporting sequences. 
 
 This software is a science fiction, a seed of a potential future functional just to the point of allowing a community, you, to share in imagining the possibilities.
 
@@ -17,7 +19,7 @@ Curious what this looks like? Check out some project created using the toolkit:
  * [RGBD Vimeo Channel](https://vimeo.com/album/2024049)
 
 ## Background
-RGBDToolkit is an ongoing labor of love by the main developers:
+DepthKit is an ongoing labor of love by the main developers:
 
 * [James George](http://www.jamesgeorge.org), developer 
 * [Alexander Porter](http://www.alexanderporter.net), experimental photographer 
@@ -51,20 +53,20 @@ Very special thanks to the [Art && Code 3D](http://artandcode.com/3d/), [Resonat
 The remainder of this README is a guide on how to get started, but we have a few other formats
 
  * [Video tutorials](http://vimeo.com/album/1977644) 
- * [HTML tutorial](http://rgbdtoolkit.com/tutorials.html)
+ * [HTML tutorial](http://DepthKit.com/tutorials.html)
 
 The current manual was written by [Jack Armitage](http://about.me/jarmitage) and edited by the team.
 
-To use the RGBDToolkit you'll need
+To use the DepthKit you'll need
 
- * The RGBDToolkit software downloaded and unzipped
+ * The DepthKit software downloaded and unzipped
  * A Windows or Mac OS X computer with modern graphics
  * An HD video camera
  * A depth sensor
  * A method of mounting the cameras together securely
  * The black and white checkerboard printed on a flat surface 
 
-The RGBDToolkit is compatible with the following operating system and sensor combinations
+The DepthKit is compatible with the following operating system and sensor combinations
 
 #### Mac OS X
  * [Asus Xtion pro LIVE](http://www.newegg.com/Product/Product.aspx?Item=N82E16826785030) (Requires [Sensecast drivers installed](http://sensecast.com/files/Sensecast.and.Libs.Installer.v.0.02.dmg) )
@@ -76,14 +78,14 @@ We recommend the Asus sensors over the Kinect because they feature the same reso
  * Microsoft Xbox Kinect (Only compatible with the older model number, 1414)
 
 #### External Video Camera
-The RGBDToolkit can use any HD video camera, including digital SLRs, GoPros, even newer iPhones. We'll be using the Canon 5D MkII DSLR for the purposes of the tutorials, but feel free to use what you have.
+The DepthKit can use any HD video camera, including digital SLRs, GoPros, even newer iPhones. We'll be using the Canon 5D MkII DSLR for the purposes of the tutorials, but feel free to use what you have.
 
 #### Lens Choice
 In order to match the field of view between your camera and sensor so that the color information adequately covers the depth information we recommend a ~24mm lens on a full frame sensor. A ~16mm lens is adequate coverage for an APS-C sensor like an entry-level Canon DSLR. If you aren't familiar with these terms you should be able to find your [crop factor](http://en.wikipedia.org/wiki/Crop_factor) in the specifications section of your camera manual and you can look up the conversion to full-frame [here](http://www.digicamhelp.com/accessories/dslr-accessories/crop-factor-conversion-chart/). When in doubt, set your zoom lens to its widest setting. Use a wide prime lens for best results. 
 	
 #### Mounts
 
-![mounts with camera](http://www.rgbdtoolkit.com/images/readme/mounts_with_camera.jpg)
+![mounts with camera](http://www.DepthKit.com/images/readme/mounts_with_camera.jpg)
 
 The workflow requires the use of hardware to bind the video camera and the depth sensor together. If you'd like to buy a mount from us you can order one for Asus or Kinect through our store <LINK> or buy one of our 3D printed Asus mounts from our [Shapeways store](http://www.shapeways.com/shops/rgbd). For both Kinect and Asus we recommend our lasercut acrylic and aluminum mounts or something that is similarly robust and adjustable.
 
@@ -93,16 +95,16 @@ In the open source spirit, we've also made the plans available online to enable 
  * **Home Workshop** A [mount](http://www.instructables.com/id/RGBD-Toolkit-Aluminum-Mount-for-Kinect-DSLRvide/) made from angle aluminum with basic tools
  * **Home 3D Printing** Print a mount using [community created files](http://www.thingiverse.com/search?q=RGBDToolkit)
 
-Please add your own mounting solutions and designs – however simple or rudimentary – to [Instructables](http://www.instructables.com/tag/type-id/?sort=none&q=RGBDToolkit) or your 3D printable models to [Thingiverse](http://www.thingiverse.com/search?q=RGBDToolkit) and tag them with "RGBDToolkit." For recommendations about designing your own mounts see the FAQ. <LINK FAQ>
+Please add your own mounting solutions and designs – however simple or rudimentary – to [Instructables](http://www.instructables.com/tag/type-id/?sort=none&q=RGBDToolkit) or your 3D printable models to [Thingiverse](http://www.thingiverse.com/search?q=RGBDToolkit) and tag them with "DepthKit" or "RGBDToolkit." For recommendations about designing your own mounts see the FAQ. <LINK FAQ>
 
-![mounts with camera](http://www.rgbdtoolkit.com/images/readme/mounts_without_camera.jpg)
+![mounts with camera](http://www.DepthKit.com/images/readme/mounts_without_camera.jpg)
 
 
 If you'd rather just buy a kit, we have a stock pile of the above mounts and are happy to sell one to you. Just email me [at] alexanderporter [dot] net to order one. We accept paypal and ship anywhere!
 
 #### Checkerboard
 
-Print out the [A4](https://github.com/downloads/obviousjim/RGBDToolkit/chessboard_a4.pdf) or [A3](https://github.com/obviousjim/RGBDToolkit/blob/master/chessboard_a3.pdf) calibration checkerboard PDF in black and white on matte paper. Glue or otherwise mount it to something flat and rigid like wood or foamcore. This can be done easily at most print shops – if you do it at home look out for bubbling or warping. It helps to attach a bracket or some way to put it to a stand or the wall.
+Print out the [A4](https://github.com/downloads/obviousjim/DepthKit/chessboard_a4.pdf) or [A3](https://github.com/obviousjim/DepthKit/blob/master/chessboard_a3.pdf) calibration checkerboard PDF in black and white on matte paper. Glue or otherwise mount it to something flat and rigid like wood or foamcore. This can be done easily at most print shops – if you do it at home look out for bubbling or warping. It helps to attach a bracket or some way to put it to a stand or the wall.
 
 Once you have all the items in the checklist, you're ready to calibrate the cameras!
 
@@ -129,13 +131,13 @@ Calibration requires some ambient infrared light in the room. The sun is a good 
 
 **Note about Kinect model number** There are two version of RGBDCaptureKinect application on OS X, one for model #1414 and one for model #1473. Check the bottom of your Kinect to find the model number and open the corresponding capture application.
 
-![Kinect Model No.](http://www.rgbdtoolkit.com/images/readme/illus_Kinect_modelNo.jpg)
+![Kinect Model No.](http://www.DepthKit.com/images/readme/illus_Kinect_modelNo.jpg)
 	
-**Capture Lens Properties** In order to accurately calibrate the two cameras, RGBDToolkit needs to understand the subtleties of the camera lenses – imperfect manufacturing processes mean that every lens will be slightly different. These values are called _lens intrinsic parameters_ and describe image size, field of view, optical center of the lens, and any distortion found in the lens. To determine these values we capture and analyze images from both cameras.
+**Capture Lens Properties** In order to accurately calibrate the two cameras, DepthKit needs to understand the subtleties of the camera lenses – imperfect manufacturing processes mean that every lens will be slightly different. These values are called _lens intrinsic parameters_ and describe image size, field of view, optical center of the lens, and any distortion found in the lens. To determine these values we capture and analyze images from both cameras.
 
 **Calibrate Depth Camera** Aim your rig at an area of space which has plenty of ‘visible information’ – featuring different colors, contrasts and depths. Hit the _Self Calibrate Depth Camera_ button at the bottom of the left-hand pane. This will automatically analyze the incoming video stream (great!), and once complete should display results similar to the following results:
 
-![Self Calibrated Depth](http://rgbdtoolkit.com/images/readme/calibrated_depth_camera.png)
+![Self Calibrated Depth](http://DepthKit.com/images/readme/calibrated_depth_camera.png)
 	
 Note the the field of views are symmetrical, and that the principal point is at the center of the depth camera’s fixed 640x480 frame.
 
@@ -143,7 +145,7 @@ To **Capture the HD camera's lens properties** it takes a bit more effort and pa
 
 **Repeat this process** at a distance where the checkerboard occupies around 1/9th of the frame, taking 9 more images, making 13 in total.
 
-![Four Up](http://rgbdtoolkit.com/images/readme/intrinsicsgif.gif)
+![Four Up](http://DepthKit.com/images/readme/intrinsicsgif.gif)
 
 Download the clips onto your computer into your project’s working directory, wherever you set it in the first step. It is helpful to add them to a new folder inside ‘_calibration’, called ‘slrIntrinsics’ or something similarly explanatory.
 
@@ -153,7 +155,7 @@ Drag all of the video clips them into the **‘Capture Lenses’** tab’s right
 
 Once the analysis is complete, the software will display a **‘Total Error’** figure below the checkerboard images. This is the average error across all the calibration images. Alongside this, you can view the individual error margins for each image by scrubbing the mouse from left to right across the calibration image window. A ‘Total Error’ of < 0.200 is desirable. If your calibration has resulted in a larger average error than this, scrub through your image set and look for any outlier images which have an error of > 0.300. Note the filename of any outliers. You can re-perform the analysis at any time, simply by dragging the videos onto the window pane again – this time excluding the erroneous clips. This should improve your Total Error.
 
-![good intrinsics](http://rgbdtoolkit.com/images/readme/good_intrinsics.png)
+![good intrinsics](http://DepthKit.com/images/readme/good_intrinsics.png)
 	
 If nearly all of your images have high error, you will need to reshoot them. Before you do this, look for elements in your environment which could have caused the error. Is there light streaking across your checkerboard? Check the troubleshooting section for more reasons why you may be getting high error.
 
@@ -169,7 +171,7 @@ If you are using the laser cut mount, you can to pivot the sensor up and down in
 * While looking at the capture application, adjust the sensor's angle on the mount until the view matches, err on the low side to allow the color camera to see a bit more than what the sensor sees. Depending on your lens you may find that your color information appears inside your depth camera’s field of view. There may be some compromises to be made here! The laser cut mounting solution allows for minute adjustment of the depth sensor's angles by loosening the locking (upper) screws. 
 * Tighten the upper screws to lock the mount angle – know that from this point onwards it is important to maintain the camera positions relative to each other (hence the fancy mounting system!).
 
-![FoV Adjust](http://www.rgbdtoolkit.com/images/readme/Side_Sensor_Kinect_Cam_Close.png)
+![FoV Adjust](http://www.DepthKit.com/images/readme/Side_Sensor_Kinect_Cam_Close.png)
 
 Now that we've matched the views, we need to take corresponding images of the checkerboard from the two cameras to determine how they sit. Looking back at the capture page, with the checkerboard in each quadrant, you need to capture three images, _one short video clip from the video camera_, _one depth impression_ from the sensor, and one _infrared view of the checkerboard_ from the sensor. This is where the IR light diffuser is important, so make sure that is handy before beginning. A second pair of hands is helpful at this step too.
 
@@ -179,13 +181,13 @@ Now that we've matched the views, we need to take corresponding images of the ch
 - Diffuse the IR projector with the paper or cloth, its the farthest left lens of on the face of the sensor, the one with the red sparkles coming out. Observe that the graininess disappears from the camera preview, and red dots appear in the corners of the squares on the checkerboard in the preview. Click the second tile to capture an image whilst the red dots are showing.
 - If the checkerboard is too dark or no red dots appear, it means you need more ambient IR light. Get closer to the window, or shine a hot light on it from far away. It's important that the board is illuminated evenly and sufficiently.
 
-![IR diffuse](http://www.rgbdtoolkit.com/images/readme/illus_diffuse.png)
+![IR diffuse](http://www.DepthKit.com/images/readme/illus_diffuse.png)
 
 Repeat this process with the checkerboard at four different depths away from the cameras, making sure to refocus at every plane. The idea is to fill up an imaginary box of checkerboard points in the 3D space in front of the camera. This helps to best interpret the relationship between the two cameras that will work at all distances from the lens. Once you've captured all four sets, download the video clips from the camera and drop them into a new folder in the working directory you set before. One at a time, drag the video files into their corresponding rectangular tiles in the application next to the corresponding depth and IR thumbnails taken from the device. 
 
 With four sets of three images complete, click ‘Generate RGB/Depth Correspondence’. If you get an error it means the algorithm was unable to find an exact fit for the selected checkerboard pairs. Try hitting 'ignore' to excluding a few of the image sets – 'bad apples' may be throwing off the model calculation. Just like before, excluding images may help in this situation. Click ‘Ignore’ on all but one of the images, and attempt to Generate RGB/Depth Correspondence again. When you find an image that allows the process to complete successfully, try combining it with other images. There is some randomness in the algorithm, so it helps to try the same combinations a few times just to see if it “guesses” a better starting place.
 
-![Good Calibration](http://rgbdtoolkit.com/images/readme/good_calibration.png)
+![Good Calibration](http://DepthKit.com/images/readme/good_calibration.png)
 
 By pressing the left and right arrows you can cycle through previews of the four checkerboard calibration sets. If it’s correct, you’ll see the checkerboard image data pixels (in black and white) mapped cleanly onto the depth model of the same image. You’ll also see corresponding colored dots floating in space near corresponding to the checkerboard depth planes. Some dots are missing from the grid pattern, as they were removed as outliers while generating the calibration. An ideal calibration will contain dots from at least three different sets of colors. By cycling through all tests checkerboards sets, the checkerboard image should be visibly well aligned to the depth data.
 
@@ -241,7 +243,7 @@ We follow this convention when on set:
 
 Warning: if you see the 'Toggle Record' button starting to fill with a red bar, it means that some images are failing to save. This usually occurs when the hard drive is nearly full. If this happens, stop recording as soon as possible and wait for the red bar to go down, ensuring that all the footage is written to the drive. If you're recording to an external drive, make sure it's FireWire, USB 3.0, or Thunderbolt.
 
-![unsaved frames](http://rgbdtoolkit.com/images/readme/unsaved_frames.png)
+![unsaved frames](http://DepthKit.com/images/readme/unsaved_frames.png)
 
 When you stop recording you should see your Take appear in the right side of the Record tab. As soon as you finish recording, the application will begin compressing the raw depth data in the background. The progress of this process is shown as a gray bar overlaid on the TAKE description on the top right. It will move all the way to the right when finished. In the meantime, open your working directory. You should see that a TAKE folder has been created with the same timestamp as in the application. Navigate inside this folder and download your DSLR footage into the ‘color’ folder.
 
@@ -279,7 +281,7 @@ Assuming it's the first time loading this scene we need to **create a temporal a
 
 If you make a mistake and find that the time alignment is off, you can highlight the blue marker on the 3rd track of the 'Time Alignment' tab and press DELETE to start over. It's never necessary to set multiple time alignments, so delete the existing ones before the 
 
-![time align](http://www.rgbdtoolkit.com/images/readme/time_align.jpg)
+![time align](http://www.DepthKit.com/images/readme/time_align.jpg)
 
 Now navigate to the Texture Alignment tab to tweak the X and Y Shift & Scale to align the depth and color information to perfect your alignment.
 
@@ -331,7 +333,7 @@ In order to export textured OBJ files toggle Export .obj Files on the left-hand 
  - Maybe your system doesn't support the toolkit. You'll need a computer with accelerated graphics no more than 4 or 5 years old
  - Make sure you have not moved the data/ folder in relationship to the RGBDCapture or RGBDVisualize applications
  - If you are using the Asus Xtion Pro, make sure you’ve installed the [Sensecast drivers](http://sensecast.com/files/Sensecast.and.Libs.Installer.v.0.02.dmg) )
- - If you are still experiencing problems... search the [RGBDToolkit Forum](https://groups.google.com/forum/#!forum/rgbdtoolkit)
+ - If you are still experiencing problems... search the [DepthKit Forum](https://groups.google.com/forum/#!forum/RGBDToolkit)
 
 **My depth camera feed is not showing up in the Calibrate Lenses tab**
  
@@ -382,7 +384,7 @@ In order to export textured OBJ files toggle Export .obj Files on the left-hand 
  - Delete any markers on the 3rd "Alignment" track on the timeline to start over.
  - Look for a very decisive temporal moment to align to, meaning that there is a specific fast movement which allows for precisely selecting a depth and video frame from close times. Because the cameras have different frame rates and clocks, the alignment will never be perfect but should not drift over time.
 
- Send any questions to the [RGBDToolkit Google Group](https://groups.google.com/forum/?fromgroups#!forum/rgbdtoolkit)
+ Send any questions to the [DepthKit Google Group](https://groups.google.com/forum/?fromgroups#!forum/RGBDToolkit)
 
 
 

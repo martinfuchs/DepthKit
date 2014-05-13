@@ -132,8 +132,8 @@ void DKVisualize::setup(){
 	gui.add( captureFramePair.setup("Set Color-Depth Time", ofParameter<bool>()));
 	
 	gui.add( cameraLabel.setup("CAMERA", "CAMERA"));
-	gui.add( cameraSpeed.setup("Camera Speed", ofParameter<float>(), 0, 40));
-    gui.add( cameraRollSpeed.setup("Cam Roll Speed", ofParameter<float>(), .0, 4));
+	gui.add( cameraSpeed.setup("Camera Speed", ofParameter<float>(), 10, 40));
+    gui.add( cameraRollSpeed.setup("Cam Roll Speed", ofParameter<float>(), .1, 4));
     gui.add( shouldResetCamera.setup("Reset Camera", ofParameter<bool>()));
 	gui.add( currentLockCamera.setup("Lock to Track", ofParameter<bool>()));
     gui.add( shouldSaveCameraPoint.setup("Set Camera Point", ofParameter<bool>()));
@@ -737,6 +737,13 @@ void DKVisualize::mouseReleased(int x, int y, int button){
 #pragma mark application logic
 //--------------------------------------------------------------
 void DKVisualize::update(){
+	
+	if(cameraSpeed < 10 || cameraSpeed > 50){
+		cameraSpeed = 10;
+	}
+	if(cameraRollSpeed < 2 || cameraRollSpeed > 50){
+		cameraRollSpeed = 2;
+	}
 	
     if(!isSceneLoaded){
         viewComps = true;
@@ -1353,7 +1360,7 @@ void DKVisualize::draw(){
                         sprintf(objFilename, "%s/save.%05d.obj", saveFolder.c_str(), videoFrame);
                         ofMesh reducedMesh;
 						ofMatrix4x4 scaleMatrix;
-						scaleMatrix.makeScaleMatrix(ofVec3f(.001, -.001, .001));
+						scaleMatrix.makeScaleMatrix(ofVec3f(-.001, -.001, .001));
 						meshBuilder.getReducedMesh(reducedMesh, true, false, true, scaleMatrix);
                         ofxObjLoader::save(string(objFilename), reducedMesh);
                     }
@@ -1369,7 +1376,7 @@ void DKVisualize::draw(){
 					}
                     if(renderCameraRGBD){
                         fbo1.getTextureReference().readToPixels(savingImage.getPixelsRef());
-						savingImage.mirror(true, false);
+//						savingImage.mirror(true, false);
 						savingImage.saveImage(filename);
                     }
 					
