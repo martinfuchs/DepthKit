@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\..\addons\ofxDepthKit\src\ofxCvCheckerboardPreview.cpp">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxDepthKit\src\ofxDepthHoleFiller.cpp">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxDepthKit\src\ofxDepthImageCompressor.cpp">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxDepthKit\src\ofxDepthImageProvider.cpp">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxDepthKit\src\ofxDepthImageRecorder.cpp">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxDepthKit\src\ofxDepthImageSequence.cpp">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxDepthKit\src\ofxRGBDCaptureGui.cpp">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxDepthKit\src\ofxRGBDCombinedVideoExporter.cpp">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxDepthKit\src\ofxRGBDCPURenderer.cpp">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxDepthKit\src\ofxRGBDepthCalibration.cpp">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxDepthKit\src\ofxRGBDGPURenderer.cpp">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxDepthKit\src\ofxRGBDPlayer.cpp">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxDepthKit\src\ofxRGBDRenderer.cpp">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxDepthKit\src\ofxRGBDScene.cpp">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxDepthKit\src\ofxRGBDVideoDepthSequence.cpp">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DKVisualize.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxMSAInteractiveObject\src\ofxMSAInteractiveObject.cpp">
+      <Filter>addons\ofxMSAInteractiveObject\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGameCamera\src\ofxGameCamera.cpp">
+      <Filter>addons\ofxGameCamera\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxBaseGui.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxButton.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxGuiGroup.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxLabel.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxPanel.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxSlider.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxToggle.cpp">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxObjLoader\libs\glm\glm.c">
+      <Filter>addons\ofxObjLoader\libs\glm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp">
+      <Filter>addons\ofxObjLoader\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxDepthKit\couples\ofxTimeline\ofxTLDepthImageSequence.cpp">
+      <Filter>addons\ofxDepthKit\couples\ofxTimeline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxDepthKit\couples\ofxTimeline\ofxTLVideoDepthAlignmentScrubber.cpp">
+      <Filter>addons\ofxDepthKit\couples\ofxTimeline</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons">
+      <UniqueIdentifier>{7d2eff2f-62a9-4e09-97b1-db401dcc6798}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxDepthKit">
+      <UniqueIdentifier>{055dbf59-822d-4d84-93fe-5d9be67c3089}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxDepthKit\src">
+      <UniqueIdentifier>{97796990-49d1-4107-bfcb-44c05caaf146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxMSAInteractiveObject">
+      <UniqueIdentifier>{bc107ea7-f6fb-4bc8-8ea3-775f13b78c26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxMSAInteractiveObject\src">
+      <UniqueIdentifier>{8beb68bb-4296-43d6-8e1c-3accf1b3dfa7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxGameCamera">
+      <UniqueIdentifier>{bb741bf2-6847-437d-b75d-c8ddaf5490d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxGameCamera\src">
+      <UniqueIdentifier>{cb7f5988-a831-4f79-9770-db77677a7dc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxGui">
+      <UniqueIdentifier>{f3d9ad7d-38c3-4372-b38f-5dae93c9f097}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxGui\src">
+      <UniqueIdentifier>{7d0556cf-4f9d-4703-8963-4a71018afa47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxObjLoader">
+      <UniqueIdentifier>{5ba5b9e6-0f6a-4a0f-af09-c8d8a2314679}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxObjLoader\src">
+      <UniqueIdentifier>{84012406-b5d5-4af2-ac98-4243a9f64e7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxObjLoader\libs">
+      <UniqueIdentifier>{1f09b6dd-a0d2-4b7a-8789-74ba6e6c23e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxObjLoader\libs\glm">
+      <UniqueIdentifier>{a140f61c-c8c3-40a7-a737-9cfd107e91d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxDepthKit\couples">
+      <UniqueIdentifier>{0f5f939c-5eda-418a-a353-23f67775784c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxDepthKit\couples\ofxTimeline">
+      <UniqueIdentifier>{22108109-a91f-42b2-b408-25d563adb0e3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\addons\ofxDepthKit\src\ofxCvCheckerboardPreview.h">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDepthKit\src\ofxDepthHoleFiller.h">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDepthKit\src\ofxDepthImageCompressor.h">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDepthKit\src\ofxDepthImageProvider.h">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDepthKit\src\ofxDepthImageRecorder.h">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDepthKit\src\ofxDepthImageSequence.h">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDepthKit\src\ofxRGBDCaptureGui.h">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDepthKit\src\ofxRGBDCombinedVideoExporter.h">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDepthKit\src\ofxRGBDCPURenderer.h">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDepthKit\src\ofxRGBDepthCalibration.h">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDepthKit\src\ofxRGBDGPURenderer.h">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDepthKit\src\ofxRGBDPlayer.h">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDepthKit\src\ofxRGBDRenderer.h">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDepthKit\src\ofxRGBDScene.h">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDepthKit\src\ofxRGBDVideoDepthSequence.h">
+      <Filter>addons\ofxDepthKit\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DKVisualize.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAInteractiveObject\src\ofxMSAInteractiveObjectDelegate.h">
+      <Filter>addons\ofxMSAInteractiveObject\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAInteractiveObject\src\ofxMSAInteractiveObject.h">
+      <Filter>addons\ofxMSAInteractiveObject\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGameCamera\src\ofxGameCamera.h">
+      <Filter>addons\ofxGameCamera\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxBaseGui.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxButton.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxGui.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxGuiGroup.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxLabel.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxPanel.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxSlider.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxToggle.h">
+      <Filter>addons\ofxGui\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxObjLoader\libs\glm\glm.h">
+      <Filter>addons\ofxObjLoader\libs\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxObjLoader\src\ofxObjLoader.h">
+      <Filter>addons\ofxObjLoader\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDepthKit\couples\ofxTimeline\ofxTLDepthImageSequence.h">
+      <Filter>addons\ofxDepthKit\couples\ofxTimeline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDepthKit\couples\ofxTimeline\ofxTLVideoDepthAlignmentScrubber.h">
+      <Filter>addons\ofxDepthKit\couples\ofxTimeline</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
+</Project>
