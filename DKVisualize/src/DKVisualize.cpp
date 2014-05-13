@@ -750,7 +750,7 @@ void DKVisualize::update(){
     }
     
 	for(int i = 0; i < scenes.size(); i++){
-        scenes[i].button->enabled  = viewComps;
+        scenes[i]->button->enabled  = viewComps;
 	}
 	
     for(int i = 0; i < comps.size(); i++){
@@ -1667,24 +1667,27 @@ void DKVisualize::populateScenes(){
 	int currentCompButton = 0;
     
     for(int i = scenes.size()-1; i >= 0; i--){
-        delete scenes[i].button;
+        delete scenes[i]->button;
+		delete scenes[i];
     }
     scenes.clear();
 	
 	for(int i = 0; i < mediaFolders; i++){
 		
-        SceneButton sceneButton;
-        sceneButton.scene.loadFromFolder(dir.getPath(i), false);
-        if(!sceneButton.scene.valid()){
+		SceneButton* sceneButton = new SceneButton();
+		string sceneFolder = dir.getPath(i);
+        sceneButton->scene.loadFromFolder(sceneFolder, false);
+        if(!sceneButton->scene.valid()){
+			delete sceneButton;
             continue;
         }
         
-        sceneButton.button = new ofxMSAInteractiveObjectWithDelegate();
-        sceneButton.button->fontReference = &timeline.getFont();
-        sceneButton.button->setup();
-        sceneButton.button->setDelegate(this);
-        sceneButton.button->setLabel(sceneButton.scene.name + " " + ofToString(sceneButton.scene.getCompositions().size()));
-        setButtonColors(sceneButton.button);
+        sceneButton->button = new ofxMSAInteractiveObjectWithDelegate();
+        sceneButton->button->fontReference = &timeline.getFont();
+        sceneButton->button->setup();
+        sceneButton->button->setDelegate(this);
+        sceneButton->button->setLabel(sceneButton->scene.name + " " + ofToString(sceneButton->scene.getCompositions().size()));
+        setButtonColors(sceneButton->button);
         scenes.push_back( sceneButton );
 	}
 	
@@ -1702,9 +1705,9 @@ void DKVisualize::positionSceneButtons(){
 	int compy = 50;
 	
     for(int i = 0; i < scenes.size(); i++){
-        
-        scenes[i].button->setPosAndSize(compx,compy,250,25);
-		
+
+        scenes[i]->button->setPosAndSize(compx,compy,250,25);
+
         compy += 25;
         if(compy > ofGetHeight()-100){
             compy  = 150;
@@ -1955,8 +1958,8 @@ void DKVisualize::objectDidRelease(ofxMSAInteractiveObject* object, int x, int y
     else {
 		
         for(int i = 0; i < scenes.size(); i++){
-            if(scenes[i].button == object){
-                selectedScene = &scenes[i];
+            if(scenes[i]->button == object){
+                selectedScene = scenes[i];
                 populateCompositionsForScene();
                 return;
             }

@@ -2,7 +2,7 @@
 #include "DKVisualize.h"
 
 //========================================================================
-int main( ){
+int main(){
 
 
 //	window.setDoubleBuffering(false);

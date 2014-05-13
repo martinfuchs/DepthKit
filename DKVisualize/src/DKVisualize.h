@@ -195,7 +195,7 @@ class DKVisualize : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     
     void setButtonColors(ofxMSAInteractiveObjectWithDelegate* btn);
     
-    vector<SceneButton> scenes;
+    vector<SceneButton*> scenes;
     vector<CompButton> comps;
     vector<RenderButton> renderQueue;
     float maxSceneX;
@@ -229,7 +229,6 @@ class DKVisualize : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 	
     bool viewComps;
     float accumulatedPerlinOffset;
-    //float backlightDistortionPosition;
 	
 	ofxGameCamera cam;
 	ofxTLCameraTrack* cameraTrack;
