@@ -193,7 +193,6 @@ void DKVisualize::setup(){
         ofLogError("No default bin found");
     }
     
-	transparencyCheckers.loadImage("transparency.jpg");
     ofSetWindowShape(ofGetScreenWidth()-125, ofGetScreenHeight()-100);
 }
 
@@ -970,20 +969,25 @@ void DKVisualize::update(){
         currentRenderObjectFiles = renderObjectFiles;
     }
 	
-	if(drawScanlinesHorizontal != currentDrawScanlinesHorizontal ||
-	   drawScanlinesVertical != currentDrawScanlinesVertical ||
+	bool doHorizontalLines = drawScanlinesHorizontal;
+	bool doVerticalLines = drawScanlinesVertical;
+	if(doHorizontalLines != currentDrawScanlinesHorizontal ||
+	   doVerticalLines != currentDrawScanlinesVertical ||
 	   renderer.getSimplification().x != currentScanlineStepHorizontal ||
 	   renderer.getSimplification().y != currentScanlineStepVertical)
 	{
 		generateScanlineMesh(drawScanlinesVertical, drawScanlinesHorizontal);
 		
-		currentScanlineStepVertical = drawScanlinesVertical;
+		currentDrawScanlinesVertical = drawScanlinesVertical;
 		currentDrawScanlinesHorizontal = drawScanlinesHorizontal;
-		currentScanlineStepVertical = renderer.getSimplification().x;
-		currentScanlineStepHorizontal = renderer.getSimplification().y;
+		
+		currentScanlineStepHorizontal = renderer.getSimplification().x;
+		currentScanlineStepVertical = renderer.getSimplification().y;
+
 		rendererNeedsUpdate = true;
 	}
-	
+	rendererNeedsUpdate = affectPointsPerlin || sinDistort || player.getVideoPlayer()->isPlaying();
+
 	int numRandomPoints = powf(timeline.getValue("Random Point Amount"),2.0);
 	if(drawRandomMesh && numRandomPoints != randomMesh.getNumVertices()){
 		generateRandomMesh(numRandomPoints);
@@ -1103,9 +1107,6 @@ void DKVisualize::toggleOffRenderOutputOptions(){
 
 //--------------------------------------------------------------
 void DKVisualize::generateScanlineMesh(bool verticalScanline, bool horizontalScanline) {
-	
-//	horizontalScanlineMesh.setMode(OF_PRIMITIVE_LINES);
-//	verticalScanlineMesh.setMode(OF_PRIMITIVE_LINES);
 
 	if(verticalScanline){
 		ofMesh verticalMesh;
@@ -1313,7 +1314,6 @@ void DKVisualize::draw(){
 				combinedVideoRect.scaleTo(colorAssistRenderArea, OF_ASPECT_RATIO_KEEP);
 				combinedVideoRect.x = fboRectangle.getMaxX();
 				combinedVideoRect.y = fboRectangle.getMinY();
-				transparencyCheckers.draw(combinedVideoRect);
 				combinedVideoTexture.draw(combinedVideoRect);
 			}
 
