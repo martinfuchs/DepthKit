@@ -166,21 +166,6 @@ class DKVisualize : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
     ofxToggle startSequenceAt0;
 	ofxToggle affectPointsPerlin;
 	
-//	ofImage lightSprite;
-//	ofImage lightMask;
-//	ofImage lightClouds;
-//	ofImage waterBump;
-//	float currentLightCloudOffset;
-	
-//	ofxFloatSlider minDepthSlider;
-//	ofxFloatSlider maxDepthSlider;
-
-	
-//	ofxToggle drawGodRays;
-//	ofShader godRays;
-//	ofShader distort;
-	ofImage transparencyCheckers;
-	
 	bool multisampleBufferAllocated;
     bool currentRenderObjectFiles;
     bool firstRenderFrame;
