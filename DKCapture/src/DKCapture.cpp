@@ -1,7 +1,9 @@
 #include "DKCapture.h"
 
-#ifdef FREENECT
+#if defined(FREENECT)
 	#include "ofxDepthImageProviderFreenect.h"
+#elif defined(KCB)
+	#include "ofxDepthImageProviderKCB.h"
 #else
 	#include "ofxDepthImageProviderOpenNI.h"
 #endif
@@ -16,8 +18,10 @@ void DKCapture::setup(){
 	ofSetFrameRate(60);
 	ofBackground(0);
 
-#ifdef FREENECT
+#if defined(FREENECT)
     gui.setImageProvider( new ofxDepthImageProviderFreenect() );
+#elif defined(KCB)
+	gui.setImageProvider( new ofxDepthImageProviderKCB() );
 #else
 	gui.setImageProvider( new ofxDepthImageProviderOpenNI() );
 #endif

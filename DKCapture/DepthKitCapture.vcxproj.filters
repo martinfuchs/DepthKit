@@ -94,6 +94,12 @@
     <ClCompile Include="src\DKCapture.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxKinectCommonBridge\src\ofxKinectCommonBridge.cpp">
+      <Filter>addons\ofxKinectCommonBridge\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxDepthKit\couples\ofxKinectCommonBridge\ofxDepthImageProviderKCB.cpp">
+      <Filter>addons\ofxDepthKit\couples\ofxKinectCommonBridge</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -143,6 +149,24 @@
     </Filter>
     <Filter Include="addons\ofxDepthKit\couples\ofxTimeline">
       <UniqueIdentifier>{22108109-a91f-42b2-b408-25d563adb0e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxKinectCommonBridge">
+      <UniqueIdentifier>{fded59e6-4aec-45e3-8cc0-b4d15517baba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxKinectCommonBridge\src">
+      <UniqueIdentifier>{b73fae0b-a401-4b12-b043-feee49e645bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxKinectCommonBridge\libs">
+      <UniqueIdentifier>{942af387-f0f8-46f0-8fdd-aa67e8aad57f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxKinectCommonBridge\libs\KinectCommonBridge">
+      <UniqueIdentifier>{5512891a-44cb-460a-bf56-f2056510277a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxKinectCommonBridge\libs\KinectCommonBridge\include">
+      <UniqueIdentifier>{5d3d07c5-9640-4e4b-b707-8c15c07c1e2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxDepthKit\couples\ofxKinectCommonBridge">
+      <UniqueIdentifier>{9f164bc7-17cd-4aa3-a8dd-6b7f4e1ad1f3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -241,6 +265,15 @@
     </ClInclude>
     <ClInclude Include="src\DKCapture.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxKinectCommonBridge\src\ofxKinectCommonBridge.h">
+      <Filter>addons\ofxKinectCommonBridge\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\include\KinectCommonBridgeLib.h">
+      <Filter>addons\ofxKinectCommonBridge\libs\KinectCommonBridge\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxDepthKit\couples\ofxKinectCommonBridge\ofxDepthImageProviderKCB.h">
+      <Filter>addons\ofxDepthKit\couples\ofxKinectCommonBridge</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

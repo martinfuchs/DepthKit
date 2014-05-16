@@ -47,22 +47,26 @@
     <TargetName>$(ProjectName)_debug</TargetName>
     <LinkIncremental>true</LinkIncremental>
     <GenerateManifest>true</GenerateManifest>
+    <IncludePath>$(KINECTSDK10_DIR)inc;$(KINECT_TOOLKIT_DIR)inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(KINECTSDK10_DIR)\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>bin\</OutDir>
     <IntDir>obj\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(KINECTSDK10_DIR)inc;$(KINECT_TOOLKIT_DIR)inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(KINECTSDK10_DIR)\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>KCB=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxGameCamera\src;..\..\..\addons\ofxMSAInteractiveObject\src;..\..\..\addons\ofxObjLoader\libs\glm;..\..\..\addons\ofxObjLoader\src;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxDepthKit\couples\ofxTimeline;..\..\..\addons\ofxDepthKit\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxGameCamera\src;..\..\..\addons\ofxMSAInteractiveObject\src;..\..\..\addons\ofxObjLoader\libs\glm;..\..\..\addons\ofxObjLoader\src;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxDepthKit\couples\ofxKinectCommonBridge;..\..\..\addons\ofxDepthKit\couples\ofxTimeline;..\..\..\addons\ofxDepthKit\src;..\..\..\addons\ofxKinectCommonBridge\src;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\include</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -70,17 +74,22 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies);KinectCommonBridge.lib;Kinect10.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\vs\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /e /i /y "$(ProjectDir)..\..\..\export\vs\*.dll" "$(ProjectDir)bin"
+xcopy /e /i /y "$(ProjectDir)..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\vs\Debug\*.dll" "$(ProjectDir)bin"
+</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>KCB=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxGameCamera\src;..\..\..\addons\ofxMSAInteractiveObject\src;..\..\..\addons\ofxObjLoader\libs\glm;..\..\..\addons\ofxObjLoader\src;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxDepthKit\couples\ofxTimeline;..\..\..\addons\ofxDepthKit\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxGameCamera\src;..\..\..\addons\ofxMSAInteractiveObject\src;..\..\..\addons\ofxObjLoader\libs\glm;..\..\..\addons\ofxObjLoader\src;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxDepthKit\couples\ofxKinectCommonBridge;..\..\..\addons\ofxDepthKit\couples\ofxTimeline;..\..\..\addons\ofxDepthKit\src;..\..\..\addons\ofxKinectCommonBridge\src;..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\include</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -91,11 +100,18 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies);KinectCommonBridge.lib;Kinect10.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\vs\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /e /i /y "$(ProjectDir)..\..\..\export\vs\*.dll" "$(ProjectDir)bin"
+xcopy /e /i /y "$(ProjectDir)..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\lib\vs\Release\*.dll" "$(ProjectDir)bin"
+
+</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\addons\ofxDepthKit\couples\ofxKinectCommonBridge\ofxDepthImageProviderKCB.cpp" />
     <ClCompile Include="..\..\..\addons\ofxDepthKit\couples\ofxTimeline\ofxTLDepthImageSequence.cpp" />
     <ClCompile Include="..\..\..\addons\ofxDepthKit\couples\ofxTimeline\ofxTLVideoDepthAlignmentScrubber.cpp" />
     <ClCompile Include="..\..\..\addons\ofxDepthKit\src\ofxCvCheckerboardPreview.cpp" />
@@ -122,6 +138,7 @@
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxSlider.cpp" />
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.cpp" />
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxToggle.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxKinectCommonBridge\src\ofxKinectCommonBridge.cpp" />
     <ClCompile Include="..\..\..\addons\ofxMSAInteractiveObject\src\ofxMSAInteractiveObject.cpp" />
     <ClCompile Include="..\..\..\addons\ofxObjLoader\libs\glm\glm.c" />
     <ClCompile Include="..\..\..\addons\ofxObjLoader\src\ofxObjLoader.cpp" />
@@ -129,6 +146,7 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\addons\ofxDepthKit\couples\ofxKinectCommonBridge\ofxDepthImageProviderKCB.h" />
     <ClInclude Include="..\..\..\addons\ofxDepthKit\couples\ofxTimeline\ofxTLDepthImageSequence.h" />
     <ClInclude Include="..\..\..\addons\ofxDepthKit\couples\ofxTimeline\ofxTLVideoDepthAlignmentScrubber.h" />
     <ClInclude Include="..\..\..\addons\ofxDepthKit\src\ofxCvCheckerboardPreview.h" />
@@ -156,6 +174,8 @@
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxSlider.h" />
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.h" />
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxToggle.h" />
+    <ClInclude Include="..\..\..\addons\ofxKinectCommonBridge\libs\KinectCommonBridge\include\KinectCommonBridgeLib.h" />
+    <ClInclude Include="..\..\..\addons\ofxKinectCommonBridge\src\ofxKinectCommonBridge.h" />
     <ClInclude Include="..\..\..\addons\ofxMSAInteractiveObject\src\ofxMSAInteractiveObject.h" />
     <ClInclude Include="..\..\..\addons\ofxMSAInteractiveObject\src\ofxMSAInteractiveObjectDelegate.h" />
     <ClInclude Include="..\..\..\addons\ofxObjLoader\libs\glm\glm.h" />
