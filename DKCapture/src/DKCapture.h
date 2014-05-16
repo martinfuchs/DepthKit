@@ -4,7 +4,7 @@
 #include "ofxRGBDCaptureGui.h"
 
 
-class testApp : public ofBaseApp {
+class DKCapture : public ofBaseApp {
 
   public:
 	

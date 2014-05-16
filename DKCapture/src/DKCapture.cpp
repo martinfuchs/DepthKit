@@ -1,5 +1,4 @@
-#include "testApp.h"
-#include "ofxXmlSettings.h"
+#include "DKCapture.h"
 
 #ifdef FREENECT
 	#include "ofxDepthImageProviderFreenect.h"
@@ -9,12 +8,14 @@
 
 
 //--------------------------------------------------------------
-void testApp::setup(){
+void DKCapture::setup(){
 	
 	ofSetEscapeQuitsApp(false);
+
 	ofEnableAlphaBlending();
 	ofSetFrameRate(60);
 	ofBackground(0);
+
 #ifdef FREENECT
     gui.setImageProvider( new ofxDepthImageProviderFreenect() );
 #else
@@ -25,40 +26,40 @@ void testApp::setup(){
 }
 
 //--------------------------------------------------------------
-void testApp::update(){}
+void DKCapture::update(){}
 
 //--------------------------------------------------------------
-void testApp::draw(){}
+void DKCapture::draw(){}
 
 //--------------------------------------------------------------
-void testApp::keyPressed(int key){}
+void DKCapture::keyPressed(int key){}
 
 //--------------------------------------------------------------
-void testApp::exit() {}
+void DKCapture::exit() {}
 
 //--------------------------------------------------------------
-void testApp::keyReleased(int key){}
+void DKCapture::keyReleased(int key){}
 
 //--------------------------------------------------------------
-void testApp::mouseMoved(int x, int y ){}
+void DKCapture::mouseMoved(int x, int y ){}
 
 //--------------------------------------------------------------
-void testApp::mouseDragged(int x, int y, int button){}
+void DKCapture::mouseDragged(int x, int y, int button){}
 
 //--------------------------------------------------------------
-void testApp::mousePressed(int x, int y, int button){}
+void DKCapture::mousePressed(int x, int y, int button){}
 
 //--------------------------------------------------------------
-void testApp::mouseReleased(int x, int y, int button){}
+void DKCapture::mouseReleased(int x, int y, int button){}
 
 //--------------------------------------------------------------
-void testApp::windowResized(int w, int h){}
+void DKCapture::windowResized(int w, int h){}
 
 //--------------------------------------------------------------
-void testApp::gotMessage(ofMessage msg){}
+void DKCapture::gotMessage(ofMessage msg){}
 
 //--------------------------------------------------------------
-void testApp::dragEvent(ofDragInfo dragInfo){ 
+void DKCapture::dragEvent(ofDragInfo dragInfo){ 
 #ifdef TARGET_WIN32
 	gui.dragEvent(dragInfo);
 #endif

@@ -46,9 +46,6 @@
     <ClCompile Include="..\..\..\addons\ofxDepthKit\src\ofxRGBDVideoDepthSequence.cpp">
       <Filter>addons\ofxDepthKit\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\DKVisualize.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -93,6 +90,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\addons\ofxDepthKit\couples\ofxTimeline\ofxTLVideoDepthAlignmentScrubber.cpp">
       <Filter>addons\ofxDepthKit\couples\ofxTimeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DKCapture.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -191,9 +191,6 @@
     <ClInclude Include="..\..\..\addons\ofxDepthKit\src\ofxRGBDVideoDepthSequence.h">
       <Filter>addons\ofxDepthKit\src</Filter>
     </ClInclude>
-    <ClInclude Include="src\DKVisualize.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxMSAInteractiveObject\src\ofxMSAInteractiveObjectDelegate.h">
       <Filter>addons\ofxMSAInteractiveObject\src</Filter>
     </ClInclude>
@@ -242,7 +239,9 @@
     <ClInclude Include="..\..\..\addons\ofxDepthKit\couples\ofxTimeline\ofxTLVideoDepthAlignmentScrubber.h">
       <Filter>addons\ofxDepthKit\couples\ofxTimeline</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="src\DKCapture.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
