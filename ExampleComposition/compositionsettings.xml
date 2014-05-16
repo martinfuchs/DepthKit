@@ -1,0 +1,40 @@
+<Settings>
+	<SETUP>SETUP</SETUP>
+	<Video_Volume>1</Video_Volume>
+	<Temporal_Alignment>0</Temporal_Alignment>
+	<Set_Color-Depth_Time>0</Set_Color-Depth_Time>
+	<CAMERA>CAMERA</CAMERA>
+	<Camera_Speed>10</Camera_Speed>
+	<Cam_Roll_Speed>2</Cam_Roll_Speed>
+	<Reset_Camera>0</Reset_Camera>
+	<Lock_to_Track>1</Lock_to_Track>
+	<Set_Camera_Point>0</Set_Camera_Point>
+	<Mirror>0</Mirror>
+	<RENDERING>RENDERING</RENDERING>
+	<Freeze_Frame_Mode>0</Freeze_Frame_Mode>
+	<Fill_Holes>1</Fill_Holes>
+	<Hole_Kernel_Size>3</Hole_Kernel_Size>
+	<Hole_Fill_Iterations>2</Hole_Fill_Iterations>
+	<Draw_Point_Grid>0</Draw_Point_Grid>
+	<Draw_Points_Random>1</Draw_Points_Random>
+	<Draw_Wireframe>0</Draw_Wireframe>
+	<Draw_Vertical_Lines>1</Draw_Vertical_Lines>
+	<Draw_Horizontal_Lines>1</Draw_Horizontal_Lines>
+	<Draw_Mesh>0</Draw_Mesh>
+	<Self_Occlude>1</Self_Occlude>
+	<Depth_of_Field>0</Depth_of_Field>
+	<Wave_Distort>1</Wave_Distort>
+	<Warp_Distort>1</Warp_Distort>
+	<Frame_Width>1920</Frame_Width>
+	<Frame_Height>1080</Frame_Height>
+	<Apply_Custom_Size>0</Apply_Custom_Size>
+	<Render_720p>0</Render_720p>
+	<Render_1080p>1</Render_1080p>
+	<obj_Files>0</obj_Files>
+	<obj_Textures>0</obj_Textures>
+	<Combined_Per_Pixel>0</Combined_Per_Pixel>
+	<Combined_720p>0</Combined_720p>
+	<Combined_1080p>0</Combined_1080p>
+	<Start_Sequence_at_1>0</Start_Sequence_at_1>
+<Settings/>
+</Settings>

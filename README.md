@@ -1,4 +1,4 @@
-# [DepthKit](http://www.DepthKit.com) beta 005
+# [DepthKit](http://www.DepthKit.com) beta 006
 
 ![ DepthKit](http://DepthKit.com/images/productshot_2.jpg)
 
@@ -15,8 +15,8 @@ This software is a science fiction, a seed of a potential future functional just
 ## Projects
 Curious what this looks like? Check out some project created using the toolkit:
 
- * [RGBD Tumblr](http://rgbd.tumblr.com/)
- * [RGBD Vimeo Channel](https://vimeo.com/album/2024049)
+ * [DepthKit Tumblr](http://rgbd.tumblr.com/)
+ * [DepthKit Vimeo Channel](https://vimeo.com/album/2024049)
 
 ## Background
 DepthKit is an ongoing labor of love by the main developers:

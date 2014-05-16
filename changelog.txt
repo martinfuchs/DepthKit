@@ -21,13 +21,15 @@
 =======
 006 - May 13th 2014
  - Changed name to DEPTHKIT
- - Support for 1473 Kinect Sensor
+ - Support for 1473 XBOX Kinect Sensor on OS X
+ - Support for Kinect for Windows on OS X
  - Added horizontal and vertical scanlines in addition to wireframes
  - Added random noise grid
  - Added support for background colors
  - Added support for fading PointCloud to solid colors
  - Added Wave Distortion Effect
  - Added Noise Distortion Effect
+ - Freeze-Frame effect 
  - Using VBOs for underlying geometry
  - Upgraded to most recent version of openFrameworks (0.8.1)
  - Switched from GLUT to GLFW windowing system
@@ -52,11 +54,13 @@
  - Fixed bug with duplicated entries in depth data
  - Escape no longer quits apps
 
+=======
 0041 - January 3rd 2013
  - Fixed crash in OS X version of RGBDCaptureKinect
  - Fixed problem saving checkerboard images to disk
  - Added more user feedback while generating calibrations
 
+=======
 004 - December 21th 2012
 - Windows support (libfreenect)
 - OBJ sequence export added
@@ -76,10 +80,12 @@
 - Texture alignment can now be edited on the timeline
 - New Texture Scaling parameter to assist with alignment
 
+=======
 0031 - July 15th 2012
 - Fixed pattern size bug that was causing weird calibration issues
 - Fixed crash on exit in Capture application
 
+=======
 003 - June 15th 2012
 - Consolidated FrameExtract and Calibrate app into the Capture app
 - Switched from ofxSimpleGui to ofxGui
@@ -92,6 +98,7 @@
 - Calibration can be per bin or overridden per-scene
 - Renders now go into the _RenderBin in the main media bin folder, timestamped
 
+=======
 002 - April 26th 2012
 - texture projection in shader
 - fixed parameters on geometry and depth distortion
@@ -100,12 +107,13 @@
 - Raindbow/pointcloud/black&white work on preview and playback
 - Depth of Field shader added
 
+=======
 001 - March 16th 2012
 - First release for Resonate Festival
 
 ******
 
-RGBDToolkit is a labor of love by James George http://www.jamesgeorge.org
+DepthKit is a labor of love by James George http://www.jamesgeorge.org
 Collaborators Alexander Porter, Jonathan Minard, Mike Heavers
 Development has been pushed and inspired by Elliot Woods (http://kimchiandchips.com) and Kyle McDonald (http://kylemcdonald.net)
 
