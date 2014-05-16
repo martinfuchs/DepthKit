@@ -986,7 +986,8 @@ void DKVisualize::update(){
 
 		rendererNeedsUpdate = true;
 	}
-	rendererNeedsUpdate = affectPointsPerlin || sinDistort || player.getVideoPlayer()->isPlaying();
+
+	rendererNeedsUpdate |= affectPointsPerlin || sinDistort || player.getVideoPlayer()->isPlaying();
 
 	int numRandomPoints = powf(timeline.getValue("Random Point Amount"),2.0);
 	if(drawRandomMesh && numRandomPoints != randomMesh.getNumVertices()){

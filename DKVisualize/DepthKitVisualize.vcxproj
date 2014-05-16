@@ -160,6 +160,7 @@
     <ClInclude Include="..\..\..\addons\ofxMSAInteractiveObject\src\ofxMSAInteractiveObjectDelegate.h" />
     <ClInclude Include="..\..\..\addons\ofxObjLoader\libs\glm\glm.h" />
     <ClInclude Include="..\..\..\addons\ofxObjLoader\src\ofxObjLoader.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="src\DKVisualize.h" />
   </ItemGroup>
   <ItemGroup>
@@ -177,6 +178,9 @@
     <ResourceCompile Include="icon.rc">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\..\Users\Owner\Desktop\DepthKit512x512-1.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

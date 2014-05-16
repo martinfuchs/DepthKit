@@ -242,8 +242,12 @@
     <ClInclude Include="..\..\..\addons\ofxDepthKit\couples\ofxTimeline\ofxTLVideoDepthAlignmentScrubber.h">
       <Filter>addons\ofxDepthKit\couples\ofxTimeline</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\..\Users\Owner\Desktop\DepthKit512x512-1.ico" />
   </ItemGroup>
 </Project>
