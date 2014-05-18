@@ -185,7 +185,7 @@ void DKVisualize::setup(){
 	
     ofxXmlSettings defaultBin;
     if(defaultBin.loadFile("defaultBin.xml")){
-		mediaBinFolder = defaultBin.getValue("bin", "");
+		mediaBinFolder = ofToDataPath(defaultBin.getValue("bin", ""), true);
         mediaBinButton->setLabel(mediaBinFolder);
 		populateScenes();
     }
