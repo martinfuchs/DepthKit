@@ -1294,7 +1294,8 @@ void DKVisualize::draw(){
 			
 		    cam.speed = cameraSpeed;
 			cam.rollSpeed = cameraRollSpeed;
-			cam.applyTranslation = cam.applyRotation = fboRectangle.inside(ofGetMouseX(), ofGetMouseY());
+			cam.applyRotation = fboRectangle.inside(ofGetMouseX(), ofGetMouseY());
+			cam.applyTranslation = true;
 			cam.usemouse = fboRectangle.inside(ofGetMouseX(), ofGetMouseY());
 			
 			ofRectangle colorAssistRenderArea = ofRectangle(0,0,ofGetWidth() - fboRectangle.getMaxX(),timeline.getDrawRect().y - 50);
