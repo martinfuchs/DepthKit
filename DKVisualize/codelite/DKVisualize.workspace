@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Workspace Name="DKVisualize" Database="./DKVisualize.tags">
+  <Environment>
+    <![CDATA[
+  
+  
+  ]]>
+  </Environment>
+  <Project Name="DKVisualize" Path="DKVisualize.project" Active="Yes"/>
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="Debug" Selected="yes">
+      <Project Name="linux" ConfigName="Debug"/>
+      <Project Name="DKVisualize" ConfigName="Debug"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="Release" Selected="yes">
+      <Project Name="linux" ConfigName="Release"/>
+      <Project Name="DKVisualize" ConfigName="Release"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
+</CodeLite_Workspace>

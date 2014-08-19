@@ -1,6 +1,8 @@
 ofxDepthKit
 ofxOpenNI
 ofxCv
+ofxGui
+ofxObjLoader
 ofxGameCamera
 ofxKinect
 ofxMSAInteractiveObject

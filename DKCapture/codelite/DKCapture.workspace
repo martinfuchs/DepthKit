@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Workspace Name="DKCapture" Database="./DKCapture.tags">
+  <Environment>
+    <![CDATA[
+  
+  
+  ]]>
+  </Environment>
+  <Project Name="DKCapture" Path="DKCapture.project" Active="Yes"/>
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="Debug" Selected="yes">
+      <Project Name="linux" ConfigName="Debug"/>
+      <Project Name="DKCapture" ConfigName="Debug"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="Release" Selected="yes">
+      <Project Name="linux" ConfigName="Release"/>
+      <Project Name="DKCapture" ConfigName="Release"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
+</CodeLite_Workspace>

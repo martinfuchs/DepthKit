@@ -34,12 +34,3 @@ ipch/
 /RGBDCaptureXtionPro/bin/data/depthframes/
 /RGBDCaptureKinect/bin/data/depthframes/
 defaultBin.xml
-
-#linux stuff
-libs/
-.codelite
-*.obj
-*.workspace.*
-*.db
-obj/
-*_debug

@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Project Name="DKCapture" InternalType="">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
+    </Plugin>
+    <Plugin Name="CMakePlugin">
+      <![CDATA[[{
+  "name": "Debug",
+  "enabled": false,
+  "buildDirectory": "build",
+  "sourceDirectory": "$(ProjectPath)",
+  "generator": "",
+  "buildType": "",
+  "arguments": [],
+  "parentProject": ""
+ }, {
+  "name": "Release",
+  "enabled": false,
+  "buildDirectory": "build",
+  "sourceDirectory": "$(ProjectPath)",
+  "generator": "",
+  "buildType": "",
+  "arguments": [],
+  "parentProject": ""
+ }]]]>
+    </Plugin>
+  </Plugins>
+  <Description/>
+  <Dependencies/>
+  <VirtualDirectory Name="src">
+    <File Name="../src/main.cpp"/>
+    <File Name="../src/DKCapture.h"/>
+    <File Name="../src/DKCapture.cpp"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="config">
+    <File Name="../Makefile"/>
+    <File Name="../config.make"/>
+    <File Name="../addons.make"/>
+  </VirtualDirectory>
+  <Settings Type="Dynamic Library">
+    <GlobalSettings>
+      <Compiler Options="" C_Options="" Assembler="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="">
+        <LibraryPath Value="."/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
+    <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Dynamic Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g" C_Options="-g" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="" IntermediateDirectory="./Debug" Command="./bin/$(ProjectName)_debug" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(WorkspacePath)/.." PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="yes">
+        <RebuildCommand/>
+        <CleanCommand>make clean Debug</CleanCommand>
+        <BuildCommand>make Debug</BuildCommand>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory>$(ProjectPath)/..</WorkingDirectory>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+    <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Dynamic Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="" C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="-O2" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="" IntermediateDirectory="./Release" Command="make RunRelease" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(WorkspacePath)/.." PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="yes">
+        <RebuildCommand/>
+        <CleanCommand>make clean Release</CleanCommand>
+        <BuildCommand>make Release</BuildCommand>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory>$(ProjectPath)/..</WorkingDirectory>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+  </Settings>
+  <VirtualDirectory Name="addons">
+    <VirtualDirectory Name="ofxCv">
+      <VirtualDirectory Name="src">
+        <File Name="../../../../addons/ofxCv/src/ofxCv.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="libs">
+        <VirtualDirectory Name="CLD">
+          <VirtualDirectory Name="include">
+            <VirtualDirectory Name="CLD">
+              <File Name="../../../../addons/ofxCv/libs/CLD/include/CLD/imatrix.h"/>
+              <File Name="../../../../addons/ofxCv/libs/CLD/include/CLD/ETF.h"/>
+              <File Name="../../../../addons/ofxCv/libs/CLD/include/CLD/fdog.h"/>
+              <File Name="../../../../addons/ofxCv/libs/CLD/include/CLD/myvec.h"/>
+            </VirtualDirectory>
+          </VirtualDirectory>
+          <VirtualDirectory Name="src">
+            <File Name="../../../../addons/ofxCv/libs/CLD/src/ETF.cpp"/>
+            <File Name="../../../../addons/ofxCv/libs/CLD/src/fdog.cpp"/>
+          </VirtualDirectory>
+        </VirtualDirectory>
+        <VirtualDirectory Name="ofxCv">
+          <VirtualDirectory Name="include">
+            <VirtualDirectory Name="ofxCv">
+              <File Name="../../../../addons/ofxCv/libs/ofxCv/include/ofxCv/Wrappers.h"/>
+              <File Name="../../../../addons/ofxCv/libs/ofxCv/include/ofxCv/Tracker.h"/>
+              <File Name="../../../../addons/ofxCv/libs/ofxCv/include/ofxCv/Kalman.h"/>
+              <File Name="../../../../addons/ofxCv/libs/ofxCv/include/ofxCv/ContourFinder.h"/>
+              <File Name="../../../../addons/ofxCv/libs/ofxCv/include/ofxCv/ObjectFinder.h"/>
+              <File Name="../../../../addons/ofxCv/libs/ofxCv/include/ofxCv/Flow.h"/>
+              <File Name="../../../../addons/ofxCv/libs/ofxCv/include/ofxCv/RunningBackground.h"/>
+              <File Name="../../../../addons/ofxCv/libs/ofxCv/include/ofxCv/Calibration.h"/>
+              <File Name="../../../../addons/ofxCv/libs/ofxCv/include/ofxCv/Utilities.h"/>
+              <File Name="../../../../addons/ofxCv/libs/ofxCv/include/ofxCv/Distance.h"/>
+              <File Name="../../../../addons/ofxCv/libs/ofxCv/include/ofxCv/Helpers.h"/>
+            </VirtualDirectory>
+          </VirtualDirectory>
+          <VirtualDirectory Name="src">
+            <File Name="../../../../addons/ofxCv/libs/ofxCv/src/ObjectFinder.cpp"/>
+            <File Name="../../../../addons/ofxCv/libs/ofxCv/src/Calibration.cpp"/>
+            <File Name="../../../../addons/ofxCv/libs/ofxCv/src/Wrappers.cpp"/>
+            <File Name="../../../../addons/ofxCv/libs/ofxCv/src/Utilities.cpp"/>
+            <File Name="../../../../addons/ofxCv/libs/ofxCv/src/Helpers.cpp"/>
+            <File Name="../../../../addons/ofxCv/libs/ofxCv/src/RunningBackground.cpp"/>
+            <File Name="../../../../addons/ofxCv/libs/ofxCv/src/ContourFinder.cpp"/>
+            <File Name="../../../../addons/ofxCv/libs/ofxCv/src/Distance.cpp"/>
+            <File Name="../../../../addons/ofxCv/libs/ofxCv/src/Flow.cpp"/>
+            <File Name="../../../../addons/ofxCv/libs/ofxCv/src/Kalman.cpp"/>
+            <File Name="../../../../addons/ofxCv/libs/ofxCv/src/Tracker.cpp"/>
+          </VirtualDirectory>
+        </VirtualDirectory>
+      </VirtualDirectory>
+    </VirtualDirectory>
+    <VirtualDirectory Name="ofxGameCamera">
+      <VirtualDirectory Name="src">
+        <File Name="../../../../addons/ofxGameCamera/src/ofxGameCamera.h"/>
+        <File Name="../../../../addons/ofxGameCamera/src/ofxGameCamera.cpp"/>
+      </VirtualDirectory>
+    </VirtualDirectory>
+    <VirtualDirectory Name="ofxKinect">
+      <VirtualDirectory Name="src">
+        <File Name="../../../../addons/ofxKinect/src/ofxKinect.cpp"/>
+        <File Name="../../../../addons/ofxKinect/src/ofxKinect.h"/>
+        <VirtualDirectory Name="extra">
+          <File Name="../../../../addons/ofxKinect/src/extra/ofxKinectExtras.cpp"/>
+          <File Name="../../../../addons/ofxKinect/src/extra/ofxKinectExtras.h"/>
+        </VirtualDirectory>
+        <File Name="../../../../addons/ofxKinect/src/ofxBase3DVideo.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="libs">
+        <VirtualDirectory Name="libfreenect">
+          <VirtualDirectory Name="include">
+            <File Name="../../../../addons/ofxKinect/libs/libfreenect/include/libfreenect.h"/>
+            <File Name="../../../../addons/ofxKinect/libs/libfreenect/include/libfreenect_audio.h"/>
+            <File Name="../../../../addons/ofxKinect/libs/libfreenect/include/libfreenect_registration.h"/>
+          </VirtualDirectory>
+          <VirtualDirectory Name="src">
+            <File Name="../../../../addons/ofxKinect/libs/libfreenect/src/core.c"/>
+            <File Name="../../../../addons/ofxKinect/libs/libfreenect/src/cameras.h"/>
+            <File Name="../../../../addons/ofxKinect/libs/libfreenect/src/loader.h"/>
+            <File Name="../../../../addons/ofxKinect/libs/libfreenect/src/keep_alive.c"/>
+            <File Name="../../../../addons/ofxKinect/libs/libfreenect/src/flags.c"/>
+            <File Name="../../../../addons/ofxKinect/libs/libfreenect/src/audio.c"/>
+            <File Name="../../../../addons/ofxKinect/libs/libfreenect/src/usb_libusb10.h"/>
+            <File Name="../../../../addons/ofxKinect/libs/libfreenect/src/flags.h"/>
+            <File Name="../../../../addons/ofxKinect/libs/libfreenect/src/freenect_internal.h"/>
+            <File Name="../../../../addons/ofxKinect/libs/libfreenect/src/registration.h"/>
+            <File Name="../../../../addons/ofxKinect/libs/libfreenect/src/keep_alive.h"/>
+            <File Name="../../../../addons/ofxKinect/libs/libfreenect/src/tilt.c"/>
+            <File Name="../../../../addons/ofxKinect/libs/libfreenect/src/registration.c"/>
+            <File Name="../../../../addons/ofxKinect/libs/libfreenect/src/loader.c"/>
+            <File Name="../../../../addons/ofxKinect/libs/libfreenect/src/cameras.c"/>
+            <File Name="../../../../addons/ofxKinect/libs/libfreenect/src/usb_libusb10.c"/>
+          </VirtualDirectory>
+        </VirtualDirectory>
+        <VirtualDirectory Name="libusb-1.0">
+          <VirtualDirectory Name="include">
+            <VirtualDirectory Name="libusb-1.0">
+              <File Name="../../../../addons/ofxKinect/libs/libusb-1.0/include/libusb-1.0/libusb.h"/>
+            </VirtualDirectory>
+          </VirtualDirectory>
+        </VirtualDirectory>
+      </VirtualDirectory>
+    </VirtualDirectory>
+    <VirtualDirectory Name="ofxMSAInteractiveObject">
+      <VirtualDirectory Name="src">
+        <File Name="../../../../addons/ofxMSAInteractiveObject/src/ofxMSAInteractiveObjectDelegate.h"/>
+        <File Name="../../../../addons/ofxMSAInteractiveObject/src/ofxMSAInteractiveObject.cpp"/>
+        <File Name="../../../../addons/ofxMSAInteractiveObject/src/ofxMSAInteractiveObject.h"/>
+      </VirtualDirectory>
+    </VirtualDirectory>
+    <VirtualDirectory Name="ofxMSATimer">
+      <VirtualDirectory Name="src">
+        <File Name="../../../../addons/ofxMSATimer/src/ofxMSATimer.h"/>
+        <File Name="../../../../addons/ofxMSATimer/src/ofxMSATimer.cpp"/>
+      </VirtualDirectory>
+    </VirtualDirectory>
+    <VirtualDirectory Name="ofxOpenCv">
+      <VirtualDirectory Name="src">
+        <File Name="../../../../addons/ofxOpenCv/src/ofxCvBlob.h"/>
+        <File Name="../../../../addons/ofxOpenCv/src/ofxCvShortImage.h"/>
+        <File Name="../../../../addons/ofxOpenCv/src/ofxCvContourFinder.h"/>
+        <File Name="../../../../addons/ofxOpenCv/src/ofxCvImage.h"/>
+        <File Name="../../../../addons/ofxOpenCv/src/ofxCvConstants.h"/>
+        <File Name="../../../../addons/ofxOpenCv/src/ofxCvImage.cpp"/>
+        <File Name="../../../../addons/ofxOpenCv/src/ofxCvColorImage.h"/>
+        <File Name="../../../../addons/ofxOpenCv/src/ofxCvContourFinder.cpp"/>
+        <File Name="../../../../addons/ofxOpenCv/src/ofxCvHaarFinder.cpp"/>
+        <File Name="../../../../addons/ofxOpenCv/src/ofxOpenCv.h"/>
+        <File Name="../../../../addons/ofxOpenCv/src/ofxCvGrayscaleImage.h"/>
+        <File Name="../../../../addons/ofxOpenCv/src/ofxCvShortImage.cpp"/>
+        <File Name="../../../../addons/ofxOpenCv/src/ofxCvGrayscaleImage.cpp"/>
+        <File Name="../../../../addons/ofxOpenCv/src/ofxCvColorImage.cpp"/>
+        <File Name="../../../../addons/ofxOpenCv/src/ofxCvFloatImage.h"/>
+        <File Name="../../../../addons/ofxOpenCv/src/ofxCvFloatImage.cpp"/>
+        <File Name="../../../../addons/ofxOpenCv/src/ofxCvHaarFinder.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="libs">
+        <VirtualDirectory Name="opencv">
+          <VirtualDirectory Name="include">
+            <VirtualDirectory Name="opencv">
+              <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv/highgui.h"/>
+              <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv/ml.h"/>
+              <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv/cxcore.h"/>
+              <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv/cvwimage.h"/>
+              <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv/cv.hpp"/>
+              <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv/cvaux.h"/>
+              <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv/cxmisc.h"/>
+              <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv/cxcore.hpp"/>
+              <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv/cvaux.hpp"/>
+              <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv/cv.h"/>
+              <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv/cxeigen.hpp"/>
+            </VirtualDirectory>
+            <VirtualDirectory Name="opencv2">
+              <VirtualDirectory Name="contrib">
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/contrib/retina.hpp"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/contrib/contrib.hpp"/>
+              </VirtualDirectory>
+              <VirtualDirectory Name="objdetect">
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/objdetect/objdetect.hpp"/>
+              </VirtualDirectory>
+              <VirtualDirectory Name="ts">
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/ts/ts_gtest.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/ts/ts.hpp"/>
+              </VirtualDirectory>
+              <VirtualDirectory Name="calib3d">
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/calib3d/calib3d.hpp"/>
+              </VirtualDirectory>
+              <VirtualDirectory Name="video">
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/video/tracking.hpp"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/video/video.hpp"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/video/background_segm.hpp"/>
+              </VirtualDirectory>
+              <VirtualDirectory Name="imgproc">
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/imgproc/imgproc.hpp"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/imgproc/imgproc_c.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/imgproc/types_c.h"/>
+              </VirtualDirectory>
+              <VirtualDirectory Name="highgui">
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/highgui/highgui.hpp"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/highgui/highgui_c.h"/>
+              </VirtualDirectory>
+              <VirtualDirectory Name="legacy">
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/legacy/blobtrack.hpp"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/legacy/legacy.hpp"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/legacy/compat.hpp"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/legacy/streams.hpp"/>
+              </VirtualDirectory>
+              <VirtualDirectory Name="flann">
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/dist.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/matrix.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/kmeans_index.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/logger.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/lsh_table.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/heap.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/hierarchical_clustering_index.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/timer.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/dummy.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/hdf5.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/linear_index.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/sampling.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/saving.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/kdtree_index.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/nn_index.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/dynamic_bitset.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/lsh_index.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/params.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/autotuned_index.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/kdtree_single_index.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/composite_index.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/allocator.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/object_factory.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/ground_truth.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/general.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/config.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/miniflann.hpp"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/result_set.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/flann.hpp"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/simplex_downhill.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/all_indices.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/defines.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/index_testing.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/flann_base.hpp"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/random.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/any.h"/>
+              </VirtualDirectory>
+              <VirtualDirectory Name="ml">
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/ml/ml.hpp"/>
+              </VirtualDirectory>
+              <VirtualDirectory Name="features2d">
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/features2d/features2d.hpp"/>
+              </VirtualDirectory>
+              <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/opencv.hpp"/>
+              <VirtualDirectory Name="gpu">
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/matrix_operations.hpp"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/gpumat.hpp"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/stream_accessor.hpp"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/devmem2d.hpp"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/gpu.hpp"/>
+              </VirtualDirectory>
+              <VirtualDirectory Name="core">
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/operations.hpp"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/version.hpp"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/eigen.hpp"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/wimage.hpp"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/mat.hpp"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/internal.hpp"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/core_c.h"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/core.hpp"/>
+                <File Name="../../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/types_c.h"/>
+              </VirtualDirectory>
+            </VirtualDirectory>
+          </VirtualDirectory>
+        </VirtualDirectory>
+      </VirtualDirectory>
+    </VirtualDirectory>
+    <VirtualDirectory Name="ofxRange">
+      <VirtualDirectory Name="src">
+        <File Name="../../../../addons/ofxRange/src/ofRange.h"/>
+      </VirtualDirectory>
+    </VirtualDirectory>
+    <VirtualDirectory Name="ofxTextInputField">
+      <VirtualDirectory Name="src">
+        <File Name="../../../../addons/ofxTextInputField/src/ofxTextInputField.h"/>
+        <File Name="../../../../addons/ofxTextInputField/src/ofxTextInputField.cpp"/>
+      </VirtualDirectory>
+    </VirtualDirectory>
+    <VirtualDirectory Name="ofxTimecode">
+      <VirtualDirectory Name="src">
+        <File Name="../../../../addons/ofxTimecode/src/ofxTimecode.cpp"/>
+        <File Name="../../../../addons/ofxTimecode/src/ofxTimecode.h"/>
+      </VirtualDirectory>
+    </VirtualDirectory>
+    <VirtualDirectory Name="ofxTween">
+      <VirtualDirectory Name="src">
+        <File Name="../../../../addons/ofxTween/src/ofxTween.cpp"/>
+        <VirtualDirectory Name="Easings">
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasingBack.h"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasingExpo.h"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasingQuint.cpp"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasingElastic.cpp"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasingQuad.cpp"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasing.h"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasingQuart.h"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasingElastic.h"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasingBounce.h"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/easing_terms_of_use.html"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasingExpo.cpp"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasingQuad.h"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasingCubic.cpp"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasingCirc.cpp"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasing.cpp"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasingCirc.h"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasingQuart.cpp"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasingBounce.cpp"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasingLinear.h"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasingCubic.h"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasingBack.cpp"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasingQuint.h"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasingSine.cpp"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasingLinear.cpp"/>
+          <File Name="../../../../addons/ofxTween/src/Easings/ofxEasingSine.h"/>
+        </VirtualDirectory>
+        <File Name="../../../../addons/ofxTween/src/ofxTween.h"/>
+      </VirtualDirectory>
+    </VirtualDirectory>
+    <VirtualDirectory Name="ofxXmlSettings">
+      <VirtualDirectory Name="src">
+        <File Name="../../../../addons/ofxXmlSettings/src/ofxXmlSettings.cpp"/>
+        <File Name="../../../../addons/ofxXmlSettings/src/ofxXmlSettings.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="libs">
+        <File Name="../../../../addons/ofxXmlSettings/libs/tinyxml.cpp"/>
+        <File Name="../../../../addons/ofxXmlSettings/libs/tinyxml.h"/>
+        <File Name="../../../../addons/ofxXmlSettings/libs/tinyxmlerror.cpp"/>
+        <File Name="../../../../addons/ofxXmlSettings/libs/tinyxmlparser.cpp"/>
+      </VirtualDirectory>
+    </VirtualDirectory>
+  </VirtualDirectory>
+</CodeLite_Project>
